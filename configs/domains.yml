@@ -1,0 +1,27 @@
+---
+domains:
+  - name: "lab.example.com"
+    organizations:
+      - "Default Organization"
+      - "Operations"
+    locations:
+      - "Default Location"
+  - name: "prod.domain.local"
+    description: "Production Domain for Local Network"
+    organizations:
+      - "Finance"
+      - "Operations"
+    locations:
+      - "Boston"
+      - "Boston East"
+  - name: "test.domain.local"
+    description: "Test Domain for Local Networks"
+    organizations:
+      - "Finance"
+      - "Marketing"
+      - "Operations"
+    locations:
+      - "Boston"
+      - "Boston East"
+      - "Boston West"
+      - "Default Location"

@@ -1,0 +1,9 @@
+---
+lifecycle_environments:
+{% for i in lifecycle_envs_info_list %}
+  - name: "{{ i.name }}"
+    label: "{{ i.label }}"
+{% if i.prior != None %}
+    prior: "{{ i.prior.name }}"
+{% endif %}
+{% endfor %}

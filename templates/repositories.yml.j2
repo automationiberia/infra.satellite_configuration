@@ -1,0 +1,13 @@
+---
+repositories:
+{% for repo in result_repositories_info.results %}
+  - name: "{{ repo.json.name | trim }}"
+    label: "{{ repo.json.label }}"
+    url: "{{ repo.json.full_path }}"
+    http_proxy_policy: "{{ repo.json.http_proxy_policy }}"
+    content_type: "{{ repo.json.content_type }}"
+    product: "{{ repo.json.product.name }}"
+    mirroring_policy: "{{ repo.json.mirroring_policy }}"
+    download_policy: "{{ repo.json.download_policy }}"
+    gpg_key: "{{ repo.json.gpg_key.name }}"
+{% endfor %}

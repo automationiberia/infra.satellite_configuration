@@ -1,0 +1,8 @@
+---
+organizations:
+{% for organization in all_organizations %}
+- name: "{{ organization.name }}"
+  label: "{{ organization.label }}"
+  description: "{{ organization.description }}"
+  id: "{{ organization.id }}"
+{% endfor %}

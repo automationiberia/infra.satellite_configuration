@@ -1,0 +1,13 @@
+---
+content_views:
+{% for i in cv_info_list %}
+  - name: "{{ i.name }}"
+    label: "{{ i.label }}"
+    description: "{{ i.description }}"
+    organization: "{{ i.organization.name }}"
+    repositories:
+{% for repo in i.repositories %}
+      - name: "{{ repo.name }}"
+        product: "{{ repo.name }}"
+{% endfor %}
+{% endfor %}

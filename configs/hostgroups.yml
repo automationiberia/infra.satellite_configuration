@@ -1,0 +1,18 @@
+---
+hostgroups:
+  - name: "Host Group 1"
+    description: "Test host  group 1"
+    parameters:
+      - name: "h_group_param1"
+        parameter_type: "integer"
+        value: 1        
+      - name: "h_group_param2"
+        parameter_type: "string"
+        value: Test        
+  - name: "Host Group 2"
+    description: "Description for the host group 2"
+    parent: "Host Group 1"
+    parameters:
+      - name: "h_group_param3"
+        parameter_type: "string"
+        value: Test2        

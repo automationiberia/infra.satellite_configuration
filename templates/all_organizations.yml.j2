@@ -1,0 +1,5 @@
+---
+all_organizations:
+{% for organization in all_orgs_list %}
+  - "{{ organization.name }}"
+{% endfor %}

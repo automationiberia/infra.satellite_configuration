@@ -1,0 +1,7 @@
+---
+satellite_url: "https://satellite.lab.example.com"
+satellite_username: admin
+satellite_passwd: redhat
+template_owner: student
+template_group: student
+template_mode: '0640' 

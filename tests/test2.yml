@@ -1,0 +1,17 @@
+---
+- name: Test  using Ansible module 
+  hosts: localhost
+  gather_facts: false
+  vars_files:
+    - vars/vars.yml
+  tasks:
+    - name: Get Info
+      redhat.satellite.domain_info:
+        server_url: "{{ satellite_url }}"
+        username: "{{ satellite_username }}"
+        password: "{{ satellite_passwd }}"
+      register: result_info
+
+    - name: Show org info
+      ansible.builtin.debug:
+        var: result_info

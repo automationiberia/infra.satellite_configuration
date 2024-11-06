@@ -1,0 +1,52 @@
+---
+subnets:
+  - name: "Test Subnet 1"
+    description: "Test Subnet 1 description"
+    network: "192.168.1.0"
+    mask: "255.255.255.0"
+    gateway: "192.168.1.1"
+    network_type: "IPv4"
+    organizations:
+      - "Finance"
+      - "Operations"
+    dns_primary: "192.168.1.5"
+    dns_secondary: "192.168.1.6"
+    boot_mode: "DHCP"
+    vlanid: 10
+    mtu: 1500
+    from_ip: "192.168.1.50"
+    to_ip: "192.168.1.70"
+    ipam: "DHCP"
+    remote_execution_proxies:
+      - "capsule.lab.example.com"
+      - "satellite.lab.example.com"
+    locations:
+      - "Boston"
+      - "Boston East"
+    domains:
+      - "lab.example.com"
+      - "prod.domain.local"
+  - name: "Test Subnet 2"
+    description: "Description for Test Subnet 2"
+    network: "192.168.2.0"
+    mask: "255.255.255.0"
+    gateway: "192.168.2.1"
+    network_type: "IPv4"
+    organizations:
+      - "Default Organization"
+      - "Marketing"
+    dns_primary: "192.168.2.5"
+    dns_secondary: "192.168.2.6"
+    boot_mode: "Static"
+    vlanid: 100
+    mtu: 1500
+    from_ip: ""
+    to_ip: ""
+    ipam: "None"
+    remote_execution_proxies:
+      - "satellite.lab.example.com"
+    locations:
+      - "Boston"
+      - "Boston West"
+    domains:
+      - "lab.example.com"

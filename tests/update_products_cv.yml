@@ -1,0 +1,13 @@
+---
+- name: Update Product Entries in Content Views 
+  hosts: localhost
+  gather_facts: false
+  vars_files:
+    - configs/repositories.yml
+  tasks:
+    - name: Replace product with the correct value
+      ansible.builtin.replace:
+        path: configs/content_views.yml
+        regexp: '^\s+product: "{{ item.name }}"'
+        replace: '        product: "{{ item.product }}"'
+      loop: "{{ repositories }}"

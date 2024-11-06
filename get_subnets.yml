@@ -1,0 +1,37 @@
+---
+- name: Get Subnets 
+  hosts: localhost
+  gather_facts: false
+  vars_files:
+    - vars/vars.yml
+  tasks:
+    - name: Subnets | Get Basic Info
+      ansible.builtin.uri:
+        url: "{{ satellite_url }}/api/subnets"
+        method: GET
+        user: "{{ satellite_username }}"
+        password: "{{ satellite_passwd }}"
+        force_basic_auth: true
+        validate_certs: false
+        return_content: true
+      register: all_subnets
+
+    - name: Subnets | Get Detailed Info
+      ansible.builtin.uri:
+        url: "{{ satellite_url }}/api/subnets/{{ item.id }}"
+        method: GET
+        user: "{{ satellite_username }}"
+        password: "{{ satellite_passwd }}"
+        force_basic_auth: true
+        validate_certs: false
+        return_content: true
+      loop: "{{ all_subnets.json.results }}"
+      register: result_subnets_info
+  
+    - name: Subnets | Template Out Results
+      ansible.builtin.template:
+        src: templates/subnets.yml.j2
+        dest: configs/subnets.yml
+        owner: "{{ template_owner }}"
+        group: "{{ template_group }}"
+        mode: "{{ template_mode }}"

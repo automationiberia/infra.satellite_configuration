@@ -1,0 +1,22 @@
+---
+domains:
+{% for domain in result_domains_info.results %}
+  - name: "{{ domain.json.name | trim }}"
+{% if domain.json.fullname != None %}
+    description: "{{ domain.json.fullname }}"
+{% endif %}
+{% set domain_organizations = domain.json.organizations %}
+{% if domain_organizations != None %}
+    organizations:
+{% for organization in domain_organizations %}
+      - "{{ organization.name }}"
+{% endfor %}
+{% endif %}
+{% set domain_locations = domain.json.locations %}
+{% if domain_locations != None %}
+    locations:
+{% for location in domain_locations %}
+      - "{{ location.name }}"
+{% endfor %}
+{% endif %}
+{% endfor %}

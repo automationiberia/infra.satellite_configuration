@@ -1,0 +1,14 @@
+---
+organizations:
+- name: "Finance"
+  label: "Finance"
+  description: ""
+  id: "7"
+- name: "Marketing"
+  label: "Marketing"
+  description: "Marketing Department"
+  id: "10"
+- name: "Operations"
+  label: "Operations"
+  description: ""
+  id: "6"

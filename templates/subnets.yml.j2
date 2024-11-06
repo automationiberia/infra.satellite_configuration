@@ -1,0 +1,72 @@
+---
+subnets:
+{% for subnet in result_subnets_info.results %}
+  - name: "{{ subnet.json.name | trim }}"
+{% if subnet.json.description != None %}
+    description: "{{ subnet.json.description }}"
+{% endif %}
+{% if subnet.json.network != None %}
+    network: "{{ subnet.json.network }}"
+{% endif %}
+{% if subnet.json.mask != None %}
+    mask: "{{ subnet.json.mask }}"
+{% endif %}
+{% if subnet.json.gateway != None %}
+    gateway: "{{ subnet.json.gateway }}"
+{% endif %}
+{% if subnet.json.network_type != None %}
+    network_type: "{{ subnet.json.network_type }}"
+{% endif %}
+{% set subnet_organizations = subnet.json.organizations %}
+{% if subnet_organizations != None %}
+    organizations:
+{% for organization in subnet_organizations %}
+      - "{{ organization.name }}"
+{% endfor %}
+{% endif %}
+{% if subnet.json.dns_primary != None %}
+    dns_primary: "{{ subnet.json.dns_primary }}"
+{% endif %}
+{% if subnet.json.dns_secondary != None %}
+    dns_secondary: "{{ subnet.json.dns_secondary }}"
+{% endif %}
+{% if subnet.json.boot_mode != None %}
+    boot_mode: "{{ subnet.json.boot_mode }}"
+{% endif %}
+{% if subnet.json.vlanid != None %}
+    vlanid: {{ subnet.json.vlanid }}
+{% endif %}
+{% if subnet.json.mtu != None %}
+    mtu: {{ subnet.json.mtu }}
+{% endif %}
+{% if subnet.json.from != None %}
+    from_ip: "{{ subnet.json.from }}"
+{% endif %}
+{% if subnet.json.to != None %}
+    to_ip: "{{ subnet.json.to }}"
+{% endif %}
+{% if subnet.json.ipam != None %}
+    ipam: "{{ subnet.json.ipam }}"
+{% endif %}
+{% set subnet_remote_proxies = subnet.json.remote_execution_proxies %}
+{% if subnet_remote_proxies != None %}
+    remote_execution_proxies:
+{% for proxy in subnet_remote_proxies %}
+      - "{{ proxy.name }}"
+{% endfor %}
+{% endif %}
+{% set subnet_locations = subnet.json.locations %}
+{% if subnet_locations != None %}
+    locations:
+{% for location in subnet_locations %}
+      - "{{ location.name }}"
+{% endfor %}
+{% endif %}
+{% set subnet_domains = subnet.json.domains %}
+{% if subnet_domains != None %}
+    domains:
+{% for domain in subnet_domains %}
+      - "{{ domain.name }}"
+{% endfor %}
+{% endif %}
+{% endfor %}

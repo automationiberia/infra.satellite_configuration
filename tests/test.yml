@@ -1,0 +1,30 @@
+---
+- name: Test API Call 
+  hosts: localhost
+  gather_facts: false
+  vars_files:
+    - vars/vars.yml
+  tasks:
+    - name: API call
+      ansible.builtin.uri:
+        url: "{{ satellite_url }}/katello/api/content_views/10"
+        method: GET
+        user: "{{ satellite_username }}"
+        password: "{{ satellite_passwd }}"
+        force_basic_auth: true
+        validate_certs: false
+        return_content: true
+      register: result_api_response
+
+    - name: Show result
+      ansible.builtin.debug:
+        var: result_api_response
+
+#    - name: Template out 
+#      ansible.builtin.template:
+#        src: templates/test.yml.j2
+#        dest: configs/test.yml
+#        owner: "{{ template_owner }}"
+#        group: "{{ template_group }}"
+#        mode: "{{ template_mode }}"
+

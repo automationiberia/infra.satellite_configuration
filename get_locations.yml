@@ -1,0 +1,38 @@
+---
+- name: Get locations 
+  hosts: localhost
+  gather_facts: false
+  vars_files:
+    - vars/vars.yml
+  tasks:
+    - name: Locations | Get Locations info
+      ansible.builtin.uri:
+        url: "{{ satellite_url }}/api/v2/locations"
+        method: GET
+        user: "{{ satellite_username }}"
+        password: "{{ satellite_passwd }}"
+        force_basic_auth: true
+        validate_certs: false
+        return_content: true
+      register: result_locations_api_response
+
+    - name: Locations | Set Locations info list
+      ansible.builtin.set_fact:
+        locations_info_list: "{{ result_locations_api_response.json.results | rejectattr('name','==', 'Default Location') }}"
+
+    - name: Locations | Template out Locations
+      ansible.builtin.template:
+        src: templates/locations.yml.j2
+        dest: configs/locations.yml
+        owner: "{{ template_owner }}"
+        group: "{{ template_group }}"
+        mode: "{{ template_mode }}"
+
+    - name: Locations | Template out all Locations
+      ansible.builtin.template:
+        src: templates/all_locations.yml.j2
+        dest: configs/all_locations.yml
+        owner: "{{ template_owner }}"
+        group: "{{ template_group }}"
+        mode: "{{ template_mode }}"
+

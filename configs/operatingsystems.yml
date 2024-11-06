@@ -1,0 +1,23 @@
+---
+operatingsystems:
+  - name: "RedHat"
+    description: ""
+    os_family: "Redhat"
+    major: "9"
+    password_hash: "SHA256"
+    state: present
+    architectures:
+      - "x86_64"
+    ptables:
+      - "Kickstart default"
+  - name: "RedHat"
+    description: "RHEL 8.6"
+    os_family: "Redhat"
+    major: "8"
+    password_hash: "SHA256"
+    state: present
+    architectures:
+      - "x86_64"
+    ptables:
+      - "Kickstart custom"
+      - "Kickstart default"

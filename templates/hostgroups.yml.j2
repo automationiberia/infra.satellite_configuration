@@ -1,0 +1,20 @@
+---
+hostgroups:
+{% for hostgroup in result_hostgroups_info.results %}
+  - name: "{{ hostgroup.json.name | trim }}"
+{% if hostgroup.json.description != None %}
+    description: "{{ hostgroup.json.description }}"
+{% endif %}
+{% if hostgroup.json.parent_name != None %}
+    parent: "{{ hostgroup.json.parent_name }}"
+{% endif %}
+{% set hostgroup_parameters = hostgroup.json.parameters %}
+{% if hostgroup_parameters != None %}
+    parameters:
+{% for parameter in hostgroup_parameters %}
+      - name: "{{ parameter.name }}"
+        parameter_type: "{{ parameter.parameter_type }}"
+        value: {{ parameter.value}}        
+{% endfor %}
+{% endif %}
+{% endfor %}
