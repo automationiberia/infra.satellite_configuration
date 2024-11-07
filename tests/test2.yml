@@ -3,13 +3,13 @@
   hosts: localhost
   gather_facts: false
   vars_files:
-    - vars/vars.yml
+    - ../vars/test_vars.yml
   tasks:
     - name: Get Info
       redhat.satellite.domain_info:
-        server_url: "{{ satellite_url }}"
-        username: "{{ satellite_username }}"
-        password: "{{ satellite_passwd }}"
+        server_url: "{{ test.satellite.server_url }}"
+        username: "{{ test.satellite.admin.username }}"
+        password: "{{ test.satellite.admin.password }}"
       register: result_info
 
     - name: Show org info
