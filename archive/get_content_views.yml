@@ -1,0 +1,41 @@
+---
+- name: Get Content Views 
+  hosts: localhost
+  gather_facts: false
+  vars_files:
+    - vars/vars.yml
+  tasks:
+    - name: Content Views | Get Content Views info
+      ansible.builtin.uri:
+        url: "{{ satellite_url }}/katello/api/content_views?noncomposite=true"
+        method: GET
+        user: "{{ satellite_username }}"
+        password: "{{ satellite_passwd }}"
+        force_basic_auth: true
+        validate_certs: false
+        return_content: true
+      register: result_cv_api_response
+
+    - name: Content Views | Set Content Views info list
+      ansible.builtin.set_fact:
+        cv_info_list: "{{ result_cv_api_response.json.results | rejectattr('name','==', 'Default Organization View') }}"
+
+    - name: Content Views | Template out 
+      ansible.builtin.template:
+        src: templates/content_views.yml.j2
+        dest: configs/content_views.yml
+        owner: "{{ template_owner }}"
+        group: "{{ template_group }}"
+        mode: "{{ template_mode }}"
+
+    - name: Load Repositories Information
+      ansible.builtin.set_fact:
+        repos: "{{ lookup('ansible.builtin.file', 'configs/repositories.yml') | from_yaml }}"
+
+    - name: Replace product parameter with the correct value
+      ansible.builtin.replace:
+        path: configs/content_views.yml
+        regexp: '^\s+product: "{{ item.name }}"'
+        replace: '        product: "{{ item.product }}"'
+      loop: "{{ repos.repositories }}"
+

@@ -1,0 +1,37 @@
+---
+- name: Get Domains 
+  hosts: localhost
+  gather_facts: false
+  vars_files:
+    - vars/vars.yml
+  tasks:
+    - name: Domains | Get Basic Info
+      ansible.builtin.uri:
+        url: "{{ satellite_url }}/api/domains"
+        method: GET
+        user: "{{ satellite_username }}"
+        password: "{{ satellite_passwd }}"
+        force_basic_auth: true
+        validate_certs: false
+        return_content: true
+      register: all_domains
+
+    - name: Domains | Get Detailed Info
+      ansible.builtin.uri:
+        url: "{{ satellite_url }}/api/domains/{{ item.id }}"
+        method: GET
+        user: "{{ satellite_username }}"
+        password: "{{ satellite_passwd }}"
+        force_basic_auth: true
+        validate_certs: false
+        return_content: true
+      loop: "{{ all_domains.json.results }}"
+      register: result_domains_info
+  
+    - name: Domains | Template Out Results
+      ansible.builtin.template:
+        src: templates/domains.yml.j2
+        dest: configs/domains.yml
+        owner: "{{ template_owner }}"
+        group: "{{ template_group }}"
+        mode: "{{ template_mode }}"

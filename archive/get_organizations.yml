@@ -1,0 +1,25 @@
+---
+- name: Get Organizations 
+  hosts: localhost
+  gather_facts: false
+  vars_files:
+    - vars/vars.yml
+  tasks:
+    - name: Organizations | Get Info
+      redhat.satellite.organization_info:
+        server_url: "{{ satellite_url }}"
+        username: "{{ satellite_username }}"
+        password: "{{ satellite_passwd }}"
+      register: result_api_response
+
+    - name: Organizations | Set Variable
+      ansible.builtin.set_fact:
+        all_organizations: "{{ result_api_response.organizations | rejectattr('name','==', 'Default Organization') }}"
+
+    - name: Organizations | Template Out Results
+      ansible.builtin.template:
+        src: templates/organizations.yml.j2
+        dest: configs/organizations.yml
+        owner: "{{ template_owner }}"
+        group: "{{ template_group }}"
+        mode: "{{ template_mode }}"
