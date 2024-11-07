@@ -3,14 +3,14 @@
   hosts: localhost
   gather_facts: false
   vars_files:
-    - vars/vars.yml
+    - ../vars/test_vars.yml
   tasks:
     - name: API call
       ansible.builtin.uri:
-        url: "{{ satellite_url }}/katello/api/content_views/10"
+        url: "{{ test.satellite.server_url }}/katello/api/content_views/10"
         method: GET
-        user: "{{ satellite_username }}"
-        password: "{{ satellite_passwd }}"
+        user: "{{ test.satellite.admin.username }}"
+        password: "{{ test.satellite.admin.password }}"
         force_basic_auth: true
         validate_certs: false
         return_content: true
@@ -22,9 +22,8 @@
 
 #    - name: Template out 
 #      ansible.builtin.template:
-#        src: templates/test.yml.j2
+#        src: ../templates/test.yml.j2
 #        dest: configs/test.yml
-#        owner: "{{ template_owner }}"
-#        group: "{{ template_group }}"
-#        mode: "{{ template_mode }}"
-
+#        owner: "{{ test.satellite.template.owner }}"
+#        group: "{{ test.satellite.template.group }}"
+#        mode: "{{ test.satellite.template.mode }}"
