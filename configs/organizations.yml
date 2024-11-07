@@ -1,14 +1,20 @@
 ---
+# Set the primary organization manually
+# primary_organization: ORGANIZATION_NAME
+
 organizations:
-- name: "Finance"
-  label: "Finance"
-  description: ""
-  id: "7"
-- name: "Marketing"
-  label: "Marketing"
-  description: "Marketing Department"
-  id: "10"
-- name: "Operations"
-  label: "Operations"
-  description: ""
-  id: "6"
+  - name: "Finance"
+    label: "Finance"
+    description: ""
+  - name: "Marketing"
+    label: "Marketing"
+    description: "Marketing Department"
+  - name: "Operations"
+    label: "Operations"
+    description: ""
+
+all_organizations:
+  - "Finance"
+  - "Marketing"
+  - "Operations"
+

@@ -1,8 +1,16 @@
 ---
+# Set the primary organization manually
+# primary_organization: ORGANIZATION_NAME
+
 organizations:
-{% for organization in all_organizations %}
-- name: "{{ organization.name }}"
-  label: "{{ organization.label }}"
-  description: "{{ organization.description }}"
-  id: "{{ organization.id }}"
+{% for organization in info_list %}
+  - name: "{{ organization.name }}"
+    label: "{{ organization.label }}"
+    description: "{{ organization.description }}"
 {% endfor %}
+
+all_organizations:
+{% for organization in info_list %}
+  - "{{ organization.name }}"
+{% endfor %}
+

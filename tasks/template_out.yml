@@ -1,0 +1,8 @@
+--- 
+- name: Create configuration file for {{ template_type }}
+  ansible.builtin.template:
+    src: ../templates/{{ template_type }}.yml.j2
+    dest: configs/{{ template_type }}.yml
+    owner: "{{ test.satellite.template.owner }}"
+    group: "{{ test.satellite.template.group }}"
+    mode: "{{ test.satellite.template.mode }}"

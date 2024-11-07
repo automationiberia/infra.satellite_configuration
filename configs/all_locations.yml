@@ -1,5 +1,5 @@
 ---
 all_locations:
-- "Boston" 
-- "Boston East" 
-- "Boston West" 
+  - "Boston" 
+  - "Boston East" 
+  - "Boston West" 

@@ -1,6 +1,6 @@
 ---
 domains:
-{% for domain in result_domains_info.results %}
+{% for domain in detailed_info.results %}
   - name: "{{ domain.json.name | trim }}"
 {% if domain.json.fullname != None %}
     description: "{{ domain.json.fullname }}"

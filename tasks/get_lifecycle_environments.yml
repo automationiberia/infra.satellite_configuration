@@ -1,0 +1,15 @@
+---
+- name: Lifecycle Environments | Get Info
+  include_tasks: api_call.yml
+  vars:
+    call_type: Lifecycle Environments
+    api_link: /katello/api/environments
+
+- name: Lifecycle Environments | Set Info List
+  ansible.builtin.set_fact:
+    info_list: "{{ result_api_response.json.results | rejectattr('name','==', 'Library') }}"
+
+- name: Lifecycle Environments | Template Out Results
+  include_tasks: template_out.yml
+  vars:
+    template_type: lifecycle_environments

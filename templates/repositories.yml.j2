@@ -1,6 +1,6 @@
 ---
 repositories:
-{% for repo in result_repositories_info.results %}
+{% for repo in detailed_info.results %}
   - name: "{{ repo.json.name | trim }}"
     label: "{{ repo.json.label }}"
     url: "{{ repo.json.full_path }}"

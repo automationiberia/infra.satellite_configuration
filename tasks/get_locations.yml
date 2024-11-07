@@ -1,0 +1,21 @@
+---
+- name: Locations | Get Info
+  include_tasks: api_call.yml
+  vars:
+    call_type: Locations
+    api_link: /api/v2/locations  
+
+- name: Locations | Set Info List
+  ansible.builtin.set_fact:
+    info_list: "{{ result_api_response.json.results | rejectattr('name','==', 'Default Location') }}"
+
+- name: Locations | Template Out Results
+  include_tasks: template_out.yml
+  vars:
+    template_type: locations
+
+- name: All Locations | Template Out Results
+  include_tasks: template_out.yml
+  vars:
+    template_type: all_locations
+

@@ -1,0 +1,22 @@
+---
+- name: Operating Systems | Get Basic Info
+  include_tasks: api_call.yml
+  vars:
+    call_type: Operating Systems
+    api_link: /api/operatingsystems
+
+- name: Operating Systems | Create a List
+  ansible.builtin.set_fact:
+    all_results: "{{ result_api_response.json.results }}"     
+
+- name: Operating Systems | Get Detailed Info
+  include_tasks: detailed_api_call.yml
+  vars:
+    call_type: Operating Systems
+    api_link: /api/operatingsystems/
+    loop_var: "{{ all_results }}"
+
+- name: Operating Systems | Template Out Results
+  include_tasks: template_out.yml
+  vars:
+    template_type: operatingsystems

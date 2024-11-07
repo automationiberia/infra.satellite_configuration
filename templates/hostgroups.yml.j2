@@ -1,6 +1,6 @@
 ---
 hostgroups:
-{% for hostgroup in result_hostgroups_info.results %}
+{% for hostgroup in detailed_info.results %}
   - name: "{{ hostgroup.json.name | trim }}"
 {% if hostgroup.json.description != None %}
     description: "{{ hostgroup.json.description }}"

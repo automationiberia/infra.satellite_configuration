@@ -1,0 +1,10 @@
+test:
+  satellite:
+    server_url: "https://satellite.lab.example.com" 
+    admin: 
+      username: admin
+      password: redhat
+    template:
+      owner: student
+      group: student
+      mode: '0640'

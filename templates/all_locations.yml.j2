@@ -1,5 +1,5 @@
 ---
 all_locations:
-{% for i in locations_info_list %}
-- "{{ i.name }}" 
+{% for location in info_list %}
+  - "{{ location.name }}" 
 {% endfor %}

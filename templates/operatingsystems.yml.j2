@@ -1,6 +1,6 @@
 ---
 operatingsystems:
-{% for os in result_os_info.results %}
+{% for os in detailed_info.results %}
   - name: "{{ os.json.name | trim }}"
     description: "{{ os.json.description }}"
     os_family: "{{ os.json.family }}"

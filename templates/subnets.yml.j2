@@ -1,6 +1,6 @@
 ---
 subnets:
-{% for subnet in result_subnets_info.results %}
+{% for subnet in detailed_info.results %}
   - name: "{{ subnet.json.name | trim }}"
 {% if subnet.json.description != None %}
     description: "{{ subnet.json.description }}"

@@ -1,0 +1,16 @@
+---
+- name: Organizations | Get Info
+  redhat.satellite.organization_info:
+    server_url: "{{ test.satellite.server_url }}"
+    username: "{{ test.satellite.admin.username }}"
+    password: "{{ test.satellite.admin.password }}"
+  register: result_api_response
+
+- name: Organizations | Set Info List
+  ansible.builtin.set_fact:
+    info_list: "{{ result_api_response.organizations | rejectattr('name','==', 'Default Organization') }}"
+
+- name: Organizations | Template Out Results
+  include_tasks: template_out.yml
+  vars:
+    template_type: organizations

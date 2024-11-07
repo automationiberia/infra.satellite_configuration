@@ -1,0 +1,34 @@
+---
+- name: Export Satellite Configuration 
+  hosts: localhost
+  gather_facts: false
+  vars_files:
+    - vars/test_vars.yml
+  tasks:
+    - name: Get Organizations
+      include_tasks: tasks/get_organizations.yml
+
+    - name: Get Locations
+      include_tasks: tasks/get_locations.yml
+
+    - name: Get Domains
+      include_tasks: tasks/get_domains.yml
+
+    - name: Get Subnets
+      include_tasks: tasks/get_subnets.yml
+
+    - name: Get Repositories
+      include_tasks: tasks/get_repositories.yml
+
+    - name: Get Host Groups
+      include_tasks: tasks/get_hostgroups.yml
+
+    - name: Get Operating Systems
+      include_tasks: tasks/get_operatingsystems.yml
+
+    - name: Get Lifecycle Environments
+      include_tasks: tasks/get_lifecycle_environments.yml
+
+    - name: Get Content Views
+      include_tasks: tasks/get_content_views.yml
+

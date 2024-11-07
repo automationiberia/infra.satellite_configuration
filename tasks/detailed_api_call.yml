@@ -1,11 +1,12 @@
 ---
 - name: "{{ call_type }} | API call - {{ api_link }}"
   ansible.builtin.uri:
-    url: "{{ test.satellite.server_url }}{{ api_link }}"
+    url: "{{ test.satellite.server_url }}{{ api_link }}{{ item.id }}"
     method: GET
     user: "{{ test.satellite.admin.username }}"
     password: "{{ test.satellite.admin.password }}"
     force_basic_auth: true
     validate_certs: false
     return_content: true
-  register: result_api_response
+  loop: "{{ loop_var }}"
+  register: detailed_info

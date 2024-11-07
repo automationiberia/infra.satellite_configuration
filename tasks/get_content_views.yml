@@ -1,0 +1,27 @@
+---
+- name: Content Views | Get Info
+  include_tasks: api_call.yml
+  vars:
+    call_type: Content Views
+    api_link: /katello/api/content_views?noncomposite=true
+
+- name: Content Views | Set Info List
+  ansible.builtin.set_fact:
+    info_list: "{{ result_api_response.json.results | rejectattr('name','==', 'Default Organization View') }}"
+
+- name: Content Views | Template Out Results
+  include_tasks: template_out.yml
+  vars:
+    template_type: content_views
+
+- name: Load Repositories Information
+  ansible.builtin.set_fact:
+    repos: "{{ lookup('ansible.builtin.file', '../configs/repositories.yml') | from_yaml }}"
+
+- name: Replace product parameter with the correct value
+  ansible.builtin.replace:
+    path: configs/content_views.yml
+    regexp: '^\s+product: "{{ item.name }}"'
+    replace: '        product: "{{ item.product }}"'
+  loop: "{{ repos.repositories }}"
+
