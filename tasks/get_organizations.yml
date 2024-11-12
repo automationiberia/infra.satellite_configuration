@@ -4,6 +4,7 @@
     server_url: "{{ test.satellite.server_url }}"
     username: "{{ test.satellite.admin.username }}"
     password: "{{ test.satellite.admin.password }}"
+    validate_certs: "{{ validate_tls_certs_of_foreman_server_boolean }}"
   register: result_api_response
 
 - name: Organizations | Set Info List
