@@ -7,6 +7,6 @@ Verified and tested on the Sattelite version 6.11.
 
 2. Use the below command to run the script:  
 
-`ansible-playbook extract_satellite_config.yml`
+# ansible-playbook extract_satellite_config.yml
 
 3. Review extracted configuration in the configs/ folder.
