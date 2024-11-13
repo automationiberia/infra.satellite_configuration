@@ -1,0 +1,23 @@
+---
+- name: Composite Content Views | Get Info
+  include_tasks: api_call.yml
+  vars:
+    call_type: Composite Content Views
+    api_link: /katello/api/content_views?noncomposite=false
+
+- name: Composite Content Views | Set Info List
+  ansible.builtin.set_fact:
+    info_list: "{{ result_api_response.json.results | rejectattr('name','==','Default Organization View') }}"
+
+# Uncomment to see what variables can be accessed from the api call for CCVs
+#- name: Composite Content Views | Debug
+#  debug:
+#    msg: |
+#      {% for i in info_list %}
+#      "{{ i  | join('=====') }}"
+#      {% endfor %}
+
+- name: Composite Content Views | Template Out Results
+  include_tasks: template_out.yml
+  vars:
+      template_type: composite_content_views

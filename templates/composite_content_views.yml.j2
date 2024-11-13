@@ -1,0 +1,14 @@
+---
+composite_content_views:
+{% for i in info_list %}
+  - name: "{{ i.name }}"
+    label: "{{ i.label }}"
+    description: "{{ i.description }}"
+    auto_publish: "{{ i.auto_publish }}"
+    organization: "{{ i.organization.name }}"
+    components:
+{% for x in i.content_view_components %}
+      - content_view: "{{ x.content_view.name }}
+        latest: "{{ x.latest }}"
+{% endfor %}
+{% endfor %}
