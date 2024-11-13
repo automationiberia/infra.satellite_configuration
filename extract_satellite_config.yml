@@ -35,3 +35,6 @@
     - name: Get Composite Content Views
       include_tasks: tasks/get_composite_content_views.yml
 
+    - name: Get Content View Filters
+      include_tasks: tasks/get_content_view_filters.yml
+
