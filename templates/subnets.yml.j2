@@ -59,7 +59,7 @@ subnets:
 {% if subnet_locations != None %}
     locations:
 {% for location in subnet_locations %}
-      - "{{ location.name }}"
+      - "{{ location.title }}"
 {% endfor %}
 {% endif %}
 {% set subnet_domains = subnet.json.domains %}

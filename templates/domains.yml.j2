@@ -16,7 +16,7 @@ domains:
 {% if domain_locations != None %}
     locations:
 {% for location in domain_locations %}
-      - "{{ location.name }}"
+      - "{{ location.title }}"
 {% endfor %}
 {% endif %}
 {% endfor %}
