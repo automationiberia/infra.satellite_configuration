@@ -1,0 +1,10 @@
+---
+products:
+{% for product in info_list %}
+  - name: "{{ product.name | trim }}"
+    label: "{{ product.label | trim }}"
+{% if product.sync_plan != None %}
+    sync_plan: "{{ product.sync_plan.name }}"
+{% endif %}
+    state: present
+{% endfor %}
