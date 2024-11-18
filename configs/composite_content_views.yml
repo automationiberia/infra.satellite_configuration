@@ -1,0 +1,22 @@
+---
+composite_content_views:
+  - name: "Composite Base Custom"
+    label: "Composite_Base_Custom"
+    description: ""
+    auto_publish: "False"
+    organization: "Primary Organization"
+    components:
+      - content_view: "Custom Software Content View"
+        latest: "False"
+      - content_view: "PrimaryServerBase"
+        latest: "False"
+  - name: "CompositeContentView"
+    label: "CompositeContentView"
+    description: ""
+    auto_publish: "False"
+    organization: "Primary Organization"
+    components:
+      - content_view: "PrimaryHA"
+        latest: "False"
+      - content_view: "PrimaryServerBase"
+        latest: "False"

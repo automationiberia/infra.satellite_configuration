@@ -1,0 +1,6 @@
+---
+products:
+  - name: "Custom Software"
+    label: "Custom_Software"
+    sync_plan: "daily"
+    state: present

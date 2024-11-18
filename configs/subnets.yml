@@ -7,24 +7,20 @@ subnets:
     gateway: "192.168.1.1"
     network_type: "IPv4"
     organizations:
-      - "Finance"
       - "Operations"
-    dns_primary: "192.168.1.5"
-    dns_secondary: "192.168.1.6"
     boot_mode: "DHCP"
-    vlanid: 10
+    vlanid: 0
     mtu: 1500
     from_ip: "192.168.1.50"
     to_ip: "192.168.1.70"
     ipam: "DHCP"
     remote_execution_proxies:
-      - "capsule.lab.example.com"
-      - "satellite.lab.example.com"
     locations:
       - "Boston"
-      - "Boston East"
+      - "Boston/Boston East"
+      - "Boston/Boston West"
     domains:
-      - "lab.example.com"
+      - "lab.eiva.com"
       - "prod.domain.local"
   - name: "Test Subnet 2"
     description: "Description for Test Subnet 2"
@@ -33,20 +29,51 @@ subnets:
     gateway: "192.168.2.1"
     network_type: "IPv4"
     organizations:
-      - "Default Organization"
-      - "Marketing"
-    dns_primary: "192.168.2.5"
-    dns_secondary: "192.168.2.6"
-    boot_mode: "Static"
-    vlanid: 100
+      - "Operations"
+      - "Primary Organization"
+    dns_primary: ""
+    dns_secondary: ""
+    boot_mode: "DHCP"
+    vlanid: 0
     mtu: 1500
     from_ip: ""
     to_ip: ""
-    ipam: "None"
+    ipam: "DHCP"
     remote_execution_proxies:
-      - "satellite.lab.example.com"
+      - "capsule.lab.eiva.com"
+      - "satellite.lab.eiva.com"
     locations:
       - "Boston"
-      - "Boston West"
+      - "Boston/Boston East"
+      - "Boston/Boston West"
+      - "Default Location"
     domains:
+      - "lab.eiva.com"
       - "lab.example.com"
+  - name: "Boston Subnet"
+    description: "Boston Subnet"
+    network: "192.168.122.0"
+    mask: "255.255.255.0"
+    gateway: "192.168.122.1"
+    network_type: "IPv4"
+    organizations:
+      - "Operations"
+      - "Primary Organization"
+    dns_primary: "192.168.122.100"
+    dns_secondary: "192.168.122.101"
+    boot_mode: "DHCP"
+    vlanid: 100
+    mtu: 1500
+    from_ip: "192.168.122.50"
+    to_ip: "192.168.122.70"
+    ipam: "DHCP"
+    remote_execution_proxies:
+      - "capsule.lab.eiva.com"
+      - "satellite.lab.eiva.com"
+    locations:
+      - "Boston"
+      - "Boston/Boston East"
+      - "Boston/Boston West"
+      - "Default Location"
+    domains:
+      - "boston.lab.eiva.com"

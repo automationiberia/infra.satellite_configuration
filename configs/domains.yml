@@ -1,27 +1,48 @@
 ---
 domains:
-  - name: "lab.example.com"
+  - name: "boston.lab.eiva.com"
+    description: ""
     organizations:
-      - "Default Organization"
       - "Operations"
+      - "Primary Organization"
     locations:
+      - "Boston"
+      - "Boston/Boston East"
+      - "Boston/Boston West"
+      - "Default Location"
+  - name: "lab.eiva.com"
+    description: "Primary domain"
+    organizations:
+      - "Operations"
+      - "Primary Organization"
+    locations:
+      - "Boston"
+      - "Boston/Boston East"
+      - "Boston/Boston West"
+      - "Default Location"
+  - name: "lab.example.com"
+    description: "Example lab domain"
+    organizations:
+      - "Operations"
+      - "Primary Organization"
+    locations:
+      - "Boston"
+      - "Boston/Boston East"
+      - "Boston/Boston West"
       - "Default Location"
   - name: "prod.domain.local"
     description: "Production Domain for Local Network"
     organizations:
-      - "Finance"
       - "Operations"
     locations:
       - "Boston"
-      - "Boston East"
+      - "Boston/Boston East"
   - name: "test.domain.local"
     description: "Test Domain for Local Networks"
     organizations:
-      - "Finance"
-      - "Marketing"
       - "Operations"
     locations:
       - "Boston"
-      - "Boston East"
-      - "Boston West"
+      - "Boston/Boston East"
+      - "Boston/Boston West"
       - "Default Location"

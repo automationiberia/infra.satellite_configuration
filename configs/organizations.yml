@@ -1,0 +1,15 @@
+---
+primary_organization: "Primary Organization" 
+
+organizations:
+  - name: "Operations"
+    label: "Operations"
+    description: ""
+  - name: "Primary Organization"
+    label: "Primary_Organization"
+    description: ""
+
+all_organizations:
+  - "Operations"
+  - "Primary Organization"
+
