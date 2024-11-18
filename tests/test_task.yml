@@ -5,10 +5,5 @@
   vars_files:
     - vars/test_vars.yml
   tasks:
-    - name: Get Custom Products
-      include_tasks: tasks/get_products.yml
-
-    - name: Get Organizations
-      include_tasks: tasks/get_organizations.yml
-
-
+    - name: Get Subnets
+      include_tasks: tasks/get_subnets.yml
