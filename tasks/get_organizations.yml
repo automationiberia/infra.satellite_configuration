@@ -9,7 +9,7 @@
 
 - name: Organizations | Set Info List
   ansible.builtin.set_fact:
-    info_list: "{{ result_api_response.organizations }}" # removed filter | rejectattr('name','==', 'Default Organization')
+    info_list: "{{ result_api_response.organizations | sort(attribute='id') }}" # removed filter | rejectattr('name','==', 'Default Organization')
 
 - name: Organizations | Get Primary Organization Name
   ansible.builtin.set_fact:

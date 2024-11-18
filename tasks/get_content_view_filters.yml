@@ -7,7 +7,7 @@
 
 - name: Content View Filters | Set Info List
   ansible.builtin.set_fact:
-    info_list: "{{ result_api_response.json.results }}"
+    info_list: "{{ result_api_response.json.results | sort(attribute='id') }}"
 
 #- name: Content View Filters | Debug
 #  ansible.builtin.debug:

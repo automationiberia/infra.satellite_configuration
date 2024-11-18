@@ -7,7 +7,7 @@
 
 - name: Custom Products | Create a List
   ansible.builtin.set_fact:
-    info_list: "{{ result_api_response.json.results }}"
+    info_list: "{{ result_api_response.json.results | sort(attribute='id') }}"
 
 - name: Custom Products | Template Out Results
   include_tasks: template_out.yml

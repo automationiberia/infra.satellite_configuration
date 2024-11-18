@@ -7,7 +7,7 @@
 
 - name: Subnets | Create a List
   ansible.builtin.set_fact:
-    all_results: "{{ result_api_response.json.results }}"     
+    all_results: "{{ result_api_response.json.results | sort(attribute='id') }}"     
 
 - name: Subnets | Get Detailed Info
   include_tasks: detailed_api_call.yml

@@ -7,7 +7,7 @@
 
 - name: Domains | Create a List
   ansible.builtin.set_fact:
-    all_results: "{{ result_api_response.json.results }}"     
+    all_results: "{{ result_api_response.json.results | sort(attribute='id')  }}"     
 
 - name: Domains | Get Detailed Info
   include_tasks: detailed_api_call.yml
