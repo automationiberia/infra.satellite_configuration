@@ -38,3 +38,6 @@
     - name: Get Content View Filters
       include_tasks: tasks/get_content_view_filters.yml
 
+    - name: Get Custom Products
+      include_tasks: tasks/get_products.yml
+
