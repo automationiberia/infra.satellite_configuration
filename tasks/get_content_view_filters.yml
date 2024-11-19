@@ -4,6 +4,8 @@
   vars:
     call_type: Content View Filters
     api_link: /katello/api/content_view_filters
+    body_format: "json"
+    body: "{\"types\":[\"rpm\"]}"
 
 - name: Content View Filters | Set Info List
   ansible.builtin.set_fact:

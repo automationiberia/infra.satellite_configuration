@@ -1,5 +1,8 @@
 ---
 locations:
+  - name: "Default Location"
+    description: ""
+    parent: ""
   - name: "Boston"
     description: ""
     parent: ""
@@ -9,6 +12,3 @@ locations:
   - name: "Boston West"
     description: ""
     parent: "Boston"
-  - name: "Default Location"
-    description: ""
-    parent: ""

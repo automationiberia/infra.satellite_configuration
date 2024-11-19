@@ -1,15 +1,5 @@
 ---
 domains:
-  - name: "boston.lab.eiva.com"
-    description: ""
-    organizations:
-      - "Operations"
-      - "Primary Organization"
-    locations:
-      - "Boston"
-      - "Boston/Boston East"
-      - "Boston/Boston West"
-      - "Default Location"
   - name: "lab.eiva.com"
     description: "Primary domain"
     organizations:
@@ -41,6 +31,16 @@ domains:
     description: "Test Domain for Local Networks"
     organizations:
       - "Operations"
+    locations:
+      - "Boston"
+      - "Boston/Boston East"
+      - "Boston/Boston West"
+      - "Default Location"
+  - name: "boston.lab.eiva.com"
+    description: ""
+    organizations:
+      - "Operations"
+      - "Primary Organization"
     locations:
       - "Boston"
       - "Boston/Boston East"

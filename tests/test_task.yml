@@ -5,5 +5,5 @@
   vars_files:
     - vars/test_vars.yml
   tasks:
-    - name: Get Subnets
-      include_tasks: tasks/get_subnets.yml
+    - name: Get Info
+      include_tasks: tasks/get_content_view_filters.yml

@@ -8,4 +8,6 @@
     force_basic_auth: true
     validate_certs: false
     return_content: true
+    body_format: "{{ body_format | default(omit) }}"
+    body: "{{ body | default(omit) }}"
   register: result_api_response

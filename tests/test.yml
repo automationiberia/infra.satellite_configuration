@@ -7,13 +7,15 @@
   tasks:
     - name: API call
       ansible.builtin.uri:
-        url: "{{ test.satellite.server_url }}/katello/api/products?organization_id=1&custom=true"
+        url: "{{ test.satellite.server_url }}/katello/api/content_view_filters"
         method: GET
         user: "{{ test.satellite.admin.username }}"
         password: "{{ test.satellite.admin.password }}"
         force_basic_auth: true
         validate_certs: false
         return_content: true
+        body_format: "json"
+        body: "{\"types\":[\"rpm\"]}"
       register: result_api_response
 
     - name: Show result
