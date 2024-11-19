@@ -1,0 +1,6 @@
+---
+settings:
+{% for i in info_list %}
+  - name: {{ i.name }} 
+    value: {{ i.value }}
+{% endfor %}

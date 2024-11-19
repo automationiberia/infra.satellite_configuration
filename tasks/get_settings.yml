@@ -1,0 +1,15 @@
+---
+- name: Settings | Get Basic Info
+  include_tasks: api_call.yml
+  vars:
+    call_type: Settings
+    api_link: /api/settings
+
+- name: Settings | Set Info List
+  ansible.builtin.set_fact:
+    info_list: "{{ result_api_response.json.results }}"
+
+- name: Settings | Template Out Results
+  include_tasks: template_out.yml
+  vars:
+    template_type: settings

@@ -41,3 +41,6 @@
     - name: Get Custom Products
       include_tasks: tasks/get_products.yml
 
+    - name: Get Settings
+      include_tasks: tasks/get_settings.yml
+
