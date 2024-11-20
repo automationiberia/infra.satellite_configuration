@@ -7,7 +7,7 @@
   tasks:
     - name: API call
       ansible.builtin.uri:
-        url: "{{ test.satellite.server_url }}/katello/api/content_view_filters"
+        url: "{{ test.satellite.server_url }}/katello/api/repositories"
         method: GET
         user: "{{ test.satellite.admin.username }}"
         password: "{{ test.satellite.admin.password }}"

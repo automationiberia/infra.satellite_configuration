@@ -7,6 +7,7 @@ repositories:
     http_proxy_policy: "{{ repo.json.http_proxy_policy }}"
     content_type: "{{ repo.json.content_type }}"
     product: "{{ repo.json.product.name }}"
+    rhel_repo: "{{ repo.json.product.VALUE_SPECIFIED_IN_NO_LOG_PARAMETER }}"
     mirroring_policy: "{{ repo.json.mirroring_policy }}"
     download_policy: "{{ repo.json.download_policy }}"
     gpg_key: "{{ repo.json.gpg_key.name }}"
