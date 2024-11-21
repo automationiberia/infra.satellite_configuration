@@ -44,3 +44,6 @@
     - name: Get Settings
       include_tasks: tasks/get_settings.yml
 
+    - name: Get Content Credentials
+      include_tasks: tasks/get_content_credentials.yml
+
