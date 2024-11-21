@@ -1,0 +1,20 @@
+---
+repository_sets:
+  - label: "satellite-capsule-6.11-for-rhel-8-x86_64-rpms"
+  - label: "satellite-client-6-for-rhel-8-x86_64-rpms"
+  - label: "satellite-maintenance-6.11-for-rhel-8-x86_64-rpms"
+  - label: "rhel-8-for-x86_64-baseos-rpms"
+    repositories:
+      - releasever: "8"
+  - label: "rhel-8-for-x86_64-baseos-kickstart"
+    repositories:
+      - releasever: "8.10"
+  - label: "rhel-8-for-x86_64-appstream-rpms"
+    repositories:
+      - releasever: "8"
+  - label: "rhel-8-for-x86_64-appstream-kickstart"
+    repositories:
+      - releasever: "8.10"
+  - label: "rhel-8-for-x86_64-highavailability-rpms"
+    repositories:
+      - releasever: "8"

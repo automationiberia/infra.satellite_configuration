@@ -8,5 +8,7 @@
     force_basic_auth: true
     validate_certs: false
     return_content: true
+    body_format: "{{ body_format | default(omit) }}"
+    body: "{{ body | default(omit) }}"
   loop: "{{ loop_var }}"
   register: detailed_info
