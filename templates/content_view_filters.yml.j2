@@ -1,11 +1,10 @@
 ---
-{% for i in info_list %}
-{{ i.name }}:
-{% for rule in i.rules %}
-{% if rule.name is defined and rule.name != None %}
+{% for i in detailed_info.results %}
+{{ i.json.name }}:
+{% for rule in i.json.rules %}
+{% if 'name' in rule %}
   - name: {{ rule.name }}
-{% elif rule.name is not defined and rule.errata_id != None %}
-  - name: {{ rule.errata_id }}
 {% endif %}
 {% endfor %} 
-{% endfor %} 
+{% endfor %}
+ 

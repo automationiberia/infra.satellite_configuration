@@ -4,23 +4,17 @@
   vars:
     call_type: Content View Filters
     api_link: /katello/api/content_view_filters
-    body_format: "json"
-    body: "{\"types\":[\"rpm\"]}"
 
-- name: Content View Filters | Set Info List
+- name: Content View Filters | Create a List
   ansible.builtin.set_fact:
-    info_list: "{{ result_api_response.json.results | sort(attribute='id') }}"
+    info_list: "{{ result_api_response.json.results | sort(attribute='id') | unique  }}"
 
-#- name: Content View Filters | Debug
-#  ansible.builtin.debug:
-#    msg: "{{ info_list }}"
-#
-#- name: Content View Filters | Debug specific var
-#  ansible.builtin.debug:
-#    msg: |
-#      {% for i in info_list %}
-#      "{{ i.name }}"
-#      {% endfor %}
+- name: Content View Filters | Get Detailed Info
+  include_tasks: detailed_api_call.yml
+  vars:
+    call_type: Content View Filters
+    api_link: /katello/api/content_view_filters/
+    loop_var: "{{ all_results }}"
 
 - name: Content View Filters | Template Out Results
   include_tasks: template_out.yml
