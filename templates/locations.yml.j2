@@ -2,6 +2,7 @@
 locations:
 {% for location in info_list %}
   - name: "{{ location.name }}"
-    description: "{{ location.description }}"
+    description: |
+      "{{ location.description }}"
     parent: "{{ location.parent_name }}"
 {% endfor %}
