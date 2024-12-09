@@ -14,7 +14,7 @@ hostgroups:
 {% for parameter in hostgroup_parameters %}
       - name: "{{ parameter.name }}"
         parameter_type: "{{ parameter.parameter_type }}"
-        value: {{ parameter.value}}        
+        value: "{{ parameter.value }}"        
 {% endfor %}
 {% endif %}
 {% endfor %}
