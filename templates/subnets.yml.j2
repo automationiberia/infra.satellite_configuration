@@ -2,32 +2,32 @@
 subnets:
 {% for subnet in detailed_info.results %}
   - name: "{{ subnet.json.name | trim }}"
-{% if subnet.json.description != None %}
-    description: "{{ subnet.json.description }}"
+{% if subnet.json.description != "" %}
+    description: "{{ subnet.json.description | regex_replace('[\\r\\n\\t]+',' ') }}"
 {% endif %}
-{% if subnet.json.network != None %}
+{% if subnet.json.network != "" %}
     network: "{{ subnet.json.network }}"
 {% endif %}
-{% if subnet.json.mask != None %}
+{% if subnet.json.mask != "" %}
     mask: "{{ subnet.json.mask }}"
 {% endif %}
-{% if subnet.json.gateway != None %}
+{% if subnet.json.gateway != "" %}
     gateway: "{{ subnet.json.gateway }}"
 {% endif %}
 {% if subnet.json.network_type != None %}
     network_type: "{{ subnet.json.network_type }}"
 {% endif %}
 {% set subnet_organizations = subnet.json.organizations %}
-{% if subnet_organizations != None %}
+{% if subnet_organizations is defined and subnet_organizations[0] is defined %}
     organizations:
 {% for organization in subnet_organizations %}
       - "{{ organization.name }}"
 {% endfor %}
 {% endif %}
-{% if subnet.json.dns_primary != None %}
+{% if subnet.json.dns_primary != "" %}
     dns_primary: "{{ subnet.json.dns_primary }}"
 {% endif %}
-{% if subnet.json.dns_secondary != None %}
+{% if subnet.json.dns_secondary != "" %}
     dns_secondary: "{{ subnet.json.dns_secondary }}"
 {% endif %}
 {% if subnet.json.boot_mode != None %}
@@ -39,31 +39,34 @@ subnets:
 {% if subnet.json.mtu != None %}
     mtu: {{ subnet.json.mtu }}
 {% endif %}
-{% if subnet.json.from != None %}
+{% if subnet.json.nic_delay != None %}
+    link_delay: {{ subnet.json.nic_delay }}
+{% endif %}
+{% if subnet.json.from != "" %}
     from_ip: "{{ subnet.json.from }}"
 {% endif %}
-{% if subnet.json.to != None %}
+{% if subnet.json.to != "" %}
     to_ip: "{{ subnet.json.to }}"
 {% endif %}
 {% if subnet.json.ipam != None %}
     ipam: "{{ subnet.json.ipam }}"
 {% endif %}
 {% set subnet_remote_proxies = subnet.json.remote_execution_proxies %}
-{% if subnet_remote_proxies != None %}
+{% if subnet_remote_proxies is defined and subnet_remote_proxies[0] is defined %}
     remote_execution_proxies:
 {% for proxy in subnet_remote_proxies %}
       - "{{ proxy.name }}"
 {% endfor %}
 {% endif %}
 {% set subnet_locations = subnet.json.locations %}
-{% if subnet_locations != None %}
+{% if subnet_locations is defined and subnet_locations[0] is defined %}
     locations:
 {% for location in subnet_locations %}
       - "{{ location.title }}"
 {% endfor %}
 {% endif %}
 {% set subnet_domains = subnet.json.domains %}
-{% if subnet_domains != None %}
+{% if subnet_domains is defined and subnet_domains[0] is defined %}
     domains:
 {% for domain in subnet_domains %}
       - "{{ domain.name }}"

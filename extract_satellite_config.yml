@@ -23,8 +23,9 @@
       tags:
         - 'domains'
 
-    - name: Get Subnets
-      include_tasks: tasks/get_subnets.yml
+    - block:
+      - name: Get Subnets
+        include_tasks: tasks/get_subnets.yml
       tags:
         - 'subnets'
 

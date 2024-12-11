@@ -3,7 +3,7 @@ domains:
 {% for domain in detailed_info.results %}
   - name: "{{ domain.json.name | trim }}"
 {% if domain.json.fullname != "" %}
-    description: "{{ domain.json.fullname | regex_replace('[\\r\\n\\t\\^M]+',' ') }}"
+    description: "{{ domain.json.fullname | regex_replace('[\\r\\n\\t]+',' ') }}"
 {% endif %}
 {% set domain_organizations = domain.json.organizations %}
 {% if domain_organizations is defined and domain_organizations[0] is defined %}
