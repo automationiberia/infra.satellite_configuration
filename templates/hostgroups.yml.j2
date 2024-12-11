@@ -13,8 +13,12 @@ hostgroups:
     parameters:
 {% for parameter in hostgroup_parameters %}
       - name: "{{ parameter.name }}"
+{% if parameter.parameter_type != None and parameter.parameter_type != "" %}
         parameter_type: "{{ parameter.parameter_type }}"
-        value: "{{ parameter.value }}"        
+{% else %}
+        parameter_type: "string"
+{% endif %}
+        value: "{{ parameter.value }}"
 {% endfor %}
 {% endif %}
 {% endfor %}
