@@ -4,7 +4,7 @@ locations:
   - name: "{{ location.name }}"
 {% if location.description != "" %}
     description: |
-      {{ location.description | regex_replace('[\\r\\n\\t\\^M]+',' ') }}
+      {{ location.description | regex_replace('[\\r\\n\\t]+',' ') }}
 {% endif %}
 {% if location.parent_name != None %}
     parent: "{{ location.parent_name }}"
