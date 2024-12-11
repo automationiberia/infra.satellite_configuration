@@ -2,16 +2,16 @@
 subnets:
 {% for subnet in detailed_info.results %}
   - name: "{{ subnet.json.name | trim }}"
-{% if subnet.json.description != "" %}
+{% if subnet.json.description != "" and subnet.json.description != None %}
     description: "{{ subnet.json.description | regex_replace('[\\r\\n\\t]+',' ') }}"
 {% endif %}
-{% if subnet.json.network != "" %}
+{% if subnet.json.network != "" and subnet.json.network != None %}
     network: "{{ subnet.json.network }}"
 {% endif %}
-{% if subnet.json.mask != "" %}
+{% if subnet.json.mask != "" and subnet.json.mask != None %}
     mask: "{{ subnet.json.mask }}"
 {% endif %}
-{% if subnet.json.gateway != "" %}
+{% if subnet.json.gateway != "" and subnet.json.gateway != None %}
     gateway: "{{ subnet.json.gateway }}"
 {% endif %}
 {% if subnet.json.network_type != None %}
@@ -24,10 +24,10 @@ subnets:
       - "{{ organization.name }}"
 {% endfor %}
 {% endif %}
-{% if subnet.json.dns_primary != "" %}
+{% if subnet.json.dns_primary != "" and subnet.json.dns_primary != None %}
     dns_primary: "{{ subnet.json.dns_primary }}"
 {% endif %}
-{% if subnet.json.dns_secondary != "" %}
+{% if subnet.json.dns_secondary != "" and subnet.json.dns_secondary != None %}
     dns_secondary: "{{ subnet.json.dns_secondary }}"
 {% endif %}
 {% if subnet.json.boot_mode != None %}
@@ -42,10 +42,10 @@ subnets:
 {% if subnet.json.nic_delay != None %}
     link_delay: {{ subnet.json.nic_delay }}
 {% endif %}
-{% if subnet.json.from != "" %}
+{% if subnet.json.from != "" and subnet.json.from != None %}
     from_ip: "{{ subnet.json.from }}"
 {% endif %}
-{% if subnet.json.to != "" %}
+{% if subnet.json.to != "" and subnet.json.to != None %}
     to_ip: "{{ subnet.json.to }}"
 {% endif %}
 {% if subnet.json.ipam != None %}
