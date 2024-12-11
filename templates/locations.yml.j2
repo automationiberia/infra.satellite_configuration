@@ -2,7 +2,11 @@
 locations:
 {% for location in info_list %}
   - name: "{{ location.name }}"
+{% if location.description != "" %}
     description: |
-      "{{ location.description }}"
+      {{ location.description | regex_replace('[\\r\\n\\t\\^M]+',' ') }}
+{% endif %}
+{% if location.parent_name != None %}
     parent: "{{ location.parent_name }}"
+{% endif %}
 {% endfor %}
