@@ -51,6 +51,18 @@ subnets:
 {% if subnet.json.ipam != None %}
     ipam: "{{ subnet.json.ipam }}"
 {% endif %}
+{% if subnet.json.tftp_name != None %}
+    tftp_proxy: "{{ subnet.json.tftp_name }}"
+{% endif %}
+{% if subnet.json.dhcp_name != None %}
+    dhcp_proxy: "{{ subnet.json.dhcp_name }}"
+{% endif %}
+{% if subnet.json.template_name != None %}
+    template_proxy: "{{ subnet.json.template_name }}"
+{% endif %}
+{% if subnet.json.dns != None and subnet.json.dns.name is defined %}
+    dns_proxy: "{{ subnet.json.dns.name }}"
+{% endif %}
 {% set subnet_remote_proxies = subnet.json.remote_execution_proxies %}
 {% if subnet_remote_proxies is defined and subnet_remote_proxies[0] is defined %}
     remote_execution_proxies:
