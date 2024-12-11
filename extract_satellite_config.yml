@@ -34,8 +34,9 @@
       tags:
         - 'repositories'
 
-    - name: Get Host Groups
-      include_tasks: tasks/get_hostgroups.yml
+    - block:
+      - name: Get Host Groups
+        include_tasks: tasks/get_hostgroups.yml
       tags:
         - 'hostgroups'
 

@@ -2,7 +2,7 @@
 hostgroups:
 {% for hostgroup in detailed_info.results %}
   - name: "{{ hostgroup.json.name | trim }}"
-{% if hostgroup.json.description != None %}
+{% if hostgroup.json.description != None and hostgroup.json.description != ""  %}
     description: "{{ hostgroup.json.description }}"
 {% endif %}
 {% if hostgroup.json.parent_name != None %}
