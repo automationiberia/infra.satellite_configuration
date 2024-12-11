@@ -2,18 +2,18 @@
 domains:
 {% for domain in detailed_info.results %}
   - name: "{{ domain.json.name | trim }}"
-{% if domain.json.fullname != None %}
-    description: "{{ domain.json.fullname }}"
+{% if domain.json.fullname != "" %}
+    description: "{{ domain.json.fullname | regex_replace('[\\r\\n\\t\\^M]+',' ') }}"
 {% endif %}
 {% set domain_organizations = domain.json.organizations %}
-{% if domain_organizations != None %}
+{% if domain_organizations is defined and domain_organizations[0] is defined %}
     organizations:
 {% for organization in domain_organizations %}
       - "{{ organization.name }}"
 {% endfor %}
 {% endif %}
 {% set domain_locations = domain.json.locations %}
-{% if domain_locations != None %}
+{% if domain_locations is defined and domain_locations[0] is defined %}
     locations:
 {% for location in domain_locations %}
       - "{{ location.title }}"
