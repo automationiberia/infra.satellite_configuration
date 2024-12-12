@@ -9,7 +9,7 @@ composite_content_views:
 {% endif %}
     auto_publish: "{{ content_view.auto_publish }}"
     organization: "{{ content_view.organization.name }}"
-{% if content_view.content_view_components != None %}
+{% if content_view.content_view_components != None and content_view.content_view_components[0] is defined %}
     components:
 {% for component in content_view.content_view_components %}
       - content_view: "{{ component.content_view.name }}"
