@@ -10,5 +10,7 @@ repositories:
     rhel_repo: "{{ repo.json.product.VALUE_SPECIFIED_IN_NO_LOG_PARAMETER }}"
     mirroring_policy: "{{ repo.json.mirroring_policy }}"
     download_policy: "{{ repo.json.download_policy }}"
+{% if repo.json.gpg_key.name != None %}
     gpg_key: "{{ repo.json.gpg_key.name }}"
+{% endif %}
 {% endfor %}
