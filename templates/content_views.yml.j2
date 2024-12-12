@@ -8,7 +8,7 @@ content_views:
       {{ content_view.description | regex_replace('[\\r\\n\\t]+',' ') }}
 {% endif %}
     organization: "{{ content_view.organization.name }}"
-{% if content_view.repositories != None %}
+{% if content_view.repositories != None and content_view.repositories[0] is defined %}
     repositories:
 {% for repo in content_view.repositories %}
       - name: "{{ repo.name }}"
