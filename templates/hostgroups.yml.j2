@@ -9,7 +9,7 @@ hostgroups:
     parent: "{{ hostgroup.json.parent_name }}"
 {% endif %}
 {% set hostgroup_parameters = hostgroup.json.parameters %}
-{% if hostgroup_parameters != None %}
+{% if hostgroup_parameters != None and hostgroup_parameters[0] is defined %}
     parameters:
 {% for parameter in hostgroup_parameters %}
       - name: "{{ parameter.name }}"
