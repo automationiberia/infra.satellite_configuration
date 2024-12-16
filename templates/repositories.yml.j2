@@ -5,8 +5,10 @@ repositories:
     label: "{{ repo.json.label }}"
 {% if repo.json.docker_upstream_name != None and repo.json.docker_upstream_name != "" %}
     docker_upstream_name: "{{ repo.json.docker_upstream_name }}"
-{% endif %}
+    url: "{{ repo.json.url }}"
+{% else %}
     url: "{{ repo.json.full_path }}"
+{% endif %}
     http_proxy_policy: "{{ repo.json.http_proxy_policy }}"
     content_type: "{{ repo.json.content_type }}"
     product: "{{ repo.json.product.name }}"
