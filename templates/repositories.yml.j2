@@ -3,6 +3,9 @@ repositories:
 {% for repo in detailed_info.results %}
   - name: "{{ repo.json.name | trim }}"
     label: "{{ repo.json.label }}"
+{% if repo.json.description != None and repo.json.description != "" %}
+    description: "{{ repo.json.description | regex_replace('[\\r\\n\\t]+',' ') }}"
+{% endif %}
 {% if repo.json.docker_upstream_name != None and repo.json.docker_upstream_name != "" %}
     docker_upstream_name: "{{ repo.json.docker_upstream_name }}"
     url: "{{ repo.json.url }}"
