@@ -36,6 +36,12 @@
         - 'repositories'
 
     - block:
+      - name: Get Repositories
+        include_tasks: tasks/get_repository_sets.yml
+      tags:
+        - 'repository_sets'
+
+    - block:
       - name: Get Host Groups
         include_tasks: tasks/get_hostgroups.yml
       tags:
