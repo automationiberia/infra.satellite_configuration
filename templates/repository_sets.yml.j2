@@ -6,7 +6,7 @@ repository_sets:
     repositories:
 {% for repo in repo_set.json.repositories %}
       - releasever: "{{ repo.releasever }}"
-{% if repo.arch is defined and repo.arch != None %}
+{% if repo.arch is defined and repo.arch != "noarch" %}
         basearch: "{{ repo.arch }}"
 {% endif %}
 {% endfor %}
