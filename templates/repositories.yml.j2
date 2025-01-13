@@ -11,7 +11,7 @@ repositories:
     url: "{{ repo.json.url }}"
     http_proxy_policy: "{{ repo.json.http_proxy_policy }}"
 {% else %}
-{% if repo.json.product.VALUE_SPECIFIED_IN_NO_LOG_PARAMETER == true %}
+{% if repo.json.product.redhat == true %}
     url: "{{ repo.json.url }}"
     http_proxy_policy: "{{ repo.json.http_proxy_policy }}"
 {% else %}
@@ -26,7 +26,7 @@ repositories:
 {% endif %}
     content_type: "{{ repo.json.content_type }}"
     product: "{{ repo.json.product.name }}"
-    redhat: "{{ repo.json.product.VALUE_SPECIFIED_IN_NO_LOG_PARAMETER }}"
+    redhat: "{{ repo.json.product.redhat }}"
     mirroring_policy: "{{ repo.json.mirroring_policy }}"
 {% if repo.json.download_policy != None and repo.json.download_policy != "" %}
     download_policy: "{{ repo.json.download_policy }}"
