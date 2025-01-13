@@ -1,11 +1,11 @@
 test:
   satellite:
-    server_url: "https://satellite.lab.example.com"
+    server_url: "https://devsatellite.lab.eiva.com"
     validate_tls_certs_of_foreman_server_boolean: false 
     admin: 
       username: admin
       password: redhat
     template:
-      owner: student
-      group: student
+      owner: eivakhin
+      group: eivakhin
       mode: '0640'

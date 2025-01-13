@@ -9,21 +9,24 @@ repositories:
 {% if repo.json.docker_upstream_name != None and repo.json.docker_upstream_name != "" %}
     docker_upstream_name: "{{ repo.json.docker_upstream_name }}"
     url: "{{ repo.json.url }}"
-{% else %}
-{% if repo.json.product.redhat == true %}
-    url: "{{ repo.json.url }}"
-{% else %}
-    url: "{{ repo.json.full_path }}"
-{% endif %}
-{% endif %}
-{% if repo.json.product.redhat == true %}
     http_proxy_policy: "{{ repo.json.http_proxy_policy }}"
 {% else %}
+{% if repo.json.product.VALUE_SPECIFIED_IN_NO_LOG_PARAMETER == true %}
+    url: "{{ repo.json.url }}"
+    http_proxy_policy: "{{ repo.json.http_proxy_policy }}"
+{% else %}
+{% if repo.json.url != None and repo.json.url != "" %}
+    url: "{{ repo.json.url }}"
+    http_proxy_policy: "{{ repo.json.http_proxy_policy }}"
+{% else %}
+    url: "{{ repo.json.full_path }}"
     http_proxy_policy: "none"
+{% endif %}
+{% endif %}
 {% endif %}
     content_type: "{{ repo.json.content_type }}"
     product: "{{ repo.json.product.name }}"
-    redhat: "{{ repo.json.product.redhat }}"
+    redhat: "{{ repo.json.product.VALUE_SPECIFIED_IN_NO_LOG_PARAMETER }}"
     mirroring_policy: "{{ repo.json.mirroring_policy }}"
 {% if repo.json.download_policy != None and repo.json.download_policy != "" %}
     download_policy: "{{ repo.json.download_policy }}"

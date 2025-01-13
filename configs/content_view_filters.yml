@@ -1,8 +1,0 @@
----
-Pacemaker-before-2.1.4:
-  - name: pacemaker
- 
-Custom filter:
-  - name: ansible-core
- 
- 

@@ -5,11 +5,7 @@ organizations:
   - name: "Primary Organization"
     label: "Primary_Organization"
     description: ""
-  - name: "Operations"
-    label: "Operations"
-    description: ""
 
 all_organizations:
   - "Primary Organization"
-  - "Operations"
 

@@ -7,21 +7,33 @@ subnets:
     gateway: "192.168.1.1"
     network_type: "IPv4"
     organizations:
-      - "Operations"
-    boot_mode: "DHCP"
-    vlanid: 0
-    mtu: 1500
+      - "Primary Organization"
+    dns_primary: "192.168.1.3"
+    dns_secondary: "192.168.1.4"
+    boot_mode: "Static"
+    vlanid: 1111
+    mtu: 1700
+    link_delay: 2
     from_ip: "192.168.1.50"
     to_ip: "192.168.1.70"
     ipam: "DHCP"
+    template_proxy: "devcapsule.lab.eiva.com"
     remote_execution_proxies:
+      - "devcapsule.lab.eiva.com"
+      - "devsatellite.lab.eiva.com"
     locations:
       - "Boston"
       - "Boston/Boston East"
       - "Boston/Boston West"
+      - "Default Location"
     domains:
+      - "boston.lab.eiva.com"
       - "lab.eiva.com"
       - "prod.domain.local"
+    parameters:
+      - name: "test"
+        parameter_type: "string"
+        value: "test"
   - name: "Test Subnet 2"
     description: "Description for Test Subnet 2"
     network: "192.168.2.0"
@@ -29,24 +41,20 @@ subnets:
     gateway: "192.168.2.1"
     network_type: "IPv4"
     organizations:
-      - "Operations"
       - "Primary Organization"
-    dns_primary: ""
-    dns_secondary: ""
     boot_mode: "DHCP"
     vlanid: 0
     mtu: 1500
-    from_ip: ""
-    to_ip: ""
     ipam: "DHCP"
     remote_execution_proxies:
-      - "capsule.lab.eiva.com"
-      - "satellite.lab.eiva.com"
+      - "devcapsule.lab.eiva.com"
+      - "devsatellite.lab.eiva.com"
     locations:
       - "Boston"
       - "Boston/Boston East"
       - "Boston/Boston West"
       - "Default Location"
+      - "Weston"
     domains:
       - "lab.eiva.com"
       - "lab.example.com"
@@ -57,19 +65,20 @@ subnets:
     gateway: "192.168.122.1"
     network_type: "IPv4"
     organizations:
-      - "Operations"
       - "Primary Organization"
-    dns_primary: "192.168.122.100"
-    dns_secondary: "192.168.122.101"
+    dns_primary: "192.168.122.5"
+    dns_secondary: "192.168.122.6"
     boot_mode: "DHCP"
-    vlanid: 100
+    vlanid: 4000
     mtu: 1500
+    link_delay: 2
     from_ip: "192.168.122.50"
     to_ip: "192.168.122.70"
     ipam: "DHCP"
+    template_proxy: "devcapsule.lab.eiva.com"
     remote_execution_proxies:
-      - "capsule.lab.eiva.com"
-      - "satellite.lab.eiva.com"
+      - "devcapsule.lab.eiva.com"
+      - "devsatellite.lab.eiva.com"
     locations:
       - "Boston"
       - "Boston/Boston East"
@@ -77,3 +86,51 @@ subnets:
       - "Default Location"
     domains:
       - "boston.lab.eiva.com"
+    parameters:
+      - name: "test_net_param"
+        parameter_type: "string"
+        value: "test network param"
+  - name: "Empty Subnet"
+    network: "192.168.122.0"
+    mask: "255.255.255.0"
+    network_type: "IPv4"
+    organizations:
+      - "Primary Organization"
+    boot_mode: "DHCP"
+    vlanid: 444
+    mtu: 1800
+    link_delay: 2
+    ipam: "DHCP"
+    locations:
+      - "Boston"
+      - "Boston/Boston East"
+      - "Boston/Boston West"
+      - "Default Location"
+  - name: "All params subnet"
+    description: "This is a test description subnet in !!@$#^%&*!@ : ads"
+    network: "192.168.125.0"
+    mask: "255.255.255.0"
+    gateway: "192.168.125.1"
+    network_type: "IPv4"
+    organizations:
+      - "Primary Organization"
+    dns_primary: "192.168.125.2"
+    dns_secondary: "192.168.125.3"
+    boot_mode: "Static"
+    vlanid: 333
+    mtu: 1700
+    from_ip: "192.168.125.4"
+    to_ip: "192.168.125.5"
+    ipam: "DHCP"
+    template_proxy: "devcapsule.lab.eiva.com"
+    remote_execution_proxies:
+      - "devcapsule.lab.eiva.com"
+      - "devsatellite.lab.eiva.com"
+    locations:
+      - "Boston"
+      - "Boston/Boston East"
+      - "Boston/Boston West"
+      - "Default Location"
+    domains:
+      - "boston.lab.eiva.com"
+      - "lab.eiva.com"
