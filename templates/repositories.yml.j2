@@ -10,11 +10,20 @@ repositories:
     docker_upstream_name: "{{ repo.json.docker_upstream_name }}"
     url: "{{ repo.json.url }}"
 {% else %}
+{% if repo.json.product.redhat == true %}
+    url: "{{ repo.json.url }}"
+{% else %}
     url: "{{ repo.json.full_path }}"
 {% endif %}
+{% endif %}
+{% if repo.json.product.redhat == true %}
     http_proxy_policy: "{{ repo.json.http_proxy_policy }}"
+{% else %}
+    http_proxy_policy: "none"
+{% endif %}
     content_type: "{{ repo.json.content_type }}"
     product: "{{ repo.json.product.name }}"
+    redhat: "{{ repo.json.product.redhat }}"
     mirroring_policy: "{{ repo.json.mirroring_policy }}"
 {% if repo.json.download_policy != None and repo.json.download_policy != "" %}
     download_policy: "{{ repo.json.download_policy }}"
