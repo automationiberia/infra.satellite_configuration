@@ -25,6 +25,9 @@ repositories:
 {% endif %}
 {% endif %}
     content_type: "{{ repo.json.content_type }}"
+{% if repo.json.checksum_type != None and repo.json.checksum_type != "" %}
+    checksum_type: "{{ repo.json.checksum_type }}"
+{% endif %}
     product: "{{ repo.json.product.name }}"
     redhat: "{{ repo.json.product.redhat }}"
     mirroring_policy: "{{ repo.json.mirroring_policy }}"
