@@ -14,7 +14,7 @@ content_view_filters:
       - name: "{{ rule.name }}"
 {% endfor %}
 {% endif %}
-{% if cv_filter.json.repositories is defined and cv_filter.json.repositories != None %}
+{% if cv_filter.json.repositories[0] is defined and cv_filter.json.repositories != None %}
     repositories:
 {% for repo in cv_filter.json.repositories %}
       - name: "{{ repo.name }}"
