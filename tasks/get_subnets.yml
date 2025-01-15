@@ -3,7 +3,7 @@
   include_tasks: api_call.yml
   vars:
     call_type: Subnets
-    api_link: /api/subnets
+    api_link: /api/subnets?full_result=true
 
 - name: Subnets | Create a List
   ansible.builtin.set_fact:

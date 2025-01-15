@@ -3,7 +3,7 @@
   include_tasks: api_call.yml
   vars:
     call_type: Domains
-    api_link: /api/domains
+    api_link: /api/domains?full_result=true
 
 - name: Domains | Create a List
   ansible.builtin.set_fact:

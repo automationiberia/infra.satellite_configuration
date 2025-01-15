@@ -8,7 +8,7 @@ content_view_filters:
     filter_type: "{{ cv_filter.json.type }}"
     inclusion: {{ cv_filter.json.inclusion }}
     content_view: "{{ cv_filter.json.content_view.name }}"
-{% if cv_filter.json.rules is defined and cv_filter.json.rules != None %}
+{% if cv_filter.json.rules[0] is defined and cv_filter.json.rules != None %}
     rules: 
 {% for rule in cv_filter.json.rules %}
       - name: "{{ rule.name }}"

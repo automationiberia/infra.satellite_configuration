@@ -61,6 +61,7 @@ repositories:
     url: "https://custom.url/"
     http_proxy_policy: "global_default_http_proxy"
     content_type: "yum"
+    checksum_type: "sha256"
     product: "New Custom Product"
     redhat: "False"
     mirroring_policy: "mirror_content_only"

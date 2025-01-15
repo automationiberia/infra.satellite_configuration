@@ -3,7 +3,7 @@
   include_tasks: api_call.yml
   vars:
     call_type: Repository Sets
-    api_link: /katello/api/repository_sets?enabled=true&organization_id=1
+    api_link: /katello/api/repository_sets?enabled=true&organization_id=1&full_result=true
 
 - name: Repository Sets | Create a List
   ansible.builtin.set_fact:

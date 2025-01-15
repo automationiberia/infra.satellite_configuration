@@ -3,7 +3,7 @@
   include_tasks: api_call.yml
   vars:
     call_type: Content View Filters
-    api_link: /katello/api/content_view_filters
+    api_link: /katello/api/content_view_filters?full_result=true
     body_format: "json"
     body: "{\"types\":[\"rpm\"]}"
 

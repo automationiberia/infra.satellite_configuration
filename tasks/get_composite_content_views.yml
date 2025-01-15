@@ -3,7 +3,7 @@
   include_tasks: api_call.yml
   vars:
     call_type: Composite Content Views
-    api_link: /katello/api/content_views?noncomposite=false
+    api_link: /katello/api/content_views?noncomposite=false&full_result=true
 
 - name: Composite Content Views | Set Info List
   ansible.builtin.set_fact:

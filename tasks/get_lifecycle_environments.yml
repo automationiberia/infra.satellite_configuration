@@ -3,7 +3,7 @@
   include_tasks: api_call.yml
   vars:
     call_type: Lifecycle Environments
-    api_link: /katello/api/environments
+    api_link: /katello/api/environments?full_result=true
 
 - name: Lifecycle Environments | Set Info List
   ansible.builtin.set_fact:

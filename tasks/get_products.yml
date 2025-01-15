@@ -3,7 +3,7 @@
   include_tasks: api_call.yml
   vars:
     call_type: Products
-    api_link: /katello/api/products?organization_id=1&custom=true
+    api_link: /katello/api/products?organization_id=1&custom=true&full_result=true
 
 - name: Custom Products | Create a List
   ansible.builtin.set_fact:

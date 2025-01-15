@@ -3,7 +3,7 @@
   include_tasks: api_call.yml
   vars:
     call_type: Repositories
-    api_link: /katello/api/repositories
+    api_link: /katello/api/repositories?full_result=true
 
 - name: Repositories | Create a List
   ansible.builtin.set_fact:
