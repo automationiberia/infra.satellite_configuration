@@ -2,6 +2,9 @@
 content_view_filters:
 {% for cv_filter in detailed_info.results %}
   - name: "{{ cv_filter.json.name }}"
+{% if cv_filter.json.description != None and cv_filter.json.description != "" %}
+    description: "{{ cv_filter.json.description | regex_replace('[\\r\\n\\t]+',' ') }}"
+{% endif %}
     filter_type: "{{ cv_filter.json.type }}"
     inclusion: {{ cv_filter.json.inclusion }}
     content_view: "{{ cv_filter.json.content_view.name }}"
