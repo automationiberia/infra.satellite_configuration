@@ -1,10 +1,22 @@
 ---
-{% for i in detailed_info.results %}
-{{ i.json.name }}:
-{% for rule in i.json.rules %}
-{% if 'name' in rule %}
-  - name: {{ rule.name }}
-{% endif %}
+content_view_filters:
+{% for cv_filter in detailed_info.results %}
+  - name: "{{ cv_filter.json.name }}"
+    filter_type: "{{ cv_filter.json.type }}"
+    inclusion: {{ cv_filter.json.inclusion }}
+    content_view: "{{ cv_filter.json.content_view.name }}"
+{% if cv_filter.json.rules is defined and cv_filter.json.rules != None %}
+    rules: 
+{% for rule in cv_filter.json.rules %}
+      - name: "{{ rule.name }}"
 {% endfor %}
+{% endif %}
+{% if cv_filter.json.repositories is defined and cv_filter.json.repositories != None %}
+    repositories:
+{% for repo in cv_filter.json.repositories %}
+      - name: "{{ repo.name }}"
+        product: "{{ repo.product.name }}"
+{% endfor %}
+{% endif %}
 {% endfor %}
 
