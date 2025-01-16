@@ -3,7 +3,7 @@
   include_tasks: api_call.yml
   vars:
     call_type: Host Groups
-    api_link: /api/hostgroups?full_result=true
+    api_link: /api/hostgroups?per_page=all
 
 - name: Host Groups | Create a List
   ansible.builtin.set_fact:
