@@ -3,7 +3,7 @@
   include_tasks: api_call.yml
   vars:
     call_type: Settings
-    api_link: /api/settings
+    api_link: /api/settings?per_page=all
 
 - name: Settings | Set Info List
   ansible.builtin.set_fact:
