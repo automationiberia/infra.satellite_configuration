@@ -3,7 +3,7 @@
   include_tasks: api_call.yml
   vars:
     call_type: Locations
-    api_link: /api/v2/locations  
+    api_link: /api/v2/locations?per_page=all  
 
 - name: Locations | Set Info List
   ansible.builtin.set_fact:
