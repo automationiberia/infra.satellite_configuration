@@ -3,7 +3,7 @@
   include_tasks: api_call.yml
   vars:
     call_type: Operating Systems
-    api_link: /api/operatingsystems?full_result=true
+    api_link: /api/operatingsystems?per_page=all
 
 - name: Operating Systems | Create a List
   ansible.builtin.set_fact:
