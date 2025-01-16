@@ -10,4 +10,5 @@
     return_content: true
     body_format: "{{ body_format | default(omit) }}"
     body: "{{ body | default(omit) }}"
+    timeout: 1200
   register: result_api_response
