@@ -1,55 +1,6 @@
 ---
 domains:
-  - name: "lab.eiva.com"
-    organizations:
-      - "Primary Organization"
+  - name: "bcnconsulting.com"
+    description: "None"
     locations:
-      - "Default Location"
-  - name: "lab.example.com"
-    description: "Example lab domain"
-    organizations:
-      - "Primary Organization"
-    locations:
-      - "Boston"
-      - "Boston/Boston East"
-      - "Boston/Boston West"
-      - "Default Location"
-    parameters:
-      - name: "bl"
-        parameter_type: "boolean"
-        value: "True"
-      - name: "int"
-        parameter_type: "integer"
-        value: "123"
-      - name: "test"
-        parameter_type: "string"
-        value: "test"
-  - name: "prod.domain.local"
-    description: "Production Domain for Local Network"
-    organizations:
-      - "Primary Organization"
-    locations:
-      - "Boston"
-      - "Boston/Boston East"
-  - name: "test.domain.local"
-    description: "Test Domain for Local Networks"
-    organizations:
-      - "Primary Organization"
-    locations:
-      - "Boston"
-      - "Boston/Boston East"
-      - "Boston/Boston West"
-      - "Default Location"
-  - name: "boston.lab.eiva.com"
-    description: "This is a Boston:Network"
-    organizations:
-      - "Primary Organization"
-    locations:
-      - "Boston"
-      - "Boston/Boston East"
-      - "Boston/Boston West"
-      - "Default Location"
-    parameters:
-      - name: "dom_param_1"
-        parameter_type: "string"
-        value: "test domain param"
+      - "Barcelona"

@@ -1,10 +1,3 @@
 ---
 locations:
-  - name: "Boston"
-    description: "This is a main Boston Location Number: 128!%$#%#!@87 ls -la Main location Test Main"
-  - name: "Boston East"
-    parent: "Boston"
-  - name: "Boston West"
-    parent: "Boston"
-  - name: "Weston"
-    description: "This is a test description Like this: !&612762: KL NEWW"
+  - name: "Barcelona"

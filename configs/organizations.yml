@@ -1,11 +1,15 @@
 ---
-primary_organization: "Primary Organization" 
+primary_organization: "Umbrella" 
 
 organizations:
-  - name: "Primary Organization"
-    label: "Primary_Organization"
+  - name: "Umbrella"
+    label: "Umbrella"
+    description: ""
+  - name: "Red_Ribbon"
+    label: "Red_Ribbon"
     description: ""
 
 all_organizations:
-  - "Primary Organization"
+  - "Umbrella"
+  - "Red_Ribbon"
 
