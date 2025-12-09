@@ -5,11 +5,11 @@ organizations:
   - name: "Umbrella"
     label: "Umbrella"
     description: ""
-  - name: "Red_Ribbon"
+  - name: "red_ribbon"
     label: "Red_Ribbon"
     description: ""
 
 all_organizations:
   - "Umbrella"
-  - "Red_Ribbon"
+  - "red_ribbon"
 
