@@ -1,0 +1,27 @@
+---
+- name: Activation Keys | Get Organizations
+  redhat.satellite.organization_info:
+    server_url: "{{ test.satellite.server_url }}"
+    username: "{{ test.satellite.admin.username }}"
+    password: "{{ test.satellite.admin.password }}"
+    validate_certs: "{{ test.satellite.validate_tls_certs_of_foreman_server_boolean }}"
+  register: __result_organizations
+
+- name: Activation Keys | Get Info
+  include_tasks: api_call.yml
+  vars:
+    call_type: Activation Keys
+    api_link: "/katello/api/activation_keys?organization_id={{ __current_org.id }}&full_result=true"
+  loop: "{{ __result_organizations.organizations }}"
+  loop_control:
+    loop_var: __current_org
+  register: result_api_response
+
+- name: Activation Keys | Set Info List
+  ansible.builtin.set_fact:
+    info_list: "{{ result_api_response.json.results | rejectattr('name','==', 'Library') | sort(attribute='id') }}"
+
+- name: Activation Keys | Template Out Results
+  include_tasks: template_out.yml
+  vars:
+    template_type: activation_keys

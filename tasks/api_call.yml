@@ -11,4 +11,13 @@
     body_format: "{{ body_format | default(omit) }}"
     body: "{{ body | default(omit) }}"
     timeout: 1200
-  register: result_api_response
+  register: __result_api_response
+
+- name: "{{ call_type }} | API call - merge results 1/2"
+  ansible.builtin.set_fact:
+    __result_api_response_results: "{{ (result_api_response.json.results | default([])) + (__result_api_response.json.results | default([])) }}"
+
+- name: "{{ call_type }} | API call - merge results 2/2"
+  ansible.builtin.set_fact:
+    result_api_response: "{{ __result_api_response | combine({'json': {'results': __result_api_response_results}}) }}"
+...

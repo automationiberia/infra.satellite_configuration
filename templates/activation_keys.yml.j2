@@ -1,0 +1,65 @@
+---
+activation_keys: {{ [] if info_list | length == 0 }}
+{% set __excluded_fields = [
+                            'content_view_environment_labels',
+                            'content_view_environments',
+                            'content_view_id',
+                            'created_at',
+                            'environment_id',
+                            'id',
+                            'library',
+                            'multi_content_view_environment',
+                            'organization_id',
+                            'permissions',
+                            'products',
+                            'registry_unauthenticated_pull',
+                            'updated_at',
+                            'usage_count',
+                            'user_id'
+                           ] %}
+{% set __excluded_subitems = ['id'] %}
+{% set __list_items = ['host_collections'] %}
+{% set __empty_values = [None, ''] %}
+{% set __translate = [{'environment': 'lifecycle_environment'}] %}
+{% set __do_translate = false %}
+{% for i in info_list %}
+{%   for __map_item in (i | dict2items) if __map_item.key not in __excluded_fields and __map_item.value not in __empty_values %}
+{%     if __map_item.value | type_debug == 'dict' %}
+{%       set __map_item_value = dict(__map_item.value.items() | rejectattr('0', 'in', __excluded_subitems)) %}
+{%     endif %}
+{%     if __map_item.key == 'environment' %}
+{%       set __map_item_value = __map_item.value.name %}
+{%       set __do_translate = __translate | selectattr(__map_item.key, 'defined') | length > 0 %}
+{%     endif %}
+{%     if __map_item.key in ['organization', 'content_view'] %}
+{%       set __map_item_value = __map_item.value.name %}
+{%     endif %}
+{%     if loop.index == 1 %}
+  - {{   (__translate | selectattr(__map_item.key, 'defined'))[0][__map_item.key]
+       if
+         __do_translate
+       else
+         __map_item.key
+    }}: {{   __map_item_value
+           if
+             (__map_item_value is defined)
+           else
+             __map_item.value | default('""' if __map_item.key not in __list_items else [], true) | replace("\\'", "''")
+        }}
+{%     else %}
+    {{   (__translate | selectattr(__map_item.key, 'defined'))[0][__map_item.key]
+       if
+         __do_translate
+       else
+         __map_item.key
+    }}: {{   __map_item_value
+           if
+             (__map_item_value is defined)
+           else
+             __map_item.value | default('""' if __map_item.key not in __list_items else [], true) | replace("\\'", "''")
+        }}
+{%     endif %}
+{%-  endfor %}
+{% endfor %}
+...
+

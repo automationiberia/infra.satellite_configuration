@@ -96,4 +96,10 @@
       tags:
         - 'content_credentials'
 
+    - block:
+      - name: Get Activation Keys
+        include_tasks: tasks/get_activation_keys.yaml
+      tags:
+        - 'activation_keys'
+
 
