@@ -1,15 +1,22 @@
 ---
 - name: Settings | Get Basic Info
-  include_tasks: api_call.yml
-  vars:
-    call_type: Settings
-    api_link: /api/settings?per_page=all
+  redhat.satellite.setting_info:
+    server_url: "{{ test.satellite.server_url }}"
+    username: "{{ test.satellite.admin.username }}"
+    password: "{{ test.satellite.admin.password }}"
+    validate_certs: "{{ test.satellite.validate_tls_certs_of_foreman_server_boolean }}"
+  register: __setting_result_api_response
 
 - name: Settings | Set Info List
   ansible.builtin.set_fact:
-    info_list: "{{ result_api_response.json.results }}"
+    info_list: "{{ __setting_result_api_response.settings | sort(attribute='id') }}"
+
+- name:
+  debug:
+    msg: "{{ info_list }}"
 
 - name: Settings | Template Out Results
   include_tasks: template_out.yml
   vars:
     template_type: settings
+...

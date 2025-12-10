@@ -1,6 +1,19 @@
 ---
-satellite_settings:
+satellite_settings: {{ [] if info_list | length == 0 }}
+{% set __excluded_fields = ['category','category_name','config_file','default','description','encrypted','full_name','readonly','select_values','settings_type','updated_at', 'id'] %}
+{% set __excluded_subitems = ['id'] %}
+{% set __list_items = [] %}
+{% set __empty_values = [None, ''] %}
 {% for i in info_list %}
-  - name: "{{ i.name }}"
-    value: "{{ i.value }}"
+{%   for __map_item in (i | dict2items) if __map_item.key not in __excluded_fields and __map_item.value not in __empty_values %}
+{%     if __map_item.value | type_debug == 'dict' %}
+{%       set __map_item_value = dict(__map_item.value.items() | rejectattr('0', 'in', __excluded_subitems)) %}
+{%     endif %}
+{%     if loop.index == 1 %}
+  - {{ __map_item.key }}: {{ __map_item_value if (__map_item.value | type_debug == 'dict') else __map_item.value | default('""' if __map_item.key not in __list_items else [], true) | replace("\\'", "''") }}
+{%     else %}
+    {{ __map_item.key }}: {{ __map_item_value if (__map_item.value | type_debug == 'dict') else __map_item.value | default('""' if __map_item.key not in __list_items else [], true) | replace("\\'", "''") }}
+{%     endif %}
+{%-  endfor %}
 {% endfor %}
+...
