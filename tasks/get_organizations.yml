@@ -5,15 +5,15 @@
     username: "{{ test.satellite.admin.username }}"
     password: "{{ test.satellite.admin.password }}"
     validate_certs: "{{ test.satellite.validate_tls_certs_of_foreman_server_boolean }}"
-  register: result_api_response
+  register: __organization_result_api_response
 
 - name: Organizations | Set Info List
   ansible.builtin.set_fact:
-    info_list: "{{ result_api_response.organizations | sort(attribute='id') }}" # removed filter | rejectattr('name','==', 'Default Organization')
+    info_list: "{{ __organization_result_api_response.organizations | sort(attribute='id') }}" # removed filter | rejectattr('name','==', 'Default Organization')
 
 - name: Organizations | Get Primary Organization Name
   ansible.builtin.set_fact:
-    primary_org: "{{ result_api_response.organizations | selectattr('id', '==', 1) | map(attribute='name') | first }}"
+    primary_org: "{{ __organization_result_api_response.organizations | selectattr('id', '==', 1) | map(attribute='name') | first }}"
 
 - name: Organizations | Template Out Results
   include_tasks: template_out.yml
