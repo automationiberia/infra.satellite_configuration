@@ -1,4 +1,8 @@
 ---
+- name: Composite Content Views | Reset the results variable
+  ansible.builtin.set_fact:
+    result_api_response: {}
+
 - name: Composite Content Views | Get Info
   include_tasks: api_call.yml
   vars:

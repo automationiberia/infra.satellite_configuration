@@ -1,5 +1,5 @@
 ---
-repositories:
+repositories: {{ [] if detailed_info.results | length == 0 }}
 {% for repo in detailed_info.results %}
   - name: "{{ repo.json.name | trim }}"
     label: "{{ repo.json.label }}"

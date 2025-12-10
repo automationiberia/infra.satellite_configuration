@@ -1,4 +1,8 @@
 ---
+- name: Operating Systems | Reset the results variable
+  ansible.builtin.set_fact:
+    result_api_response: {}
+
 - name: Operating Systems | Get Basic Info
   include_tasks: api_call.yml
   vars:
@@ -7,7 +11,7 @@
 
 - name: Operating Systems | Create a List
   ansible.builtin.set_fact:
-    all_results: "{{ result_api_response.json.results | sort(attribute='id') }}"     
+    all_results: "{{ result_api_response.json.results | sort(attribute='id') }}"
 
 - name: Operating Systems | Get Detailed Info
   include_tasks: detailed_api_call.yml

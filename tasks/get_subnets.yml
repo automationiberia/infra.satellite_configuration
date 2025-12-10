@@ -1,20 +1,15 @@
 ---
-- name: Subnets | Get Basic Info
-  include_tasks: api_call.yml
-  vars:
-    call_type: Subnets
-    api_link: /api/subnets?per_page=all
+- name: Subnets | Get Info
+  redhat.satellite.subnet_info:
+    server_url: "{{ test.satellite.server_url }}"
+    username: "{{ test.satellite.admin.username }}"
+    password: "{{ test.satellite.admin.password }}"
+    validate_certs: "{{ test.satellite.validate_tls_certs_of_foreman_server_boolean }}"
+  register: __subnets_result_api_response
 
 - name: Subnets | Create a List
   ansible.builtin.set_fact:
-    all_results: "{{ result_api_response.json.results | sort(attribute='id') }}"     
-
-- name: Subnets | Get Detailed Info
-  include_tasks: detailed_api_call.yml
-  vars:
-    call_type: Subnets
-    api_link: /api/subnets/
-    loop_var: "{{ all_results }}"
+    info_list: "{{ __subnets_result_api_response.subnets | sort(attribute='id') }}"
 
 - name: Subnets | Template Out Results
   include_tasks: template_out.yml

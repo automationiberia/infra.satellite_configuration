@@ -1,4 +1,8 @@
 ---
+- name: Lifecycle Environments | Reset the results variable
+  ansible.builtin.set_fact:
+    result_api_response: {}
+
 - name: Lifecycle Environments | Get Info
   include_tasks: api_call.yml
   vars:

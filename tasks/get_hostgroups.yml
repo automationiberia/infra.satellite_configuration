@@ -1,4 +1,8 @@
 ---
+- name: Host Groups | Reset the results variable
+  ansible.builtin.set_fact:
+    result_api_response: {}
+
 - name: Host Groups | Get Basic Info
   include_tasks: api_call.yml
   vars:
@@ -7,16 +11,16 @@
 
 - name: Host Groups | Create a List
   ansible.builtin.set_fact:
-    all_results: "{{ result_api_response.json.results | sort(attribute='id') }}"     
+    all_results: "{{ result_api_response.json.results | sort(attribute='id') }}"
 
 - name: Host Groups | Get Detailed Info
   include_tasks: detailed_api_call.yml
   vars:
-    call_type: Host Groups 
+    call_type: Host Groups
     api_link: /api/hostgroups/
     loop_var: "{{ all_results }}"
 
-- name: Host Groups | Template Out Results 
+- name: Host Groups | Template Out Results
   include_tasks: template_out.yml
   vars:
     template_type: hostgroups

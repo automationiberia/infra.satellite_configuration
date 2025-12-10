@@ -1,100 +1,19 @@
 ---
-subnets:
-{% for subnet in detailed_info.results %}
-  - name: "{{ subnet.json.name | trim }}"
-{% if subnet.json.description != "" and subnet.json.description != None %}
-    description: "{{ subnet.json.description | regex_replace('[\\r\\n\\t]+',' ') }}"
-{% endif %}
-{% if subnet.json.network != "" and subnet.json.network != None %}
-    network: "{{ subnet.json.network }}"
-{% endif %}
-{% if subnet.json.mask != "" and subnet.json.mask != None %}
-    mask: "{{ subnet.json.mask }}"
-{% endif %}
-{% if subnet.json.gateway != "" and subnet.json.gateway != None %}
-    gateway: "{{ subnet.json.gateway }}"
-{% endif %}
-{% if subnet.json.network_type != None %}
-    network_type: "{{ subnet.json.network_type }}"
-{% endif %}
-{% set subnet_organizations = subnet.json.organizations %}
-{% if subnet_organizations is defined and subnet_organizations[0] is defined %}
-    organizations:
-{% for organization in subnet_organizations %}
-      - "{{ organization.name }}"
+satellite_subnets: {{ [] if info_list | length == 0 }}
+{% set __excluded_fields = ['created_at', 'updated_at', 'id', 'organization_id'] %}
+{% set __excluded_subitems = ['id'] %}
+{% set __list_items = ['domains', 'remote_execution_proxies'] %}
+{% set __empty_values = ["None", None, ''] %}
+{% for i in info_list %}
+{%   for __map_item in (i | dict2items) if __map_item.key not in __excluded_fields and __map_item.value not in __empty_values %}
+{%     if __map_item.value | type_debug == 'dict' %}
+{%       set __map_item_value = dict(__map_item.value.items() | rejectattr('0', 'in', __excluded_subitems)) %}
+{%     endif %}
+{%     if loop.index == 1 %}
+  - {{ __map_item.key }}: {{ __map_item_value if (__map_item.value | type_debug == 'dict') else __map_item.value | default('""' if __map_item.key not in __list_items else [], true) | replace("\\'", "''") }}
+{%     else %}
+    {{ __map_item.key }}: {{ __map_item_value if (__map_item.value | type_debug == 'dict') else __map_item.value | default('""' if __map_item.key not in __list_items else [], true) | replace("\\'", "''") }}
+{%     endif %}
+{%-  endfor %}
 {% endfor %}
-{% endif %}
-{% if subnet.json.dns_primary != "" and subnet.json.dns_primary != None %}
-    dns_primary: "{{ subnet.json.dns_primary }}"
-{% endif %}
-{% if subnet.json.dns_secondary != "" and subnet.json.dns_secondary != None %}
-    dns_secondary: "{{ subnet.json.dns_secondary }}"
-{% endif %}
-{% if subnet.json.boot_mode != None %}
-    boot_mode: "{{ subnet.json.boot_mode }}"
-{% endif %}
-{% if subnet.json.vlanid != None %}
-    vlanid: {{ subnet.json.vlanid }}
-{% endif %}
-{% if subnet.json.mtu != None %}
-    mtu: {{ subnet.json.mtu }}
-{% endif %}
-{% if subnet.json.nic_delay != None %}
-    link_delay: {{ subnet.json.nic_delay }}
-{% endif %}
-{% if subnet.json.from != "" and subnet.json.from != None %}
-    from_ip: "{{ subnet.json.from }}"
-{% endif %}
-{% if subnet.json.to != "" and subnet.json.to != None %}
-    to_ip: "{{ subnet.json.to }}"
-{% endif %}
-{% if subnet.json.ipam != None %}
-    ipam: "{{ subnet.json.ipam }}"
-{% endif %}
-{% if subnet.json.tftp_name != None %}
-    tftp_proxy: "{{ subnet.json.tftp_name }}"
-{% endif %}
-{% if subnet.json.dhcp_name != None %}
-    dhcp_proxy: "{{ subnet.json.dhcp_name }}"
-{% endif %}
-{% if subnet.json.template_name != None %}
-    template_proxy: "{{ subnet.json.template_name }}"
-{% endif %}
-{% if subnet.json.dns != None and subnet.json.dns.name is defined %}
-    dns_proxy: "{{ subnet.json.dns.name }}"
-{% endif %}
-{% set subnet_remote_proxies = subnet.json.remote_execution_proxies %}
-{% if subnet_remote_proxies is defined and subnet_remote_proxies[0] is defined %}
-    remote_execution_proxies:
-{% for proxy in subnet_remote_proxies %}
-      - "{{ proxy.name }}"
-{% endfor %}
-{% endif %}
-{% set subnet_locations = subnet.json.locations %}
-{% if subnet_locations is defined and subnet_locations[0] is defined %}
-    locations:
-{% for location in subnet_locations %}
-      - "{{ location.title }}"
-{% endfor %}
-{% endif %}
-{% set subnet_domains = subnet.json.domains %}
-{% if subnet_domains is defined and subnet_domains[0] is defined %}
-    domains:
-{% for domain in subnet_domains %}
-      - "{{ domain.name }}"
-{% endfor %}
-{% endif %}
-{% set subnet_parameters = subnet.json.parameters %}
-{% if subnet_parameters != None and subnet_parameters[0] is defined %}
-    parameters:
-{% for parameter in subnet_parameters %}
-      - name: "{{ parameter.name }}"
-{% if parameter.parameter_type != None and parameter.parameter_type != "" %}
-        parameter_type: "{{ parameter.parameter_type }}"
-{% else %}
-        parameter_type: "string"
-{% endif %}
-        value: "{{ parameter.value }}"
-{% endfor %}
-{% endif %}
-{% endfor %}
+...

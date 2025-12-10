@@ -1,4 +1,8 @@
 ---
+- name: Content View Filters | Reset the results variable
+  ansible.builtin.set_fact:
+    result_api_response: {}
+
 - name: Content View Filters | Get Info
   include_tasks: api_call.yml
   vars:

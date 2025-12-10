@@ -1,9 +1,2 @@
 ---
 products:
-  - name: "Custom Software"
-    label: "Custom_Software"
-    sync_plan: "daily"
-    state: present
-  - name: "New Custom Product"
-    label: "New_Custom_Product"
-    state: present

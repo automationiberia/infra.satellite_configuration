@@ -1,4 +1,8 @@
 ---
+- name: Activation Keys | Reset the results variable
+  ansible.builtin.set_fact:
+    result_api_response: {}
+
 - name: Activation Keys | Get Organizations
   redhat.satellite.organization_info:
     server_url: "{{ test.satellite.server_url }}"

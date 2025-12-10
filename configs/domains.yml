@@ -1,6 +1,5 @@
 ---
-domains:
-  - name: "bcnconsulting.com"
-    description: "None"
-    locations:
-      - "Barcelona"
+satellite_domains: 
+  - name: bcnconsulting.com
+  - name: test.ansible.com
+...
