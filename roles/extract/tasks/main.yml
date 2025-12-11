@@ -1,0 +1,97 @@
+---
+- block:
+  - name: Get Organizations
+    include_tasks: get_organizations.yml
+  tags:
+    - 'organizations'
+
+- block:
+  - name: Get Locations
+    include_tasks: get_locations.yml
+  tags:
+    - 'locations'
+
+- block:
+  - name: Get Domains
+    include_tasks: get_domains.yml
+  tags:
+    - 'domains'
+
+- block:
+  - name: Get Subnets
+    include_tasks: get_subnets.yml
+  tags:
+    - 'subnets'
+
+- block:
+  - name: Get Repositories
+    include_tasks: get_repositories.yml
+  tags:
+    - 'repositories'
+
+- block:
+  - name: Get Repositories
+    include_tasks: get_repository_sets.yml
+  tags:
+    - 'repository_sets'
+
+- block:
+  - name: Get Host Groups
+    include_tasks: get_hostgroups.yml
+  tags:
+    - 'hostgroups'
+
+- block:
+  - name: Get Operating Systems
+    include_tasks: get_operatingsystems.yml
+  tags:
+    - 'operatingsystems'
+
+- block:
+  - name: Get Lifecycle Environments
+    include_tasks: get_lifecycle_environments.yml
+  tags:
+    - 'lifecycle_environments'
+
+- block:
+  - name: Get Content Views
+    include_tasks: get_content_views.yml
+  tags:
+    - 'content_views'
+
+- block:
+  - name: Get Composite Content Views
+    include_tasks: get_composite_content_views.yml
+  tags:
+    - 'composite_content_views'
+
+- block:
+  - name: Get Content View Filters
+    include_tasks: get_content_view_filters.yml
+  tags:
+    - 'content_view_filters'
+
+- block:
+  - name: Get Custom Products
+    include_tasks: get_products.yml
+  tags:
+    - 'products'
+
+- block:
+  - name: Get Settings
+    include_tasks: get_settings.yml
+  tags:
+    - 'settings'
+
+- block:
+  - name: Get Content Credentials
+    include_tasks: get_content_credentials.yml
+  tags:
+    - 'content_credentials'
+
+- block:
+  - name: Get Activation Keys
+    include_tasks: get_activation_keys.yaml
+  tags:
+    - 'activation_keys'
+...

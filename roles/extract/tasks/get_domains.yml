@@ -1,0 +1,18 @@
+---
+- name: Domains | Get Info
+  redhat.satellite.domain_info:
+    server_url: "{{ satellite.server_url }}"
+    username: "{{ satellite.admin.username }}"
+    password: "{{ satellite.admin.password }}"
+    validate_certs: "{{ satellite.validate_tls_certs_of_foreman_server_boolean }}"
+  register: __domain_result_api_response
+
+- name: Domains | Set Info List
+  ansible.builtin.set_fact:
+    info_list: "{{ __domain_result_api_response.domains | sort(attribute='id') }}"
+
+- name: Domains | Template Out Results
+  include_tasks: template_out.yml
+  vars:
+    template_type: domains
+...
