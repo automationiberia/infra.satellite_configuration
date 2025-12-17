@@ -1,12 +1,12 @@
 ---
 satellite:
-  server_url: "https://localhost:8443"
+  server_url: "https://satellite-drs.bcnconsulting.com"
   validate_tls_certs_of_foreman_server_boolean: false
   admin:
     username: admin
     password: redhat00
   template:
-    owner: ivan
-    group: ivan
-    mode: '0640'
+    owner: '1000'
+    group: '1000'
+    mode: '0666'
 ...

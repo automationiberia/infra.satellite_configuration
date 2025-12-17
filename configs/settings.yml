@@ -1,0 +1,483 @@
+---
+satellite_settings: 
+  - name: access_unattended_without_build
+    value: ""
+  - name: administrator
+    value: root@bcnconsulting.com
+  - name: allow_auto_insights_mismatch_delete
+    value: ""
+  - name: allow_auto_insights_sync
+    value: True
+  - name: allow_auto_inventory_upload
+    value: True
+  - name: allow_multiple_content_views
+    value: ""
+  - name: always_show_configuration_status
+    value: ""
+  - name: ansible_connection
+    value: ssh
+  - name: ansible_interval
+    value: 30
+  - name: ansible_inventory_template
+    value: Ansible - Ansible Inventory
+  - name: ansible_out_of_sync_disabled
+    value: ""
+  - name: ansible_post_provision_timeout
+    value: 360
+  - name: ansible_roles_to_ignore
+    value: ""
+  - name: ansible_ssh_private_key_file
+  - name: ansible_verbosity
+    value: 0
+  - name: ansible_winrm_server_cert_validation
+    value: validate
+  - name: applicability_batch_size
+    value: 50
+  - name: audits_period
+  - name: authorize_login_delegation
+    value: ""
+  - name: authorize_login_delegation_api
+    value: ""
+  - name: authorize_login_delegation_auth_source_user_autocreate
+    value: External
+  - name: automatic_content_count_updates
+    value: True
+  - name: bcrypt_cost
+    value: 9
+  - name: bmc_credentials_accessible
+    value: ""
+  - name: bootdisk_allowed_types
+    value: ['subnet', 'full_host']
+  - name: bootdisk_cache_media
+    value: True
+  - name: bootdisk_generic_efi_host_template
+    value: Boot disk Grub2 EFI - generic host
+  - name: bootdisk_generic_host_template
+    value: Boot disk iPXE - generic host
+  - name: bootdisk_grub2_dir
+    value: /var/lib/tftpboot/grub2
+  - name: bootdisk_host_template
+    value: Boot disk iPXE - host
+  - name: bootdisk_ipxe_dir
+    value: /usr/share/ipxe
+  - name: bootdisk_isolinux_dir
+    value: /usr/share/syslinux
+  - name: bootdisk_mkiso_command
+    value: genisoimage
+  - name: bootdisk_syslinux_dir
+    value: /usr/share/syslinux
+  - name: bulk_load_size
+    value: 2000
+  - name: check_services_before_actions
+    value: True
+  - name: clean_up_failed_deployment
+    value: True
+  - name: completed_pulp_task_protection_days
+    value: 30
+  - name: content_default_http_proxy
+  - name: create_new_host_when_facts_are_uploaded
+    value: True
+  - name: create_new_host_when_report_is_uploaded
+    value: True
+  - name: ct_arguments
+    value: ['--pretty', '--files-dir', '/usr/share/foreman/config/ct']
+  - name: ct_location
+    value: /usr/bin/ct
+  - name: db_pending_seed
+    value: ""
+  - name: default_download_policy
+    value: immediate
+  - name: default_export_format
+    value: importable
+  - name: default_global_registration_item
+    value: Global Registration
+  - name: default_host_init_config_template
+    value: Linux host_init_config default
+  - name: default_locale
+  - name: default_location
+    value: Barcelona
+  - name: default_location_subscribed_hosts
+    value: Barcelona
+  - name: default_organization
+    value: Umbrella
+  - name: Default_parameters_Lookup_Path
+    value: ['fqdn', 'hostgroup', 'os', 'domain']
+  - name: default_proxy_download_policy
+    value: on_demand
+  - name: default_pxe_item_global
+  - name: default_pxe_item_local
+  - name: default_redhat_download_policy
+    value: on_demand
+  - name: default_timezone
+  - name: delete_repo_across_cv
+    value: True
+  - name: delivery_method
+    value: sendmail
+  - name: destroy_vm_on_host_delete
+    value: ""
+  - name: discovery_always_rebuild_dns
+    value: True
+  - name: discovery_auto
+    value: ""
+  - name: discovery_auto_bond
+    value: ""
+  - name: discovery_clean_facts
+    value: ""
+  - name: discovery_error_on_existing
+    value: ""
+  - name: discovery_fact
+    value: discovery_bootif
+  - name: discovery_fact_column
+    value: ""
+  - name: discovery_facts_hardware
+  - name: discovery_facts_highlights
+  - name: discovery_facts_ipmi
+  - name: discovery_facts_network
+  - name: discovery_facts_software
+  - name: discovery_facts_storage
+  - name: discovery_hostname
+    value: ['discovery_bootif']
+  - name: discovery_location
+  - name: discovery_lock
+    value: ""
+  - name: discovery_naming
+    value: Fact
+  - name: discovery_organization
+  - name: discovery_prefer_ipv6
+    value: ""
+  - name: discovery_prefix
+    value: mac
+  - name: discovery_pxegrub2_lock_template
+    value: pxegrub2_discovery
+  - name: discovery_pxegrub_lock_template
+    value: pxegrub_discovery
+  - name: discovery_pxelinux_lock_template
+    value: pxelinux_discovery
+  - name: discovery_reboot
+    value: True
+  - name: display_fqdn_for_hosts
+    value: True
+  - name: distribute_archived_cvv
+    value: ""
+  - name: dns_timeout
+    value: [5, 10, 15, 20]
+  - name: download_rate_limit
+    value: ""
+  - name: dynflow_console_require_auth
+    value: True
+  - name: dynflow_enable_console
+    value: True
+  - name: email_reply_address
+    value: satellite-noreply@bcnconsulting.com
+  - name: email_subject_prefix
+    value: [satellite]
+  - name: entries_per_page
+    value: 20
+  - name: errata_status_installable
+    value: ""
+  - name: exclude_installed_packages
+    value: ""
+  - name: excluded_facts
+    value: ['lo', 'en*v*', 'usb*', 'vnet*', 'macvtap*', ';vdsmdummy;', 'veth*', 'docker*', 'tap*', 'qbr*', 'qvb*', 'qvo*', 'qr-*', 'qg-*', 'vlinuxbr*', 'vovsbr*', 'br-int', 'vif*', 'cali*', 'lxc*', 'load_averages::*', 'memory::swap::available*', 'memory::swap::capacity', 'memory::swap::used*', 'memory::system::available*', 'memory::system::capacity', 'memory::system::used*', 'memoryfree', 'memoryfree_mb', 'swapfree', 'swapfree_mb', 'uptime_hours', 'uptime_days']
+  - name: expire_soon_days
+    value: 120
+  - name: failed_login_attempts_limit
+    value: 30
+  - name: fcct_arguments
+    value: ['--pretty', '--files-dir', '/usr/share/foreman/config/ct']
+  - name: fcct_location
+    value: /usr/bin/fcct
+  - name: foreman_ansible_proxy_batch_size
+  - name: foreman_proxy_content_auto_sync
+    value: True
+  - name: foreman_proxy_content_batch_size
+    value: 100
+  - name: foreman_tasks_polling_multiplier
+    value: 1
+  - name: foreman_tasks_proxy_action_retry_count
+    value: 4
+  - name: foreman_tasks_proxy_action_retry_interval
+    value: 15
+  - name: foreman_tasks_proxy_batch_size
+    value: 100
+  - name: foreman_tasks_proxy_batch_trigger
+    value: True
+  - name: foreman_tasks_sync_task_timeout
+    value: 120
+  - name: foreman_tasks_troubleshooting_url
+    value: https://access.redhat.com/solutions/satellite6-tasks#%{label}
+  - name: foreman_url
+    value: https://satellite-drs.bcnconsulting.com
+  - name: global_iPXE
+    value: iPXE global default
+  - name: global_PXEGrub
+    value: PXEGrub global default
+  - name: global_PXEGrub2
+    value: PXEGrub2 global default
+  - name: global_PXELinux
+    value: PXELinux global default
+  - name: hide_reclaim_space_warning
+    value: ""
+  - name: host_details_ui
+    value: True
+  - name: host_dmi_uuid_duplicates
+    value: ""
+  - name: host_owner
+  - name: host_profile_assume
+    value: True
+  - name: host_profile_assume_build_can_change
+    value: ""
+  - name: host_re_register_build_only
+    value: ""
+  - name: host_tasks_workers_pool_size
+    value: 5
+  - name: http_proxy
+  - name: http_proxy_except_list
+    value: ""
+  - name: idle_timeout
+    value: 60
+  - name: ignore_facts_for_domain
+    value: ""
+  - name: ignore_facts_for_operatingsystem
+    value: ""
+  - name: ignore_puppet_facts_for_provisioning
+    value: ""
+  - name: ignored_interface_identifiers
+    value: ['lo', 'en*v*', 'usb*', 'vnet*', 'macvtap*', ';vdsmdummy;', 'veth*', 'docker*', 'tap*', 'qbr*', 'qvb*', 'qvo*', 'qr-*', 'qg-*', 'vlinuxbr*', 'vovsbr*', 'br-int', 'vif*', 'cali*', 'lxc*']
+  - name: include_parameter_tags
+    value: ""
+  - name: instance_color
+  - name: instance_id
+    value: ac581e18-d884-4475-8faa-1d00edfb603b
+  - name: instance_title
+  - name: intermediate_ipxe_script
+    value: iPXE intermediate script
+  - name: interpolate_erb_in_parameters
+    value: True
+  - name: katello_default_atomic_provision
+    value: Atomic Kickstart default
+  - name: katello_default_finish
+    value: Kickstart default finish
+  - name: katello_default_iPXE
+    value: Kickstart default iPXE
+  - name: katello_default_kexec
+    value: Discovery Red Hat kexec
+  - name: katello_default_provision
+    value: Kickstart default
+  - name: katello_default_ptable
+    value: Kickstart default
+  - name: katello_default_PXEGrub
+    value: Kickstart default PXEGrub
+  - name: katello_default_PXEGrub2
+    value: Kickstart default PXEGrub2
+  - name: katello_default_PXELinux
+    value: Kickstart default PXELinux
+  - name: katello_default_user_data
+    value: Kickstart default user data
+  - name: lab_features
+    value: ""
+  - name: libvirt_default_console_address
+    value: 0.0.0.0
+  - name: local_boot_iPXE
+    value: iPXE default local boot
+  - name: local_boot_PXEGrub
+    value: PXEGrub default local boot
+  - name: local_boot_PXEGrub2
+    value: PXEGrub2 default local boot
+  - name: local_boot_PXELinux
+    value: PXELinux default local boot
+  - name: location_fact
+    value: foreman_location
+  - name: login_delegation_logout_url
+  - name: login_text
+    value: Version 6.17.3
+  - name: manage_puppetca
+    value: True
+  - name: manifest_refresh_timeout
+    value: 1200
+  - name: matchers_inheritance
+    value: True
+  - name: maximum_structured_facts
+    value: 100
+  - name: name_generator_type
+    value: Random-based
+  - name: new_hosts_page
+    value: ""
+  - name: oauth_active
+    value: True
+  - name: oauth_consumer_key
+    value: ""
+  - name: oauth_consumer_secret
+    value: ""
+  - name: oauth_map_users
+    value: ""
+  - name: obfuscate_inventory_hostnames
+    value: ""
+  - name: obfuscate_inventory_ips
+    value: ""
+  - name: oidc_algorithm
+  - name: oidc_audience
+    value: ""
+  - name: oidc_issuer
+  - name: oidc_jwks_url
+  - name: organization_fact
+    value: foreman_organization
+  - name: orphan_protection_time
+    value: 1440
+  - name: outofsync_interval
+    value: 30
+  - name: password_hash
+    value: bcrypt
+  - name: pbkdf2_cost
+    value: 50000
+  - name: proxy_request_timeout
+    value: 60
+  - name: pulpcore_export_destination
+    value: /var/lib/pulp/exports
+  - name: query_local_nameservers
+    value: ""
+  - name: register_hostname_fact
+  - name: register_hostname_fact_strict_match
+    value: ""
+  - name: remote_execution_cleanup_working_dirs
+    value: True
+  - name: remote_execution_cockpit_url
+  - name: remote_execution_connect_by_ip
+    value: ""
+  - name: remote_execution_connect_by_ip_prefer_ipv6
+    value: ""
+  - name: remote_execution_effective_user
+    value: root
+  - name: remote_execution_effective_user_method
+    value: sudo
+  - name: remote_execution_effective_user_password
+    value: ""
+  - name: remote_execution_fallback_proxy
+    value: ""
+  - name: remote_execution_form_job_template
+    value: Run Command - Script Default
+  - name: remote_execution_global_proxy
+    value: True
+  - name: remote_execution_job_invocation_report_template
+    value: Job - Invocation Report
+  - name: remote_execution_prefer_registered_through_proxy
+    value: ""
+  - name: remote_execution_ssh_key_passphrase
+    value: ""
+  - name: remote_execution_ssh_password
+    value: ""
+  - name: remote_execution_ssh_port
+    value: 22
+  - name: remote_execution_ssh_user
+    value: root
+  - name: remote_execution_sync_templates
+    value: True
+  - name: remote_execution_time_to_pickup
+    value: 86400
+  - name: restrict_composite_view
+    value: ""
+  - name: restrict_registered_smart_proxies
+    value: True
+  - name: rhc_instance_id
+  - name: root_pass
+    value: ""
+  - name: rss_enable
+    value: True
+  - name: rss_url
+    value: https://www.redhat.com/en/rss/blog/channel/red-hat-satellite
+  - name: safemode_render
+    value: True
+  - name: send_welcome_email
+    value: ""
+  - name: sendmail_arguments
+    value: -i
+  - name: sendmail_location
+    value: /usr/sbin/sendmail
+  - name: server_ca_file
+  - name: show_unsupported_templates
+    value: True
+  - name: smtp_address
+  - name: smtp_authentication
+  - name: smtp_domain
+  - name: smtp_enable_starttls_auto
+    value: True
+  - name: smtp_openssl_verify_mode
+  - name: smtp_password
+    value: ""
+  - name: smtp_port
+    value: 25
+  - name: smtp_user_name
+  - name: ssh_timeout
+    value: 120
+  - name: ssl_ca_file
+    value: /etc/foreman/proxy_ca.pem
+  - name: ssl_certificate
+    value: /etc/foreman/client_cert.pem
+  - name: ssl_client_cert_env
+    value: HTTP_SSL_CLIENT_CERT
+  - name: ssl_client_dn_env
+    value: HTTP_SSL_CLIENT_S_DN
+  - name: ssl_client_verify_env
+    value: HTTP_SSL_CLIENT_VERIFY
+  - name: ssl_priv_key
+    value: /etc/foreman/client_key.pem
+  - name: subscription_connection_enabled
+    value: True
+  - name: sync_connect_timeout_v2
+    value: 60
+  - name: sync_sock_connect_timeout
+    value: 60
+  - name: sync_sock_read_timeout
+    value: 3600
+  - name: sync_total_timeout
+    value: 3600
+  - name: template_sync_associate
+    value: new
+  - name: template_sync_branch
+  - name: template_sync_commit_msg
+    value: Templates export made by a Satellite user
+  - name: template_sync_dirname
+    value: /
+  - name: template_sync_filter
+  - name: template_sync_force
+    value: ""
+  - name: template_sync_http_proxy_policy
+    value: global
+  - name: template_sync_lock
+    value: keep
+  - name: template_sync_metadata_export_mode
+    value: refresh
+  - name: template_sync_negate
+    value: ""
+  - name: template_sync_prefix
+  - name: template_sync_repo
+    value: https://github.com/theforeman/community-templates.git
+  - name: template_sync_verbose
+    value: ""
+  - name: token_duration
+    value: 360
+  - name: trusted_hosts
+    value: ""
+  - name: unattended_url
+    value: http://satellite-drs.bcnconsulting.com
+  - name: unregister_delete_host
+    value: ""
+  - name: update_hostgroup_from_facts
+    value: True
+  - name: update_ip_from_built_request
+    value: ""
+  - name: update_subnets_from_facts
+    value: none
+  - name: use_shortname_for_vms
+    value: ""
+  - name: use_uuid_for_certificates
+    value: ""
+  - name: validate_host_lce_content_source_coherence
+    value: True
+  - name: websockets_encrypt
+    value: True
+  - name: websockets_ssl_cert
+    value: /etc/pki/katello/certs/katello-apache.crt
+  - name: websockets_ssl_key
+    value: /etc/pki/katello/private/katello-apache.key
+...

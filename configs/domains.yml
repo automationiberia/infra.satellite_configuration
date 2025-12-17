@@ -1,0 +1,5 @@
+---
+satellite_domains: 
+  - name: bcnconsulting.com
+  - name: test.ansible.com
+...

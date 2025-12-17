@@ -1,0 +1,17 @@
+---
+activation_keys: 
+  - name: newAK
+    unlimited_hosts: True
+    auto_attach: True
+    organization: Umbrella
+    host_collections: []
+  - name: red_ribbonAK
+    description: red_ribbonAK description
+    unlimited_hosts: True
+    auto_attach: True
+    organization: red_ribbon
+    host_collections: []
+    content_view: cv-test
+    lifecycle_environment: UAT
+...
+

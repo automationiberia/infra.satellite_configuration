@@ -11,10 +11,6 @@
   ansible.builtin.set_fact:
     info_list: "{{ __setting_result_api_response.settings | sort(attribute='id') }}"
 
-- name:
-  debug:
-    msg: "{{ info_list }}"
-
 - name: Settings | Template Out Results
   include_tasks: template_out.yml
   vars:
