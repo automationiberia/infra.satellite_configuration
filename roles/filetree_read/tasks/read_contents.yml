@@ -10,6 +10,7 @@
     read_whole_file: true
     recurse: true
   register: __files_list
+  no_log: "{{ satellite_configuration_filetree_read_secure_logging }}"
 
 - name: "Read {{ __task_filetree_read.name }} definitions"
   ansible.builtin.include_vars:
@@ -20,6 +21,7 @@
     label: "{{ __read_definitions_item.path }}"
   register: __contents_filetree_item
   failed_when: "'VARIABLE IS NOT DEFINED' in __contents_filetree_item"
+  no_log: "{{ satellite_configuration_filetree_read_secure_logging }}"
 
 - name: "Populate {{ __task_filetree_read.name }} list"
   ansible.builtin.set_fact:

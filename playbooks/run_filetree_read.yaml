@@ -2,7 +2,13 @@
 - hosts: localhost
   connection: local
   gather_facts: no
+  module_defaults:
+    redhat.satellite.organization: &satellite_creds
+      username: "{{ satellite.admin.username }}"
+      password: "{{ satellite.admin.password }}"
+      server_url: "{{ satellite.server_url }}"
+      validate_certs: "{{ satellite.validate_certs }}"
   roles:
     - role: automationiberia.satellite_configuration.filetree_read
-    # - role: automationiberia.satellite_configuration.dispatch
+    - role: automationiberia.satellite_configuration.dispatch
 ...

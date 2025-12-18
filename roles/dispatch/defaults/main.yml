@@ -8,3 +8,5 @@ satellite_server_url: '{{ lookup("env", "SATELLITE_PASSWORD") }}'
 ###################
 content_views_purge_count: 6
 
+satellite_configuration_dispatch_secure_logging: true
+...

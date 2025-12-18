@@ -1,0 +1,18 @@
+---
+- name: Create Organizations
+  redhat.satellite.organization:
+    name: "{{ __current_satellite_organization.name }}"
+    description: "{{ __current_satellite_organization.description | default(omit) }}"
+    label: "{{ __current_satellite_organization.label | default(omit) }}"
+    ca_path: "{{ __current_satellite_organization.ca_path | default(omit) }}"
+    ignore_types: "{{ __current_satellite_organization.ignore_types | default(omit) }}"
+    parameters: "{{ __current_satellite_organization.parameters | default(omit) }}"
+    state: "{{ __current_satellite_organization.state | default('present') }}"
+  loop: "{{ satellite_organizations }}"
+  loop_control:
+    loop_var: __current_satellite_organization
+    label: "{{ __current_satellite_organization.name }}"
+  no_log: "{{ satellite_configuration_dispatch_secure_logging }}"
+  when: satellite_organizations is defined
+  delegate_to: "localhost"
+...
