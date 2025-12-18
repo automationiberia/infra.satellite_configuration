@@ -1,4 +1,51 @@
 ---
+- name: "Get list of files inside {{ filetree_satellite_organizations }}"
+  ansible.builtin.find:
+    paths: "{{ filetree_satellite_organizations }}"
+    file_type: file
+    patterns: "{{ filetree_satellite_include | default(omit) }}"
+    excludes: "{{ filetree_satellite_exclude | default(omit) }}"
+    use_regex: "{{ filetree_satellite_regex | default(false) }}"
+    contains: "satellite_organizations:"
+    read_whole_file: true
+    recurse: true
+  register: __list_files_satellite_organizations
+
+- name: "Read Organization definitions"
+  ansible.builtin.include_vars:
+    file: "{{ __read_organizations_definitions_item.path }}"
+  loop: "{{ __list_files_satellite_organizations.files }}"
+  loop_control:
+    loop_var: __read_organizations_definitions_item
+    label: "{{ __read_organizations_definitions_item.path }}"
+  register: __contents_filetree_satellite_organizations
+  failed_when: "'VARIABLE IS NOT DEFINED' in __contents_filetree_satellite_organizations"
+
+- name: "Populate Organizations list"
+  ansible.builtin.set_fact:
+    __populate_satellite_organizations: "{{ (__populate_satellite_organizations | default([])) + __populate_organizations_list_item.ansible_facts.satellite_organizations }}"
+  loop: "{{ __contents_filetree_satellite_organizations.results }}"
+  loop_control:
+    loop_var: __populate_organizations_list_item
+    label: "{{ __populate_organizations_list_item.ansible_included_var_files | join(', ') }}"
+  no_log: "{{ satellite_configuration_filetree_read_secure_logging }}"
+  when:
+    - __contents_filetree_satellite_organizations is defined
+    - __contents_filetree_satellite_organizations.results is defined
+    - __contents_filetree_satellite_organizations.results | length > 0
+    - __populate_organizations_list_item.ansible_facts.satellite_organizations is defined
+
+- name: "Set Organization Data Structure"
+  ansible.builtin.set_fact:
+    satellite_organizations: "{{ __populate_satellite_organizations }}"
+  no_log: "{{ satellite_configuration_filetree_read_secure_logging }}"
+  when: __populate_satellite_organizations is defined
+
+- name: "Show loaded information"
+  ansible.builtin.debug:
+    var: satellite_organizations
+    verbosity: 1
+---
 # - include_vars:
 #     file: "{{ item }}"
 #   loop:

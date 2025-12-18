@@ -1,7 +1,17 @@
 ---
 # defaults file for filetree_read
+# - name: "Include Tasks to read the given configuration as code files"
+#   ansible.builtin.include_tasks: "{{ __task_filetree_read.name }}.yml"
+#   args:
+#     apply:
+#       tags: "{{ __task_filetree_read.tags }}"
+#   tags: "{{ satellite_configuration_filetree_read_tasks | map(attribute='tags') }}"
+#   loop: "{{ satellite_configuration_filetree_read_tasks }}"
+#   loop_control:
+#     loop_var: __task_filetree_read
+
 - name: "Include Tasks to read the given configuration as code files"
-  ansible.builtin.include_tasks: "{{ __task_filetree_read.name }}.yml"
+  ansible.builtin.include_tasks: "read_contents.yml"
   args:
     apply:
       tags: "{{ __task_filetree_read.tags }}"

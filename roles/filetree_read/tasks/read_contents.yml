@@ -1,0 +1,48 @@
+---
+- name: "Get list of files inside {{ __task_filetree_read.path }}"
+  ansible.builtin.find:
+    paths: "{{ __task_filetree_read.path }}"
+    file_type: file
+    patterns: "{{ filetree_satellite_include | default(omit) }}"
+    excludes: "{{ filetree_satellite_exclude | default(omit) }}"
+    use_regex: "{{ filetree_satellite_regex | default(false) }}"
+    contains: "{{ __task_filetree_read.var}}:"
+    read_whole_file: true
+    recurse: true
+  register: __files_list
+
+- name: "Read {{ __task_filetree_read.name }} definitions"
+  ansible.builtin.include_vars:
+    file: "{{ __read_definitions_item.path }}"
+  loop: "{{ __files_list.files }}"
+  loop_control:
+    loop_var: __read_definitions_item
+    label: "{{ __read_definitions_item.path }}"
+  register: __contents_filetree_item
+  failed_when: "'VARIABLE IS NOT DEFINED' in __contents_filetree_item"
+
+- name: "Populate {{ __task_filetree_read.name }} list"
+  ansible.builtin.set_fact:
+    "__populate_{{ __task_filetree_read.var }}": "{{ ((lookup('vars', '__populate_' + __task_filetree_read.var) | default([])) + __populate_list_item.ansible_facts[__task_filetree_read.var]) | unique(case_sensitive='true') }}"
+  loop: "{{ __contents_filetree_item.results }}"
+  loop_control:
+    loop_var: __populate_list_item
+    label: "{{ __populate_list_item.ansible_included_var_files | join(', ') }}"
+  no_log: "{{ satellite_configuration_filetree_read_secure_logging }}"
+  when:
+    - __contents_filetree_item is defined
+    - __contents_filetree_item.results is defined
+    - __contents_filetree_item.results | length > 0
+    - __populate_list_item.ansible_facts[__task_filetree_read.var] is defined
+
+- name: "Set {{ __task_filetree_read.name }} Data Structure"
+  ansible.builtin.set_fact:
+    "{{ __task_filetree_read.var }}": "{{ lookup('vars', '__populate_' + __task_filetree_read.var) }}"
+  no_log: "{{ satellite_configuration_filetree_read_secure_logging }}"
+  when: lookup('vars', '__populate_' + __task_filetree_read.var) is defined
+
+- name: "Show loaded information"
+  ansible.builtin.debug:
+    var: "{{ __task_filetree_read.var }}"
+    verbosity: 1
+
