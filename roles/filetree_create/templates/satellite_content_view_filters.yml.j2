@@ -1,5 +1,5 @@
 ---
-content_view_filters:
+satellite_content_view_filters:
 {% for cv_filter in detailed_info.results %}
   - name: "{{ cv_filter.json.name }}"
 {% if cv_filter.json.description != None and cv_filter.json.description != "" %}
@@ -9,7 +9,7 @@ content_view_filters:
     inclusion: {{ cv_filter.json.inclusion }}
     content_view: "{{ cv_filter.json.content_view.name }}"
 {% if cv_filter.json.rules[0] is defined and cv_filter.json.rules != None %}
-    rules: 
+    rules:
 {% for rule in cv_filter.json.rules %}
       - name: "{{ rule.name }}"
 {% endfor %}

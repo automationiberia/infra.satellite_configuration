@@ -1,5 +1,5 @@
 ---
-lifecycle_environments: {{ [] if info_list | length == 0 }}
+satellite_lifecycle_environments: {{ [] if info_list | length == 0 }}
 {% set __excluded_fields = ['created_at', 'updated_at', 'id', 'organization_id', 'library', 'registry_unauthenticated_pull'] %}
 {% set __excluded_subitems = ['id'] %}
 {% set __list_items = ['content_views'] %}

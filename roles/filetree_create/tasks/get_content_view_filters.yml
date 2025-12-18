@@ -25,5 +25,5 @@
 - name: Content View Filters | Template Out Results
   include_tasks: template_out.yml
   vars:
-    template_type: content_view_filters
+    template_type: satellite_content_view_filters
 

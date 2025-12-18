@@ -23,4 +23,4 @@
 - name: Operating Systems | Template Out Results
   include_tasks: template_out.yml
   vars:
-    template_type: operatingsystems
+    template_type: satellite_operatingsystems

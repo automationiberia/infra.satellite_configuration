@@ -1,5 +1,5 @@
 ---
-hostgroups:
+satellite_hostgroups:
 {% for hostgroup in detailed_info.results %}
   - name: "{{ hostgroup.json.name | trim }}"
 {% if hostgroup.json.description != None and hostgroup.json.description != ""  %}

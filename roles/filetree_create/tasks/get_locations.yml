@@ -16,10 +16,10 @@
 - name: Locations | Template Out Results
   include_tasks: template_out.yml
   vars:
-    template_type: locations
+    template_type: satellite_locations
 
 - name: All Locations | Template Out Results
   include_tasks: template_out.yml
   vars:
-    template_type: all_locations
+    template_type: satellite_all_locations
 

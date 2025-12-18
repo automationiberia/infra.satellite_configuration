@@ -1,99 +1,12 @@
 ---
 # defaults file for filetree_read
-- name: Manage foreman/katello settings
-  include_tasks: settings.yml
+- name: "Include Tasks to read the given configuration as code files"
+  ansible.builtin.include_tasks: "{{ __task_filetree_read.name }}.yml"
   args:
     apply:
-      tags: settings
-  tags: settings
-
-- name: Manage LDAP Authentication
-  include_tasks: ldap.yml
-  args:
-    apply:
-      tags: ldap
-  tags: ldap
-
-- name: Manage external usegroups
-  include_tasks: external_usegroups.yml
-  args:
-    apply:
-      tags: external_usegroups
-  tags: external_usegroups
-
-- name: Create organizations
-  include_tasks: organizations.yml
-  args:
-    apply:
-      tags: organizations
-  tags: organizations
-
-- name: Manage locations
-  include_tasks: locations.yml
-  args:
-    apply:
-      tags: locations
-  tags: locations
-
-- name: Manage Manifest
-  include_tasks: manifest.yml
-  args:
-    apply:
-      tags: manifest
-  tags: manifest
-
-- name: Manage lifecycle_environments
-  include_tasks: lifecycle_environments.yml
-  args:
-    apply:
-      tags: lifecycles
-  tags: lifecycles
-
-- name: Manage repositories
-  include_tasks: repositories.yml
-  args:
-    apply:
-      tags: repositories
-  tags: repositories
-
-- name: Manage sync plans
-  include_tasks: sync_plans.yml
-  args:
-    apply:
-      tags: sync_plans
-  tags: sync_plans
-
-- name: Manage content views
-  include_tasks: content_views.yml
-  args:
-    apply:
-      tags: content_views
-  tags: content_views
-
-- name: Manage content views filters
-  include_tasks: content_views_filter.yml
-  args:
-    apply:
-      tags: content_views_filter
-  tags: content_views_filter
-
-- name: Publish and promote content views
-  include_tasks: cv_versions.yml
-  args:
-    apply:
-      tags: cv_publish_promote
-  tags: cv_publish_promote
-
-- name: Manage Activation Keys
-  include_tasks: activation_keys.yml
-  args:
-    apply:
-      tags: activation_keys
-  tags: activation_keys
-
-- name: Manage host_collections
-  include_tasks: host_collections.yml
-  args:
-    apply:
-      tags: host_collections
-  tags: host_collections
+      tags: "{{ __task_filetree_read.tags }}"
+  tags: "{{ satellite_configuration_filetree_read_tasks | map(attribute='tags') }}"
+  loop: "{{ satellite_configuration_filetree_read_tasks }}"
+  loop_control:
+    loop_var: __task_filetree_read
+...

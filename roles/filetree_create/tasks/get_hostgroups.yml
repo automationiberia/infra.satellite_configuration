@@ -23,4 +23,4 @@
 - name: Host Groups | Template Out Results
   include_tasks: template_out.yml
   vars:
-    template_type: hostgroups
+    template_type: satellite_hostgroups

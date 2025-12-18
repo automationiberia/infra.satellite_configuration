@@ -1,0 +1,56 @@
+---
+# - include_vars:
+#     file: "{{ item }}"
+#   loop:
+#     - "{{ dir_orgs_vars }}/configure_foreman_katello_credentials.yml"
+#     - "{{ dir_orgs_vars }}/configure_foreman_katello_general.yml"
+#     - "{{ dir_orgs_vars }}/{{ orgs }}/configure_katello_lifecycle_environments.yml"
+#     - "{{ dir_orgs_vars }}/{{ orgs }}/cv/{{ cvaction }}/{{ cvtype }}/configure_katello_cv_versions_{{ cvaction }}_{{ cvtype }}_{{ cvname }}_{{ env }}.yml"
+#   when: orgs is defined and dir_orgs_vars is defined and env is defined and cvaction is defined and cvtype is defined and cvname is defined
+#
+# - name: "{% if cvaction %}{{ cvaction|capitalize }}{% else%}Publish or Promote{% endif %} {% if cvtype == 'ccv' %}Compositive Content View Versions{% else %}Content View Versions{% endif %}"
+#   #theforeman.foreman.katello_content_view_version:
+#   redhat.satellite.content_view_version:
+#     username: "{{ configure_foreman_username }}"
+#     password: "{{ configure_foreman_password }}"
+#     server_url: "{{ configure_foreman_server_url }}"
+#     validate_certs: "{{ configure_foreman_validate_certs }}"
+#     content_view: "{{ item.content_view }}"
+#     organization: "{{ item.organization }}"
+#     current_lifecycle_environment: "{{ item.current_lifecycle_environment | default(omit) }}"
+#     force_promote: "{{ item.force_promote | default(omit) }}"
+#     force_yum_metadata_regeneration: "{{ item.force_yum_metadata_regeneration | default(omit) }}"
+#     lifecycle_environments: "{{ item.lifecycle_environments | default(omit) }}"
+#     synchronous: "{{ item.synchronous | default(omit) }}"
+#     version: "{{ item.version | default(omit) }}"
+#     state: "{{ item.state | default(omit) }}"
+#   loop: "{{ configure_katello_content_view_versions }}"
+#   when: configure_katello_content_view_versions is defined
+#   delegate_to: "{{ 'localhost' if foreman_local else omit }}"
+#
+# - name: Content Views purge except last {{ content_views_purge_count }} newest versions
+#   import_role:
+#     name: redhat.satellite.content_view_version_cleanup
+#   vars:
+#     satellite_username: "{{ configure_foreman_username }}"
+#     satellite_password: "{{ configure_foreman_password }}"
+#     satellite_server_url: "{{ configure_foreman_server_url }}"
+#     satellite_validate_certs: "{{ configure_foreman_validate_certs }}"
+#     satellite_organization: "{{ orgs }}"
+#     satellite_content_view_version_cleanup_keep: "{{ content_views_purge_count }}"
+#   when: configure_katello_content_view_versions is defined
+#   delegate_to: "{{ 'localhost' if foreman_local else omit }}"
+#
+#
+#
+#
+# #  - name: Content Views purge except last {{ content_views_purge_count }} newest versions
+# #    command: "hammer content-view purge --name {{ item.content_view }} --count {{ content_views_purge_count }} --organization {{ orgs }}"
+# #    become: "yes"
+# #    register: cmd_purge_result
+# #    loop: "{{ configure_katello_content_view_versions }}"
+# #    failed_when: >
+# #      (cmd_purge_result.rc not in [0, 128])
+# #    changed_when: (cmd_purge_result.rc in [0])
+# #    when: cvaction == 'publish' and content_views_purge_count is defined and cvtype is defined
+# #    delegate_to: "{{ satellite_fqdn }}"

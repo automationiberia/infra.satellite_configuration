@@ -16,4 +16,4 @@
 - name: Custom Products | Template Out Results
   include_tasks: template_out.yml
   vars:
-    template_type: products
+    template_type: satellite_products

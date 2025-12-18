@@ -1,0 +1,39 @@
+---
+# - include_vars:
+#     file: "{{ item }}"
+#   loop:
+#     - "{{ dir_orgs_vars }}/configure_foreman_katello_credentials.yml"
+#     - "{{ dir_orgs_vars }}/configure_foreman_katello_general.yml"
+#     - "{{ dir_orgs_vars }}/{{ orgs }}/configure_foreman_locations.yml"
+#     - "{{ dir_orgs_vars }}/{{ orgs }}/configure_foreman_ldap.yml"
+#   when: orgs is defined and dir_orgs_vars is defined
+#
+# - name: ensure LDAP settings are correct
+#   theforeman.foreman.foreman_auth_source_ldap:
+#     username: "{{ configure_foreman_username }}"
+#     password: "{{ configure_foreman_password }}"
+#     server_url: "{{ configure_foreman_server_url }}"
+#     validate_certs: "{{ configure_foreman_validate_certs }}"
+#     name: "{{ item.name }}"
+#     host: "{{ item.host }}"
+#     onthefly_register: "{{ item.onthefly_register | default(omit) }}"
+#     account: "{{ item.account | default(omit) }}"
+#     account_password: "{{ item.account_password | default('redhat00')}}"
+#     base_dn: "{{ item.base_dn | default(omit) }}"
+#     groups_base: "{{ item.groups_base| default(omit) }}"
+#     ldap_filter: "{{ item.ldap_filter| default(omit) }}"
+#     server_type: "{{ item.server_type | default(omit) }}"
+#     state: "{{ item.state | default(omit) }}"
+#     attr_login: "{{ item.attr_login | default(omit) }}"
+#     attr_firstname: "{{ item.attr_firstname | default(omit) }}"
+#     attr_lastname: "{{ item.attr_lastname | default(omit) }}"
+#     attr_mail: "{{ item.attr_mail | default(omit) }}"
+#     attr_photo: "{{ item.attr_photo | default(omit) }}"
+#     usergroup_sync: "{{ item.usergroup_sync | default(omit) }}"
+#     tls: "{{ item.tls | default(omit) }}"
+#     use_netgroups: "{{ item.use_netgroups | default(omit) }}"
+#     organizations: "{{ orgs }}"
+#     locations: "{{ item.locations | default(configure_foreman_locations | map(attribute='name') | list) }}"
+#   loop: "{{ configure_foreman_ldap }}"
+#   when: configure_foreman_ldap is defined
+#   delegate_to: "{{ 'localhost' if foreman_local else omit }}"

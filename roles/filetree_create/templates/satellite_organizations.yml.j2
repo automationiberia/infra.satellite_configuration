@@ -1,7 +1,7 @@
 ---
-primary_organization: "{{ primary_org }}" 
+primary_organization: "{{ primary_org }}"
 
-organizations:
+satellite_organizations:
 {% for organization in info_list %}
   - name: "{{ organization.name }}"
     label: "{{ organization.label }}"

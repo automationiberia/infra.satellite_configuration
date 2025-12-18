@@ -1,0 +1,65 @@
+---
+- name: "Get list of files inside {{ filetree_satellite_activation_keys }}"
+  ansible.builtin.find:
+    paths: "{{ filetree_satellite_activation_keys }}"
+    file_type: file
+    patterns: "{{ filetree_satellite_include | default(omit) }}"
+    excludes: "{{ filetree_satellite_exclude | default(omit) }}"
+    use_regex: "{{ filetree_satellite_regex | default(false) }}"
+    contains: "satellite_activation_keys:"
+    read_whole_file: true
+    recurse: true
+  register: __list_files_satellite_activation_keys
+
+- name: "Read Activation Keys definitions"
+  ansible.builtin.include_vars:
+    file: "{{ __read_activation_keys_definitions_item.path }}"
+  loop: "{{ __list_files_satellite_activation_keys.files }}"
+  loop_control:
+    loop_var: __read_activation_keys_definitions_item
+    label: "{{ __read_activation_keys_definitions_item.path }}"
+  register: __contents_filetree_satellite_activation_keys
+  failed_when: "'VARIABLE IS NOT DEFINED' in __contents_filetree_satellite_activation_keys"
+
+- name: "Populate Activation Keys list"
+  ansible.builtin.set_fact:
+    __populate_satellite_activation_keys: "{{ (__populate_satellite_activation_keys | default([])) + __populate_activation_keys_list_item.ansible_facts.satellite_activation_keys }}"
+  loop: "{{ __contents_filetree_satellite_activation_keys.results }}"
+  loop_control:
+    loop_var: __populate_activation_keys_list_item
+    label: "{{ __populate_activation_keys_list_item.ansible_included_var_files | join(', ') }}"
+  no_log: "{{ satellite_configuration_filetree_read_secure_logging }}"
+  when:
+    - __contents_filetree_satellite_activation_keys is defined
+    - __contents_filetree_satellite_activation_keys.results is defined
+    - __contents_filetree_satellite_activation_keys.results | length > 0
+    - __populate_activation_keys_list_item.ansible_facts.satellite_activation_keys is defined
+
+- name: "Set Activation Keys Data Structure"
+  ansible.builtin.set_fact:
+    satellite_activation_keys: "{{ __populate_satellite_activation_keys }}"
+  when: __populate_satellite_activation_keys is defined
+
+- name: "Show loaded information"
+  ansible.builtin.debug:
+    var: satellite_activation_keys
+    verbosity: 1
+
+...
+### TO THE DISPATCH ROLE
+### - name: ensure activation keys exist
+###   theforeman.foreman.katello_activation_key:
+###     username: "{{ configure_foreman_username }}"
+###     password: "{{ configure_foreman_password }}"
+###     server_url: "{{ configure_foreman_server_url }}"
+###     validate_certs: "{{ configure_foreman_validate_certs }}"
+###     organization: "{{ item.organization }}"
+###     name: "{{ item.name }}"
+###     lifecycle_environment: "{{ item.lifecycle_environment }}"
+###     content_view: "{{ item.content_view }}"
+###     release_version: "{{ item.release_version }}"
+###     subscriptions: "{{ item.subscriptions | default(omit)}}"
+###     state: "{{ item.state | default('present') }}"
+###   loop: "{{ configure_katello_activation_keys }}"
+###   when: configure_katello_activation_keys is defined
+###   delegate_to: "{{ 'localhost' if foreman_local else omit }}"

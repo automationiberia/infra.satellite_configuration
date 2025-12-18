@@ -28,4 +28,4 @@
 - name: Activation Keys | Template Out Results
   include_tasks: template_out.yml
   vars:
-    template_type: activation_keys
+    template_type: satellite_activation_keys

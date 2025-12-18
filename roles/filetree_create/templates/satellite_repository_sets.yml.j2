@@ -1,5 +1,5 @@
 ---
-repository_sets:
+satellite_repository_sets:
 {% for repo_set in detailed_info.results %}
   - label: "{{ repo_set.json.label | trim }}"
 {% if repo_set.json.repositories[0].releasever != None %}

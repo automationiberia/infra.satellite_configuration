@@ -1,5 +1,5 @@
 ---
-activation_keys: {{ [] if info_list | length == 0 }}
+satellite_activation_keys: {{ [] if info_list | length == 0 }}
 {% set __excluded_fields = [
                             'content_view_environment_labels',
                             'content_view_environments',
