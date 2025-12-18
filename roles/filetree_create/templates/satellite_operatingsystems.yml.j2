@@ -1,5 +1,5 @@
 ---
-satellite_operatingsystems:
+satellite_operatingsystems: {{ [] if detailed_info.results | length == 0 }}
 {% for os in detailed_info.results %}
   - name: "{{ os.json.name | trim }}"
     description: "{{ os.json.description }}"

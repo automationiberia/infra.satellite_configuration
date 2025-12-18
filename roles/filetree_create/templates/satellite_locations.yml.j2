@@ -1,5 +1,5 @@
 ---
-satellite_locations:
+satellite_locations: {{ [] if info_list | length == 0 }}
 {% for location in info_list %}
   - name: "{{ location.name }}"
 {% if location.description != None and location.description != "" %}

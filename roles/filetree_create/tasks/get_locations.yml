@@ -18,8 +18,8 @@
   vars:
     template_type: satellite_locations
 
-- name: All Locations | Template Out Results
-  include_tasks: template_out.yml
-  vars:
-    template_type: satellite_all_locations
+# - name: All Locations | Template Out Results
+#   include_tasks: template_out.yml
+#   vars:
+#     template_type: satellite_all_locations
 

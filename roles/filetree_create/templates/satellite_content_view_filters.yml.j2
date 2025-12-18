@@ -1,5 +1,5 @@
 ---
-satellite_content_view_filters:
+satellite_content_view_filters: {{ [] if detailed_info.results | length == 0 }}
 {% for cv_filter in detailed_info.results %}
   - name: "{{ cv_filter.json.name }}"
 {% if cv_filter.json.description != None and cv_filter.json.description != "" %}

@@ -10,9 +10,9 @@ satellite_settings: {{ [] if info_list | length == 0 }}
 {%       set __map_item_value = dict(__map_item.value.items() | rejectattr('0', 'in', __excluded_subitems)) %}
 {%     endif %}
 {%     if loop.index == 1 %}
-  - {{ __map_item.key }}: {{ __map_item_value if (__map_item.value | type_debug == 'dict') else __map_item.value | default('""' if __map_item.key not in __list_items else [], true) | replace("\\'", "''") }}
+  - {{ __map_item.key }}: {{ __map_item_value if (__map_item_value is defined) else __map_item.value | default('""' if __map_item.key not in __list_items else [], true) | replace("\\'", "''") | replace('*', '') }}
 {%     else %}
-    {{ __map_item.key }}: {{ __map_item_value if (__map_item.value | type_debug == 'dict') else __map_item.value | default('""' if __map_item.key not in __list_items else [], true) | replace("\\'", "''") }}
+    {{ __map_item.key }}: {{ __map_item_value if (__map_item_value is defined) else __map_item.value | default('""' if __map_item.key not in __list_items else [], true) | replace("\\'", "''") | replace('*', '') }}
 {%     endif %}
 {%-  endfor %}
 {% endfor %}

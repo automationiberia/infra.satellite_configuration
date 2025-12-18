@@ -1,14 +1,14 @@
 ---
 primary_organization: "{{ primary_org }}"
 
-satellite_organizations:
+satellite_organizations: {{ [] if info_list | length == 0 }}
 {% for organization in info_list %}
   - name: "{{ organization.name }}"
     label: "{{ organization.label }}"
     description: "{{ organization.description }}"
 {% endfor %}
 
-all_organizations:
+all_organizations: {{ [] if info_list | length == 0 }}
 {% for organization in info_list %}
   - "{{ organization.name }}"
 {% endfor %}

@@ -1,5 +1,5 @@
 ---
-satellite_composite_content_views:
+satellite_composite_content_views: {{ [] if info_list | length == 0 }}
 {% for content_view in info_list %}
   - name: "{{ content_view.name | trim }}"
     label: "{{ content_view.label }}"
