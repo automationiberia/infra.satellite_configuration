@@ -1,0 +1,5 @@
+---
+# handlers file for filetree_read
+- name: sync all repositories
+  include_tasks: "{{ role_path }}/handlers/sync_repositories.yml"
+

@@ -1,0 +1,19 @@
+---
+- include_vars:
+    file: "{{ item }}"
+  loop: 
+    - "{{ dir_orgs_vars }}/content_credentials.yml"
+    - "{{ dir_orgs_vars }}/organizations.yml"
+  when: orgs is defined and dir_orgs_vars is defined
+
+- name: Create Organizations
+  redhat.satellite.organization:
+    username: "{{ satellite_username }}"
+    password: "{{ satellite_password }}"
+    server_url: "{{ satellite_server_url }}"
+    validate_certs: "{{ satellite_validate_certs }}"
+    name: "{{ item.name }}"
+  with_items: "{{ organizations }}"
+  when: organizations is defined
+  delegate_to: "localhost"
+...

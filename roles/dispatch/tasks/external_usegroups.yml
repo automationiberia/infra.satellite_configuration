@@ -1,0 +1,37 @@
+---
+- include_vars:
+    file: "{{ item }}"
+  loop:
+    - "{{ dir_orgs_vars }}/configure_foreman_katello_credentials.yml"
+    - "{{ dir_orgs_vars }}/configure_foreman_katello_general.yml"
+    - "{{ dir_orgs_vars }}/{{ orgs }}/configure_foreman_external_usergroup.yml"
+  when: orgs is defined and dir_orgs_vars is defined
+
+- name: ensure external usergroup are correct
+  theforeman.foreman.foreman_usergroup:
+    username: "{{ configure_foreman_username }}"
+    password: "{{ configure_foreman_password }}"
+    server_url: "{{ configure_foreman_server_url }}"
+    validate_certs: "{{ configure_foreman_validate_certs }}"
+    name: "{{ item.name }}"
+    roles: "{{ item.roles }}"
+    users: "{{ item.users | default(omit) }}"
+    usergroups: "{{ item.usergroups | default(omit) }}"
+    state: "{{ item.state | default(omit) }}"
+  loop: "{{ configure_foreman_external_usergroup }}"
+  when: configure_foreman_external_usergroup is defined
+  delegate_to: "{{ 'localhost' if foreman_local else omit }}"
+
+- name: ensure external usergroup are correct
+  theforeman.foreman.foreman_external_usergroup:
+    username: "{{ configure_foreman_username }}"
+    password: "{{ configure_foreman_password }}"
+    server_url: "{{ configure_foreman_server_url }}"
+    validate_certs: "{{ configure_foreman_validate_certs }}"
+    name: "{{ item.name }}"
+    auth_source_ldap: "{{ item.auth_source_ldap }}"
+    usergroup: "{{ item.usergroup }}"
+    state: "{{ item.state | default(omit) }}"
+  loop: "{{ configure_foreman_external_usergroup }}"
+  when: configure_foreman_external_usergroup is defined
+  delegate_to: "{{ 'localhost' if foreman_local else omit }}"

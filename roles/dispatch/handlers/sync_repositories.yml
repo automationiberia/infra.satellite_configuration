@@ -1,0 +1,68 @@
+---
+- name: Kick off sync
+  redhat.satellite.repository_sync:
+    username: "{{ satellite_username }}"
+    password: "{{ satellite_password }}"
+    server_url: "{{ satellite_server_url }}"
+    validate_certs: "{{ satellite_validate_certs }}"
+    repository: "{{ item.repo_name }}"
+    product: "{{ item.product }}"
+    organization: "{{ item.organization }}"
+  loop: "{{ satellite_repository_sets }}"
+  async: 999999
+  poll: 0
+  register: repo_sync_sleeper
+  when: item.state == "enabled" 
+  delegate_to: "localhost"
+
+- name: Kick off sync custom repos
+  redhat.satellite.repository_sync:
+    username: "{{ satellite_username }}"
+    password: "{{ satellite_password }}"
+    server_url: "{{ satellite_server_url }}"
+    validate_certs: "{{ satellite_validate_certs }}"
+    repository: "{{ item.name }}"
+    product: "{{ item.product }}"
+    organization: "{{ item.organization }}"
+  loop: "{{ satellite_repositories }}"
+  async: 999999
+  poll: 0
+  register: repo_sync_sleeper_custom
+  when: item.state == "present"
+  delegate_to: "localhost"
+
+### REPLACED BY THE FOLLOWING TWO TASKS
+### - name: wait for sync tasks to complete
+###   action: >
+###     shell hammer
+###     --csv task list
+###     --search 'label = Actions::Katello::Repository::Sync and state = running'
+###   register: running_sync_tasks
+###   until: running_sync_tasks.stdout.find("running") == -1
+###   delay: 60
+###   retries: 600
+###   changed_when: false
+###   delegate_to: "{{ satellite_fqdn }}"
+### REPLACED BY THE FOLLOWING TWO TASKS
+
+- name: Search for previously created tasks
+  redhat.satellite.resource_info:
+    username: "{{ satellite_username }}"
+    password: "{{ satellite_password }}"
+    server_url: "{{ satellite_server_url }}"
+    validate_certs: "{{ satellite_validate_certs }}"
+    resource: foreman_tasks
+    search: "(label = Actions::Katello::Repository::Sync and state = running)"
+  register: tasks
+
+- name: Wait for all found tasks to finish
+  redhat.satellite.wait_for_task:
+    username: "{{ satellite_username }}"
+    password: "{{ satellite_password }}"
+    server_url: "{{ satellite_server_url }}"
+    validate_certs: "{{ satellite_validate_certs }}"
+    task: "{{ item }}"
+    timeout: 900
+  loop: "{{ tasks.resources | map(attribute='id') | list }}"
+
+...

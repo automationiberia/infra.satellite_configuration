@@ -1,0 +1,12 @@
+---
+- hosts: localhost
+  connection: local
+  gather_facts: no
+  vars:
+    satellite_server_url: https://satellite-drs.bcnconsulting.com
+    satellite_username: "admin"
+    satellite_password: "redhat00"
+    satellite_validate_certs: false
+  roles:
+    - role: automationiberia.satellite_configuration.filetree_create
+...

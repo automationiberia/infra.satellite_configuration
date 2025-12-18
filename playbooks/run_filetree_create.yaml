@@ -15,5 +15,5 @@
     - block:
       - name: Get Organizations
         import_role:
-          name: automationiberia.satellite_configuration.extract
+          name: automationiberia.satellite_configuration.filetree_create
 ...

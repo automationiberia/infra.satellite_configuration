@@ -1,11 +1,11 @@
 Run the role using the following command:
 
 ```console
-$ ansible-playbook automationiberia.satellite_configuration.extract_satellite_config.yml -e@vars/satellite.yaml -e '{output_path: /tmp/satellite_output}'
+$ ansible-playbook automationiberia.satellite_configuration.run_filetree_create.yaml -e@vars/satellite.yaml -e '{output_path: /tmp/satellite_output}'
 ```
 
 ```console
-$ ansible-navigator run automationiberia.satellite_configuration.extract_satellite_config.yml \
+$ ansible-navigator run automationiberia.satellite_configuration.run_filetree_create.yaml \
     --tags settings \
     --eei registry.redhat.io/ansible-automation-platform-26/ee-supported-rhel9 \
     --pp never \

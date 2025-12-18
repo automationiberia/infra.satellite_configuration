@@ -1,0 +1,25 @@
+---
+- include_vars:
+    file: "{{ item }}"
+  loop:
+    - "{{ dir_orgs_vars }}/configure_foreman_katello_credentials.yml"
+    - "{{ dir_orgs_vars }}/configure_foreman_katello_general.yml"
+    - "{{ dir_orgs_vars }}/{{ orgs }}/configure_katello_activation_keys.yml"
+  when: orgs is defined and dir_orgs_vars is defined
+
+- name: ensure activation keys exist
+  theforeman.foreman.katello_activation_key:
+    username: "{{ configure_foreman_username }}"
+    password: "{{ configure_foreman_password }}"
+    server_url: "{{ configure_foreman_server_url }}"
+    validate_certs: "{{ configure_foreman_validate_certs }}"
+    organization: "{{ item.organization }}"
+    name: "{{ item.name }}"
+    lifecycle_environment: "{{ item.lifecycle_environment }}"
+    content_view: "{{ item.content_view }}"
+    release_version: "{{ item.release_version }}"
+    subscriptions: "{{ item.subscriptions | default(omit)}}"
+    state: "{{ item.state | default('present') }}"
+  loop: "{{ configure_katello_activation_keys }}"
+  when: configure_katello_activation_keys is defined
+  delegate_to: "{{ 'localhost' if foreman_local else omit }}"

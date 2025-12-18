@@ -1,0 +1,24 @@
+---
+- include_vars:
+    file: "{{ item }}"
+  loop:
+    - "{{ dir_orgs_vars }}/configure_foreman_katello_credentials.yml"
+    - "{{ dir_orgs_vars }}/configure_foreman_katello_general.yml"
+    - "{{ dir_orgs_vars }}/{{ orgs }}/configure_katello_sync_plans.yml"
+  when: orgs is defined and dir_orgs_vars is defined
+
+- name: Create Sync Plans
+  theforeman.foreman.katello_sync_plan:
+    username: "{{ configure_foreman_username }}"
+    password: "{{ configure_foreman_password }}"
+    server_url: "{{ configure_foreman_server_url }}"
+    validate_certs: "{{ configure_foreman_validate_certs }}"
+    name: "{{ item.name }}"
+    organization: "{{ item.organization }}"
+    interval: "{{ item.interval }}"
+    enabled: "{{ item.enabled }}"
+    sync_date: "{{ item.sync_date }}"
+    products: "{{ item.products }}"
+  loop: "{{ configure_katello_sync_plans }}"
+  when: configure_katello_sync_plans is defined
+  delegate_to: "{{ 'localhost' if foreman_local else omit }}"
