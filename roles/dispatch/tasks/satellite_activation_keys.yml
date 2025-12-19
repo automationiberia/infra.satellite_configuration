@@ -1,25 +1,28 @@
 ---
-- include_vars:
-    file: "{{ item }}"
-  loop:
-    - "{{ dir_orgs_vars }}/configure_foreman_katello_credentials.yml"
-    - "{{ dir_orgs_vars }}/configure_foreman_katello_general.yml"
-    - "{{ dir_orgs_vars }}/{{ orgs }}/configure_katello_activation_keys.yml"
-  when: orgs is defined and dir_orgs_vars is defined
-
-- name: ensure activation keys exist
-  theforeman.foreman.katello_activation_key:
-    username: "{{ configure_foreman_username }}"
-    password: "{{ configure_foreman_password }}"
-    server_url: "{{ configure_foreman_server_url }}"
-    validate_certs: "{{ configure_foreman_validate_certs }}"
-    organization: "{{ item.organization }}"
-    name: "{{ item.name }}"
-    lifecycle_environment: "{{ item.lifecycle_environment }}"
-    content_view: "{{ item.content_view }}"
-    release_version: "{{ item.release_version }}"
-    subscriptions: "{{ item.subscriptions | default(omit)}}"
-    state: "{{ item.state | default('present') }}"
-  loop: "{{ configure_katello_activation_keys }}"
-  when: configure_katello_activation_keys is defined
-  delegate_to: "{{ 'localhost' if foreman_local else omit }}"
+- name: Create/Update Activation Keys
+  redhat.satellite.activation_key:
+    name: "{{ __current_activation_key.name }}"
+    organization: "{{ __current_activation_key.organization | default(omit) }}"
+    new_name: "{{ __current_activation_key.new_name | default(omit) }}"
+    description: "{{ __current_activation_key.description | default(omit) }}"
+    lifecycle_environment: "{{ __current_activation_key.lifecycle_environment | default(omit) }}"
+    content_view: "{{ __current_activation_key.content_view | default(omit) }}"
+    subscriptions: "{{ __current_activation_key.subscriptions | default(omit)}}"
+    host_collections: "{{ __current_activation_key.host_collections | default(omit)}}"
+    content_overrides: "{{ __current_activation_key.content_overrides | default(omit)}}"
+    auto_attach: "{{ __current_activation_key.auto_attach | default(omit)}}"
+    release_version: "{{ __current_activation_key.release_version | default(omit) }}"
+    service_level: "{{ __current_activation_key.service_level | default(omit) }}"
+    max_hosts: "{{ __current_activation_key.max_hosts | default(omit) }}"
+    unlimited_hosts: "{{ __current_activation_key.unlimited_hosts | default(omit) }}"
+    purpose_usage: "{{ __current_activation_key.purpose_usage | default(omit) }}"
+    purpose_role: "{{ __current_activation_key.purpose_role | default(omit) }}"
+    purpose_addons: "{{ __current_activation_key.purpose_addons | default(omit) }}"
+    state: "{{ __current_activation_key.state | default('present') }}"
+  loop: "{{ satellite_activation_keys }}"
+  loop_control:
+    loop_var: __current_activation_key
+    label: "{{ __current_activation_key.name }}"
+  when: satellite_activation_keys is defined
+  delegate_to: localhost
+...

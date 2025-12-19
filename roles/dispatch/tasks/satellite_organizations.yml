@@ -1,5 +1,5 @@
 ---
-- name: Create Organizations
+- name: Create/Update Organizations
   redhat.satellite.organization:
     name: "{{ __current_satellite_organization.name }}"
     description: "{{ __current_satellite_organization.description | default(omit) }}"
