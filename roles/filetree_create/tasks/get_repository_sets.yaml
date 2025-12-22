@@ -4,7 +4,7 @@
     result_api_response: {}
 
 - name: Repository Sets | Get Basic Info
-  include_tasks: api_call.yml
+  include_tasks: api_call.yaml
   vars:
     call_type: Repository Sets
     api_link: /katello/api/repository_sets?enabled=true&organization_id=1&full_result=true
@@ -14,7 +14,7 @@
     all_results: "{{ result_api_response.json.results | sort(attribute='id') }}"
 
 - name: Repository Sets | Get Detailed Info
-  include_tasks: detailed_api_call.yml
+  include_tasks: detailed_api_call.yaml
   vars:
     call_type: Repository Sets
     api_link: /katello/api/repository_sets/
@@ -23,6 +23,6 @@
     loop_var: "{{ all_results }}"
 
 - name: Repository Sets | Template Out Results
-  include_tasks: template_out.yml
+  include_tasks: template_out.yaml
   vars:
     template_type: satellite_repository_sets

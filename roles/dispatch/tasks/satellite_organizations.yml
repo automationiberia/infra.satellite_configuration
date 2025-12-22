@@ -1,7 +1,9 @@
 ---
 - name: Create/Update Organizations
   redhat.satellite.organization:
+    # Mandatory prams
     name: "{{ __current_satellite_organization.name }}"
+    # Optional params
     description: "{{ __current_satellite_organization.description | default(omit) }}"
     label: "{{ __current_satellite_organization.label | default(omit) }}"
     ca_path: "{{ __current_satellite_organization.ca_path | default(omit) }}"

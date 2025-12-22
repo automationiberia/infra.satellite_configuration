@@ -19,6 +19,7 @@ satellite_repositories: []
 satellite_repository_sets: []
 satellite_settings: []
 satellite_subnets: []
+satellite_sync_plans: []
 
 satellite_configuration_filetree_read_tasks:
   - {name: satellite_activation_keys,         var: satellite_activation_keys,         tags: satellite_activation_keys,         path: "{{ dir_orgs_vars }}/{{ orgs }}/env/common/satellite_activation_keys.d/"}
@@ -37,5 +38,6 @@ satellite_configuration_filetree_read_tasks:
   - {name: satellite_repository_sets,         var: satellite_repository_sets,         tags: satellite_repository_sets,         path: "{{ dir_orgs_vars }}/{{ orgs }}/env/common/satellite_domains.d/"}
   - {name: satellite_settings,                var: satellite_settings,                tags: satellite_settings,                path: "{{ dir_orgs_vars }}/{{ orgs }}/env/common/satellite_settings.d/"}
   - {name: satellite_subnets,                 var: satellite_subnets,                 tags: satellite_subnets,                 path: "{{ dir_orgs_vars }}/{{ orgs }}/env/common/satellite_subnets.d/"}
+  - {name: satellite_sync_plans,              var: satellite_sync_plans,              tags: satellite_sync_plans,              path: "{{ dir_orgs_vars }}/{{ orgs }}/env/common/satellite_sync_plans.d/"}
 
 ...

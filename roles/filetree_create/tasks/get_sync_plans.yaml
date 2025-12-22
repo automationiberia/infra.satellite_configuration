@@ -1,0 +1,20 @@
+---
+- name: Sync Plans | Reset the results variable
+  ansible.builtin.set_fact:
+    result_api_response: {}
+
+- name: Sync Plans | Get Organizations
+  include_tasks: get_organizations.yaml
+
+- name: Sync Plans | Get Syn Plans Info
+  include_tasks: get_sync_plans_do_work.yaml
+  loop: "{{ info_list | map(attribute='id') }}"
+  loop_control:
+    loop_var: __current_org_id
+
+- name: Sync Plans | Template Out Results
+  include_tasks: template_out.yaml
+  vars:
+    template_type: satellite_sync_plans
+    info_list: "{{ __sp_info_list }}"
+...

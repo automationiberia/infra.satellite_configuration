@@ -1,0 +1,18 @@
+---
+- name: Sync Plans (Do Work) | Get Info
+  include_tasks: api_call.yaml
+  vars:
+    call_type: Sync Plans
+    api_link: "/katello/api/sync_plans?organization_id={{ __current_org_id }}&full_result=true"
+
+- name: Sync Plans (Do Work) | Update the organization field
+  ansible.builtin.set_fact:
+    __temp_results: "{{ ((__temp_results | default([])) + [__current_org_result | combine({'organization': (info_list | selectattr('id', '==', __current_org_result.organization_id) | map(attribute='name') | first)})]) | unique }}"
+  loop: "{{ result_api_response.json.results }}"
+  loop_control:
+    loop_var: __current_org_result
+
+- name: Sync Plans (Do Work) | Set Info List
+  ansible.builtin.set_fact:
+    __sp_info_list: "{{ ((__sp_info_list | default([])) + __temp_results) | unique }}"
+...

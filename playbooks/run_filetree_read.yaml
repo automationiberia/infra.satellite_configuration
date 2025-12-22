@@ -9,6 +9,7 @@
       server_url: "{{ satellite.server_url }}"
       validate_certs: "{{ satellite.validate_certs }}"
     redhat.satellite.activation_key: *satellite_creds
+    redhat.satellite.sync_plan: *satellite_creds
   roles:
     - role: automationiberia.satellite_configuration.filetree_read
     - role: automationiberia.satellite_configuration.dispatch

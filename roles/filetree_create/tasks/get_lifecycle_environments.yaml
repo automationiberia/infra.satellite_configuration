@@ -4,7 +4,7 @@
     result_api_response: {}
 
 - name: Lifecycle Environments | Get Info
-  include_tasks: api_call.yml
+  include_tasks: api_call.yaml
   vars:
     call_type: Lifecycle Environments
     api_link: /katello/api/environments?full_result=true
@@ -14,6 +14,6 @@
     info_list: "{{ result_api_response.json.results | rejectattr('name','==', 'Library') | sort(attribute='id') }}"
 
 - name: Lifecycle Environments | Template Out Results
-  include_tasks: template_out.yml
+  include_tasks: template_out.yaml
   vars:
     template_type: satellite_lifecycle_environments

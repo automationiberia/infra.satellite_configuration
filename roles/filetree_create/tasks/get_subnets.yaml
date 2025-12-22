@@ -4,7 +4,7 @@
     server_url: "{{ satellite.server_url }}"
     username: "{{ satellite.admin.username }}"
     password: "{{ satellite.admin.password }}"
-    validate_certs: "{{ satellite.validate_tls_certs_of_foreman_server_boolean }}"
+    validate_certs: "{{ satellite.validate_certs }}"
   register: __subnets_result_api_response
 
 - name: Subnets | Create a List
@@ -12,6 +12,6 @@
     info_list: "{{ __subnets_result_api_response.subnets | sort(attribute='id') }}"
 
 - name: Subnets | Template Out Results
-  include_tasks: template_out.yml
+  include_tasks: template_out.yaml
   vars:
     template_type: satellite_subnets

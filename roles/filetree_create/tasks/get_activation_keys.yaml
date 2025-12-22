@@ -8,11 +8,11 @@
     server_url: "{{ satellite.server_url }}"
     username: "{{ satellite.admin.username }}"
     password: "{{ satellite.admin.password }}"
-    validate_certs: "{{ satellite.validate_tls_certs_of_foreman_server_boolean }}"
+    validate_certs: "{{ satellite.validate_certs }}"
   register: __result_organizations
 
 - name: Activation Keys | Get Info
-  include_tasks: api_call.yml
+  include_tasks: api_call.yaml
   vars:
     call_type: Activation Keys
     api_link: "/katello/api/activation_keys?organization_id={{ __current_org.id }}&full_result=true"
@@ -26,6 +26,6 @@
     info_list: "{{ result_api_response.json.results | rejectattr('name','==', 'Library') | sort(attribute='id') }}"
 
 - name: Activation Keys | Template Out Results
-  include_tasks: template_out.yml
+  include_tasks: template_out.yaml
   vars:
     template_type: satellite_activation_keys

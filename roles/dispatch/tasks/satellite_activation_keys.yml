@@ -1,7 +1,9 @@
 ---
 - name: Create/Update Activation Keys
   redhat.satellite.activation_key:
+    # Mandatory params
     name: "{{ __current_activation_key.name }}"
+    # Optional params
     organization: "{{ __current_activation_key.organization | default(omit) }}"
     new_name: "{{ __current_activation_key.new_name | default(omit) }}"
     description: "{{ __current_activation_key.description | default(omit) }}"

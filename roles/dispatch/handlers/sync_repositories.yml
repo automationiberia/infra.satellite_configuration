@@ -4,7 +4,7 @@
     username: "{{ satellite_username }}"
     password: "{{ satellite_password }}"
     server_url: "{{ satellite_server_url }}"
-    validate_certs: "{{ satellite_validate_certs }}"
+    validate_certs: "{{ satellite.validate_certs }}"
     repository: "{{ item.repo_name }}"
     product: "{{ item.product }}"
     organization: "{{ item.organization }}"
@@ -12,7 +12,7 @@
   async: 999999
   poll: 0
   register: repo_sync_sleeper
-  when: item.state == "enabled" 
+  when: item.state == "enabled"
   delegate_to: "localhost"
 
 - name: Kick off sync custom repos
@@ -20,7 +20,7 @@
     username: "{{ satellite_username }}"
     password: "{{ satellite_password }}"
     server_url: "{{ satellite_server_url }}"
-    validate_certs: "{{ satellite_validate_certs }}"
+    validate_certs: "{{ satellite.validate_certs }}"
     repository: "{{ item.name }}"
     product: "{{ item.product }}"
     organization: "{{ item.organization }}"
@@ -50,7 +50,7 @@
     username: "{{ satellite_username }}"
     password: "{{ satellite_password }}"
     server_url: "{{ satellite_server_url }}"
-    validate_certs: "{{ satellite_validate_certs }}"
+    validate_certs: "{{ satellite.validate_certs }}"
     resource: foreman_tasks
     search: "(label = Actions::Katello::Repository::Sync and state = running)"
   register: tasks
@@ -60,7 +60,7 @@
     username: "{{ satellite_username }}"
     password: "{{ satellite_password }}"
     server_url: "{{ satellite_server_url }}"
-    validate_certs: "{{ satellite_validate_certs }}"
+    validate_certs: "{{ satellite.validate_certs }}"
     task: "{{ item }}"
     timeout: 900
   loop: "{{ tasks.resources | map(attribute='id') | list }}"

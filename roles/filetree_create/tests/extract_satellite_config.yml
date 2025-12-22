@@ -4,95 +4,95 @@
   connection: local
   gather_facts: false
   vars_files:
-    - vars/test_vars.yml
+    - vars/test_vars.yaml
   tasks:
     - block:
       - name: Get Organizations
-        include_tasks: tasks/get_organizations.yml
+        include_tasks: tasks/get_organizations.yaml
       tags:
         - 'organizations'
 
     - block:
       - name: Get Locations
-        include_tasks: tasks/get_locations.yml
+        include_tasks: tasks/get_locations.yaml
       tags:
         - 'locations'
 
     - block:
       - name: Get Domains
-        include_tasks: tasks/get_domains.yml
+        include_tasks: tasks/get_domains.yaml
       tags:
         - 'domains'
 
     - block:
       - name: Get Subnets
-        include_tasks: tasks/get_subnets.yml
+        include_tasks: tasks/get_subnets.yaml
       tags:
         - 'subnets'
 
     - block:
       - name: Get Repositories
-        include_tasks: tasks/get_repositories.yml
+        include_tasks: tasks/get_repositories.yaml
       tags:
         - 'repositories'
 
     - block:
       - name: Get Repositories
-        include_tasks: tasks/get_repository_sets.yml
+        include_tasks: tasks/get_repository_sets.yaml
       tags:
         - 'repository_sets'
 
     - block:
       - name: Get Host Groups
-        include_tasks: tasks/get_hostgroups.yml
+        include_tasks: tasks/get_hostgroups.yaml
       tags:
         - 'hostgroups'
 
     - block:
       - name: Get Operating Systems
-        include_tasks: tasks/get_operatingsystems.yml
+        include_tasks: tasks/get_operatingsystems.yaml
       tags:
         - 'operatingsystems'
 
     - block:
       - name: Get Lifecycle Environments
-        include_tasks: tasks/get_lifecycle_environments.yml
+        include_tasks: tasks/get_lifecycle_environments.yaml
       tags:
         - 'lifecycle_environments'
 
     - block:
       - name: Get Content Views
-        include_tasks: tasks/get_content_views.yml
+        include_tasks: tasks/get_content_views.yaml
       tags:
         - 'content_views'
 
     - block:
       - name: Get Composite Content Views
-        include_tasks: tasks/get_composite_content_views.yml
+        include_tasks: tasks/get_composite_content_views.yaml
       tags:
         - 'composite_content_views'
 
     - block:
       - name: Get Content View Filters
-        include_tasks: tasks/get_content_view_filters.yml
+        include_tasks: tasks/get_content_view_filters.yaml
       tags:
         - 'content_view_filters'
 
     - block:
       - name: Get Custom Products
-        include_tasks: tasks/get_products.yml
+        include_tasks: tasks/get_products.yaml
       tags:
         - 'products'
 
     - block:
       - name: Get Settings
-        include_tasks: tasks/get_settings.yml
+        include_tasks: tasks/get_settings.yaml
       tags:
         - 'settings'
 
     - block:
       - name: Get Content Credentials
-        include_tasks: tasks/get_content_credentials.yml
+        include_tasks: tasks/get_content_credentials.yaml
       tags:
         - 'content_credentials'
 
