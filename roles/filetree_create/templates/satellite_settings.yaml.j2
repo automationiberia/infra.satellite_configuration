@@ -1,18 +1,55 @@
 ---
 satellite_settings: {{ [] if info_list | length == 0 }}
-{% set __excluded_fields = ['category','category_name','config_file','default','description','encrypted','full_name','readonly','select_values','settings_type','updated_at', 'id'] %}
-{% set __excluded_subitems = ['id'] %}
+{% set __excluded_fields = ['oauth_consumer_key','oauth_consumer_secret','oauth_map_users',
+                            'category','category_name','config_file','default',
+                            'description','encrypted','full_name','readonly',
+                            'select_values','settings_type','updated_at', 'id'] %}
+{% set __excluded_subitems = ['oauth_consumer_key','oauth_consumer_secret','oauth_map_users','id'] %}
 {% set __list_items = [] %}
-{% set __empty_values = [None, ''] %}
+{% set __string_items = ['ansible_interval','ansible_post_provision_timeout','ansible_verbosity','email_subject_prefix'] %}
+{% set __int_items = ['download_rate_limit'] %}
+{% set __unsafe_items = ['http_proxy_except_list','trusted_hosts'] %}
+{% set __empty_values = [None, 'None', '', {}, [], [{}]] %}
 {% for i in info_list %}
+{%   set __var = namespace(next_value_is_string = false,
+                           next_value_is_unsafe = false,
+                           next_value_is_int = false,
+                           next_value_is_skip = false) %}
 {%   for __map_item in (i | dict2items) if __map_item.key not in __excluded_fields and __map_item.value not in __empty_values %}
-{%     if __map_item.value | type_debug == 'dict' %}
-{%       set __map_item_value = dict(__map_item.value.items() | rejectattr('0', 'in', __excluded_subitems)) %}
-{%     endif %}
-{%     if loop.index == 1 %}
+{%     set __var.next_value_is_skip = __var.next_value_is_skip or (__map_item.key == 'name' and __map_item.value in __excluded_subitems) %}
+{%     if not __var.next_value_is_skip
+          and (
+               (__map_item.key == 'name' and ((loop.nextitem | default('NOTHING_ELSE')) != 'NOTHING_ELSE') and (__map_item.value not in __excluded_subitems))
+            or (__map_item.key == 'value') ) %}
+{%       if __map_item.value | type_debug == 'dict' %}
+{%         set __map_item_value = dict(__map_item.value.items() | rejectattr('0', 'in', __excluded_subitems)) %}
+{%       endif %}
+{%       if __map_item.key == 'name' %}
+{%         if __map_item.value in __string_items %}
+{%           set __var.next_value_is_string = true %}
+{%         elif __map_item.value in __unsafe_items %}
+{%           set __var.next_value_is_unsafe = true %}
+{%         elif __map_item.value in __int_items %}
+{%           set __var.next_value_is_int = true %}
+{%         endif %}
+{%       endif %}
+{%       if __map_item.key == 'value' %}
+{%         if __var.next_value_is_string %}
+{%           set __map_item_value = '"' + (__map_item_value if (__map_item_value is defined) else __map_item.value) + '"' %}
+{%           set __var.next_value_is_string = false %}
+{%         elif __var.next_value_is_unsafe %}
+{%           set __map_item_value = '{% raw %}"' + (__map_item_value if (__map_item_value is defined) else __map_item.value) + '"{% endraw %}' %}
+{%           set __var.next_value_is_unsafe = false %}
+{%         elif __var.next_value_is_int %}
+{%           set __map_item_value = ((__map_item_value if (__map_item_value is defined) else __map_item.value) | default(0, true)) %}
+{%           set __var.next_value_is_int = false %}
+{%         endif %}
+{%       endif %}
+{%       if loop.index == 1 %}
   - {{ __map_item.key }}: {{ __map_item_value if (__map_item_value is defined) else __map_item.value | default('""' if __map_item.key not in __list_items else [], true) | replace("\\'", "''") | replace('*', '') }}
-{%     else %}
+{%       else %}
     {{ __map_item.key }}: {{ __map_item_value if (__map_item_value is defined) else __map_item.value | default('""' if __map_item.key not in __list_items else [], true) | replace("\\'", "''") | replace('*', '') }}
+{%       endif %}
 {%     endif %}
 {%-  endfor %}
 {% endfor %}

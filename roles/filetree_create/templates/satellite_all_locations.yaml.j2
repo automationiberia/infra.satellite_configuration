@@ -3,7 +3,7 @@ satellite_locations: {{ [] if info_list | length == 0 }}
 {% set __excluded_fields = ['created_at', 'updated_at', 'id', 'organization_id'] %}
 {% set __excluded_subitems = ['id'] %}
 {% set __list_items = [] %}
-{% set __empty_values = [None, ''] %}
+{% set __empty_values = [None, 'None', '', {}, [], [{}]] %}
 {% for i in info_list %}
 {%   for __map_item in (i | dict2items) if __map_item.key not in __excluded_fields and __map_item.value not in __empty_values %}
 {%     if __map_item.value | type_debug == 'dict' %}

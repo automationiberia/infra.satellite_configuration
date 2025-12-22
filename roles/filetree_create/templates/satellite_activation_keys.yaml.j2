@@ -19,7 +19,7 @@ satellite_activation_keys: {{ [] if info_list | length == 0 }}
                            ] %}
 {% set __excluded_subitems = ['id'] %}
 {% set __list_items = ['host_collections'] %}
-{% set __empty_values = [None, ''] %}
+{% set __empty_values = [None, 'None', '', {}, [], [{}]] %}
 {% set __translate = [{'environment': 'lifecycle_environment'}] %}
 {% set __do_translate = false %}
 {% for i in info_list %}
