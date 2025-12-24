@@ -1,98 +1,105 @@
 ---
 # defaults file for dispatch
 - name: Manage foreman/katello settings
-  include_tasks: satellite_settings.yml
+  include_tasks: satellite_settings.yaml
   args:
     apply:
       tags: satellite_settings
   tags: satellite_settings
 
 - name: Manage LDAP Authentication
-  include_tasks: satellite_ldap.yml
+  include_tasks: satellite_ldap.yaml
   args:
     apply:
       tags: satellite_ldap
   tags: satellite_ldap
 
 - name: Manage external usegroups
-  include_tasks: satellite_external_usegroups.yml
+  include_tasks: satellite_external_usegroups.yaml
   args:
     apply:
       tags: satellite_external_usegroups
   tags: satellite_external_usegroups
 
 - name: Create organizations
-  include_tasks: satellite_organizations.yml
+  include_tasks: satellite_organizations.yaml
   args:
     apply:
       tags: satellite_organizations
   tags: satellite_organizations
 
 - name: Manage locations
-  include_tasks: satellite_locations.yml
+  include_tasks: satellite_locations.yaml
   args:
     apply:
       tags: satellite_locations
   tags: satellite_locations
 
 - name: Manage Manifest
-  include_tasks: satellite_manifest.yml
+  include_tasks: satellite_manifest.yaml
   args:
     apply:
       tags: satellite_manifest
   tags: satellite_manifest
 
 - name: Manage lifecycle_environments
-  include_tasks: satellite_lifecycle_environments.yml
+  include_tasks: satellite_lifecycle_environments.yaml
   args:
     apply:
       tags: satellite_lifecycles
   tags: satellite_lifecycles
 
+- name: Manage Repository Sets
+  include_tasks: satellite_repository_sets.yaml
+  args:
+    apply:
+      tags: satellite_repository_sets
+  tags: satellite_repository_sets
+
 - name: Manage repositories
-  include_tasks: satellite_repositories.yml
+  include_tasks: satellite_repositories.yaml
   args:
     apply:
       tags: satellite_repositories
   tags: satellite_repositories
 
 - name: Manage sync plans
-  include_tasks: satellite_sync_plans.yml
+  include_tasks: satellite_sync_plans.yaml
   args:
     apply:
       tags: satellite_sync_plans
   tags: satellite_sync_plans
 
 - name: Manage content views
-  include_tasks: satellite_content_views.yml
+  include_tasks: satellite_content_views.yaml
   args:
     apply:
       tags: satellite_content_views
   tags: satellite_content_views
 
 - name: Manage content views filters
-  include_tasks: satellite_content_views_filter.yml
+  include_tasks: satellite_content_views_filter.yaml
   args:
     apply:
       tags: satellite_content_views_filter
   tags: satellite_content_views_filter
 
 - name: Publish and promote content views
-  include_tasks: satellite_cv_versions.yml
+  include_tasks: satellite_cv_versions.yaml
   args:
     apply:
       tags: satellite_cv_publish_promote
   tags: satellite_cv_publish_promote
 
 - name: Manage Activation Keys
-  include_tasks: satellite_activation_keys.yml
+  include_tasks: satellite_activation_keys.yaml
   args:
     apply:
       tags: satellite_activation_keys
   tags: satellite_activation_keys
 
 - name: Manage host_collections
-  include_tasks: satellite_host_collections.yml
+  include_tasks: satellite_host_collections.yaml
   args:
     apply:
       tags: satellite_host_collections

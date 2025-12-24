@@ -25,7 +25,8 @@
 
 - name: "Populate {{ __task_filetree_read.name }} list"
   ansible.builtin.set_fact:
-    "__populate_{{ __task_filetree_read.var }}": "{{ (lookup('vars', '__populate_' + __task_filetree_read.var, default=[]) + __populate_list_item.ansible_facts[__task_filetree_read.var]) | unique(case_sensitive='true') }}"
+    "__populate_{{ __task_filetree_read.var }}": "{{ (lookup('vars', '__populate_' + __task_filetree_read.var, default=[]) + __populate_list_item.ansible_facts[__task_filetree_read.var]) }}"
+    # "__populate_{{ __task_filetree_read.var }}": "{{ (lookup('vars', '__populate_' + __task_filetree_read.var, default=[]) + __populate_list_item.ansible_facts[__task_filetree_read.var]) | unique(case_sensitive='true') }}"
   loop: "{{ __contents_filetree_item.results }}"
   loop_control:
     loop_var: __populate_list_item
