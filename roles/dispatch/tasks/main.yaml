@@ -35,13 +35,6 @@
       tags: satellite_locations
   tags: satellite_locations
 
-- name: Manage Manifest
-  include_tasks: satellite_manifest.yaml
-  args:
-    apply:
-      tags: satellite_manifest
-  tags: satellite_manifest
-
 - name: Manage lifecycle_environments
   include_tasks: satellite_lifecycle_environments.yaml
   args:
