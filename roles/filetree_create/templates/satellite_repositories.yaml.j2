@@ -1,5 +1,30 @@
 ---
 satellite_repositories: {{ [] if detailed_info.results | length == 0 }}
+{% set __excluded_fields = ['created_at', 'updated_at', 'id', 'organization_id', 'http_proxy', 'content_view_version_id', 'last_contents_changed' ] %}
+{% set __excluded_subitems = ['id'] %}
+{% set __list_items = [] %}
+{% set __empty_values = [None, 'None', '', "", {}, [], [{}]] %}
+{% for repo in detailed_info.results %}
+{%   for __map_item in (repo.json | dict2items) if __map_item.key not in __excluded_fields and __map_item.value not in __empty_values %}
+{%     if __map_item.value | type_debug == 'dict' %}
+{%       set __map_item_value = dict(__map_item.value.items() | rejectattr('0', 'in', __excluded_subitems) | rejectattr('1', 'in', __empty_values)) %}
+{%     endif %}
+{%     if __map_item.key in ['organization', 'product'] %}
+{%       set __map_item_value = __map_item.value.name %}
+{%     endif %}
+{%     if (__map_item_value if (__map_item.value | type_debug == 'dict') else __map_item.value) not in __empty_values %}
+{%       if loop.index == 1 %}
+  - {{ __map_item.key }}: {{ __map_item_value if (__map_item.value | type_debug == 'dict') else __map_item.value | default('""' if __map_item.key not in __list_items else []) | replace("\\'", "''") }}
+{%       else %}
+    {{ __map_item.key }}: {{ __map_item_value if (__map_item.value | type_debug == 'dict') else __map_item.value | default('""' if __map_item.key not in __list_items else []) | replace("\\'", "''") }}
+{%       endif %}
+{%     endif %}
+{%-  endfor %}
+{% endfor %}
+...
+{#
+---
+satellite_repositories: {{ [] if detailed_info.results | length == 0 }}
 {% for repo in detailed_info.results %}
   - name: "{{ repo.json.name | trim }}"
     label: "{{ repo.json.label }}"
@@ -38,3 +63,4 @@ satellite_repositories: {{ [] if detailed_info.results | length == 0 }}
     gpg_key: "{{ repo.json.gpg_key.name }}"
 {% endif %}
 {% endfor %}
+#}

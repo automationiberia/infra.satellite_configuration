@@ -1,109 +1,138 @@
 ---
-- include_vars:
-    file: "{{ item }}"
-  loop:
-    - "{{ dir_orgs_vars }}/configure_foreman_katello_credentials.yml"
-    - "{{ dir_orgs_vars }}/configure_foreman_katello_general.yml"
-    - "{{ dir_orgs_vars }}/{{ orgs }}/configure_katello_repositories.yml"
-  when: orgs is defined and dir_orgs_vars is defined
-
 - name: "Enable repository sets"
-  theforeman.foreman.katello_repository_set:
-    username: "{{ configure_foreman_username }}"
-    password: "{{ configure_foreman_password }}"
-    server_url: "{{ configure_foreman_server_url }}"
-    validate_certs: "{{ configure_foreman_validate_certs }}"
-    name: "{{  item.name }}"
-    organization: "{{ item.organization }}"
-    product: "{{ item.product }}"
-    repositories: "{{ item.repositories }}"
-    state: "{{ item.state }}"
-  loop: "{{ configure_katello_repository_sets }}"
-  when: configure_katello_repository_sets is defined
-  delegate_to: "{{ 'localhost' if foreman_local else omit }}"
+  redhat.satellite.repository:
+    # Required parameters
+    name: "{{  __current_repository.name }}"
+    product: "{{ __current_repository.product }}"
+    content_type: "{{ __current_repository.content_type }}"
+    # Optional parameters
+    organization: "{{ __current_repository.organization | default(omit) }}"
+    description: "{{ __current_repository.description | default(omit) }}"
+    url: "{{ __current_repository.url | default(omit) }}"
+    ignore_global_proxy: "{{ __current_repository.ignore_global_proxy | default(omit) }}"
+    http_proxy_policy: "{{ __current_repository.http_proxy_policy | default(omit) }}"
+    http_proxy: "{{ __current_repository.http_proxy | default(omit) }}"
+    gpg_key: "{{ __current_repository.gpg_key | default(omit) }}"
+    ssl_ca_cert: "{{ __current_repository.ssl_ca_cert | default(omit) }}"
+    ssl_client_cert: "{{ __current_repository.ssl_client_cert | default(omit) }}"
+    ssl_client_key: "{{ __current_repository.ssl_client_key | default(omit) }}"
+    download_concurrency: "{{ __current_repository.download_concurrency | default(omit) }}"
+    download_policy: "{{ __current_repository.download_policy | default(omit) }}"
+    mirror_on_sync: "{{ __current_repository.mirror_on_sync | default(omit) }}"
+    mirroring_policy: "{{ __current_repository.mirroring_policy | default(omit) }}"
+    verify_ssl_on_sync: "{{ __current_repository.verify_ssl_on_sync | default(omit) }}"
+    deb_errata_url: "{{ __current_repository.deb_errata_url | default(omit) }}"
+    unprotected: "{{ __current_repository.unprotected | default(omit) }}"
+    checksum_type: "{{ __current_repository.checksum_type | default(omit) }}"
+    ignorable_content: "{{ __current_repository.ignorable_content | default(omit) }}"
+    ansible_collection_requirements: "{{ __current_repository.ansible_collection_requirements | default(omit) }}"
+    auto_enabled: "{{ __current_repository.auto_enabled | default(omit) }}"
+    os_versions: "{{ __current_repository.os_versions | default(omit) }}"
+    arch: "{{ __current_repository.arch | default(omit) }}"
+    include_tags: "{{ __current_repository.include_tags | default(omit) }}"
+    exclude_tags: "{{ __current_repository.exclude_tags | default(omit) }}"
+    retain_package_versions_count: "{{ __current_repository.retain_package_versions_count | default(omit) }}"
+    metadata_expire: "{{ __current_repository.metadata_expire | default(omit) }}"
+    ansible_collection_auth_token: "{{ __current_repository.ansible_collection_auth_token | default(omit) }}"
+    ansible_collection_auth_url: "{{ __current_repository.ansible_collection_auth_url | default(omit) }}"
+    depth: "{{ __current_repository.depth | default(omit) }}"
+    exclude_refs: "{{ __current_repository.exclude_refs | default(omit) }}"
+    excludes: "{{ __current_repository.excludes | default(omit) }}"
+    include_refs: "{{ __current_repository.include_refs | default(omit) }}"
+    includes: "{{ __current_repository.includes | default(omit) }}"
+    keep_latest_packages: "{{ __current_repository.keep_latest_packages | default(omit) }}"
+    package_types: "{{ __current_repository.package_types | default(omit) }}"
+    upstream_authentication_token: "{{ __current_repository.upstream_authentication_token | default(omit) }}"
+    state: "{{ __current_repository.state | default(omit) }}"
+  loop: "{{ satellite_repositories }}"
+  loop_control:
+    loop_var: __current_repository
+    label: "{{ __current_repository.name | default(__current_repository.label) }}"
+  when: satellite_repositories is defined
+  delegate_to: "localhost"
   notify:
     - sync all repositories
 
-- name: ensure custom products exist
-  theforeman.foreman.katello_product:
-    username: "{{ configure_foreman_username }}"
-    password: "{{ configure_foreman_password }}"
-    server_url: "{{ configure_foreman_server_url }}"
-    validate_certs: "{{ configure_foreman_validate_certs }}"
-    organization: "{{ item.organization }}"
-    name: "{{ item.product }}"
-  loop: "{{ configure_katello_repositories }}"
-  when: configure_katello_repositories is defined
-  delegate_to: "{{ 'localhost' if foreman_local else omit }}"
-
-- name: ensure directory for GPG keys exist
-  file:
-    path: '/tmp/gpg-keys'
-    state: directory
-  delegate_to: "{{ 'localhost' if foreman_local else omit }}"
-
-- name: ensure GPG keys are present
-  get_url:
-    url: "{{ item.gpg_key }}"
-    dest: "/tmp/gpg-keys/{{ item.gpg_key.split('/')[-1] }}"
-  loop: "{{ configure_katello_repositories }}"
-  when: configure_katello_repositories is defined and item.gpg_key
-  delegate_to: "{{ 'localhost' if foreman_local else omit }}"
-
-- name: ensure GPG keys exist
-  theforeman.foreman.katello_content_credential:
-    username: "{{ configure_foreman_username }}"
-    password: "{{ configure_foreman_password }}"
-    server_url: "{{ configure_foreman_server_url }}"
-    validate_certs: "{{ configure_foreman_validate_certs }}"
-    organization: "{{ item.organization }}"
-    name: "{{ item.gpg_key.split('/')[-1] }}"
-    content_type: gpg_key
-    content: "/tmp/gpg-keys/{{ item.gpg_key.split('/')[-1] }}"
-  loop: "{{ configure_katello_repositories }}"
-  #with_filetree: /tmp/gpg-keys/
-  when: configure_katello_repositories is defined and item.gpg_key
-  delegate_to: "{{ 'localhost' if foreman_local else omit }}"
-
-
-- name: "Enable Custom repositories with gpg"
-  theforeman.foreman.katello_repository:
-    username: "{{ configure_foreman_username }}"
-    password: "{{ configure_foreman_password }}"
-    server_url: "{{ configure_foreman_server_url }}"
-    validate_certs: "{{ configure_foreman_validate_certs }}"
-    name: "{{  item.name }}"
-    organization: "{{ item.organization }}"
-    product: "{{ item.product }}"
-    state: "{{ item.state | default(omit) }}"
-    content_type: "{{ item.content_type }}"
-    url: "{{ item.url | default(omit) }}"
-    gpg_key: "{{ item.gpg_key.split('/')[-1] | default(omit) }}"
-    download_policy: "{{ item.download_policy | default(omit) }}"
-  loop: "{{ configure_katello_repositories }}"
-  when: configure_katello_repositories is defined and item.gpg_key
-  delegate_to: "{{ 'localhost' if foreman_local else omit }}"
-  notify:
-    - sync all repositories
-
-- name: "Enable Custom repositories WITOUT gpg"
-  theforeman.foreman.katello_repository:
-    username: "{{ configure_foreman_username }}"
-    password: "{{ configure_foreman_password }}"
-    server_url: "{{ configure_foreman_server_url }}"
-    validate_certs: "{{ configure_foreman_validate_certs }}"
-    name: "{{  item.name }}"
-    organization: "{{ item.organization }}"
-    product: "{{ item.product }}"
-    state: "{{ item.state | default(omit) }}"
-    content_type: "{{ item.content_type }}"
-    url: "{{ item.url | default(omit) }}"
-    download_policy: "{{ item.download_policy | default(omit) }}"
-  loop: "{{ configure_katello_repositories }}"
-  when: configure_katello_repositories is defined and item.gpg_key is not defined
-  delegate_to: "{{ 'localhost' if foreman_local else omit }}"
-  notify:
-    - sync all repositories
-
-- name: Sync Repositories
-  meta: flush_handlers
+# - name: ensure custom products exist
+#   theforeman.foreman.katello_product:
+#     username: "{{ configure_foreman_username }}"
+#     password: "{{ configure_foreman_password }}"
+#     server_url: "{{ configure_foreman_server_url }}"
+#     validate_certs: "{{ configure_foreman_validate_certs }}"
+#     organization: "{{ item.organization }}"
+#     name: "{{ item.product }}"
+#   loop: "{{ configure_katello_repositories }}"
+#   when: configure_katello_repositories is defined
+#   delegate_to: "{{ 'localhost' if foreman_local else omit }}"
+#
+# - name: ensure directory for GPG keys exist
+#   file:
+#     path: '/tmp/gpg-keys'
+#     state: directory
+#   delegate_to: "{{ 'localhost' if foreman_local else omit }}"
+#
+# - name: ensure GPG keys are present
+#   get_url:
+#     url: "{{ item.gpg_key }}"
+#     dest: "/tmp/gpg-keys/{{ item.gpg_key.split('/')[-1] }}"
+#   loop: "{{ configure_katello_repositories }}"
+#   when: configure_katello_repositories is defined and item.gpg_key
+#   delegate_to: "{{ 'localhost' if foreman_local else omit }}"
+#
+# - name: ensure GPG keys exist
+#   theforeman.foreman.katello_content_credential:
+#     username: "{{ configure_foreman_username }}"
+#     password: "{{ configure_foreman_password }}"
+#     server_url: "{{ configure_foreman_server_url }}"
+#     validate_certs: "{{ configure_foreman_validate_certs }}"
+#     organization: "{{ item.organization }}"
+#     name: "{{ item.gpg_key.split('/')[-1] }}"
+#     content_type: gpg_key
+#     content: "/tmp/gpg-keys/{{ item.gpg_key.split('/')[-1] }}"
+#   loop: "{{ configure_katello_repositories }}"
+#   #with_filetree: /tmp/gpg-keys/
+#   when: configure_katello_repositories is defined and item.gpg_key
+#   delegate_to: "{{ 'localhost' if foreman_local else omit }}"
+#
+#
+# - name: "Enable Custom repositories with gpg"
+#   theforeman.foreman.katello_repository:
+#     username: "{{ configure_foreman_username }}"
+#     password: "{{ configure_foreman_password }}"
+#     server_url: "{{ configure_foreman_server_url }}"
+#     validate_certs: "{{ configure_foreman_validate_certs }}"
+#     name: "{{  item.name }}"
+#     organization: "{{ item.organization }}"
+#     product: "{{ item.product }}"
+#     state: "{{ item.state | default(omit) }}"
+#     content_type: "{{ item.content_type }}"
+#     url: "{{ item.url | default(omit) }}"
+#     gpg_key: "{{ item.gpg_key.split('/')[-1] | default(omit) }}"
+#     download_policy: "{{ item.download_policy | default(omit) }}"
+#   loop: "{{ configure_katello_repositories }}"
+#   when: configure_katello_repositories is defined and item.gpg_key
+#   delegate_to: "{{ 'localhost' if foreman_local else omit }}"
+#   notify:
+#     - sync all repositories
+#
+# - name: "Enable Custom repositories WITOUT gpg"
+#   theforeman.foreman.katello_repository:
+#     username: "{{ configure_foreman_username }}"
+#     password: "{{ configure_foreman_password }}"
+#     server_url: "{{ configure_foreman_server_url }}"
+#     validate_certs: "{{ configure_foreman_validate_certs }}"
+#     name: "{{  item.name }}"
+#     organization: "{{ item.organization }}"
+#     product: "{{ item.product }}"
+#     state: "{{ item.state | default(omit) }}"
+#     content_type: "{{ item.content_type }}"
+#     url: "{{ item.url | default(omit) }}"
+#     download_policy: "{{ item.download_policy | default(omit) }}"
+#   loop: "{{ configure_katello_repositories }}"
+#   when: configure_katello_repositories is defined and item.gpg_key is not defined
+#   delegate_to: "{{ 'localhost' if foreman_local else omit }}"
+#   notify:
+#     - sync all repositories
+#
+# - name: Sync Repositories
+#   meta: flush_handlers
