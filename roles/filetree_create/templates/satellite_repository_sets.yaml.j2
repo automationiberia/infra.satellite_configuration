@@ -1,8 +1,8 @@
 ---
 satellite_repository_sets: {{ [] if info_list.info_list | length == 0 }}
 {% set __required_fields = ['repositories'] %}
-{% set __excluded_fields = ['id', 'organization_id', 'created_at', 'updated_at'] %}
-{% set __excluded_subitems = ['id', 'cp_id', 'label', 'description', 'sync_state', 'last_sync', 'last_sync_words', 'repository_count'] %}
+{% set __excluded_fields = ['id', 'organization_id', 'product', 'created_at', 'updated_at'] %}
+{% set __excluded_subitems = ['id', 'cp_id', 'name', 'product', 'description', 'sync_state', 'last_sync', 'last_sync_words', 'repository_count'] %}
 {% set __list_items = [] %}
 {% set __empty_values = [None, 'None', '', {}, [], [{}]] %}
 {% for i in info_list.info_list %}
@@ -21,9 +21,16 @@ satellite_repository_sets: {{ [] if info_list.info_list | length == 0 }}
 {%       endfor %}
 {%       set __map_item_value = __var.map_item_value %}
 {%     endif %}
-{%     if __map_item.key == 'product' %}
-{%         set __map_item_value = __map_item.value.name %}
-{%       endif %}
+{%     if   __map_item.key == 'product' %}
+{%       set __map_item_value = __map_item.value.name %}
+{%     endif %}
+{%     if __map_item.key == 'repositories' %}
+{%       set __var.map_item_value = [] %}
+{%       for __value_item in __map_item.value if __value_item.releasever not in __empty_values %}
+{%         set __var.map_item_value = (__var.map_item_value | default([])) + [{'releasever': __value_item.releasever}] %}
+{%       endfor %}
+{%       set __map_item_value = __var.map_item_value %}
+{%     endif %}
 {%     if loop.index == 1 %}
   - organization: {{ info_list.organization }}
 {%     endif %}

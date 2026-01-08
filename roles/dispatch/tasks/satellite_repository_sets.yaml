@@ -2,19 +2,19 @@
 - name: Create Repository Sets
   redhat.satellite.repository_set:
     # Mandatory params (required one of)
-    name: "{{ __current_repository_set.name }}"
     label: "{{ __current_repository_set.label }}"
     repositories: "{{ __current_repository_set.repositories }}"
     # all_repositories is mandatory only if repositories is not specified
     all_repositories: "{{ __current_repository_set.all_repositories | default(false) }}"
     # Optional params
     description: "{{ __current_repository_set.description | default(omit) }}"
+    name: "{{ __current_repository_set.name | default(omit) }}"
     product: "{{ __current_repository_set.product | default(omit) }}"
     organization: "{{ __current_repository_set.organization }}"
     state: "{{ 'enabled' if (__current_repository_set.state | default('false')) else 'disabled' | default('disabled') }}"
   loop: "{{ satellite_repository_sets }}"
   loop_control:
     loop_var: __current_repository_set
-    label: "{{ __current_repository_set.name }}"
+    label: "{{ __current_repository_set.name | default(__current_repository_set.label) }}"
   when: satellite_repository_sets is defined
   delegate_to: localhost
