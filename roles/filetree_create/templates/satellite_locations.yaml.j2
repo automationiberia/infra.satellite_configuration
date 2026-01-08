@@ -1,11 +1,28 @@
 ---
 satellite_locations: {{ [] if info_list | length == 0 }}
-{% for location in info_list %}
-  - name: "{{ location.name }}"
-{% if location.description != None and location.description != "" %}
-    description: "{{ location.description | regex_replace('[\\r\\n\\t]+',' ') }}"
-{% endif %}
-{% if location.parent_name != None %}
-    parent: "{{ location.parent_name }}"
-{% endif %}
+{% set __excluded_fields = ['created_at', 'updated_at', 'id', 'title' ] %}
+{% set __excluded_subitems = ['id'] %}
+{% set __list_items = [] %}
+{% set __empty_values = [None, 'None', '', {}, [], [{}]] %}
+{% for i in info_list %}
+{%   for __map_item in (i | dict2items) if __map_item.key not in __excluded_fields and __map_item.value not in __empty_values %}
+{%     if __map_item.value | type_debug == 'dict' %}
+{%       set __map_item_value = dict(__map_item.value.items() | rejectattr('0', 'in', __excluded_subitems)) %}
+{%     endif %}
+{%     if loop.index == 1 %}
+  - {{ __map_item.key }}: {{ __map_item_value if (__map_item.value | type_debug == 'dict') else __map_item.value | default('""' if __map_item.key not in __list_items else [], true) | replace("\\'", "''") }}
+{%     else %}
+    {{ __map_item.key }}: {{ __map_item_value if (__map_item.value | type_debug == 'dict') else __map_item.value | default('""' if __map_item.key not in __list_items else [], true) | replace("\\'", "''") }}
+{%     endif %}
+{%-  endfor %}
+{%   set __location_organizations = lookup('ansible.builtin.url', satellite.server_url + '/api/locations/' + i.name + '/organizations?per_page=all',
+                                         username=satellite.admin.username, password=satellite.admin.password,
+                                         validate_certs=satellite.validate_certs, force_basic_auth='True', split_lines='False') | from_json %}
+{%   if __location_organizations | length > 0 %}
+    organizations:
+{%     for __current_organization in __location_organizations.results %}
+      - {{ __current_organization.name }}
+{%     endfor %}
+{%   endif %}
 {% endfor %}
+...

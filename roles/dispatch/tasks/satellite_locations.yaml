@@ -1,21 +1,14 @@
 ---
-- include_vars:
-    file: "{{ item }}"
-  loop:
-    - "{{ dir_orgs_vars }}/configure_foreman_katello_credentials.yml"
-    - "{{ dir_orgs_vars }}/configure_foreman_katello_general.yml"
-    - "{{ dir_orgs_vars }}/{{ orgs }}/configure_foreman_locations.yml"
-  when: orgs is defined and dir_orgs_vars is defined
-
 - name: ensure locations exists
-  theforeman.foreman.foreman_location:
-    username: "{{ configure_foreman_username }}"
-    password: "{{ configure_foreman_password }}"
-    server_url: "{{ configure_foreman_server_url }}"
-    validate_certs: "{{ configure_foreman_validate_certs }}"
-    name: "{{ item.name }}"
-    state: "{{ item.state }}"
-    organizations:
-      - "{{ item.organization }}"
-  loop: "{{ configure_foreman_locations }}"
-  delegate_to: "{{ 'localhost' if foreman_local else omit }}"
+  redhat.satellite.location:
+    # Mandatory parameters
+    name: "{{ __current_organization.name }}"
+    # Optional parameters
+    state: "{{ __current_organization.state | default(omit) }}"
+    organizations: "{{ __current_organization.organizations | default(omit) }}"
+  loop: "{{ satellite_locations }}"
+  loop_control:
+    loop_var: __current_organization
+    label: "{{ __current_organization.name }}"
+  delegate_to: "localhost"
+...
