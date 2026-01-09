@@ -4,6 +4,7 @@
 satellite_configuration_filetree_read_secure_logging: "{{ satellite_configuration_secure_logging | default(true) }}"
 
 satellite_activation_keys: []
+satellite_auth_sources_ldap: []
 satellite_composite_content_views: []
 satellite_content_credentials: []
 satellite_content_view_filters: []
@@ -23,6 +24,7 @@ satellite_sync_plans: []
 
 satellite_configuration_filetree_read_tasks:
   - {name: satellite_activation_keys,         var: satellite_activation_keys,         tags: satellite_activation_keys,         path: "{{ dir_orgs_vars }}/{{ orgs }}/env/common/satellite_activation_keys.d/"}
+  - {name: satellite_auth_sources_ldap,       var: satellite_auth_sources_ldap,       tags: satellite_auth_sources_ldap,       path: "{{ dir_orgs_vars }}/{{ orgs }}/env/common/satellite_auth_sources_ldap.d/"}
   - {name: satellite_composite_content_views, var: satellite_composite_content_views, tags: satellite_composite_content_views, path: "{{ dir_orgs_vars }}/{{ orgs }}/env/common/satellite_composite_content_views.d/"}
   - {name: satellite_content_credentials,     var: satellite_content_credentials,     tags: satellite_content_credentials,     path: "{{ dir_orgs_vars }}/{{ orgs }}/env/common/satellite_content_credentials.d/"}
   - {name: satellite_content_view_filters,    var: satellite_content_view_filters,    tags: satellite_content_view_filters,    path: "{{ dir_orgs_vars }}/{{ orgs }}/env/common/satellite_content_view_filters.d/"}

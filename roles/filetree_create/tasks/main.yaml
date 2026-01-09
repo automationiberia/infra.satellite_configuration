@@ -100,4 +100,10 @@
     include_tasks: get_sync_plans.yaml
   tags:
     - 'sync_plans'
+
+- block:
+  - name: Get Auth Sources LDAP
+    include_tasks: get_auth_sources_ldap.yaml
+  tags:
+    - 'auth_sources_ldap'
 ...

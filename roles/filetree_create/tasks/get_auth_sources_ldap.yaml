@@ -1,0 +1,20 @@
+---
+- name: Auth Source LDAPs | Reset the results variable
+  ansible.builtin.set_fact:
+    result_api_response: {}
+
+- name: Auth Source LDAPs | Get Info
+  include_tasks: api_call.yaml
+  vars:
+    call_type: Auth Source LDAPs
+    api_link: /api/auth_source_ldaps?per_page=all
+
+- name: Auth Source LDAPs | Set Info List
+  ansible.builtin.set_fact:
+    info_list: "{{ result_api_response.json.results | sort(attribute='id') }}"
+
+- name: Auth Source LDAPs | Template Out Results
+  include_tasks: template_out.yaml
+  vars:
+    template_type: satellite_auth_sources_ldap
+...

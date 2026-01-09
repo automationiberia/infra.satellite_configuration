@@ -8,11 +8,11 @@
   tags: satellite_settings
 
 - name: Manage LDAP Authentication
-  include_tasks: satellite_ldap.yaml
+  include_tasks: satellite_auth_sources_ldap.yaml
   args:
     apply:
-      tags: satellite_ldap
-  tags: satellite_ldap
+      tags: satellite_auth_sources_ldap
+  tags: satellite_auth_sources_ldap
 
 - name: Manage external usegroups
   include_tasks: satellite_external_usegroups.yaml

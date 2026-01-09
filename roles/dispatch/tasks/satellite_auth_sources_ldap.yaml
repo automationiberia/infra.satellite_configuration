@@ -1,0 +1,9 @@
+---
+- ansible.builtin.import_role:
+    name: redhat.satellite.auth_sources_ldap
+  vars:
+    satellite_username: "{{ username }}"
+    satellite_password: "{{ password }}"
+    satellite_server_url: "{{ server_url }}"
+    satellite_validate_certs: "{{ validate_certs }}"
+...
