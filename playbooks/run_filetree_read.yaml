@@ -2,12 +2,17 @@
 - hosts: localhost
   connection: local
   gather_facts: no
+  vars:
+    username: &username "{{ satellite.admin.username }}"
+    password: &password "{{ satellite.admin.password }}"
+    server_url: &server_url "{{ satellite.server_url }}"
+    validate_certs: &validate_certs "{{ satellite.validate_certs }}"
   module_defaults:
     group/redhat.satellite.satellite: &creds
-      username: "{{ satellite.admin.username }}"
-      password: "{{ satellite.admin.password }}"
-      server_url: "{{ satellite.server_url }}"
-      validate_certs: "{{ satellite.validate_certs }}"
+      username: *username
+      password: *password
+      server_url: *server_url
+      validate_certs: *validate_certs
   roles:
     - role: automationiberia.satellite_configuration.filetree_read
     - role: automationiberia.satellite_configuration.dispatch

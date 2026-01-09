@@ -6,13 +6,26 @@ satellite_lifecycle_environments: {{ [] if info_list | length == 0 }}
 {% set __empty_values = [None, 'None', '', {}, [], [{}]] %}
 {% for i in info_list %}
 {%   for __map_item in (i | dict2items) if __map_item.key not in __excluded_fields and __map_item.value not in __empty_values %}
+{%     set __var = namespace(map_item_value = []) %}
 {%     if __map_item.value | type_debug == 'dict' %}
-{%       set __map_item_value = dict(__map_item.value.items() | rejectattr('0', 'in', __excluded_subitems)) %}
+{%       set __var.map_item_value = dict(__map_item.value.items() | rejectattr('0', 'in', __excluded_subitems)) %}
+{%     endif %}
+{%     if __map_item.value | type_debug == 'list' %}
+{%       for __inner_item in __map_item.value %}
+{%         if __var.map_item_value | length == 0 %}
+{%           set __var.map_item_value = [dict(__inner_item.items() | rejectattr('0', 'in', __excluded_subitems))] %}
+{%         else %}
+{%           set __var.map_item_value = (__var.map_item_value | default([])) + [dict(__inner_item.items() | rejectattr('0', 'in', __excluded_subitems))] %}
+{%         endif %}
+{%       endfor %}
+{%     endif %}
+{%     if __map_item.key in ['organization', 'prior', 'successor'] %}
+{%       set __var.map_item_value = __map_item.value.name %}
 {%     endif %}
 {%     if loop.index == 1 %}
-  - {{ __map_item.key }}: {{ __map_item_value if (__map_item.value | type_debug == 'dict') else __map_item.value | default('""' if __map_item.key not in __list_items else [], true) | replace("\\'", "''") }}
+  - {{ __map_item.key }}: {{ __var.map_item_value if (__var.map_item_value | length > 0) else __map_item.value | default('""' if __map_item.key not in __list_items else [], true) | replace("\\'", "''") }}
 {%     else %}
-    {{ __map_item.key }}: {{ __map_item_value if (__map_item.value | type_debug == 'dict') else __map_item.value | default('""' if __map_item.key not in __list_items else [], true) | replace("\\'", "''") }}
+    {{ __map_item.key }}: {{ __var.map_item_value if (__var.map_item_value | length > 0) else __map_item.value | default('""' if __map_item.key not in __list_items else [], true) | replace("\\'", "''") }}
 {%     endif %}
 {%-  endfor %}
 {% endfor %}

@@ -39,8 +39,8 @@
   include_tasks: satellite_lifecycle_environments.yaml
   args:
     apply:
-      tags: satellite_lifecycles
-  tags: satellite_lifecycles
+      tags: satellite_lifecycle_environments
+  tags: satellite_lifecycle_environments
 
 - name: Manage Repository Sets
   include_tasks: satellite_repository_sets.yaml
