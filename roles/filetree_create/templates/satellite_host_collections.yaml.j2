@@ -1,0 +1,52 @@
+---
+satellite_host_collections: {{ [] if info_list | length == 0 }}
+{% set __excluded_fields = ['created_at', 'updated_at', 'id', 'organization_id'] %}
+{% set __excluded_subitems = ['id'] %}
+{% set __list_items = [] %}
+{% set __empty_values = [None, 'None', '', {}, [], [{}]] %}
+{% for i in info_list %}
+{%   for __map_item in (i | dict2items) if __map_item.key not in __excluded_fields and __map_item.value not in __empty_values %}
+{%     set __var = namespace(map_item_value = []) %}
+{%     if __map_item.value | type_debug == 'dict' %}
+{%       set __var.map_item_value = dict(__map_item.value.items() | rejectattr('0', 'in', __excluded_subitems)) %}
+{%     endif %}
+{%     if __map_item.value | type_debug == 'list' %}
+{%       for __inner_item in __map_item.value %}
+{%         if __var.map_item_value | length == 0 %}
+{%           set __var.map_item_value = [dict(__inner_item.items() | rejectattr('0', 'in', __excluded_subitems))] %}
+{%         else %}
+{%           set __var.map_item_value = (__var.map_item_value | default([])) + [dict(__inner_item.items() | rejectattr('0', 'in', __excluded_subitems))] %}
+{%         endif %}
+{%       endfor %}
+{%     endif %}
+{#
+{%     if __map_item.key in ['organizations', 'locations'] %}
+{%       set __var.map_item_value = [] %}
+{%       for __inner_item in __map_item.value %}
+{%         set __var.map_item_value = __var.map_item_value + [__inner_item.name] %}
+{%       endfor %}
+{%     endif %}
+#}
+{%     if loop.index == 1 %}
+  - {{ __map_item.key }}: {{ __var.map_item_value if (__var.map_item_value | length > 0) else __map_item.value | default('""' if __map_item.key not in __list_items else []) | replace("\\'", "''") }}
+{%     else %}
+    {{ __map_item.key }}: {{ __var.map_item_value if (__var.map_item_value | length > 0) else __map_item.value | default('""' if __map_item.key not in __list_items else []) | replace("\\'", "''") }}
+{%     endif %}
+{%-  endfor %}
+    organization: {{ (lookup('ansible.builtin.url', satellite.server_url + '/katello/api/organizations/' + (i.organization_id | string),
+                            username=satellite.admin.username, password=satellite.admin.password,
+                            validate_certs=satellite.validate_certs, force_basic_auth='True', split_lines='False') | from_json).name }}
+{% if i.total_hosts > 0 %}
+    hosts:
+{%   set __host_collection_hosts_ids = (lookup('ansible.builtin.url', satellite.server_url + '/katello/api/host_collections/' + (i.id | string),
+                            username=satellite.admin.username, password=satellite.admin.password,
+                            validate_certs=satellite.validate_certs, force_basic_auth='True', split_lines='False') | from_json).host_ids %}
+{%   for __host_id in __host_collection_hosts_ids %}
+      - {{ (lookup('ansible.builtin.url', satellite.server_url + '/api/hosts/' + (__host_id | string),
+                            username=satellite.admin.username, password=satellite.admin.password,
+                            validate_certs=satellite.validate_certs, force_basic_auth='True', split_lines='False') | from_json).name }}
+{%   endfor %}
+{% endif %}
+{% endfor %}
+...
+

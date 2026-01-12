@@ -1,34 +1,23 @@
 ---
-- include_vars:
-    file: "{{ item }}"
-  loop:
-    - "{{ dir_orgs_vars }}/configure_foreman_katello_credentials.yml"
-    - "{{ dir_orgs_vars }}/configure_foreman_katello_general.yml"
-    - "{{ dir_orgs_vars }}/{{ orgs }}/configure_katello_host_collections.yml"
-  when: orgs is defined and dir_orgs_vars is defined
-
 - name: Ensure Host Collection is correct
-  theforeman.foreman.katello_host_collection:
-    username: "{{ configure_foreman_username }}"
-    password: "{{ configure_foreman_password }}"
-    server_url: "{{ configure_foreman_server_url }}"
-    validate_certs: "{{ configure_foreman_validate_certs }}"
-    name: "{{ item.name }}"
-    organization: "{{ orgs }}"
-    description: "{{ item.description  | default(omit) }}"
-    updated_name: "{{ item.updated_name  | default(omit) }}"
-    state: "{{ item.state  | default(omit) }}"
-  loop: "{{ configure_katello_host_collections }}"
-  when: configure_katello_host_collections is defined
-  delegate_to: "{{ 'localhost' if foreman_local else omit }}"
+  redhat.satellite.host_collection:
+    # Mandatory parameters
+    name: "{{ __current_host_collection.name }}"
+    organization: "{{ __current_host_collection.organization }}"
+    # Optional parameters
+    description: "{{ __current_host_collection.description  | default(omit) }}"
+    updated_name: "{{ __current_host_collection.updated_name  | default(omit) }}"
+    state: "{{ __current_host_collection.state  | default(omit) }}"
+  loop: "{{ satellite_host_collections }}"
+  loop_control:
+    loop_var: __current_host_collection
+    label: "{{ __current_host_collection.name }}"
+  when: satellite_host_collections is defined
+  delegate_to: "localhost"
 
-- name: Add hosts to a host collection
-  command: "hammer host-collection add-host --name {{ item.name }} --hosts {% for host in item.hosts%}{{ host }}{% if not loop.last %},{% endif %}{% endfor %} --organization {{ orgs }}"
-  become: "yes"
-  register: cmd_purge_result
-  loop: "{{ configure_katello_host_collections }}"
-  failed_when: >
-    (cmd_purge_result.rc not in [0, 73])
-  changed_when: (cmd_purge_result.rc in [0])
-  when: configure_katello_host_collections is defined and item.hosts is defined 
-  delegate_to: "{{ satellite_fqdn }}"
+- name: Assign the Host Collection to each host
+  include_tasks: satellite_host_collections_assign_to_host.yaml
+  loop: "{{ satellite_host_collections | subelements('hosts', skip_missing=true) }}"
+  loop_control:
+    loop_var: __current_host_to_assign
+...

@@ -106,4 +106,10 @@
     include_tasks: get_auth_sources_ldap.yaml
   tags:
     - 'auth_sources_ldap'
+
+- block:
+  - name: Get Host Collections
+    include_tasks: get_host_collections.yaml
+  tags:
+    - 'host_collections'
 ...

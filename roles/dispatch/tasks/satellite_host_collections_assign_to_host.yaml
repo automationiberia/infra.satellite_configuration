@@ -1,0 +1,72 @@
+---
+- name: "Reset the result_api_response variable"
+  ansible.builtin.set_fact:
+    result_api_response: {}
+
+- name: "Get the id of the Host Collection '{{ __current_host_to_assign[0].name }}'"
+  include_tasks: api_call.yaml
+  vars:
+    call_type: "Get the id of the Host Collection '{{ __current_host_to_assign[0].name }}'"
+    api_link: "/katello/api/host_collections/?name={{ __current_host_to_assign[0].name }}"
+
+- name: "Retain the information related to the Host Collection '{{ __current_host_to_assign[0].name }}'"
+  ansible.builtin.set_fact:
+    __current_host_collection:
+      name: "{{ result_api_response.json.results[0].name }}"
+      id: "{{ result_api_response.json.results[0].id }}"
+      organization_id: "{{ result_api_response.json.results[0].organization_id }}"
+
+- name: "Reset the result_api_response variable"
+  ansible.builtin.set_fact:
+    result_api_response: {}
+
+- name: "Get the host_collections' for the current host '{{ __current_host_to_assign[1] }}'"
+  ansible.builtin.include_tasks: api_call.yaml
+  vars:
+    call_type: "Assign Hosts to the Host Collection {{ __current_host_to_assign[0].name }}"
+    api_link: "/api/hosts/{{ __current_host_to_assign[1] }}"
+
+- name: "Retain the information related to the Host '{{ result_api_response.json.name }}'"
+  ansible.builtin.set_fact:
+    __current_host:
+      name: "{{ result_api_response.json.name }}"
+      id: "{{ result_api_response.json.id }}"
+
+- name: "Reset the result_api_response variable"
+  ansible.builtin.set_fact:
+    result_api_response: {}
+
+- name: "Add the host '{{ __current_host.name }}' to the Host Collection '{{ __current_host_collection.name }}'"
+  include_tasks: api_call.yaml
+  vars:
+    api_method: PUT
+    call_type: "Add the host '{{ __current_host.name }}' to the Host Collection '{{ __current_host_collection.name }}'"
+    # Model: https://localhost:8443/katello/api/v2/host_collections/2/add_hosts?organization_id=6
+    api_link: "/katello/api/v2/host_collections/{{ __current_host_collection.id }}/add_hosts?organization_id={{ __current_host_collection.organization_id }}"
+    body_format: json
+    body:
+      id: "{{  __current_host_collection.id }}"
+      host_ids:
+        - "{{ __current_host.id }}"
+
+- name: "Show the result of the operation on the Host Collection '{{ __current_host_collection.name }}' for the host '{{ __current_host.name }}'"
+  ansible.builtin.debug:
+    msg:
+      - "{{ 'Changed' if __changed
+                       else
+                         'Failed: ' + (result_api_response.json.displayMessages.error | string) if __failed
+                                  else
+                                    'OK' if __ok
+                                        else 'Unknown'
+          }}"
+  vars:
+    __changed: "{{ 'Successfully added' in result_api_response.json.displayMessages.success | join(',') }}"
+    __ok: "{{ 'already exists' in result_api_response.json.displayMessages.error | join(',') }}"
+    __failed: "{{ 'not found' in result_api_response.json.displayMessages.error | join(',') }}"
+  failed_when: __failed
+  changed_when: __changed
+# Possible outputs:
+#   "content": "  {\"displayMessages\":{\"success\":[],\"error\":[\"Host with ID 2 already exists in the host collection.\"]}}\n",
+#   "content": "  {\"displayMessages\":{\"success\":[\"Successfully added 1 Host(s).\"],\"error\":[]}}\n",
+#   "content": "  {\"displayMessages\":{\"success\":[],\"error\":[\"Host with ID 2 not found.\"]}}\n",
+...
