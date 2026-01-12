@@ -15,6 +15,7 @@
   when: satellite_host_collections is defined
   delegate_to: "localhost"
 
+# https://github.com/theforeman/foreman-ansible-modules/issues/1178
 - name: Assign the Host Collection to each host
   include_tasks: satellite_host_collections_assign_to_host.yaml
   loop: "{{ satellite_host_collections | subelements('hosts', skip_missing=true) }}"
