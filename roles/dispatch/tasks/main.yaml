@@ -97,3 +97,11 @@
     apply:
       tags: satellite_host_collections
   tags: satellite_host_collections
+
+- name: Create products
+  include_tasks: satellite_products.yaml
+  args:
+    apply:
+      tags: satellite_products
+  tags: satellite_products
+...

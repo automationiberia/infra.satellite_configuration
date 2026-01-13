@@ -1,0 +1,22 @@
+---
+- name: Create/Update Products
+  redhat.satellite.product:
+    # Mandatory prams
+    name: "{{ __current_satellite_product.name }}"
+    organization: "{{ __current_satellite_product.organization }}"
+    # Optional params
+    label: "{{ __current_satellite_product.label | default(omit) }}"
+    gpg_key: "{{ __current_satellite_product.gpg_key | default(omit) }}"
+    ssl_ca_cert: "{{ __current_satellite_product.ssl_ca_cert | default(omit) }}"
+    ssl_ca_key: "{{ __current_satellite_product.ssl_ca_key | default(omit) }}"
+    sync_plan: "{{ __current_satellite_product.sync_plan | default(omit) }}"
+    description: "{{ __current_satellite_product.description | default(omit) }}"
+    state: "{{ __current_satellite_product.state | default('present') }}"
+  loop: "{{ satellite_products }}"
+  loop_control:
+    loop_var: __current_satellite_product
+    label: "{{ __current_satellite_product.name }}"
+  no_log: "{{ satellite_configuration_dispatch_secure_logging }}"
+  when: satellite_products is defined
+  delegate_to: "localhost"
+...

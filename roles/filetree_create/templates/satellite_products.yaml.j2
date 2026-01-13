@@ -1,10 +1,8 @@
 ---
-satellite_products: {{ [] if info_list | length == 0 }}
-{% for product in info_list %}
-  - name: "{{ product.name | trim }}"
-    label: "{{ product.label | trim }}"
-{% if product.sync_plan != None %}
-    sync_plan: "{{ product.sync_plan.name }}"
-{% endif %}
-    state: present
-{% endfor %}
+{% from 'clean_fields.j2' import discard_unwanted_fields %}
+{% set __excluded_fields = ['created_at', 'updated_at', 'id', 'organization_id', 'cp_id', 'cp_id' ] %}
+{% set __empty_values = [None, 'None', '', {}, [], [{}]] %}
+{% set __reduce_to_name = ['organization', 'sync_plan'] %}
+{% set __reduce_to_value_of = [] %}
+satellite_products: {{ discard_unwanted_fields(info_list, __excluded_fields, __empty_values, __reduce_to_name, __reduce_to_value_of) }}
+...
