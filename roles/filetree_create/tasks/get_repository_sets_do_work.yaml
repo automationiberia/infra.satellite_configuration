@@ -1,5 +1,5 @@
 ---
-- name: Repository Sets (Do Work) | Get Info
+- name: Repository Sets (Do Work) | Get Info (can take a while...)
   include_tasks: api_call.yaml
   vars:
     call_type: Repository Sets

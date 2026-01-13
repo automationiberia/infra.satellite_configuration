@@ -1,5 +1,33 @@
 ---
-satellite_repository_sets: {{ [] if satellite_repository_sets | length == 0 }}
+satellite_repository_sets: {{ [] if info_list.info_list | length == 0 }}
+{% from 'clean_fields.j2' import discard_unwanted_fields %}
+{% set __required_fields = ['repositories'] %}
+{% set __excluded_fields = ['id', 'organization_id', 'product', 'created_at', 'updated_at', 'id', 'cp_id', 'name', 'product', 'description', 'sync_state', 'last_sync', 'last_sync_words', 'repository_count'] %}
+{% set __empty_values = [None, 'None', '', {}, [], [{}]] %}
+{% set __reduce_to_name = ['product'] %}
+{% set __reduce_to_value_of = ['repositories'] %}
+{% for content_view in info_list.info_list %}
+{%   for __map_item in (content_view | dict2items) if __map_item.key not in __excluded_fields and (__map_item.value not in __empty_values or __map_item.key in __required_fields) %}
+{%     if loop.index == 1 %}
+  - organization: {{ info_list.organization }}
+{%     else %}
+{%       if __map_item.key in __reduce_to_name %}
+    {{ __map_item.key }}: {{ __map_item.value.name }}
+{%       elif __map_item.key == 'repositories' %}
+    repositories:{{ ' []' if __map_item.value | length == 0 }}
+{%         for __current_value in __map_item.value %}
+      - releasever: {{ __current_value.releasever | default('', true) }}
+{%         endfor %}
+{%       else %}
+    {{ __map_item.key }}: {{ discard_unwanted_fields(__map_item.value, __excluded_fields, __empty_values, __reduce_to_name, __reduce_to_value_of) }}
+{%       endif %}
+{%     endif %}
+{%   endfor %}
+{% endfor %}
+...
+{#
+---
+satellite_repository_sets: {{ [] if info_list.info_list | length == 0 }}
 {% set __required_fields = ['repositories'] %}
 {% set __excluded_fields = ['id', 'organization_id', 'product', 'created_at', 'updated_at'] %}
 {% set __excluded_subitems = ['id', 'cp_id', 'name', 'product', 'description', 'sync_state', 'last_sync', 'last_sync_words', 'repository_count'] %}
@@ -38,3 +66,4 @@ satellite_repository_sets: {{ [] if satellite_repository_sets | length == 0 }}
 {%  endfor %}
 {% endfor %}
 ...
+#}
