@@ -1,5 +1,5 @@
 ---
-satellite_repository_sets: {{ [] if info_list.info_list | length == 0 }}
+satellite_repository_sets: {{ [] if satellite_repository_sets | length == 0 }}
 {% set __required_fields = ['repositories'] %}
 {% set __excluded_fields = ['id', 'organization_id', 'product', 'created_at', 'updated_at'] %}
 {% set __excluded_subitems = ['id', 'cp_id', 'name', 'product', 'description', 'sync_state', 'last_sync', 'last_sync_words', 'repository_count'] %}

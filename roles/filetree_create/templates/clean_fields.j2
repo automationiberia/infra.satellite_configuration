@@ -1,0 +1,76 @@
+{%- macro discard_unwanted_fields(__input, __excluded_fields, __empty_values, __reduce_to_name, __reduce_to_value_of) %}
+{%-   if __input | type_debug == 'dict' -%}
+{
+{%-     for __dict_item in (__input | dict2items) if __dict_item.key not in __excluded_fields and __dict_item.value not in __empty_values -%}
+{%-       if __dict_item.key in __reduce_to_name -%}
+{{ __dict_item.key }}: {{ discard_unwanted_fields(__dict_item.value.name, __excluded_fields, __empty_values, __reduce_to_name, __reduce_to_value_of) }},
+{%-       elif __dict_item.key in __reduce_to_value_of -%}
+{{ __dict_item.key }}: {{ discard_unwanted_fields(__dict_item.value, __excluded_fields, __empty_values, __reduce_to_name, __reduce_to_value_of, {'name': 'name', 'product': 'name'}) }},
+{%-       else -%}
+{{ __dict_item.key }}: {{ discard_unwanted_fields(__dict_item.value, __excluded_fields, __empty_values, __reduce_to_name, __reduce_to_value_of) }},
+{%-       endif -%}
+{%-     endfor -%}
+}
+{%-   elif __input | type_debug == 'list' -%}
+[
+{%-     if varargs | length > 0 -%}
+{
+{%-       for __reduce_key, __reduce_to_value_of in varargs[0].items() -%}
+{{ __reduce_key }}: "{{ __input[0][__reduce_to_value_of] }}",
+{%-       endfor -%}
+}
+{%-     else -%}
+{%-       for __list_item in __input if __list_item not in __excluded_fields and __list_item not in __empty_values -%}
+{{ discard_unwanted_fields(__list_item, __excluded_fields, __empty_values, __reduce_to_name, __reduce_to_value_of) }},
+{%-       endfor -%}
+{%-     endif -%}
+]
+{%-   else -%}
+{{ __input }}
+{%-   endif -%}
+{%- endmacro -%}
+{#
+
+EXAMPLES OF USAGE:
+
+SIMPLE EXAMPLE:
+---
+{% from 'clean_fields.j2' import discard_unwanted_fields %}
+{% set __excluded_fields = ['created_at', 'updated_at', 'id', 'title' ] %}
+{% set __empty_values = [None, 'None', '', {}, [], [{}]] %}
+{% set __reduce_to_name = ['organization'] %}
+{% set __reduce_to_value_of = ['repositories'] %}
+satellite_content_views: {{ discard_unwanted_fields(info_list, __excluded_fields, __empty_values, __reduce_to_name, __reduce_to_value_of) }}
+...
+
+MORE COMPLEX EXAMPLE:
+---
+satellite_content_views: {{ [] if info_list | length == 0 }}
+{% from 'clean_fields.j2' import discard_unwanted_fields %}
+{% set __excluded_fields = ['created_at', 'updated_at', 'id', 'title', 'organization_id', 'repository_ids', 'latest_version_id', 'environment_ids'] %}
+{% set __empty_values = [None, 'None', '', {}, [], [{}]] %}
+{% set __reduce_to_name = ['organization'] %}
+{% set __reduce_to_value_of = ['repositories'] %}
+{% for content_view in info_list %}
+{%   for __map_item in (content_view | dict2items) if __map_item.key not in __excluded_fields and __map_item.value not in __empty_values %}
+{%     if loop.index == 1 %}
+  - {{ __map_item.key }}: {{ discard_unwanted_fields(__map_item.value, __excluded_fields, __empty_values, __reduce_to_name, __reduce_to_value_of) }}
+{%     else %}
+{%       if __map_item.key in __reduce_to_name %}
+    organization: {{ __map_item.value.name }}
+{%       elif __map_item.key == 'repositories' %}
+    repositories:
+{%         for __current_value in __map_item.value %}
+      - name: {{ __current_value.name }}
+        product: {{ (lookup('ansible.builtin.url', satellite.server_url + '/katello/api/repositories?name=' + (__current_value.name | urlencode),
+                            username=satellite.admin.username, password=satellite.admin.password,
+                            validate_certs=satellite.validate_certs, force_basic_auth='True', split_lines='False') | from_json).results[0].product.name }}
+{%         endfor %}
+{%       else %}
+    {{ __map_item.key }}: {{ discard_unwanted_fields(__map_item.value, __excluded_fields, __empty_values, __reduce_to_name, __reduce_to_value_of) }}
+{%       endif %}
+{%     endif %}
+{%   endfor %}
+{% endfor %}
+...
+#}

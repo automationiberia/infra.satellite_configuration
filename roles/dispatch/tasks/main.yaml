@@ -71,11 +71,11 @@
   tags: satellite_content_views
 
 - name: Manage content views filters
-  include_tasks: satellite_content_views_filter.yaml
+  include_tasks: satellite_content_view_filters.yaml
   args:
     apply:
-      tags: satellite_content_views_filter
-  tags: satellite_content_views_filter
+      tags: satellite_content_view_filters
+  tags: satellite_content_view_filters
 
 - name: Publish and promote content views
   include_tasks: satellite_cv_versions.yaml
