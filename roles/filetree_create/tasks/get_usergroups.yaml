@@ -1,0 +1,29 @@
+---
+- name: Usergroups | Reset the results variable
+  ansible.builtin.set_fact:
+    result_api_response: {}
+
+- name: Usergroups | Get Usergroups
+  include_tasks: api_call.yaml
+  vars:
+    call_type: Usergroups
+    api_link: "/api/usergroups?per_page=all"
+
+- name: Usergroups | Retain the Usergrous' info
+  ansible.builtin.set_fact:
+    __usergroups_list: "{{ result_api_response.json.results }}"
+
+- name: Usergroups | Get External Usergroups Info
+  include_tasks: get_usergroups_do_work.yaml
+  loop: "{{ __usergroups_list }}"
+  loop_control:
+    loop_var: __current_usergroup
+
+- debug: var=__rs_info_list
+
+- name: Usergroups | Template Out Results
+  include_tasks: template_out.yaml
+  vars:
+    template_type: satellite_usergroups
+    info_list: "{{ __rs_info_list | default([]) }}"
+...

@@ -1,0 +1,51 @@
+---
+- name: External Usergroups | Reset the results variable
+  ansible.builtin.set_fact:
+    result_api_response: {}
+    __rs_info_list: []
+    __roles_list: []
+    __users_list: []
+    __usergroups_list: []
+
+- name: External Usergroups | Get Usergroups
+  include_tasks: api_call.yaml
+  vars:
+    call_type: Usergroups
+    api_link: "/api/usergroups/{{ __current_usergroup.id }}/external_usergroups"
+
+- name: External Usergroup (Do Work) | Get Info (can take a while...)
+  ansible.builtin.uri:
+    method: GET
+    url: "{{ satellite.server_url }}{{ api_link }}"
+    user: "{{ satellite.admin.username }}"
+    password: "{{ satellite.admin.password }}"
+    validate_certs: "{{ satellite.validate_certs }}"
+    force_basic_auth: true
+    return_content: true
+    body_format: "{{ body_format | default(omit) }}"
+    body: "{{ body | default(omit) }}"
+    timeout: 1200
+  vars:
+    api_link: "/api/usergroups/{{ __current_usergroup.id }}/"
+  register: __result_api_response
+
+- name: Reduce Roles list
+  ansible.builtin.set_fact:
+    __roles_list: "{{ __roles_list + (__result_api_response.json.roles | map(attribute='name')) }}"
+    __users_list: "{{ __users_list + (__result_api_response.json.users | map(attribute='login')) }}"
+    __usergroups_list: "{{ __usergroups_list + (__result_api_response.json.usergroups | map(attribute='name')) }}"
+
+- name: External Usergroup (Do Work) | Block to do the job when there's a job to do
+  when:
+    - __result_api_response.json is defined
+    - __result_api_response.json | length > 0
+  block:
+    - name: External Usergroup (Do Work) | Set Info List (can take a while...)
+      ansible.builtin.set_fact:
+        __rs_info_list: "{{ __rs_info_list + [__result_api_response.json | combine({
+                                                                                     'roles': __roles_list,
+                                                                                     'users': __users_list,
+                                                                                     'usergroups': __usergroups_list,
+                                                                                     'external_usergroups': result_api_response.json.results
+                                                                                   })] }}"
+...

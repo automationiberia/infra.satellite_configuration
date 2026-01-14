@@ -112,4 +112,10 @@
     include_tasks: get_host_collections.yaml
   tags:
     - 'host_collections'
+
+- block:
+  - name: Get External Usergroups
+    include_tasks: get_usergroups.yaml
+  tags:
+    - 'usergroups'
 ...

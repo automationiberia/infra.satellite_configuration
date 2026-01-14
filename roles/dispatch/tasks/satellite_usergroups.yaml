@@ -1,0 +1,34 @@
+---
+- name: ensure usergroup are correct
+  redhat.satellite.usergroup:
+    # Mandatory parameters
+    name: "{{ __current_usergroup.name }}"
+    # Optional parameters
+    updated_name: "{{ __current_usergroup.updated_name | default(omit) }}"
+    admin: "{{ __current_usergroup.admin | default(omit) }}"
+    roles: "{{ __current_usergroup.roles | default(omit) }}"
+    users: "{{ __current_usergroup.users | default(omit) }}"
+    usergroups: "{{ __current_usergroup.usergroups | default(omit) }}"
+    state: "{{ __current_usergroup.state | default(omit) }}"
+  loop: "{{ satellite_usergroups }}"
+  loop_control:
+    loop_var: __current_usergroup
+    label: "{{ __current_usergroup.name }}"
+  when: satellite_usergroups is defined
+  delegate_to: "localhost"
+
+- name: ensure external usergroups are correct
+  redhat.satellite.external_usergroup:
+    # Mandatory parameters
+    name: "{{ __current_external_usergroup[1].name }}"
+    usergroup: "{{ __current_external_usergroup[0].name }}"
+    auth_source: "{{ __current_external_usergroup[1].auth_source_ldap.name | default(__current_external_usergroup[1].auth_source_external.name) }}"
+    # Optional parameters
+    state: "{{ __current_external_usergroup.state | default(omit) }}"
+  loop: "{{ satellite_usergroups | subelements('external_usergroups', skip_missing=true) }}"
+  loop_control:
+    loop_var: __current_external_usergroup
+    label: "User Group '{{ __current_external_usergroup[0].name }}' -> External User Group '{{ __current_external_usergroup[1].name }}'"
+  when: satellite_usergroups is defined
+  delegate_to: "localhost"
+...

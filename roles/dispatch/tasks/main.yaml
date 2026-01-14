@@ -1,6 +1,6 @@
 ---
 # defaults file for dispatch
-- name: Manage foreman/katello settings
+- name: Manage Satellite Settings
   include_tasks: satellite_settings.yaml
   args:
     apply:
@@ -14,28 +14,28 @@
       tags: satellite_auth_sources_ldap
   tags: satellite_auth_sources_ldap
 
-- name: Manage external usegroups
-  include_tasks: satellite_external_usegroups.yaml
+- name: Manage User Groups
+  include_tasks: satellite_usergroups.yaml
   args:
     apply:
-      tags: satellite_external_usegroups
-  tags: satellite_external_usegroups
+      tags: satellite_usergroups
+  tags: satellite_usergroups
 
-- name: Create organizations
+- name: Create Organizations
   include_tasks: satellite_organizations.yaml
   args:
     apply:
       tags: satellite_organizations
   tags: satellite_organizations
 
-- name: Manage locations
+- name: Manage Locations
   include_tasks: satellite_locations.yaml
   args:
     apply:
       tags: satellite_locations
   tags: satellite_locations
 
-- name: Manage lifecycle_environments
+- name: Manage Lifecycle Environments
   include_tasks: satellite_lifecycle_environments.yaml
   args:
     apply:
@@ -49,35 +49,37 @@
       tags: satellite_repository_sets
   tags: satellite_repository_sets
 
-- name: Manage repositories
+- name: Manage Repositories
   include_tasks: satellite_repositories.yaml
   args:
     apply:
       tags: satellite_repositories
   tags: satellite_repositories
 
-- name: Manage sync plans
+- name: Manage Sync Plans
   include_tasks: satellite_sync_plans.yaml
   args:
     apply:
       tags: satellite_sync_plans
   tags: satellite_sync_plans
 
-- name: Manage content views
+- name: Manage Content Views
   include_tasks: satellite_content_views.yaml
   args:
     apply:
       tags: satellite_content_views
   tags: satellite_content_views
 
-- name: Manage content views filters
+- name: Manage Content Views Filters
+  when: false
   include_tasks: satellite_content_view_filters.yaml
   args:
     apply:
       tags: satellite_content_view_filters
   tags: satellite_content_view_filters
 
-- name: Publish and promote content views
+- name: Publish and Promote Content Views
+  when: false
   include_tasks: satellite_cv_versions.yaml
   args:
     apply:

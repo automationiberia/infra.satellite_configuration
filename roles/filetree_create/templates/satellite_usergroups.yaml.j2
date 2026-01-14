@@ -1,0 +1,7 @@
+---
+{% from 'clean_fields.j2' import discard_unwanted_fields %}
+{% set __excluded_fields = ['created_at', 'updated_at', 'id', 'title' ] %}
+{% set __empty_values = [None, 'None', '', {}, [], [{}]] %}
+{% set __reduce_to_name = ['organization'] %}
+satellite_usergroups: {{ discard_unwanted_fields(info_list, __excluded_fields, __empty_values, __reduce_to_name) }}
+...
