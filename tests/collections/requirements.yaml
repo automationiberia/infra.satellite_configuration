@@ -1,0 +1,5 @@
+---
+collections:
+  - name: redhat.satellite
+  - name: automationiberia.satellite_configuration
+...
