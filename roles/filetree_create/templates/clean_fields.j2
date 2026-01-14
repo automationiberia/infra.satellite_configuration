@@ -26,8 +26,8 @@
 {%-     endif -%}
 ]
 {%-   else -%}
-{%-     if __input | type_debug == 'str' and ',' in __input -%}
-'{{ __input }}'
+{%-     if __input | type_debug == 'str' and (',' in __input or '\n' in __input or '\r' in __input) -%}
+'{{ __input | replace('\r\n', '\n') | replace('\n', '\n\n') }}'
 {%-     else -%}
 {{ __input }}
 {%-     endif -%}

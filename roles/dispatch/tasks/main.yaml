@@ -91,17 +91,24 @@
       tags: satellite_activation_keys
   tags: satellite_activation_keys
 
-- name: Manage host_collections
+- name: Manage Host Collections
   include_tasks: satellite_host_collections.yaml
   args:
     apply:
       tags: satellite_host_collections
   tags: satellite_host_collections
 
-- name: Create products
+- name: Create Products
   include_tasks: satellite_products.yaml
   args:
     apply:
       tags: satellite_products
   tags: satellite_products
+
+- name: Create Content Credentials
+  include_tasks: satellite_content_credentials.yaml
+  args:
+    apply:
+      tags: satellite_content_credentials
+  tags: satellite_content_credentials
 ...
