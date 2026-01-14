@@ -19,14 +19,6 @@ satellite_host_collections: {{ [] if info_list | length == 0 }}
 {%         endif %}
 {%       endfor %}
 {%     endif %}
-{#
-{%     if __map_item.key in ['organizations', 'locations'] %}
-{%       set __var.map_item_value = [] %}
-{%       for __inner_item in __map_item.value %}
-{%         set __var.map_item_value = __var.map_item_value + [__inner_item.name] %}
-{%       endfor %}
-{%     endif %}
-#}
 {%     if loop.index == 1 %}
   - {{ __map_item.key }}: {{ __var.map_item_value if (__var.map_item_value | length > 0) else __map_item.value | default('""' if __map_item.key not in __list_items else []) | replace("\\'", "''") }}
 {%     else %}
@@ -49,4 +41,3 @@ satellite_host_collections: {{ [] if info_list | length == 0 }}
 {% endif %}
 {% endfor %}
 ...
-
