@@ -1,0 +1,125 @@
+---
+satellite_content_views:
+  - composite: False
+    default: False
+    version_count: 1
+    latest_version: 1.0
+    auto_publish: False
+    solve_dependencies: False
+    import_only: False
+    generated_for: none
+    related_cv_count: 0
+    filtered: False
+    name: cv-test
+    label: cv-test
+    organization: red_ribbon
+    latest_version_environments:
+      - name: Library
+        label: Library
+      - name: Development
+        label: Development
+      - name: UAT
+        label: UAT
+      - name: Integration
+        label: Integration
+      - name: Preproduction
+        label: Preproduction
+      - name: Production
+        label: Production
+      - name: InfraTest
+        label: InfraTest
+      - name: InfraProd
+        label: InfraProd
+    versions:
+      - version: 1.0
+        published: 2025-12-10 09:41:35 UTC
+        filters_applied: False
+        published_at_words: about 1 month
+    activation_keys:
+      - name: red_ribbonAK
+    next_version: 2.0
+    last_published: 2025-12-10 09:41:35 UTC
+    environments:
+      - label: Library
+        name: Library
+        permissions:
+          readable: True
+      - label: Development
+        name: Development
+        permissions:
+          readable: True
+      - label: UAT
+        name: UAT
+        activation_keys:
+          - 3
+        permissions:
+          readable: True
+      - label: Integration
+        name: Integration
+        permissions:
+          readable: True
+      - label: Preproduction
+        name: Preproduction
+        permissions:
+          readable: True
+      - label: Production
+        name: Production
+        permissions:
+          readable: True
+      - label: InfraTest
+        name: InfraTest
+        permissions:
+          readable: True
+      - label: InfraProd
+        name: InfraProd
+        permissions:
+          readable: True
+  - composite: False
+    default: False
+    version_count: 0
+    auto_publish: False
+    solve_dependencies: False
+    import_only: False
+    generated_for: none
+    related_cv_count: 0
+    filtered: False
+    needs_publish: True
+    name: test
+    label: test
+    organization: Umbrella
+    repositories:
+      - name: Red Hat Ansible Automation Platform 2.5 for RHEL 9 x86_64 RPMs
+        product: Red Hat Ansible Automation Platform
+    next_version: 1.0
+  - composite: False
+    default: False
+    version_count: 0
+    auto_publish: False
+    solve_dependencies: False
+    import_only: False
+    generated_for: none
+    related_cv_count: 0
+    filtered: False
+    needs_publish: True
+    name: cv-test-2
+    label: cv-test-2
+    organization: red_ribbon
+    next_version: 1.0
+  - composite: False
+    default: False
+    version_count: 0
+    auto_publish: False
+    solve_dependencies: False
+    import_only: False
+    generated_for: none
+    related_cv_count: 0
+    filtered: False
+    needs_publish: True
+    name: test2
+    label: test2
+    organization: Umbrella
+    repositories:
+      - name: Red Hat Ansible Automation Platform 2.5 for RHEL 9 x86_64 RPMs
+        product: Red Hat Ansible Automation Platform
+    next_version: 1.0
+...

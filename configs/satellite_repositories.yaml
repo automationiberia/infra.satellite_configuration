@@ -1,0 +1,205 @@
+---
+satellite_repositories:
+  - relative_path: Umbrella/Library/content/dist/rhel10/10/x86_64/appstream/os
+    promoted: False
+    organization: Umbrella
+    backend_identifier: d02db1fd-f69b-4e85-8a1e-d999f0ad3162
+    full_path: https://satellite-drs.bcnconsulting.com/pulp/content/Umbrella/Library/content/dist/rhel10/10/x86_64/appstream/os/
+    version_href: /pulp/api/v3/repositories/rpm/rpm/019b359e-ab62-7e4a-b34d-0cc0b082ac59/versions/2/
+    remote_href: /pulp/api/v3/remotes/rpm/rpm/019b359e-a9c8-711e-8194-ce592117c101/
+    publication_href: /pulp/api/v3/publications/rpm/rpm/019baf83-c534-7930-81df-39ce9eae2fcf/
+    content_counts:
+      rpm: 8229
+      erratum: 2310
+      package_group: 59
+      srpm: 0
+      module_stream: 0
+    mirroring_policy: mirror_complete
+    name: Red Hat Enterprise Linux 10 for x86_64 - AppStream RPMs 10
+    label: Red_Hat_Enterprise_Linux_10_for_x86_64_-_AppStream_RPMs_10
+    last_sync:
+      username: foreman_admin
+      started_at: 2026-01-12 00:00:04 UTC
+      ended_at: 2026-01-12 00:04:14 UTC
+      state: stopped
+      result: success
+      progress: 1.0
+    content_view:
+      name: Default Organization View
+    content_view_version:
+      name: Default Organization View 1.0
+      content_view_id: 22
+    kt_environment:
+      name: Library
+    content_type: yum
+    url: https://cdn.redhat.com/content/dist/rhel10/10/x86_64/appstream/os
+    arch: noarch
+    content_id: 21548
+    major: 10
+    minor: 10
+    product: Red Hat Enterprise Linux for x86_64
+    content_label: rhel-10-for-x86_64-appstream-rpms
+    last_sync_words: 3 days
+    environment:
+      registry_unauthenticated_pull: False
+    verify_ssl_on_sync: True
+    unprotected: False
+    download_policy: on_demand
+    sync_dependencies: True
+    http_proxy_policy: global_default_http_proxy
+    allow_updates: True
+    is_container_push: False
+    permissions:
+      deletable: True
+      deletable_across_cv: True
+    upstream_password_exists: False
+    upstream_auth_exists: False
+  - relative_path: Umbrella/Library/content/dist/rhel10/10/x86_64/baseos/os
+    promoted: False
+    organization: Umbrella
+    backend_identifier: 98c9ebbe-48e7-42a5-bc39-58b7a4a60e51
+    full_path: https://satellite-drs.bcnconsulting.com/pulp/content/Umbrella/Library/content/dist/rhel10/10/x86_64/baseos/os/
+    version_href: /pulp/api/v3/repositories/rpm/rpm/019b359e-dcbb-7f45-add0-ab84064351ac/versions/2/
+    remote_href: /pulp/api/v3/remotes/rpm/rpm/019b359e-db4d-7fa2-a7d6-69ba3e43412c/
+    publication_href: /pulp/api/v3/publications/rpm/rpm/019baf83-5fd8-7bf1-9c45-456b0d7350c1/
+    content_counts:
+      rpm: 3408
+      erratum: 691
+      package_group: 34
+      srpm: 0
+      module_stream: 0
+    mirroring_policy: mirror_complete
+    name: Red Hat Enterprise Linux 10 for x86_64 - BaseOS RPMs 10
+    label: Red_Hat_Enterprise_Linux_10_for_x86_64_-_BaseOS_RPMs_10
+    last_sync:
+      username: foreman_admin
+      started_at: 2026-01-12 00:00:05 UTC
+      ended_at: 2026-01-12 00:03:40 UTC
+      state: stopped
+      result: success
+      progress: 1.0
+    content_view:
+      name: Default Organization View
+    content_view_version:
+      name: Default Organization View 1.0
+      content_view_id: 22
+    kt_environment:
+      name: Library
+    content_type: yum
+    url: https://cdn.redhat.com/content/dist/rhel10/10/x86_64/baseos/os
+    arch: noarch
+    content_id: 21542
+    major: 10
+    minor: 10
+    product: Red Hat Enterprise Linux for x86_64
+    content_label: rhel-10-for-x86_64-baseos-rpms
+    last_sync_words: 3 days
+    environment:
+      registry_unauthenticated_pull: False
+    verify_ssl_on_sync: True
+    unprotected: False
+    download_policy: on_demand
+    sync_dependencies: True
+    http_proxy_policy: global_default_http_proxy
+    allow_updates: True
+    is_container_push: False
+    permissions:
+      deletable: True
+      deletable_across_cv: True
+    upstream_password_exists: False
+    upstream_auth_exists: False
+  - relative_path: Umbrella/Library/content/dist/layered/rhel9/x86_64/ansible-automation-platform/2.5/os
+    promoted: False
+    organization: Umbrella
+    backend_identifier: ffc6aaca-ff69-474b-8777-58c82ac09f6d
+    full_path: https://satellite-drs.bcnconsulting.com/pulp/content/Umbrella/Library/content/dist/layered/rhel9/x86_64/ansible-automation-platform/2.5/os/
+    version_href: /pulp/api/v3/repositories/rpm/rpm/019b3660-5257-740f-b72d-88800d05ede5/versions/2/
+    remote_href: /pulp/api/v3/remotes/rpm/rpm/019b3660-50cb-7859-a5e3-9768a7c631dc/
+    publication_href: /pulp/api/v3/publications/rpm/rpm/019baf81-8715-7bc9-aa9f-3b0ebeb814b1/
+    content_counts:
+      rpm: 910
+      erratum: 31
+      package_group: 0
+      srpm: 0
+      module_stream: 0
+    mirroring_policy: mirror_complete
+    name: Red Hat Ansible Automation Platform 2.5 for RHEL 9 x86_64 RPMs
+    label: Red_Hat_Ansible_Automation_Platform_2_5_for_RHEL_9_x86_64_RPMs
+    last_sync:
+      username: foreman_admin
+      started_at: 2026-01-12 00:00:06 UTC
+      ended_at: 2026-01-12 00:02:36 UTC
+      state: stopped
+      result: success
+      progress: 1.0
+    content_view:
+      name: Default Organization View
+    content_view_version:
+      name: Default Organization View 1.0
+      content_view_id: 22
+    kt_environment:
+      name: Library
+    content_type: yum
+    url: https://cdn.redhat.com/content/dist/layered/rhel9/x86_64/ansible-automation-platform/2.5/os
+    arch: noarch
+    content_id: 20417
+    product: Red Hat Ansible Automation Platform
+    content_label: ansible-automation-platform-2.5-for-rhel-9-x86_64-rpms
+    last_sync_words: 3 days
+    environment:
+      registry_unauthenticated_pull: False
+    verify_ssl_on_sync: True
+    unprotected: False
+    download_policy: on_demand
+    sync_dependencies: True
+    http_proxy_policy: global_default_http_proxy
+    allow_updates: True
+    is_container_push: False
+    permissions:
+      deletable: True
+      deletable_across_cv: True
+    upstream_password_exists: False
+    upstream_auth_exists: False
+  - relative_path: Umbrella/Library/custom/test/test
+    promoted: False
+    organization: Umbrella
+    backend_identifier: f97d034f-b5ce-4b7e-9da0-e305fdb534a7
+    full_path: https://satellite-drs.bcnconsulting.com/pulp/content/Umbrella/Library/custom/test/test/
+    version_href: /pulp/api/v3/repositories/rpm/rpm/019bb7b9-4009-774f-b36e-920ee504592a/versions/0/
+    publication_href: /pulp/api/v3/publications/rpm/rpm/019bb7b9-45ce-711f-a1ef-25b26d59981e/
+    content_counts:
+      rpm: 0
+      erratum: 0
+      package_group: 0
+      srpm: 0
+      module_stream: 0
+    mirroring_policy: mirror_content_only
+    name: test
+    label: test
+    content_view:
+      name: Default Organization View
+    content_view_version:
+      name: Default Organization View 1.0
+      content_view_id: 22
+    kt_environment:
+      name: Library
+    content_type: yum
+    arch: noarch
+    content_id: 1768313929997
+    product: test
+    content_label: Umbrella_test_test
+    environment:
+      registry_unauthenticated_pull: False
+    verify_ssl_on_sync: True
+    unprotected: True
+    download_policy: immediate
+    sync_dependencies: True
+    http_proxy_policy: global_default_http_proxy
+    allow_updates: True
+    is_container_push: False
+    permissions:
+      deletable: True
+      deletable_across_cv: True
+    upstream_password_exists: False
+    upstream_auth_exists: False
+...

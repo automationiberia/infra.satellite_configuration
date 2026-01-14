@@ -1,8 +1,0 @@
----
-content_views:
-  - name: "cv-test"
-    label: "cv-test"
-    organization: "red_ribbon"
-  - name: "UmbrellaCV"
-    label: "UmbrellaCV"
-    organization: "Umbrella"

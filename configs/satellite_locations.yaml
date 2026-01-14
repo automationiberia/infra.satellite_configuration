@@ -1,0 +1,14 @@
+---
+satellite_locations:
+  - name: Barcelona
+    organizations:
+      - red_ribbon
+      - red_ribbon_new
+      - red_ribbon_new_demo
+      - red_ribbon_new_demo_2
+      - Umbrella
+  - name: Onda
+    organizations:
+      - red_ribbon
+      - Umbrella
+...

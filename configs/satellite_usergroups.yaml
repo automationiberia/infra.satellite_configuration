@@ -1,0 +1,14 @@
+---
+satellite_usergroups:
+  - admin: False
+    name: test2
+    external_usergroups:
+      - name: editors
+        auth_source_ldap:
+          type: AuthSourceLdap
+          name: idm.bcnconsulting.com
+      - name: test_external_source
+        auth_source_external:
+          type: AuthSourceExternal
+          name: External
+...
