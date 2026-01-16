@@ -1,18 +1,20 @@
-{%- macro discard_unwanted_fields(__input, __excluded_fields, __empty_values, __reduce_to_name) %}
+{%- macro discard_unwanted_fields(__input, __excluded_fields, __empty_values, __reduce_to_name, __translate) %}
 {%-   if __input | type_debug == 'dict' -%}
 {
 {%-     for __dict_item in (__input | dict2items) if __dict_item.key not in __excluded_fields and __dict_item.value not in __empty_values -%}
 {%-       if __dict_item.key in __reduce_to_name -%}
-{{ __dict_item.key }}: {{ discard_unwanted_fields(__dict_item.value.name, __excluded_fields, __empty_values, __reduce_to_name) }},
+{{ __dict_item.key }}: {{ discard_unwanted_fields(__dict_item.value.name, __excluded_fields, __empty_values, __reduce_to_name, __translate) }},
+{%-       elif (__translate | default([]) | selectattr(__dict_item.key, 'defined')) | length > 0 -%}
+{{ (__translate | selectattr(__dict_item.key, 'defined'))[0][__dict_item.key] }}: {{ discard_unwanted_fields(__dict_item.value, __excluded_fields, __empty_values, __reduce_to_name, __translate) }},
 {%-       else -%}
-{{ __dict_item.key }}: {{ discard_unwanted_fields(__dict_item.value, __excluded_fields, __empty_values, __reduce_to_name) }},
+{{ __dict_item.key }}: {{ discard_unwanted_fields(__dict_item.value, __excluded_fields, __empty_values, __reduce_to_name, __translate) }},
 {%-       endif -%}
 {%-     endfor -%}
 }
 {%-   elif __input | type_debug == 'list' -%}
 [
 {%-     for __list_item in __input if __list_item not in __excluded_fields and __list_item not in __empty_values -%}
-{{ discard_unwanted_fields(__list_item, __excluded_fields, __empty_values, __reduce_to_name) }},
+{{ discard_unwanted_fields(__list_item, __excluded_fields, __empty_values, __reduce_to_name, __translate) }},
 {%-     endfor -%}
 ]
 {%-   else -%}
@@ -33,7 +35,8 @@ SIMPLE EXAMPLE:
 {% set __excluded_fields = ['created_at', 'updated_at', 'id', 'title' ] %}
 {% set __empty_values = [None, 'None', '', {}, [], [{}]] %}
 {% set __reduce_to_name = ['organization'] %}
-satellite_content_views: {{ discard_unwanted_fields(info_list, __excluded_fields, __empty_values, __reduce_to_name) }}
+{% set __translate = [{'type': 'filter_type'}] %}
+satellite_content_views: {{ discard_unwanted_fields(info_list, __excluded_fields, __empty_values, __reduce_to_name, __translate) }}
 ...
 
 MORE COMPLEX EXAMPLE:
@@ -43,10 +46,11 @@ satellite_content_views: {{ [] if info_list | length == 0 }}
 {% set __excluded_fields = ['created_at', 'updated_at', 'id', 'title', 'organization_id', 'repository_ids', 'latest_version_id', 'environment_ids'] %}
 {% set __empty_values = [None, 'None', '', {}, [], [{}]] %}
 {% set __reduce_to_name = ['organization'] %}
+{% set __translate = [{'type': 'filter_type'}] %}
 {% for content_view in info_list %}
 {%   for __map_item in (content_view | dict2items) if __map_item.key not in __excluded_fields and __map_item.value not in __empty_values %}
 {%     if loop.index == 1 %}
-  - {{ __map_item.key }}: {{ discard_unwanted_fields(__map_item.value, __excluded_fields, __empty_values, __reduce_to_name) }}
+  - {{ __map_item.key }}: {{ discard_unwanted_fields(__map_item.value, __excluded_fields, __empty_values, __reduce_to_name, __translate) }}
 {%     else %}
 {%       if __map_item.key in __reduce_to_name %}
     organization: {{ __map_item.value.name }}
@@ -59,7 +63,7 @@ satellite_content_views: {{ [] if info_list | length == 0 }}
                             validate_certs=satellite.validate_certs, force_basic_auth='True', split_lines='False') | from_json).results[0].product.name }}
 {%         endfor %}
 {%       else %}
-    {{ __map_item.key }}: {{ discard_unwanted_fields(__map_item.value, __excluded_fields, __empty_values, __reduce_to_name) }}
+    {{ __map_item.key }}: {{ discard_unwanted_fields(__map_item.value, __excluded_fields, __empty_values, __reduce_to_name, __translate) }}
 {%       endif %}
 {%     endif %}
 {%   endfor %}

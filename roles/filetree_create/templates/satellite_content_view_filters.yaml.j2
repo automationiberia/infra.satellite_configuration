@@ -1,25 +1,39 @@
 ---
 satellite_content_view_filters: {{ [] if detailed_info.results | length == 0 }}
-{% for cv_filter in detailed_info.results %}
-  - name: "{{ cv_filter.json.name }}"
-{% if cv_filter.json.description != None and cv_filter.json.description != "" %}
-    description: "{{ cv_filter.json.description | regex_replace('[\\r\\n\\t]+',' ') }}"
-{% endif %}
-    filter_type: "{{ cv_filter.json.type }}"
-    inclusion: {{ cv_filter.json.inclusion }}
-    content_view: "{{ cv_filter.json.content_view.name }}"
-{% if cv_filter.json.rules[0] is defined and cv_filter.json.rules != None %}
-    rules:
-{% for rule in cv_filter.json.rules %}
-      - name: "{{ rule.name }}"
+{% from 'clean_fields.j2' import discard_unwanted_fields %}
+{% set __excluded_fields = ['created_at', 'updated_at', 'id', 'title', 'organization_id', 'repository_ids', 'latest_version_id', 'environment_ids', 'content_view_filter_id'] %}
+{% set __empty_values = [None, 'None', '', {}, [], [{}]] %}
+{% set __reduce_to_name = ['content_view'] %}
+{% set __translate = [{'type': 'filter_type'}] %}
+{% for content_view in detailed_info.results %}
+{%   for __map_item in (content_view.json | dict2items) if __map_item.key not in __excluded_fields and __map_item.value not in __empty_values %}
+A - {{ __map_item.value }}
+{%     if loop.index == 1 %}
+  - {{ __map_item.key }}: {{ discard_unwanted_fields(__map_item.value, __excluded_fields, __empty_values, __reduce_to_name) }}
+{%     else %}
+{%       if __map_item.key in __reduce_to_name %}
+    {{ __map_item.key }}: {{ __map_item.value.name }}
+{%       elif __map_item.key == 'filters' %}
+    filters:
+{%         for __filter_item in __map_item.values.items() %}
+{%           if __translate | selectattr(__map_item.key, 'defined') | length > 0 %}
+      {{ (__translate | selectattr(__map_item.key, 'defined'))[0][__map_item.key] }}: {{ discard_unwanted_fields(__map_item.value, __excluded_fields, __empty_values, __reduce_to_name) }}
+{%           else %}
+      {{ __map_item.key }}: {{ discard_unwanted_fields(__map_item.value, __excluded_fields, __empty_values, __reduce_to_name) }}
+{%           endif %}
+{%         endfor %%}
+{%       elif __map_item.key == 'rules' %}
+    {{ __map_item.key }}:
+{%         for __rule in __map_item.value %}
+      - {{ __rule.name }}
+{%         endfor %}
+{%       else %}
+    {{ __map_item.key }}: {{ discard_unwanted_fields(__map_item.value, __excluded_fields, __empty_values, __reduce_to_name) }}
+{%       endif %}
+{%     endif %}
+{%     if __map_item.key == 'content_view' %}
+    organization: {{ __map_item.value.organization.name }}
+{%     endif %}
+{%   endfor %}
 {% endfor %}
-{% endif %}
-{% if cv_filter.json.repositories[0] is defined and cv_filter.json.repositories != None %}
-    repositories:
-{% for repo in cv_filter.json.repositories %}
-      - name: "{{ repo.name }}"
-        product: "{{ repo.product.name }}"
-{% endfor %}
-{% endif %}
-{% endfor %}
-
+...

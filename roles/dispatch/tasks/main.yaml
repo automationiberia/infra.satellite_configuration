@@ -70,13 +70,14 @@
       tags: satellite_content_views
   tags: satellite_content_views
 
-- name: Manage Content Views Filters
-  when: false
-  include_tasks: satellite_content_view_filters.yaml
-  args:
-    apply:
-      tags: satellite_content_view_filters
-  tags: satellite_content_view_filters
+# Don't treat this appart from Content Views by now
+# - name: Manage Content Views Filters
+#   include_tasks: satellite_content_view_filters.yaml
+#   args:
+#     apply:
+#       tags: satellite_content_view_filters
+#   tags: satellite_content_view_filters
+# Don't treat this appart from Content Views by now
 
 - name: Publish and Promote Content Views
   when: false

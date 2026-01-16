@@ -2,30 +2,58 @@
 - name: Content Views | Reset the results variable
   ansible.builtin.set_fact:
     result_api_response: {}
+    __rs_info_list: []
 
-- name: Content Views | Get Info
+- name: Content Views | Get Content Views
   include_tasks: api_call.yaml
   vars:
     call_type: Content Views
-    api_link: /katello/api/content_views?noncomposite=true&full_result=true
+    api_link: "/katello/api/content_views?full_result=true"
 
-- name: Content Views | Set Info List
+- name: Content Views | Retain the Content Views' info
   ansible.builtin.set_fact:
-    info_list: "{{ result_api_response.json.results | sort(attribute='id') | rejectattr('name','==', 'Default Organization View') }}"
+    __content_views_list: "{{ result_api_response.json.results }}"
+
+- name: Content Views | Get Content View filters Info
+  include_tasks: get_content_view_filters.yaml
+  loop: "{{ __content_views_list }}"
+  loop_control:
+    loop_var: __current_content_view
 
 - name: Content Views | Template Out Results
   include_tasks: template_out.yaml
   vars:
     template_type: satellite_content_views
-
-- name: Load Repositories Information
-  ansible.builtin.set_fact:
-    repos: "{{ lookup('ansible.builtin.file', output_path + '/satellite_repositories.yaml') | from_yaml }}"
-
-- name: Replace product parameter with the correct value
-  ansible.builtin.replace:
-    path: "{{ output_path }}/satellite_content_views.yaml"
-    regexp: '^\s+product: "{{ item.name }}"'
-    replace: '        product: "{{ item.product }}"'
-  loop: "{{ repos.satellite_repositories }}"
-
+    info_list: "{{ __rs_info_list | default([]) }}"
+...
+### ---
+### - name: Content Views | Reset the results variable
+###   ansible.builtin.set_fact:
+###     result_api_response: {}
+###
+### - name: Content Views | Get Info
+###   include_tasks: api_call.yaml
+###   vars:
+###     call_type: Content Views
+###     api_link: /katello/api/content_views?noncomposite=true&full_result=true
+###
+### - name: Content Views | Set Info List
+###   ansible.builtin.set_fact:
+###     info_list: "{{ result_api_response.json.results | sort(attribute='id') | rejectattr('name','==', 'Default Organization View') }}"
+###
+### - name: Content Views | Template Out Results
+###   include_tasks: template_out.yaml
+###   vars:
+###     template_type: satellite_content_views
+###
+### - name: Load Repositories Information
+###   ansible.builtin.set_fact:
+###     repos: "{{ lookup('ansible.builtin.file', output_path + '/satellite_repositories.yaml') | from_yaml }}"
+###
+### - name: Replace product parameter with the correct value
+###   ansible.builtin.replace:
+###     path: "{{ output_path }}/satellite_content_views.yaml"
+###     regexp: '^\s+product: "{{ item.name }}"'
+###     replace: '        product: "{{ item.product }}"'
+###   loop: "{{ repos.satellite_repositories }}"
+###

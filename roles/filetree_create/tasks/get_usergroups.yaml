@@ -9,7 +9,7 @@
     call_type: Usergroups
     api_link: "/api/usergroups?per_page=all"
 
-- name: Usergroups | Retain the Usergrous' info
+- name: Usergroups | Retain the Usergroups' info
   ansible.builtin.set_fact:
     __usergroups_list: "{{ result_api_response.json.results }}"
 
@@ -18,8 +18,6 @@
   loop: "{{ __usergroups_list }}"
   loop_control:
     loop_var: __current_usergroup
-
-- debug: var=__rs_info_list
 
 - name: Usergroups | Template Out Results
   include_tasks: template_out.yaml
