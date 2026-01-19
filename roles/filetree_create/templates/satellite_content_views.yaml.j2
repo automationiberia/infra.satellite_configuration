@@ -1,7 +1,7 @@
 ---
 satellite_content_views: {{ [] if info_list | length == 0 }}
 {% from 'clean_fields.j2' import discard_unwanted_fields %}
-{% set __excluded_fields = ['created_at', 'updated_at', 'id', 'title', 'organization_id', 'repository_ids', 'latest_version_id', 'environment_ids'] %}
+{% set __excluded_fields = ['created_at', 'updated_at', 'id', 'title', 'organization_id', 'repository_ids', 'latest_version_id', 'environment_ids', 'content_view_components'] %}
 {% set __empty_values = [None, 'None', '', {}, [], [{}]] %}
 {% set __reduce_to_name = ['organization'] %}
 {% set __translate = [] %}

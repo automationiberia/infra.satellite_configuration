@@ -3,7 +3,8 @@
   ansible.builtin.set_fact:
     result_api_response: {}
     __rules_list: []
-    __addapted_info: {}
+    __addapted_filter_info: {}
+    __addapted_component_info: {}
     # __usergroups_list: []
 
 - name: Content View Filters | Get Content View Filters
@@ -11,11 +12,14 @@
   vars:
     call_type: Content View Filters
     api_link: "/katello/api/content_views/{{ __current_content_view.id }}/filters"
-- debug: var=result_api_response.json.results
+
+- debug: var=result_api_response
+- debug: var=__current_content_view
+
 - name: Compose the filters' structure
   ansible.builtin.set_fact:
-    __addapted_info:
-      filters: "{{ (__addapted_info.filters | default([])) + [__current_rule] }}"
+    __addapted_filter_info:
+      filters: "{{ (__addapted_filter_info.filters | default([])) + [__current_rule] }}"
   vars:
     __current_rule:
       name: "{{ __current_filter[0].name }}"
@@ -29,8 +33,22 @@
     loop_var: __current_filter
     label: "{{ __current_filter[0].name }}"
 
+- name: Compose the components' structure
+  ansible.builtin.set_fact:
+    __addapted_component_info:
+      components: "{{ (__addapted_component_info.components | default([])) + [__current_cv_component] }}"
+  vars:
+    __current_cv_component:
+      content_view: "{{ __current_component.content_view.name }}"
+      content_view_version: "{{ __current_component.content_view.next_version  }}"
+      latest: "{{ __current_component.latest }}"
+  loop: "{{ __current_content_view.content_view_components }}"
+  loop_control:
+    loop_var: __current_component
+    label: "{{ __current_component.content_view.name }}"
+
 - name: Content View Filters (Do Work) | Set Info List (can take a while...)
   ansible.builtin.set_fact:
     __rs_info_list: "{{ __rs_info_list + result_api_response.json.results }}"
-    __rs_info_list: "{{ __rs_info_list + [__current_content_view | combine(__addapted_info)] }}"
+    __rs_info_list: "{{ __rs_info_list + [__current_content_view | combine(__addapted_filter_info) | combine(__addapted_component_info)] }}"
 ...
