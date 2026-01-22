@@ -67,18 +67,6 @@
         - 'content_views'
 
     - block:
-      - name: Get Composite Content Views
-        include_tasks: tasks/get_composite_content_views.yaml
-      tags:
-        - 'composite_content_views'
-
-    - block:
-      - name: Get Content View Filters
-        include_tasks: tasks/get_content_view_filters.yaml
-      tags:
-        - 'content_view_filters'
-
-    - block:
       - name: Get Custom Products
         include_tasks: tasks/get_products.yaml
       tags:

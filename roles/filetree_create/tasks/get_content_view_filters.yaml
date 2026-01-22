@@ -7,14 +7,21 @@
     __addapted_component_info: {}
     # __usergroups_list: []
 
+- name: Content View Filters | Show debug information (__current_content_view)
+  ansible.builtin.debug:
+    var: __current_content_view
+    verbosity: 1
+
 - name: Content View Filters | Get Content View Filters
   ansible.builtin.include_tasks: api_call.yaml
   vars:
     call_type: Content View Filters
     api_link: "/katello/api/content_views/{{ __current_content_view.id }}/filters"
 
-- debug: var=result_api_response
-- debug: var=__current_content_view
+- name: Content View Filters | Show debug information (result_api_response)
+  ansible.builtin.debug:
+    var: result_api_response
+    verbosity: 1
 
 - name: Compose the filters' structure
   ansible.builtin.set_fact:
@@ -49,6 +56,5 @@
 
 - name: Content View Filters (Do Work) | Set Info List (can take a while...)
   ansible.builtin.set_fact:
-    __rs_info_list: "{{ __rs_info_list + result_api_response.json.results }}"
     __rs_info_list: "{{ __rs_info_list + [__current_content_view | combine(__addapted_filter_info) | combine(__addapted_component_info)] }}"
 ...
