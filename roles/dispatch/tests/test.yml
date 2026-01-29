@@ -1,5 +1,7 @@
 ---
-- hosts: localhost
+- name: "Playbook to test the role 'dispatch'"
+  hosts: localhost
   remote_user: root
   roles:
     - dispatch
+...

@@ -12,7 +12,7 @@
   register: __files_list
   no_log: "{{ satellite_configuration_filetree_read_secure_logging }}"
 
-- name: "Read {{ __task_filetree_read.name }} definitions"
+- name: "Read definitions for {{ __task_filetree_read.name }}"
   ansible.builtin.include_vars:
     file: "{{ __read_definitions_item.path }}"
   loop: "{{ __files_list.files }}"
@@ -23,7 +23,7 @@
   failed_when: "'VARIABLE IS NOT DEFINED' in __contents_filetree_item"
   no_log: "{{ satellite_configuration_filetree_read_secure_logging }}"
 
-- name: "Populate {{ __task_filetree_read.name }} list"
+- name: "Populate list for {{ __task_filetree_read.name }}"
   ansible.builtin.set_fact:
     "__populate_{{ __task_filetree_read.var }}": "{{ (lookup('vars', '__populate_' + __task_filetree_read.var, default=[]) + __populate_list_item.ansible_facts[__task_filetree_read.var]) }}"
     # "__populate_{{ __task_filetree_read.var }}": "{{ (lookup('vars', '__populate_' + __task_filetree_read.var, default=[]) + __populate_list_item.ansible_facts[__task_filetree_read.var]) | unique(case_sensitive='true') }}"
@@ -38,7 +38,7 @@
     - __contents_filetree_item.results | length > 0
     - __populate_list_item.ansible_facts[__task_filetree_read.var] is defined
 
-- name: "Set {{ __task_filetree_read.name }} Data Structure"
+- name: "Set Data Structure for {{ __task_filetree_read.name }}"
   ansible.builtin.set_fact:
     "{{ __task_filetree_read.var }}": "{{ lookup('vars', '__populate_' + __task_filetree_read.var) }}"
   no_log: "{{ satellite_configuration_filetree_read_secure_logging }}"
@@ -48,4 +48,4 @@
   ansible.builtin.debug:
     var: "{{ __task_filetree_read.var }}"
     verbosity: 1
-
+...

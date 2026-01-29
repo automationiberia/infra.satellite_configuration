@@ -48,6 +48,7 @@
       id: "{{  __current_host_collection.id }}"
       host_ids:
         - "{{ __current_host.id }}"
+  # noqa: name[template]
 
 - name: "Show the result of the operation on the Host Collection '{{ __current_host_collection.name }}' for the host '{{ __current_host.name }}'"
   ansible.builtin.debug:
@@ -65,8 +66,9 @@
     __failed: "{{ 'not found' in result_api_response.json.displayMessages.error | join(',') }}"
   failed_when: __failed
   changed_when: __changed
-# Possible outputs:
-#   "content": "  {\"displayMessages\":{\"success\":[],\"error\":[\"Host with ID 2 already exists in the host collection.\"]}}\n",
-#   "content": "  {\"displayMessages\":{\"success\":[\"Successfully added 1 Host(s).\"],\"error\":[]}}\n",
-#   "content": "  {\"displayMessages\":{\"success\":[],\"error\":[\"Host with ID 2 not found.\"]}}\n",
+  # noqa: name[template]
+  # Possible outputs:
+  #   "content": "  {\"displayMessages\":{\"success\":[],\"error\":[\"Host with ID 2 already exists in the host collection.\"]}}\n",
+  #   "content": "  {\"displayMessages\":{\"success\":[\"Successfully added 1 Host(s).\"],\"error\":[]}}\n",
+  #   "content": "  {\"displayMessages\":{\"success\":[],\"error\":[\"Host with ID 2 not found.\"]}}\n",
 ...

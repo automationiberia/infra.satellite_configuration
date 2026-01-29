@@ -1,5 +1,7 @@
 ---
-- hosts: localhost
+- name: "Playbook to test the 'filetree_read' role"
+  hosts: localhost
   remote_user: root
   roles:
     - filetree_read
+...

@@ -17,3 +17,4 @@
     label: "{{ __current_sync_plan.name }}"
   when: satellite_sync_plans is defined
   delegate_to: localhost
+...

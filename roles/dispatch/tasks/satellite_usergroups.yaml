@@ -1,5 +1,5 @@
 ---
-- name: ensure usergroup are correct
+- name: Ensure usergroup are correct
   redhat.satellite.usergroup:
     # Mandatory parameters
     name: "{{ __current_usergroup.name }}"
@@ -17,7 +17,7 @@
   when: satellite_usergroups is defined
   delegate_to: "localhost"
 
-- name: ensure external usergroups are correct
+- name: Ensure external usergroups are correct
   redhat.satellite.external_usergroup:
     # Mandatory parameters
     name: "{{ __current_external_usergroup[1].name }}"

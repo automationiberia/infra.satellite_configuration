@@ -1,5 +1,6 @@
 ---
-- ansible.builtin.import_role:
+- name: Dispatch | Apply Settings
+  ansible.builtin.import_role:
     name: redhat.satellite.settings
   vars:
     satellite_username: "{{ satellite.admin.username }}"

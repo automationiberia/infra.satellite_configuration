@@ -1,5 +1,5 @@
 ---
-primary_organization: "Umbrella" 
+primary_organization: "Umbrella"
 
 organizations:
   - name: "Umbrella"
@@ -20,4 +20,3 @@ all_organizations:
   - "red_ribbon"
   - "red_ribbon_new"
   - "red_ribbon_new_demo"
-

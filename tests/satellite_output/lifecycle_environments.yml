@@ -1,5 +1,5 @@
 ---
-lifecycle_environments: 
+lifecycle_environments:
   - name: Development
     label: Development
     description: Development env for app servers

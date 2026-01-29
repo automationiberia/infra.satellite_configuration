@@ -1,3 +1,5 @@
+.ansible
+.github/workflow-config
 *artifact*.json
 *.log
 export

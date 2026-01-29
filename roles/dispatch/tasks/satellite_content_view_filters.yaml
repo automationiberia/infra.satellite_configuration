@@ -1,6 +1,5 @@
 ---
 - name: Create Content View Filters
-  #theforeman.foreman.katello_content_view_filter:
   redhat.satellite.content_view_filter:
     # Mandatory parameters
     name: "{{ __current_content_view_filter.name }}"

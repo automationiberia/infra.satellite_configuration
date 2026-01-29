@@ -52,7 +52,7 @@
   delegate_to: "localhost"
   notify:
     - sync all repositories
-
+...
 # - name: ensure custom products exist
 #   theforeman.foreman.katello_product:
 #     username: "{{ configure_foreman_username }}"

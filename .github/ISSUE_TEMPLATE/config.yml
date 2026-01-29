@@ -1,0 +1,13 @@
+---
+# Ref: https://help.github.com/en/github/building-a-strong-community/configuring-issue-templates-for-your-repository#configuring-the-template-chooser
+blank_issues_enabled: false # default is true
+contact_links:
+  - name: Help, Support and Feature requests
+    url: https://github.com/automationiberia/satellite-configuration/issues
+    about: Issue tracker can be used to share any kind of questions or ideas
+  - name: Pull Requests
+    url: https://github.com/automationiberia/satellite-configuration/pulls
+    about: Any PR is welcome!
+  - name: Ansible Code of Conduct
+    url: https://docs.ansible.com/ansible/latest/community/code_of_conduct.html
+    about: Be nice to other members of the community. Behave.

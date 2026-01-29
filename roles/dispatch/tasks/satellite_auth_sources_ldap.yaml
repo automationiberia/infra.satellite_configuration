@@ -1,5 +1,6 @@
 ---
-- ansible.builtin.import_role:
+- name: Dispatch | Apply Auth Sources LDAP
+  ansible.builtin.import_role:
     name: redhat.satellite.auth_sources_ldap
   vars:
     satellite_username: "{{ username }}"

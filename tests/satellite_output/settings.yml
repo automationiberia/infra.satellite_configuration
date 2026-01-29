@@ -1,5 +1,5 @@
 ---
-satellite_settings: 
+satellite_settings:
   - name: access_unattended_without_build
     value: ""
   - name: administrator

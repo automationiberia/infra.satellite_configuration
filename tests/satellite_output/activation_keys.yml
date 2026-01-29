@@ -1,5 +1,5 @@
 ---
-activation_keys: 
+activation_keys:
   - name: newAK
     unlimited_hosts: True
     auto_attach: True
@@ -14,4 +14,3 @@ activation_keys:
     content_view: cv-test
     lifecycle_environment: UAT
 ...
-

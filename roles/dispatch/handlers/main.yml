@@ -1,5 +1,5 @@
 ---
 # handlers file for dispatch
-- name: sync all repositories
+- name: Sync all repositories
   include_tasks: "{{ role_path }}/handlers/sync_repositories.yml"
-
+...

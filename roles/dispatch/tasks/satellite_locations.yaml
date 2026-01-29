@@ -1,5 +1,5 @@
 ---
-- name: ensure locations exists
+- name: Ensure locations exists
   redhat.satellite.location:
     # Mandatory parameters
     name: "{{ __current_organization.name }}"

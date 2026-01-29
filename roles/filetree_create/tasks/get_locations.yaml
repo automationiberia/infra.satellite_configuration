@@ -22,4 +22,4 @@
 #   include_tasks: template_out.yaml
 #   vars:
 #     template_type: satellite_all_locations
-
+...

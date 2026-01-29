@@ -1,0 +1,34 @@
+objects:
+  role:
+    dispatch:
+      name: dispatch
+      description: An Ansible role to call other roles to create objects on Red Hat
+        Satellite
+      version_added: 1.0.0
+    filetree_create:
+      name: filetree_create
+      description: An Ansible Role to create a local file tree of objects existing
+        in Red Hat Satellite
+      version_added: 1.0.0
+    filetree_read:
+      name: filetree_read
+      description: An Ansible Role to read from a local file tree and create objects
+        in Red Hat Satellite
+      version_added: 1.0.0
+plugins:
+  become: {}
+  cache: {}
+  callback: {}
+  cliconf: {}
+  connection: {}
+  filter: {}
+  httpapi: {}
+  inventory: {}
+  lookup: {}
+  module: {}
+  netconf: {}
+  shell: {}
+  strategy: {}
+  test: {}
+  vars: {}
+version: 1.0.0

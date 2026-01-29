@@ -13,3 +13,5 @@
     timeout: 1200
   loop: "{{ loop_var }}"
   register: detailed_info
+  # noqa: name[template]
+...

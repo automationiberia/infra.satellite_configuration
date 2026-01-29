@@ -1,0 +1,33 @@
+---
+namespace: {{ collection_namespace }}
+name: {{ collection_name }}
+version: {{ collection_version }}
+description: Export and Import Satellite configuration using Configuration as Code
+readme: README.md
+authors:
+  - Ivan Aragonés @ivarmu
+  - Silvio Perez @silvinux
+repository: {{ collection_repo }}/
+documentation: {{ collection_repo }}/
+homepage: {{ collection_repo }}/
+issues: {{ collection_repo }}/issues
+build_ignore:
+  - galaxy.yml.j2
+  - release.yml
+  - .github
+  - '*.tar.gz'
+license:
+  - GPL-3.0-or-later
+tags:
+  - infrastructure
+  - linux
+  - application
+  - tools
+  - satellite
+  - casc
+  - cac
+  - configuration
+  - satellite_configuration
+dependencies:
+  "redhat.satellite": ">=5.8.0"
+...

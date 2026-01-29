@@ -1,5 +1,6 @@
 ---
-- include_vars:
+- name: Include vars
+  include_vars:
     file: "{{ item }}"
   loop:
     - "{{ dir_orgs_vars }}/configure_foreman_katello_credentials.yml"
@@ -9,7 +10,6 @@
   when: orgs is defined and dir_orgs_vars is defined and env is defined and cvaction is defined and cvtype is defined and cvname is defined
 
 - name: "{% if cvaction %}{{ cvaction|capitalize }}{% else%}Publish or Promote{% endif %} {% if cvtype == 'ccv' %}Compositive Content View Versions{% else %}Content View Versions{% endif %}"
-  #theforeman.foreman.katello_content_view_version:
   redhat.satellite.content_view_version:
     username: "{{ configure_foreman_username }}"
     password: "{{ configure_foreman_password }}"
@@ -27,6 +27,7 @@
   loop: "{{ configure_katello_content_view_versions }}"
   when: configure_katello_content_view_versions is defined
   delegate_to: "{{ 'localhost' if foreman_local else omit }}"
+  # noqa: name[template]
 
 - name: Content Views purge except last {{ content_views_purge_count }} newest versions
   import_role:
@@ -40,10 +41,8 @@
     satellite_content_view_version_cleanup_keep: "{{ content_views_purge_count }}"
   when: configure_katello_content_view_versions is defined
   delegate_to: "{{ 'localhost' if foreman_local else omit }}"
-
-   
-  
-  
+  # noqa: name[template]
+...
 #  - name: Content Views purge except last {{ content_views_purge_count }} newest versions
 #    command: "hammer content-view purge --name {{ item.content_view }} --count {{ content_views_purge_count }} --organization {{ orgs }}"
 #    become: "yes"

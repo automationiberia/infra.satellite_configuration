@@ -1,5 +1,6 @@
 ---
-- ansible.builtin.import_role:
+- name: Dispatch | Apply Lifecycle Environments
+  ansible.builtin.import_role:
     name: redhat.satellite.lifecycle_environments
   vars:
     satellite_username: "{{ username }}"

@@ -1,109 +1,127 @@
 ---
-- block:
-  - name: Get Organizations
-    include_tasks: get_organizations.yaml
+- name: Block
   tags:
     - 'organizations'
+  block:
+    - name: Get Organizations
+      include_tasks: get_organizations.yaml
 
-- block:
-  - name: Get Locations
-    include_tasks: get_locations.yaml
+- name: Block
   tags:
     - 'locations'
+  block:
+    - name: Get Locations
+      include_tasks: get_locations.yaml
 
-- block:
-  - name: Get Domains
-    include_tasks: get_domains.yaml
+- name: Block
   tags:
     - 'domains'
+  block:
+    - name: Get Domains
+      include_tasks: get_domains.yaml
 
-- block:
-  - name: Get Subnets
-    include_tasks: get_subnets.yaml
+- name: Block
   tags:
     - 'subnets'
+  block:
+    - name: Get Subnets
+      include_tasks: get_subnets.yaml
 
-- block:
-  - name: Get Repositories
-    include_tasks: get_repositories.yaml
+- name: Block
   tags:
     - 'repositories'
+  block:
+    - name: Get Repositories
+      include_tasks: get_repositories.yaml
 
-- block:
-  - name: Get Repositories
-    include_tasks: get_repository_sets.yaml
+- name: Block
   tags:
     - 'repository_sets'
+  block:
+    - name: Get Repositories
+      include_tasks: get_repository_sets.yaml
 
-- block:
-  - name: Get Host Groups
-    include_tasks: get_hostgroups.yaml
+- name: Block
   tags:
     - 'hostgroups'
+  block:
+    - name: Get Host Groups
+      include_tasks: get_hostgroups.yaml
 
-- block:
-  - name: Get Operating Systems
-    include_tasks: get_operatingsystems.yaml
+- name: Block
   tags:
     - 'operatingsystems'
+  block:
+    - name: Get Operating Systems
+      include_tasks: get_operatingsystems.yaml
 
-- block:
-  - name: Get Lifecycle Environments
-    include_tasks: get_lifecycle_environments.yaml
+- name: Block
   tags:
     - 'lifecycle_environments'
+  block:
+    - name: Get Lifecycle Environments
+      include_tasks: get_lifecycle_environments.yaml
 
-- block:
-  - name: Get Content Views
-    include_tasks: get_content_views.yaml
+- name: Block
   tags:
     - 'content_views'
+  block:
+    - name: Get Content Views
+      include_tasks: get_content_views.yaml
 
-- block:
-  - name: Get Custom Products
-    include_tasks: get_products.yaml
+- name: Block
   tags:
     - 'products'
+  block:
+    - name: Get Custom Products
+      include_tasks: get_products.yaml
 
-- block:
-  - name: Get Settings
-    include_tasks: get_settings.yaml
+- name: Block
   tags:
     - 'settings'
+  block:
+    - name: Get Settings
+      include_tasks: get_settings.yaml
 
-- block:
-  - name: Get Content Credentials
-    include_tasks: get_content_credentials.yaml
+- name: Block
   tags:
     - 'content_credentials'
+  block:
+    - name: Get Content Credentials
+      include_tasks: get_content_credentials.yaml
 
-- block:
-  - name: Get Activation Keys
-    include_tasks: get_activation_keys.yaml
+- name: Block
   tags:
     - 'activation_keys'
+  block:
+    - name: Get Activation Keys
+      include_tasks: get_activation_keys.yaml
 
-- block:
-  - name: Get Sync Plans
-    include_tasks: get_sync_plans.yaml
+- name: Block
   tags:
     - 'sync_plans'
+  block:
+    - name: Get Sync Plans
+      include_tasks: get_sync_plans.yaml
 
-- block:
-  - name: Get Auth Sources LDAP
-    include_tasks: get_auth_sources_ldap.yaml
+- name: Block
   tags:
     - 'auth_sources_ldap'
+  block:
+    - name: Get Auth Sources LDAP
+      include_tasks: get_auth_sources_ldap.yaml
 
-- block:
-  - name: Get Host Collections
-    include_tasks: get_host_collections.yaml
+- name: Block
   tags:
     - 'host_collections'
+  block:
+    - name: Get Host Collections
+      include_tasks: get_host_collections.yaml
 
-- block:
-  - name: Get External Usergroups
-    include_tasks: get_usergroups.yaml
+- name: Block
   tags:
     - 'usergroups'
+  block:
+    - name: Get External Usergroups
+      include_tasks: get_usergroups.yaml
 ...

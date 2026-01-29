@@ -18,3 +18,4 @@
     label: "{{ __current_repository_set.name | default(__current_repository_set.label) }}"
   when: satellite_repository_sets is defined
   delegate_to: localhost
+...

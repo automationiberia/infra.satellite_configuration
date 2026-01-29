@@ -1,8 +1,9 @@
 ---
 - name: Create configuration file for {{ template_type }}
   ansible.builtin.template:
-    src: ../templates/{{ template_type }}.yaml.j2
+    src: "{{ template_type }}.yaml.j2"
     dest: "{{ output_path }}/{{ template_type }}.yaml"
     owner: "{{ satellite.template.owner }}"
     group: "{{ satellite.template.group }}"
     mode: "{{ satellite.template.mode }}"
+...
