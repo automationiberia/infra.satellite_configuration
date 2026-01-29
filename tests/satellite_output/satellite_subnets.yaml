@@ -1,0 +1,54 @@
+---
+satellite_subnets:
+  - network: 10.10.10.0
+    network_type: IPv4
+    cidr: 27
+    mask: 255.255.255.224
+    mtu: 1500
+    boot_mode: DHCP
+    name: test_subnet
+    network_address: 10.10.10.0/27
+  - network: 192.168.122.0
+    network_type: IPv4
+    cidr: 24
+    mask: 255.255.255.0
+    mtu: 1500
+    gateway: 192.168.122.1
+    dns_primary: 192.168.122.11
+    boot_mode: DHCP
+    name: bcnconsulting.com
+    network_address: 192.168.122.0/24
+    tftp_id: 1
+    tftp_name: satellite-drs.bcnconsulting.com
+    tftp:
+      name: satellite-drs.bcnconsulting.com
+      url: https://satellite-drs.bcnconsulting.com:9090
+  - network: 192.168.200.0
+    network_type: IPv4
+    cidr: 24
+    mask: 255.255.255.0
+    mtu: 1500
+    gateway: 192.168.200.1
+    dns_primary: 192.168.200.10
+    from: 192.168.200.100
+    to: 192.168.200.150
+    ipam: DHCP
+    boot_mode: DHCP
+    name: onda.bcnconsulting.com
+    network_address: 192.168.200.0/24
+    dhcp_id: 1
+    dhcp_name: satellite-drs.bcnconsulting.com
+    tftp_id: 1
+    tftp_name: satellite-drs.bcnconsulting.com
+    discovery_id: 1
+    discovery_name: satellite-drs.bcnconsulting.com
+    dhcp:
+      name: satellite-drs.bcnconsulting.com
+      url: https://satellite-drs.bcnconsulting.com:9090
+    tftp:
+      name: satellite-drs.bcnconsulting.com
+      url: https://satellite-drs.bcnconsulting.com:9090
+    discovery:
+      name: satellite-drs.bcnconsulting.com
+      url: https://satellite-drs.bcnconsulting.com:9090
+...

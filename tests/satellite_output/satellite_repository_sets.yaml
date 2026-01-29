@@ -1,0 +1,69 @@
+---
+satellite_repository_sets:
+  - organization: Umbrella
+    content:
+      label: ansible-automation-platform-2.5-for-rhel-9-x86_64-rpms
+      vendor: Red Hat
+      content_type: yum
+      content_url: /content/dist/layered/rhel9/x86_64/ansible-automation-platform/2.5/os
+      gpg_url: file:///etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release
+    repositories:
+      - releasever:
+    vendor: Red Hat
+    label: ansible-automation-platform-2.5-for-rhel-9-x86_64-rpms
+    type: yum
+    gpgUrl: file:///etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release
+    contentUrl: /content/dist/layered/rhel9/x86_64/ansible-automation-platform/2.5/os
+    archRestricted: noarch
+    override: default
+    redhat: True
+  - organization: Umbrella
+    content:
+      label: rhel-10-for-x86_64-appstream-rpms
+      vendor: Red Hat
+      content_type: yum
+      content_url: /content/dist/rhel10/$releasever/x86_64/appstream/os
+      gpg_url: file:///etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release
+    repositories:
+      - releasever: 10
+    vendor: Red Hat
+    label: rhel-10-for-x86_64-appstream-rpms
+    type: yum
+    gpgUrl: file:///etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release
+    contentUrl: /content/dist/rhel10/$releasever/x86_64/appstream/os
+    archRestricted: noarch
+    override: default
+    redhat: True
+  - organization: Umbrella
+    content:
+      label: rhel-10-for-x86_64-baseos-rpms
+      vendor: Red Hat
+      content_type: yum
+      content_url: /content/dist/rhel10/$releasever/x86_64/baseos/os
+      gpg_url: file:///etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release
+    repositories:
+      - releasever: 10
+    vendor: Red Hat
+    label: rhel-10-for-x86_64-baseos-rpms
+    type: yum
+    gpgUrl: file:///etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release
+    contentUrl: /content/dist/rhel10/$releasever/x86_64/baseos/os
+    archRestricted: noarch
+    override: default
+    redhat: True
+  - organization: Umbrella
+    content:
+      label: rhel-10-for-x86_64-baseos-source-isos
+      vendor: Red Hat
+      content_type: file
+      content_url: /content/dist/rhel10/$releasever/x86_64/baseos/source/iso
+      gpg_url: file:///etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release
+    repositories: []
+    vendor: Red Hat
+    label: rhel-10-for-x86_64-baseos-source-isos
+    type: file
+    gpgUrl: file:///etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release
+    contentUrl: /content/dist/rhel10/$releasever/x86_64/baseos/source/iso
+    override: default
+    redhat: True
+...

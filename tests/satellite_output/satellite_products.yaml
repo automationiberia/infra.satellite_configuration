@@ -1,0 +1,1797 @@
+---
+satellite_products:
+  - name: Red Hat S-JIS Support (for RHEL Server)
+    label: Red_Hat_S-JIS_Support_for_RHEL_Server_
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat S-JIS Support (for RHEL Server) - Extended Update Support
+    label: Red_Hat_S-JIS_Support_for_RHEL_Server_-_Extended_Update_Support
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Software Test Suite 5 (for RHEL Server)
+    label: Red_Hat_Software_Test_Suite_5_for_RHEL_Server_
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise Linux High Performance Networking (for RHEL Server)
+    label: Red_Hat_Enterprise_Linux_High_Performance_Networking_for_RHEL_Server_
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise Linux High Performance Networking (for RHEL Server) - Extended Update Support
+    label: Red_Hat_Enterprise_Linux_High_Performance_Networking_for_RHEL_Server_-_Extended_Update_Support
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise Linux High Performance Networking (for RHEL Compute Node)
+    label: Red_Hat_Enterprise_Linux_High_Performance_Networking_for_RHEL_Compute_Node_
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise Linux 6 Server HTB
+    label: Red_Hat_Enterprise_Linux_6_Server_HTB
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise Linux for SAP Applications for x86_64
+    label: Red_Hat_Enterprise_Linux_for_SAP_Applications_for_x86_64
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Virtualization
+    label: Red_Hat_Virtualization
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Storage Software Appliance
+    label: Red_Hat_Storage_Software_Appliance
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise Linux 6 Workstation HTB
+    label: Red_Hat_Enterprise_Linux_6_Workstation_HTB
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat CloudForms
+    label: Red_Hat_CloudForms
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Kernel Derivative Works for Bluegene/Q
+    label: Kernel_Derivative_Works_for_Bluegene_Q
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Kernel Derivative Works for HPC for Power Systems
+    label: Kernel_Derivative_Works_for_HPC_for_Power_Systems
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Storage
+    label: Red_Hat_Storage
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: MRG Realtime
+    label: MRG_Realtime
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise Linux High Performance Networking (for RHEL for IBM POWER)
+    label: Red_Hat_Enterprise_Linux_High_Performance_Networking_for_RHEL_for_IBM_POWER_
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise Linux High Performance Networking (for RHEL for IBM POWER) - Extended Update Support
+    label: Red_Hat_Enterprise_Linux_High_Performance_Networking_for_RHEL_for_IBM_POWER_-_Extended_Update_Support
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise Linux Scalable File System (for RHEL Compute Node)
+    label: Red_Hat_Enterprise_Linux_Scalable_File_System_for_RHEL_Compute_Node_
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Developer Toolset (for RHEL Server)
+    label: Red_Hat_Developer_Toolset_for_RHEL_Server_
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Developer Toolset (for RHEL HPC Node)
+    label: Red_Hat_Developer_Toolset_for_RHEL_HPC_Node_
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Developer Toolset (for RHEL Client)
+    label: Red_Hat_Developer_Toolset_for_RHEL_Client_
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Developer Toolset (for RHEL Workstation)
+    label: Red_Hat_Developer_Toolset_for_RHEL_Workstation_
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Beta
+    label: Red_Hat_Beta
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat EUCJP Support (for RHEL Server)
+    label: Red_Hat_EUCJP_Support_for_RHEL_Server_
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat EUCJP Support (for RHEL Server) - Extended Update Support
+    label: Red_Hat_EUCJP_Support_for_RHEL_Server_-_Extended_Update_Support
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: JBoss Enterprise Web Platform
+    label: JBoss_Enterprise_Web_Platform
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Gluster Storage Server for On-premise
+    label: Red_Hat_Gluster_Storage_Server_for_On-premise
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Gluster Storage Management Console (for RHEL Server)
+    label: Red_Hat_Gluster_Storage_Management_Console_for_RHEL_Server_
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Developer Toolset (for RHEL Server EUS)
+    label: Red_Hat_Developer_Toolset_for_RHEL_Server_EUS_
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: JBoss Enterprise Application Platform - ELS
+    label: JBoss_Enterprise_Application_Platform_-_ELS
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat OpenShift Enterprise Infrastructure
+    label: Red_Hat_OpenShift_Enterprise_Infrastructure
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat OpenShift Enterprise Application Node
+    label: Red_Hat_OpenShift_Enterprise_Application_Node
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Developer Toolset (for RHEL for IBM POWER)
+    label: Red_Hat_Developer_Toolset_for_RHEL_for_IBM_POWER_
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Developer Toolset (for RHEL for IBM POWER) - Extended Update Support
+    label: Red_Hat_Developer_Toolset_for_RHEL_for_IBM_POWER_-_Extended_Update_Support
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat OpenShift Enterprise Client Tools
+    label: Red_Hat_OpenShift_Enterprise_Client_Tools
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat OpenShift Enterprise JBoss EAP add-on
+    label: Red_Hat_OpenShift_Enterprise_JBoss_EAP_add-on
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Hardware Certification Test Suite
+    label: Red_Hat_Hardware_Certification_Test_Suite
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Directory Server
+    label: Red_Hat_Directory_Server
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Software Collections (for RHEL Server)
+    label: Red_Hat_Software_Collections_for_RHEL_Server_
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Software Collections (for RHEL Client)
+    label: Red_Hat_Software_Collections_for_RHEL_Client_
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Software Collections (for RHEL Workstation)
+    label: Red_Hat_Software_Collections_for_RHEL_Workstation_
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise Linux Server - Extended Life Cycle Support
+    label: Red_Hat_Enterprise_Linux_Server_-_Extended_Life_Cycle_Support
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Software Collections Beta (for RHEL Server)
+    label: Red_Hat_Software_Collections_Beta_for_RHEL_Server_
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Software Collections Beta (for RHEL Client)
+    label: Red_Hat_Software_Collections_Beta_for_RHEL_Client_
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Software Collections Beta (for RHEL Workstation)
+    label: Red_Hat_Software_Collections_Beta_for_RHEL_Workstation_
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat OpenStack Certification Test Suite
+    label: Red_Hat_OpenStack_Certification_Test_Suite
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Certificate System - Extended Life Cycle Support
+    label: Red_Hat_Certificate_System_-_Extended_Life_Cycle_Support
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Open vSwitch for NVP / NSX Supplemental
+    label: Red_Hat_Open_vSwitch_for_NVP_NSX_Supplemental
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Open vSwitch Supplemental Beta
+    label: Red_Hat_Open_vSwitch_Supplemental_Beta
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Certificate System
+    label: Red_Hat_Certificate_System
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise Linux EUS Compute Node
+    label: Red_Hat_Enterprise_Linux_EUS_Compute_Node
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise Linux EUS Compute Node High Performance Networking
+    label: Red_Hat_Enterprise_Linux_EUS_Compute_Node_High_Performance_Networking
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise Linux EUS Compute Node Scalable File System
+    label: Red_Hat_Enterprise_Linux_EUS_Compute_Node_Scalable_File_System
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat OpenStack Beta
+    label: Red_Hat_OpenStack_Beta
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat OpenStack Beta Certification Test Suite
+    label: Red_Hat_OpenStack_Beta_Certification_Test_Suite
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat OpenShift Enterprise Infrastructure Beta
+    label: Red_Hat_OpenShift_Enterprise_Infrastructure_Beta
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat OpenShift Enterprise Application Node Beta
+    label: Red_Hat_OpenShift_Enterprise_Application_Node_Beta
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat OpenShift Enterprise Client Tools Beta
+    label: Red_Hat_OpenShift_Enterprise_Client_Tools_Beta
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat OpenShift Enterprise JBoss EAP add-on Beta
+    label: Red_Hat_OpenShift_Enterprise_JBoss_EAP_add-on_Beta
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise Linux 7 Release Candidate
+    label: Red_Hat_Enterprise_Linux_7_Release_Candidate
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise Linux 7 for IBM POWER Release Candidate
+    label: Red_Hat_Enterprise_Linux_7_for_IBM_POWER_Release_Candidate
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise Linux 7 for IBM z Systems Release Candidate
+    label: Red_Hat_Enterprise_Linux_7_for_IBM_z_Systems_Release_Candidate
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise Linux 7 Desktop High Touch Beta
+    label: Red_Hat_Enterprise_Linux_7_Desktop_High_Touch_Beta
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise Linux for x86_64 High Touch Beta
+    label: Red_Hat_Enterprise_Linux_for_x86_64_High_Touch_Beta
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise Linux 7 Workstation High Touch Beta
+    label: Red_Hat_Enterprise_Linux_7_Workstation_High_Touch_Beta
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise Linux for IBM z Systems High Touch Beta
+    label: Red_Hat_Enterprise_Linux_for_IBM_z_Systems_High_Touch_Beta
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise Linux for Power, little endian High Touch Beta
+    label: Red_Hat_Enterprise_Linux_for_Power_little_endian_High_Touch_Beta
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise Linux 7 for HPC Compute Node High Touch Beta
+    label: Red_Hat_Enterprise_Linux_7_for_HPC_Compute_Node_High_Touch_Beta
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise Linux 7 Addons High Touch Beta
+    label: Red_Hat_Enterprise_Linux_7_Addons_High_Touch_Beta
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise Linux High Availability High Touch Beta
+    label: Red_Hat_Enterprise_Linux_High_Availability_High_Touch_Beta
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise Linux 7 Load Balancer High Touch Beta
+    label: Red_Hat_Enterprise_Linux_7_Load_Balancer_High_Touch_Beta
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise Linux Resilient Storage High Touch Beta
+    label: Red_Hat_Enterprise_Linux_Resilient_Storage_High_Touch_Beta
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise MRG Messaging
+    label: Red_Hat_Enterprise_MRG_Messaging
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Oracle Java (for RHEL Server)
+    label: Oracle_Java_for_RHEL_Server_
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise Linux for SAP Solutions for x86_64
+    label: Red_Hat_Enterprise_Linux_for_SAP_Solutions_for_x86_64
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Oracle Java (for RHEL Client)
+    label: Oracle_Java_for_RHEL_Client_
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Oracle Java (for RHEL Compute Node)
+    label: Oracle_Java_for_RHEL_Compute_Node_
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Oracle Java (for RHEL Workstation)
+    label: Oracle_Java_for_RHEL_Workstation_
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Oracle Java (for RHEL Compute Node) - Extended Update Support
+    label: Oracle_Java_for_RHEL_Compute_Node_-_Extended_Update_Support
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Oracle Java (for RHEL Server) - Extended Update Support
+    label: Oracle_Java_for_RHEL_Server_-_Extended_Update_Support
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise Linux Atomic Host HTB
+    label: Red_Hat_Enterprise_Linux_Atomic_Host_HTB
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise Linux for SAP Solutions for x86_64 - Extended Update Support
+    label: Red_Hat_Enterprise_Linux_for_SAP_Solutions_for_x86_64_-_Extended_Update_Support
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise Linux Server - AUS
+    label: Red_Hat_Enterprise_Linux_Server_-_AUS
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise Linux High Availability (for RHEL Server) - AUS
+    label: Red_Hat_Enterprise_Linux_High_Availability_for_RHEL_Server_-_AUS
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise Linux Load Balancer (for RHEL Server) - AUS
+    label: Red_Hat_Enterprise_Linux_Load_Balancer_for_RHEL_Server_-_AUS
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise Linux Resilient Storage (for RHEL Server) - AUS
+    label: Red_Hat_Enterprise_Linux_Resilient_Storage_for_RHEL_Server_-_AUS
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise Linux Scalable File System (for RHEL Server) - AUS
+    label: Red_Hat_Enterprise_Linux_Scalable_File_System_for_RHEL_Server_-_AUS
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Oracle Java (for RHEL Server) - AUS
+    label: Oracle_Java_for_RHEL_Server_-_AUS
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Satellite Beta
+    label: Red_Hat_Satellite_Beta
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Satellite Capsule Beta
+    label: Red_Hat_Satellite_Capsule_Beta
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: MRG Grid
+    label: MRG_Grid
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: OLD Red Hat Enterprise Linux Server for ARM Development Preview
+    label: OLD_Red_Hat_Enterprise_Linux_Server_for_ARM_Development_Preview
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Satellite with Embedded Oracle
+    label: Red_Hat_Satellite_with_Embedded_Oracle
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Satellite 5 Managed DB
+    label: Red_Hat_Satellite_5_Managed_DB
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Satellite Proxy
+    label: Red_Hat_Satellite_Proxy
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: MRG Management
+    label: MRG_Management
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: MRG Grid Execute
+    label: MRG_Grid_Execute
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Gluster Storage Nagios Server
+    label: Red_Hat_Gluster_Storage_Nagios_Server
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise Linux Atomic Host
+    label: Red_Hat_Enterprise_Linux_Atomic_Host
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise Linux Atomic Host Beta
+    label: Red_Hat_Enterprise_Linux_Atomic_Host_Beta
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Container Images
+    label: Red_Hat_Container_Images
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Container Images Beta
+    label: Red_Hat_Container_Images_Beta
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Container Images HTB
+    label: Red_Hat_Container_Images_HTB
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Virtualization for IBM Power LE
+    label: Red_Hat_Virtualization_for_IBM_Power_LE
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat OpenShift Enterprise JBoss FUSE add-on
+    label: Red_Hat_OpenShift_Enterprise_JBoss_FUSE_add-on
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat OpenShift Enterprise JBoss A-MQ add-on
+    label: Red_Hat_OpenShift_Enterprise_JBoss_A-MQ_add-on
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise Virtualization for Power, little endian
+    label: Red_Hat_Enterprise_Virtualization_for_Power_little_endian
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Ceph Storage
+    label: Red_Hat_Ceph_Storage
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat OpenStack Advanced
+    label: Red_Hat_OpenStack_Advanced
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat OpenStack Beta Advanced
+    label: Red_Hat_OpenStack_Beta_Advanced
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Ceph Storage Calamari
+    label: Red_Hat_Ceph_Storage_Calamari
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Ceph Storage MON
+    label: Red_Hat_Ceph_Storage_MON
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise Linux for Real Time
+    label: Red_Hat_Enterprise_Linux_for_Real_Time
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Ceph Storage OSD
+    label: Red_Hat_Ceph_Storage_OSD
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise MRG Messaging 3 for RHEL 7
+    label: Red_Hat_Enterprise_MRG_Messaging_3_for_RHEL_7
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Container Development Kit
+    label: Red_Hat_Container_Development_Kit
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise Linux Server for ARM
+    label: Red_Hat_Enterprise_Linux_Server_for_ARM
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise Linux Server for ARM Beta
+    label: Red_Hat_Enterprise_Linux_Server_for_ARM_Beta
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Certificate System with Advanced Access
+    label: Red_Hat_Certificate_System_with_Advanced_Access
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise Linux Resilient Storage for IBM z Systems
+    label: Red_Hat_Enterprise_Linux_Resilient_Storage_for_IBM_z_Systems
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise Linux High Availability for IBM z Systems
+    label: Red_Hat_Enterprise_Linux_High_Availability_for_IBM_z_Systems
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat JBoss AMQ Clients
+    label: Red_Hat_JBoss_AMQ_Clients
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Oracle Java (for Middleware)
+    label: Oracle_Java_for_Middleware_
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat CloudForms Beta
+    label: Red_Hat_CloudForms_Beta
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat JBoss Core Services
+    label: Red_Hat_JBoss_Core_Services
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat S-JIS Support (for RHEL Server) - AUS
+    label: Red_Hat_S-JIS_Support_for_RHEL_Server_-_AUS
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Single Sign-On
+    label: Red_Hat_Single_Sign-On
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat OpenStack - Extended Life Cycle Support
+    label: Red_Hat_OpenStack_-_Extended_Life_Cycle_Support
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise Linux for Real Time for NFV
+    label: Red_Hat_Enterprise_Linux_for_Real_Time_for_NFV
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Storage Console
+    label: Red_Hat_Storage_Console
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Storage Console Node
+    label: Red_Hat_Storage_Console_Node
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Mobile Application Platform
+    label: Red_Hat_Mobile_Application_Platform
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: dotNET on RHEL (for RHEL Server)
+    label: dotNET_on_RHEL_for_RHEL_Server_
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: dotNET on RHEL Beta (for RHEL Server)
+    label: dotNET_on_RHEL_Beta_for_RHEL_Server_
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat AMQ Interconnect
+    label: Red_Hat_AMQ_Interconnect
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise Linux for SAP Applications for x86_64 - Extended Update Support
+    label: Red_Hat_Enterprise_Linux_for_SAP_Applications_for_x86_64_-_Extended_Update_Support
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise Linux Fast Datapath Beta for x86_64
+    label: Red_Hat_Enterprise_Linux_Fast_Datapath_Beta_for_x86_64
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Virtualization Host
+    label: Red_Hat_Virtualization_Host
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise Linux Server - TUS
+    label: Red_Hat_Enterprise_Linux_Server_-_TUS
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise Linux for SAP Applications for Power BE
+    label: Red_Hat_Enterprise_Linux_for_SAP_Applications_for_Power_BE
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise Linux for SAP Applications for Power BE - Extended Update Support
+    label: Red_Hat_Enterprise_Linux_for_SAP_Applications_for_Power_BE_-_Extended_Update_Support
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise Linux for SAP Applications for Power, little endian
+    label: Red_Hat_Enterprise_Linux_for_SAP_Applications_for_Power_little_endian
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise Linux for SAP Applications for Power, little endian - Extended Update Support
+    label: Red_Hat_Enterprise_Linux_for_SAP_Applications_for_Power_little_endian_-_Extended_Update_Support
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise Linux for SAP Applications for IBM z Systems
+    label: Red_Hat_Enterprise_Linux_for_SAP_Applications_for_IBM_z_Systems
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise Linux for SAP Applications for System Z - Extended Update Support
+    label: Red_Hat_Enterprise_Linux_for_SAP_Applications_for_System_Z_-_Extended_Update_Support
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise Linux for SAP Solutions for Power, little endian
+    label: Red_Hat_Enterprise_Linux_for_SAP_Solutions_for_Power_little_endian
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise Linux for SAP Solutions for Power, little endian - Extended Update Support
+    label: Red_Hat_Enterprise_Linux_for_SAP_Solutions_for_Power_little_endian_-_Extended_Update_Support
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: dotNET on RHEL (for RHEL Workstation)
+    label: dotNET_on_RHEL_for_RHEL_Workstation_
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: dotNET on RHEL Beta (for RHEL Workstation)
+    label: dotNET_on_RHEL_Beta_for_RHEL_Workstation_
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: dotNET on RHEL (for RHEL Compute Node)
+    label: dotNET_on_RHEL_for_RHEL_Compute_Node_
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: dotNET on RHEL Beta (for RHEL Compute Node)
+    label: dotNET_on_RHEL_Beta_for_RHEL_Compute_Node_
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise Linux KVM
+    label: Red_Hat_Enterprise_Linux_KVM
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat JBoss Middleware
+    label: Red_Hat_JBoss_Middleware
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat JBoss Data Grid
+    label: Red_Hat_JBoss_Data_Grid
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Ceph Storage for ARM
+    label: Red_Hat_Ceph_Storage_for_ARM
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat 3scale API Management Platform
+    label: Red_Hat_3scale_API_Management_Platform
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Software Collections (for RHEL Server for ARM)
+    label: Red_Hat_Software_Collections_for_RHEL_Server_for_ARM_
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Software Collections Beta (for RHEL Server for ARM)
+    label: Red_Hat_Software_Collections_Beta_for_RHEL_Server_for_ARM_
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Software Collections (for RHEL Server for IBM Power)
+    label: Red_Hat_Software_Collections_for_RHEL_Server_for_IBM_Power_
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Software Collections Beta (for RHEL Server for IBM Power)
+    label: Red_Hat_Software_Collections_Beta_for_RHEL_Server_for_IBM_Power_
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Software Collections (for RHEL Server for IBM Power LE)
+    label: Red_Hat_Software_Collections_for_RHEL_Server_for_IBM_Power_LE_
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Software Collections Beta (for RHEL Server for IBM Power LE)
+    label: Red_Hat_Software_Collections_Beta_for_RHEL_Server_for_IBM_Power_LE_
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Software Collections (for RHEL Server for System Z)
+    label: Red_Hat_Software_Collections_for_RHEL_Server_for_System_Z_
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Software Collections Beta (for RHEL Server for System Z)
+    label: Red_Hat_Software_Collections_Beta_for_RHEL_Server_for_System_Z_
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: JBoss Middleware Manager 7.0 Tech Preview
+    label: JBoss_Middleware_Manager_7_0_Tech_Preview
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Satellite - Extended Life Cycle Support
+    label: Red_Hat_Satellite_-_Extended_Life_Cycle_Support
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Satellite 5 Managed DB - Extended Life Cycle Support
+    label: Red_Hat_Satellite_5_Managed_DB_-_Extended_Life_Cycle_Support
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Satellite Proxy - Extended Life Cycle Support
+    label: Red_Hat_Satellite_Proxy_-_Extended_Life_Cycle_Support
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Satellite 5 Managed DB Beta
+    label: Red_Hat_Satellite_5_Managed_DB_Beta
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise Linux Server - Extended Life Cycle Support (for IBM z Systems)
+    label: Red_Hat_Enterprise_Linux_Server_-_Extended_Life_Cycle_Support_for_IBM_z_Systems_
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise Linux Resilient Storage for Power, little endian
+    label: Red_Hat_Enterprise_Linux_Resilient_Storage_for_Power_little_endian
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise Linux Resilient Storage for Power, little endian - Extended Update Support
+    label: Red_Hat_Enterprise_Linux_Resilient_Storage_for_Power_little_endian_-_Extended_Update_Support
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise Linux High Availability for Power, little endian
+    label: Red_Hat_Enterprise_Linux_High_Availability_for_Power_little_endian
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise Linux High Availability for Power, little endian - Extended Update Support
+    label: Red_Hat_Enterprise_Linux_High_Availability_for_Power_little_endian_-_Extended_Update_Support
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise Linux for SAP Applications for Power LE - Update Services for SAP Solutions
+    label: Red_Hat_Enterprise_Linux_for_SAP_Applications_for_Power_LE_-_Update_Services_for_SAP_Solutions
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise Linux for SAP Solutions for Power LE - Update Services for SAP Solutions
+    label: Red_Hat_Enterprise_Linux_for_SAP_Solutions_for_Power_LE_-_Update_Services_for_SAP_Solutions
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise Linux High Availability for Power LE - Update Services for SAP Solutions
+    label: Red_Hat_Enterprise_Linux_High_Availability_for_Power_LE_-_Update_Services_for_SAP_Solutions
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise Linux for SAP Applications for x86_64 - Update Services for SAP Solutions
+    label: Red_Hat_Enterprise_Linux_for_SAP_Applications_for_x86_64_-_Update_Services_for_SAP_Solutions
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise Linux for SAP Solutions for x86_64 - Update Services for SAP Solutions
+    label: Red_Hat_Enterprise_Linux_for_SAP_Solutions_for_x86_64_-_Update_Services_for_SAP_Solutions
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise Linux High Availability for x86_64 - Update Services for SAP Solutions
+    label: Red_Hat_Enterprise_Linux_High_Availability_for_x86_64_-_Update_Services_for_SAP_Solutions
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Virtualization - ELS
+    label: Red_Hat_Virtualization_-_ELS
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Container Images for IBM Power LE
+    label: Red_Hat_Container_Images_for_IBM_Power_LE
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Container Images Beta for IBM Power LE
+    label: Red_Hat_Container_Images_Beta_for_IBM_Power_LE
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Developer Tools (for RHEL Server)
+    label: Red_Hat_Developer_Tools_for_RHEL_Server_
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Developer Tools Beta (for RHEL Server)
+    label: Red_Hat_Developer_Tools_Beta_for_RHEL_Server_
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Developer Tools (for RHEL Workstation)
+    label: Red_Hat_Developer_Tools_for_RHEL_Workstation_
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Developer Tools Beta (for RHEL Workstation)
+    label: Red_Hat_Developer_Tools_Beta_for_RHEL_Workstation_
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Developer Tools (for RHEL Compute Node)
+    label: Red_Hat_Developer_Tools_for_RHEL_Compute_Node_
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Developer Tools Beta (for RHEL Compute Node)
+    label: Red_Hat_Developer_Tools_Beta_for_RHEL_Compute_Node_
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Developer Tools (for RHEL Server for ARM)
+    label: Red_Hat_Developer_Tools_for_RHEL_Server_for_ARM_
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Developer Tools Beta (for RHEL Server for ARM)
+    label: Red_Hat_Developer_Tools_Beta_for_RHEL_Server_for_ARM_
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Developer Tools (for RHEL Server for IBM Power)
+    label: Red_Hat_Developer_Tools_for_RHEL_Server_for_IBM_Power_
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Developer Tools Beta (for RHEL Server for IBM Power)
+    label: Red_Hat_Developer_Tools_Beta_for_RHEL_Server_for_IBM_Power_
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Developer Tools (for RHEL Server for IBM Power LE)
+    label: Red_Hat_Developer_Tools_for_RHEL_Server_for_IBM_Power_LE_
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Developer Tools Beta (for RHEL Server for IBM Power LE)
+    label: Red_Hat_Developer_Tools_Beta_for_RHEL_Server_for_IBM_Power_LE_
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Developer Tools (for RHEL Server for System Z)
+    label: Red_Hat_Developer_Tools_for_RHEL_Server_for_System_Z_
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Developer Tools Beta (for RHEL Server for System Z)
+    label: Red_Hat_Developer_Tools_Beta_for_RHEL_Server_for_System_Z_
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Ansible Engine
+    label: Red_Hat_Ansible_Engine
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Software Collections (for RHEL Server for ARM 64)
+    label: Red_Hat_Software_Collections_for_RHEL_Server_for_ARM_64_
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Software Collections Beta (for RHEL Server for ARM 64)
+    label: Red_Hat_Software_Collections_Beta_for_RHEL_Server_for_ARM_64_
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Software Collections (for RHEL Server for IBM Power 9)
+    label: Red_Hat_Software_Collections_for_RHEL_Server_for_IBM_Power_9_
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Software Collections Beta (for RHEL Server for IBM Power 9)
+    label: Red_Hat_Software_Collections_Beta_for_RHEL_Server_for_IBM_Power_9_
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat OpenShift Application Runtimes Beta
+    label: Red_Hat_OpenShift_Application_Runtimes_Beta
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Virtualization Manager
+    label: Red_Hat_Virtualization_Manager
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Developer Tools Beta (for RHEL Server for IBM Power 9)
+    label: Red_Hat_Developer_Tools_Beta_for_RHEL_Server_for_IBM_Power_9_
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Developer Tools (for RHEL Server for IBM Power 9)
+    label: Red_Hat_Developer_Tools_for_RHEL_Server_for_IBM_Power_9_
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Openshift Application Runtimes
+    label: Red_Hat_Openshift_Application_Runtimes
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise Linux for Power 9
+    label: Red_Hat_Enterprise_Linux_for_Power_9
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Virtualization - Extended Update Support
+    label: Red_Hat_Virtualization_-_Extended_Update_Support
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Virtualization for IBM Power LE - Extended Update Support
+    label: Red_Hat_Virtualization_for_IBM_Power_LE_-_Extended_Update_Support
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat OpenStack for IBM Power
+    label: Red_Hat_OpenStack_for_IBM_Power
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat OpenStack Beta for IBM Power LE
+    label: Red_Hat_OpenStack_Beta_for_IBM_Power_LE
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Gluster Storage Web Administration (for RHEL Server)
+    label: Red_Hat_Gluster_Storage_Web_Administration_for_RHEL_Server_
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Virtualization Host - Extended Update Support
+    label: Red_Hat_Virtualization_Host_-_Extended_Update_Support
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise Linux for IBM System z (Structure A)
+    label: Red_Hat_Enterprise_Linux_for_IBM_System_z_Structure_A_
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise Linux FDIO Early Access (RHEL 7 Server)
+    label: Red_Hat_Enterprise_Linux_FDIO_Early_Access_RHEL_7_Server_
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise Linux FDIO (RHEL 7 Server)
+    label: Red_Hat_Enterprise_Linux_FDIO_RHEL_7_Server_
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat OpenShift Service Mesh
+    label: Red_Hat_OpenShift_Service_Mesh
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise Linux Fast Datapath Beta for Power, little endian
+    label: Red_Hat_Enterprise_Linux_Fast_Datapath_Beta_for_Power_little_endian
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat OpenShift Container Platform Client Tools for Power
+    label: Red_Hat_OpenShift_Container_Platform_Client_Tools_for_Power
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: OpenJDK Java (for Middleware)
+    label: OpenJDK_Java_for_Middleware_
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat OpenStack 7 Extended Life Cycle Support
+    label: Red_Hat_OpenStack_7_Extended_Life_Cycle_Support
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise Linux for ARM 64 High Touch Beta
+    label: Red_Hat_Enterprise_Linux_for_ARM_64_High_Touch_Beta
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat CodeReady Linux Builder for x86_64
+    label: Red_Hat_CodeReady_Linux_Builder_for_x86_64
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat CodeReady Linux Builder for Power, little endian
+    label: Red_Hat_CodeReady_Linux_Builder_for_Power_little_endian
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat CodeReady Linux Builder for ARM 64
+    label: Red_Hat_CodeReady_Linux_Builder_for_ARM_64
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat CodeReady Linux Builder for IBM z Systems
+    label: Red_Hat_CodeReady_Linux_Builder_for_IBM_z_Systems
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat CoreOS
+    label: Red_Hat_CoreOS
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat CoreOS Beta
+    label: Red_Hat_CoreOS_Beta
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise Linux Advanced Virtualization
+    label: Red_Hat_Enterprise_Linux_Advanced_Virtualization
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise Linux Advanced Virtualization (for RHEL Server for IBM Power LE)
+    label: Red_Hat_Enterprise_Linux_Advanced_Virtualization_for_RHEL_Server_for_IBM_Power_LE_
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise Linux Advanced Virtualization (for RHEL Server for IBM System Z)
+    label: Red_Hat_Enterprise_Linux_Advanced_Virtualization_for_RHEL_Server_for_IBM_System_Z_
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise Linux Advanced Virtualization Beta
+    label: Red_Hat_Enterprise_Linux_Advanced_Virtualization_Beta
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise Linux Advanced Virtualization Beta (for RHEL Server for IBM Power LE)
+    label: Red_Hat_Enterprise_Linux_Advanced_Virtualization_Beta_for_RHEL_Server_for_IBM_Power_LE_
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat OpenShift Dev Spaces
+    label: Red_Hat_OpenShift_Dev_Spaces
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat OpenShift Data Foundation
+    label: Red_Hat_OpenShift_Data_Foundation
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Discovery
+    label: Red_Hat_Discovery
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat NooBaa
+    label: Red_Hat_NooBaa
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Ceph Storage Beta for x86_64
+    label: Red_Hat_Ceph_Storage_Beta_for_x86_64
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Ceph Storage Beta for Power, little endian
+    label: Red_Hat_Ceph_Storage_Beta_for_Power_little_endian
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Directory Server Beta
+    label: Red_Hat_Directory_Server_Beta
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Certificate System Beta
+    label: Red_Hat_Certificate_System_Beta
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise Linux High Availability for ARM 64
+    label: Red_Hat_Enterprise_Linux_High_Availability_for_ARM_64
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Openshift Serverless
+    label: Red_Hat_Openshift_Serverless
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise Linux Fast Datapath Beta (for IBM z Systems)
+    label: Red_Hat_Enterprise_Linux_Fast_Datapath_Beta_for_IBM_z_Systems_
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise Linux High Availability (for IBM z Systems) - Extended Update Support
+    label: Red_Hat_Enterprise_Linux_High_Availability_for_IBM_z_Systems_-_Extended_Update_Support
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise Linux Resilient Storage for IBM z Systems - Extended Update Support
+    label: Red_Hat_Enterprise_Linux_Resilient_Storage_for_IBM_z_Systems_-_Extended_Update_Support
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat CodeReady Linux Builder for x86_64 - Extended Update Support
+    label: Red_Hat_CodeReady_Linux_Builder_for_x86_64_-_Extended_Update_Support
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat CodeReady Linux Builder for Power, little endian - Extended Update Support
+    label: Red_Hat_CodeReady_Linux_Builder_for_Power_little_endian_-_Extended_Update_Support
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat CodeReady Linux Builder for IBM z Systems - Extended Update Support
+    label: Red_Hat_CodeReady_Linux_Builder_for_IBM_z_Systems_-_Extended_Update_Support
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Cinderlib
+    label: Cinderlib
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise Linux High Availability for x86_64 - Telecommunications Update Service
+    label: Red_Hat_Enterprise_Linux_High_Availability_for_x86_64_-_Telecommunications_Update_Service
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat OpenShift distributed tracing
+    label: Red_Hat_OpenShift_distributed_tracing
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat OpenShift Serverless for IBM Power, little endian
+    label: Red_Hat_OpenShift_Serverless_for_IBM_Power_little_endian
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat OpenShift Serverless for IBM Z and LinuxONE
+    label: Red_Hat_OpenShift_Serverless_for_IBM_Z_and_LinuxONE
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat OpenShift Data Foundation for IBM Power, little endian
+    label: Red_Hat_OpenShift_Data_Foundation_for_IBM_Power_little_endian
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat OpenShift Data Foundation for IBM Z and LinuxONE
+    label: Red_Hat_OpenShift_Data_Foundation_for_IBM_Z_and_LinuxONE
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise Linux for SAP Applications for x86_64 - Extended Life Cycle Support
+    label: Red_Hat_Enterprise_Linux_for_SAP_Applications_for_x86_64_-_Extended_Life_Cycle_Support
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise Linux for SAP Solutions for x86_64 - Extended Life Cycle Support
+    label: Red_Hat_Enterprise_Linux_for_SAP_Solutions_for_x86_64_-_Extended_Life_Cycle_Support
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise Linux Advanced Virtualization (for RHEL Server for IBM System Z) EUS
+    label: Red_Hat_Enterprise_Linux_Advanced_Virtualization_for_RHEL_Server_for_IBM_System_Z_EUS
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat OpenShift Data Foundation Advanced
+    label: Red_Hat_OpenShift_Data_Foundation_Advanced
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat OpenShift Data Foundation Advanced for IBM Power, little endian
+    label: Red_Hat_OpenShift_Data_Foundation_Advanced_for_IBM_Power_little_endian
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat OpenShift Data Foundation Advanced for IBM Z and LinuxONE
+    label: Red_Hat_OpenShift_Data_Foundation_Advanced_for_IBM_Z_and_LinuxONE
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Certificate System - Extended Update Support
+    label: Red_Hat_Certificate_System_-_Extended_Update_Support
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise Linux Desktop
+    label: Red_Hat_Enterprise_Linux_Desktop
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: mirror registry for Red Hat OpenShift (mirror registry)
+    label: mirror_registry_for_Red_Hat_OpenShift_mirror_registry_
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise Linux Server
+    label: Red_Hat_Enterprise_Linux_Server
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Service Interconnect
+    label: Red_Hat_Service_Interconnect
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise Linux Workstation
+    label: Red_Hat_Enterprise_Linux_Workstation
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise Linux Resilient Storage for x86_64 - 4 years of updates
+    label: Red_Hat_Enterprise_Linux_Resilient_Storage_for_x86_64_-_4_years_of_updates
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise Linux for Real Time for x86_64 - 4 years of updates
+    label: Red_Hat_Enterprise_Linux_for_Real_Time_for_x86_64_-_4_years_of_updates
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise Linux for Real Time for NFV for x86_64 - 4 years of updates
+    label: Red_Hat_Enterprise_Linux_for_Real_Time_for_NFV_for_x86_64_-_4_years_of_updates
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Directory Server - Extended Update Support
+    label: Red_Hat_Directory_Server_-_Extended_Update_Support
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Ansible Developer
+    label: Red_Hat_Ansible_Developer
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat OpenShift AI
+    label: Red_Hat_OpenShift_AI
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise Linux for Power, big endian
+    label: Red_Hat_Enterprise_Linux_for_Power_big_endian
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise Linux for Power, big endian - Extended Update Support
+    label: Red_Hat_Enterprise_Linux_for_Power_big_endian_-_Extended_Update_Support
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise Linux for Scientific Computing
+    label: Red_Hat_Enterprise_Linux_for_Scientific_Computing
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise Linux High Availability for x86_64
+    label: Red_Hat_Enterprise_Linux_High_Availability_for_x86_64
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise Linux High Availability for x86_64 - Extended Update Support
+    label: Red_Hat_Enterprise_Linux_High_Availability_for_x86_64_-_Extended_Update_Support
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat OpenShift Data Foundation for RHEL 9 ARM
+    label: Red_Hat_OpenShift_Data_Foundation_for_RHEL_9_ARM
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise Linux Load Balancer (for RHEL Server)
+    label: Red_Hat_Enterprise_Linux_Load_Balancer_for_RHEL_Server_
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise Linux Load Balancer (for RHEL Server) - Extended Update Support
+    label: Red_Hat_Enterprise_Linux_Load_Balancer_for_RHEL_Server_-_Extended_Update_Support
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat OpenStack Dev Preview
+    label: Red_Hat_OpenStack_Dev_Preview
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Quay for IBM Power, little endian
+    label: Red_Hat_Quay_for_IBM_Power_little_endian
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Quay for IBM Z and LinuxONE
+    label: Red_Hat_Quay_for_IBM_Z_and_LinuxONE
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Quay
+    label: Red_Hat_Quay
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Cluster Observability Operator
+    label: Cluster_Observability_Operator
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Power monitoring for Red Hat OpenShift
+    label: Power_monitoring_for_Red_Hat_OpenShift
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat OpenStack Services on OpenShift
+    label: Red_Hat_OpenStack_Services_on_OpenShift
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat OpenStack Services on OpenShift Beta
+    label: Red_Hat_OpenStack_Services_on_OpenShift_Beta
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat OpenStack Services on OpenShift Podifed Operators
+    label: Red_Hat_OpenStack_Services_on_OpenShift_Podifed_Operators
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat OpenStack Services on OpenShift Podifed Operators Beta
+    label: Red_Hat_OpenStack_Services_on_OpenShift_Podifed_Operators_Beta
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat OpenStack Services on OpenShift External Data Plane Management
+    label: Red_Hat_OpenStack_Services_on_OpenShift_External_Data_Plane_Management
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat OpenStack Services on OpenShift External Data Plane Management Beta
+    label: Red_Hat_OpenStack_Services_on_OpenShift_External_Data_Plane_Management_Beta
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise Linux Resilient Storage for x86_64
+    label: Red_Hat_Enterprise_Linux_Resilient_Storage_for_x86_64
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise Linux High Availability for x86_64 - Extended Life Cycle Support
+    label: Red_Hat_Enterprise_Linux_High_Availability_for_x86_64_-_Extended_Life_Cycle_Support
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise Linux Resilient Storage for x86_64 - Extended Life Cycle Support
+    label: Red_Hat_Enterprise_Linux_Resilient_Storage_for_x86_64_-_Extended_Life_Cycle_Support
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise Linux Resilient Storage for x86_64 - Extended Update Support
+    label: Red_Hat_Enterprise_Linux_Resilient_Storage_for_x86_64_-_Extended_Update_Support
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise Linux Scalable File System (for RHEL Server)
+    label: Red_Hat_Enterprise_Linux_Scalable_File_System_for_RHEL_Server_
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise Linux Scalable File System (for RHEL Server) - Extended Update Support
+    label: Red_Hat_Enterprise_Linux_Scalable_File_System_for_RHEL_Server_-_Extended_Update_Support
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise Linux Scalable File System (for RHEL Workstation)
+    label: Red_Hat_Enterprise_Linux_Scalable_File_System_for_RHEL_Workstation_
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: JBoss Enterprise Application Platform 7.1 EUS
+    label: JBoss_Enterprise_Application_Platform_7_1_EUS
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: JBoss Enterprise Application Platform 7.3 EUS
+    label: JBoss_Enterprise_Application_Platform_7_3_EUS
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise Linux High Availability for x86_64 - Advanced Update Support
+    label: Red_Hat_Enterprise_Linux_High_Availability_for_x86_64_-_Advanced_Update_Support
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: JBoss Enterprise Application Platform 7.4 ELS
+    label: JBoss_Enterprise_Application_Platform_7_4_ELS
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise Linux for Real Time Beta
+    label: Red_Hat_Enterprise_Linux_for_Real_Time_Beta
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise Linux for ARM 64 - Extended Update Support
+    label: Red_Hat_Enterprise_Linux_for_ARM_64_-_Extended_Update_Support
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat CodeReady Linux Builder for ARM 64 - Extended Update Support
+    label: Red_Hat_CodeReady_Linux_Builder_for_ARM_64_-_Extended_Update_Support
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Certificate System - 4 years of updates
+    label: Red_Hat_Certificate_System_-_4_years_of_updates
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Directory Server - 4 years of updates
+    label: Red_Hat_Directory_Server_-_4_years_of_updates
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat OpenShift Update Service
+    label: Red_Hat_OpenShift_Update_Service
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: JBoss Enterprise Application Platform
+    label: JBoss_Enterprise_Application_Platform
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: JBoss Enterprise Web Server
+    label: JBoss_Enterprise_Web_Server
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat OpenStack
+    label: Red_Hat_OpenStack
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Satellite
+    label: Red_Hat_Satellite
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Satellite Capsule
+    label: Red_Hat_Satellite_Capsule
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise Linux for Power, little endian
+    label: Red_Hat_Enterprise_Linux_for_Power_little_endian
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat OpenShift Container Platform
+    label: Red_Hat_OpenShift_Container_Platform
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise Linux for Power, little endian - Extended Update Support
+    label: Red_Hat_Enterprise_Linux_for_Power_little_endian_-_Extended_Update_Support
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise Linux Fast Datapath
+    label: Red_Hat_Enterprise_Linux_Fast_Datapath
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise Linux for Power, little endian Beta
+    label: Red_Hat_Enterprise_Linux_for_Power_little_endian_Beta
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise Linux Server for Power LE - Update Services for SAP Solutions
+    label: Red_Hat_Enterprise_Linux_Server_for_Power_LE_-_Update_Services_for_SAP_Solutions
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise Linux for x86_64 - Update Services for SAP Solutions
+    label: Red_Hat_Enterprise_Linux_for_x86_64_-_Update_Services_for_SAP_Solutions
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise Linux for ARM 64
+    label: Red_Hat_Enterprise_Linux_for_ARM_64
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise Linux for IBM z Systems Beta
+    label: Red_Hat_Enterprise_Linux_for_IBM_z_Systems_Beta
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Container Native Virtualization
+    label: Red_Hat_Container_Native_Virtualization
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise Linux Fast Datapath (for RHEL Server for IBM Power LE)
+    label: Red_Hat_Enterprise_Linux_Fast_Datapath_for_RHEL_Server_for_IBM_Power_LE_
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise Linux for x86_64
+    label: Red_Hat_Enterprise_Linux_for_x86_64
+    provider_id: 18
+    sync_plan_id: 1
+    sync_summary:
+      success: 14
+    sync_state: Syncing Complete.
+    last_sync: 2026-01-28 10:46:21 UTC
+    last_sync_words: 1 day
+    organization: Umbrella
+    sync_plan: TestSyncPlan
+    repository_count: 14
+  - name: Red Hat Ansible Automation Platform
+    label: Red_Hat_Ansible_Automation_Platform
+    provider_id: 18
+    sync_plan_id: 1
+    sync_summary:
+      success: 1
+    sync_state: Syncing Complete.
+    last_sync: 2026-01-28 10:46:12 UTC
+    last_sync_words: 1 day
+    organization: Umbrella
+    sync_plan: TestSyncPlan
+    repository_count: 1
+  - name: Red Hat Certification (for RHEL Server)
+    label: Red_Hat_Certification_for_RHEL_Server_
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise Linux AI
+    label: Red_Hat_Enterprise_Linux_AI
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat OpenShift Container Platform for Power
+    label: Red_Hat_OpenShift_Container_Platform_for_Power
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise Linux for x86_64 Beta
+    label: Red_Hat_Enterprise_Linux_for_x86_64_Beta
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise Linux Fast Datapath (for IBM z Systems)
+    label: Red_Hat_Enterprise_Linux_Fast_Datapath_for_IBM_z_Systems_
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat OpenShift Container Platform for IBM Z and LinuxONE
+    label: Red_Hat_OpenShift_Container_Platform_for_IBM_Z_and_LinuxONE
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: OpenShift Developer Tools and Services
+    label: OpenShift_Developer_Tools_and_Services
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Advanced Cluster Management for Kubernetes
+    label: Red_Hat_Advanced_Cluster_Management_for_Kubernetes
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise Linux Fast Datapath (for RHEL for ARM 64)
+    label: Red_Hat_Enterprise_Linux_Fast_Datapath_for_RHEL_for_ARM_64_
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat OpenShift Container Platform for ARM 64
+    label: Red_Hat_OpenShift_Container_Platform_for_ARM_64
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise Linux for x86_64 - Extended Update Support
+    label: Red_Hat_Enterprise_Linux_for_x86_64_-_Extended_Update_Support
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat OpenShift GitOps for IBM Power, little endian
+    label: Red_Hat_OpenShift_GitOps_for_IBM_Power_little_endian
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat OpenShift GitOps for IBM Z and LinuxONE
+    label: Red_Hat_OpenShift_GitOps_for_IBM_Z_and_LinuxONE
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise Linux for IBM z Systems
+    label: Red_Hat_Enterprise_Linux_for_IBM_z_Systems
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Enterprise Linux for IBM z Systems - Extended Update Support
+    label: Red_Hat_Enterprise_Linux_for_IBM_z_Systems_-_Extended_Update_Support
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat Container Native Virtualization for ARM 64
+    label: Red_Hat_Container_Native_Virtualization_for_ARM_64
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat OpenShift Pipelines
+    label: Red_Hat_OpenShift_Pipelines
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat OpenShift Pipelines for IBM Power, little endian
+    label: Red_Hat_OpenShift_Pipelines_for_IBM_Power_little_endian
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat OpenShift Pipelines for IBM Z and LinuxONE
+    label: Red_Hat_OpenShift_Pipelines_for_IBM_Z_and_LinuxONE
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat OpenShift Pipelines for ARM
+    label: Red_Hat_OpenShift_Pipelines_for_ARM
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat OpenShift Builds
+    label: Red_Hat_OpenShift_Builds
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat OpenShift Build for IBM Power, little endian
+    label: Red_Hat_OpenShift_Build_for_IBM_Power_little_endian
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat OpenShift Builds for IBM Z and LinuxONE
+    label: Red_Hat_OpenShift_Builds_for_IBM_Z_and_LinuxONE
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: Red Hat OpenShift Builds for ARM
+    label: Red_Hat_OpenShift_Builds_for_ARM
+    provider_id: 18
+    organization: Umbrella
+    repository_count: 0
+  - name: test
+    label: test
+    provider_id: 17
+    organization: Umbrella
+    repository_count: 1
+...

@@ -1,0 +1,992 @@
+---
+satellite_repositories:
+  - relative_path: Umbrella/Library/content/dist/rhel10/10/x86_64/appstream/os
+    promoted: False
+    organization: Umbrella
+    backend_identifier: d02db1fd-f69b-4e85-8a1e-d999f0ad3162
+    full_path: https://satellite-drs.bcnconsulting.com/pulp/content/Umbrella/Library/content/dist/rhel10/10/x86_64/appstream/os/
+    version_href: /pulp/api/v3/repositories/rpm/rpm/019b359e-ab62-7e4a-b34d-0cc0b082ac59/versions/6/
+    remote_href: /pulp/api/v3/remotes/rpm/rpm/019b359e-a9c8-711e-8194-ce592117c101/
+    publication_href: /pulp/api/v3/publications/rpm/rpm/019c043b-13e5-7306-8515-6833f7a6b5d8/
+    content_counts:
+      rpm: 8377
+      erratum: 2334
+      package_group: 59
+      srpm: 0
+      module_stream: 0
+    mirroring_policy: mirror_complete
+    name: Red Hat Enterprise Linux 10 for x86_64 - AppStream RPMs 10
+    label: Red_Hat_Enterprise_Linux_10_for_x86_64_-_AppStream_RPMs_10
+    last_sync:
+      username: admin
+      started_at: 2026-01-28 10:46:17 UTC
+      ended_at: 2026-01-28 10:52:54 UTC
+      state: stopped
+      result: success
+      progress: 1.0
+    content_view:
+      name: Default Organization View
+    content_view_version:
+      name: Default Organization View 1.0
+      content_view_id: 22
+    kt_environment:
+      name: Library
+    content_type: yum
+    url: https://cdn.redhat.com/content/dist/rhel10/10/x86_64/appstream/os
+    arch: noarch
+    content_id: 21548
+    major: 10
+    minor: 10
+    product: Red Hat Enterprise Linux for x86_64
+    content_label: rhel-10-for-x86_64-appstream-rpms
+    last_sync_words: 1 day
+    environment:
+      registry_unauthenticated_pull: False
+    verify_ssl_on_sync: True
+    unprotected: False
+    download_policy: on_demand
+    sync_dependencies: True
+    http_proxy_policy: global_default_http_proxy
+    allow_updates: True
+    is_container_push: False
+    permissions:
+      deletable: True
+      deletable_across_cv: True
+    upstream_password_exists: False
+    upstream_auth_exists: False
+  - relative_path: Umbrella/Library/content/dist/rhel10/10/x86_64/baseos/os
+    promoted: False
+    organization: Umbrella
+    backend_identifier: 98c9ebbe-48e7-42a5-bc39-58b7a4a60e51
+    full_path: https://satellite-drs.bcnconsulting.com/pulp/content/Umbrella/Library/content/dist/rhel10/10/x86_64/baseos/os/
+    version_href: /pulp/api/v3/repositories/rpm/rpm/019b359e-dcbb-7f45-add0-ab84064351ac/versions/6/
+    remote_href: /pulp/api/v3/remotes/rpm/rpm/019b359e-db4d-7fa2-a7d6-69ba3e43412c/
+    publication_href: /pulp/api/v3/publications/rpm/rpm/019c043a-8444-7289-a525-b8be4686cc3b/
+    content_counts:
+      rpm: 3686
+      erratum: 705
+      package_group: 34
+      srpm: 0
+      module_stream: 0
+    mirroring_policy: mirror_complete
+    name: Red Hat Enterprise Linux 10 for x86_64 - BaseOS RPMs 10
+    label: Red_Hat_Enterprise_Linux_10_for_x86_64_-_BaseOS_RPMs_10
+    last_sync:
+      username: admin
+      started_at: 2026-01-28 10:46:15 UTC
+      ended_at: 2026-01-28 10:52:00 UTC
+      state: stopped
+      result: success
+      progress: 1.0
+    content_view:
+      name: Default Organization View
+    content_view_version:
+      name: Default Organization View 1.0
+      content_view_id: 22
+    kt_environment:
+      name: Library
+    content_type: yum
+    url: https://cdn.redhat.com/content/dist/rhel10/10/x86_64/baseos/os
+    arch: noarch
+    content_id: 21542
+    major: 10
+    minor: 10
+    product: Red Hat Enterprise Linux for x86_64
+    content_label: rhel-10-for-x86_64-baseos-rpms
+    last_sync_words: 1 day
+    environment:
+      registry_unauthenticated_pull: False
+    verify_ssl_on_sync: True
+    unprotected: False
+    download_policy: on_demand
+    sync_dependencies: True
+    http_proxy_policy: global_default_http_proxy
+    allow_updates: True
+    is_container_push: False
+    permissions:
+      deletable: True
+      deletable_across_cv: True
+    upstream_password_exists: False
+    upstream_auth_exists: False
+  - relative_path: Umbrella/Library/content/dist/layered/rhel9/x86_64/ansible-automation-platform/2.5/os
+    promoted: True
+    organization: Umbrella
+    backend_identifier: ffc6aaca-ff69-474b-8777-58c82ac09f6d
+    full_path: https://satellite-drs.bcnconsulting.com/pulp/content/Umbrella/Library/content/dist/layered/rhel9/x86_64/ansible-automation-platform/2.5/os/
+    version_href: /pulp/api/v3/repositories/rpm/rpm/019b3660-5257-740f-b72d-88800d05ede5/versions/3/
+    remote_href: /pulp/api/v3/remotes/rpm/rpm/019b3660-50cb-7859-a5e3-9768a7c631dc/
+    publication_href: /pulp/api/v3/publications/rpm/rpm/019bd38e-2044-7ab3-82e4-56d94cb95545/
+    content_counts:
+      rpm: 910
+      erratum: 31
+      package_group: 0
+      srpm: 0
+      module_stream: 0
+    mirroring_policy: mirror_complete
+    name: Red Hat Ansible Automation Platform 2.5 for RHEL 9 x86_64 RPMs
+    label: Red_Hat_Ansible_Automation_Platform_2_5_for_RHEL_9_x86_64_RPMs
+    content_view_versions:
+      - id: 16
+        version: "1.0"
+        content_view_id: 37
+        content_view_name: RHEL9.6KickStart
+      - id: 22
+        version: "2.0"
+        content_view_id: 37
+        content_view_name: RHEL9.6KickStart
+      - id: 23
+        version: "1.0"
+        content_view_id: 33
+        content_view_name: test
+      - id: 24
+        version: "1.0"
+        content_view_id: 34
+        content_view_name: test2
+    last_sync:
+      username: admin
+      started_at: 2026-01-28 10:46:12 UTC
+      ended_at: 2026-01-28 10:46:28 UTC
+      state: stopped
+      result: success
+      progress: 1.0
+    content_view:
+      name: Default Organization View
+    content_view_version:
+      name: Default Organization View 1.0
+      content_view_id: 22
+    kt_environment:
+      name: Library
+    content_type: yum
+    url: https://cdn.redhat.com/content/dist/layered/rhel9/x86_64/ansible-automation-platform/2.5/os
+    arch: noarch
+    content_id: 20417
+    product: Red Hat Ansible Automation Platform
+    content_label: ansible-automation-platform-2.5-for-rhel-9-x86_64-rpms
+    last_sync_words: 1 day
+    environment:
+      registry_unauthenticated_pull: False
+    verify_ssl_on_sync: True
+    unprotected: False
+    download_policy: on_demand
+    sync_dependencies: True
+    http_proxy_policy: global_default_http_proxy
+    allow_updates: True
+    is_container_push: False
+    permissions:
+      deletable: True
+      deletable_across_cv: True
+    upstream_password_exists: False
+    upstream_auth_exists: False
+  - relative_path: Umbrella/Library/custom/test/test
+    promoted: False
+    organization: Umbrella
+    backend_identifier: f97d034f-b5ce-4b7e-9da0-e305fdb534a7
+    full_path: https://satellite-drs.bcnconsulting.com/pulp/content/Umbrella/Library/custom/test/test/
+    version_href: /pulp/api/v3/repositories/rpm/rpm/019bb7b9-4009-774f-b36e-920ee504592a/versions/0/
+    publication_href: /pulp/api/v3/publications/rpm/rpm/019bb7b9-45ce-711f-a1ef-25b26d59981e/
+    content_counts:
+      rpm: 0
+      erratum: 0
+      package_group: 0
+      srpm: 0
+      module_stream: 0
+    mirroring_policy: mirror_content_only
+    name: test
+    label: test
+    content_view:
+      name: Default Organization View
+    content_view_version:
+      name: Default Organization View 1.0
+      content_view_id: 22
+    kt_environment:
+      name: Library
+    content_type: yum
+    arch: noarch
+    content_id: 1768313929997
+    product: test
+    content_label: Umbrella_test_test
+    environment:
+      registry_unauthenticated_pull: False
+    verify_ssl_on_sync: True
+    unprotected: True
+    download_policy: immediate
+    sync_dependencies: True
+    http_proxy_policy: global_default_http_proxy
+    allow_updates: True
+    is_container_push: False
+    permissions:
+      deletable: True
+      deletable_across_cv: True
+    upstream_password_exists: False
+    upstream_auth_exists: False
+  - relative_path: Umbrella/Library/content/dist/rhel9/9.6/x86_64/appstream/kickstart
+    promoted: True
+    distribution_version: 9.6
+    distribution_arch: x86_64
+    distribution_bootable: False
+    distribution_family: Red Hat Enterprise Linux
+    distribution_variant: AppStream
+    organization: Umbrella
+    backend_identifier: b5af58a5-b578-4a01-a78f-a67f79f376c0
+    full_path: https://satellite-drs.bcnconsulting.com/pulp/content/Umbrella/Library/content/dist/rhel9/9.6/x86_64/appstream/kickstart/
+    version_href: /pulp/api/v3/repositories/rpm/rpm/019be024-baf0-7a15-a12f-d58e8191dc39/versions/1/
+    remote_href: /pulp/api/v3/remotes/rpm/rpm/019be024-b93b-7a6b-8603-bbb2ebce7e75/
+    publication_href: /pulp/api/v3/publications/rpm/rpm/019be026-4613-7c6f-80fe-82fc661d11e6/
+    content_counts:
+      rpm: 6262
+      erratum: 0
+      package_group: 63
+      srpm: 0
+      module_stream: 18
+    mirroring_policy: mirror_complete
+    name: Red Hat Enterprise Linux 9 for x86_64 - AppStream Kickstart 9.6
+    label: Red_Hat_Enterprise_Linux_9_for_x86_64_-_AppStream_Kickstart_9_6
+    content_view_versions:
+      - id: 16
+        version: "1.0"
+        content_view_id: 37
+        content_view_name: RHEL9.6KickStart
+      - id: 22
+        version: "2.0"
+        content_view_id: 37
+        content_view_name: RHEL9.6KickStart
+      - id: 25
+        version: "1.0"
+        content_view_id: 38
+        content_view_name: Onda Provision
+    last_sync:
+      username: admin
+      started_at: 2026-01-28 10:46:14 UTC
+      ended_at: 2026-01-28 10:46:28 UTC
+      state: stopped
+      result: success
+      progress: 1.0
+    content_view:
+      name: Default Organization View
+    content_view_version:
+      name: Default Organization View 1.0
+      content_view_id: 22
+    kt_environment:
+      name: Library
+    content_type: yum
+    url: https://cdn.redhat.com/content/dist/rhel9/9.6/x86_64/appstream/kickstart
+    arch: noarch
+    content_id: 11058
+    major: 9
+    minor: 9.6
+    product: Red Hat Enterprise Linux for x86_64
+    content_label: rhel-9-for-x86_64-appstream-kickstart
+    last_sync_words: 1 day
+    environment:
+      registry_unauthenticated_pull: False
+    verify_ssl_on_sync: True
+    unprotected: True
+    download_policy: on_demand
+    sync_dependencies: True
+    http_proxy_policy: global_default_http_proxy
+    allow_updates: True
+    is_container_push: False
+    permissions:
+      deletable: True
+      deletable_across_cv: True
+    upstream_password_exists: False
+    upstream_auth_exists: False
+  - relative_path: Umbrella/Library/content/dist/rhel9/9.6/x86_64/baseos/kickstart
+    promoted: True
+    distribution_version: 9.6
+    distribution_arch: x86_64
+    distribution_bootable: True
+    distribution_family: Red Hat Enterprise Linux
+    distribution_variant: BaseOS
+    organization: Umbrella
+    backend_identifier: 785a3921-fd29-4b7e-9b4d-856028857dd9
+    full_path: https://satellite-drs.bcnconsulting.com/pulp/content/Umbrella/Library/content/dist/rhel9/9.6/x86_64/baseos/kickstart/
+    version_href: /pulp/api/v3/repositories/rpm/rpm/019be024-e0ad-74b9-a13c-79d7df0a21f9/versions/1/
+    remote_href: /pulp/api/v3/remotes/rpm/rpm/019be024-df1d-7b90-a57e-bbdaa8cd4711/
+    publication_href: /pulp/api/v3/publications/rpm/rpm/019be025-9098-7d2b-a570-bec6036a1830/
+    content_counts:
+      rpm: 1173
+      erratum: 0
+      package_group: 34
+      srpm: 0
+      module_stream: 0
+    mirroring_policy: mirror_complete
+    name: Red Hat Enterprise Linux 9 for x86_64 - BaseOS Kickstart 9.6
+    label: Red_Hat_Enterprise_Linux_9_for_x86_64_-_BaseOS_Kickstart_9_6
+    content_view_versions:
+      - id: 16
+        version: "1.0"
+        content_view_id: 37
+        content_view_name: RHEL9.6KickStart
+      - id: 22
+        version: "2.0"
+        content_view_id: 37
+        content_view_name: RHEL9.6KickStart
+      - id: 25
+        version: "1.0"
+        content_view_id: 38
+        content_view_name: Onda Provision
+    last_sync:
+      username: admin
+      started_at: 2026-01-28 10:46:11 UTC
+      ended_at: 2026-01-28 10:46:26 UTC
+      state: stopped
+      result: success
+      progress: 1.0
+    content_view:
+      name: Default Organization View
+    content_view_version:
+      name: Default Organization View 1.0
+      content_view_id: 22
+    kt_environment:
+      name: Library
+    content_type: yum
+    url: https://cdn.redhat.com/content/dist/rhel9/9.6/x86_64/baseos/kickstart
+    arch: noarch
+    content_id: 11054
+    major: 9
+    minor: 9.6
+    product: Red Hat Enterprise Linux for x86_64
+    content_label: rhel-9-for-x86_64-baseos-kickstart
+    last_sync_words: 1 day
+    environment:
+      registry_unauthenticated_pull: False
+    verify_ssl_on_sync: True
+    unprotected: True
+    download_policy: on_demand
+    sync_dependencies: True
+    http_proxy_policy: global_default_http_proxy
+    allow_updates: True
+    is_container_push: False
+    permissions:
+      deletable: True
+      deletable_across_cv: True
+    upstream_password_exists: False
+    upstream_auth_exists: False
+  - relative_path: Umbrella/Library/content/dist/rhel9/9.6/x86_64/baseos/os
+    promoted: True
+    organization: Umbrella
+    backend_identifier: df3f5651-078b-4516-b532-67c2baf77259
+    full_path: https://satellite-drs.bcnconsulting.com/pulp/content/Umbrella/Library/content/dist/rhel9/9.6/x86_64/baseos/os/
+    version_href: /pulp/api/v3/repositories/rpm/rpm/019be029-f4fa-7c4e-ad8c-07fc73cc9dad/versions/3/
+    remote_href: /pulp/api/v3/remotes/rpm/rpm/019be029-f373-738f-b58a-d92bc5fa96a4/
+    publication_href: /pulp/api/v3/publications/rpm/rpm/019c043c-671f-744c-ba69-1039952235ff/
+    content_counts:
+      rpm: 11743
+      erratum: 1685
+      package_group: 34
+      srpm: 0
+      module_stream: 0
+    mirroring_policy: mirror_complete
+    name: Red Hat Enterprise Linux 9 for x86_64 - BaseOS RPMs 9.6
+    label: Red_Hat_Enterprise_Linux_9_for_x86_64_-_BaseOS_RPMs_9_6
+    content_view_versions:
+      - id: 16
+        version: "1.0"
+        content_view_id: 37
+        content_view_name: RHEL9.6KickStart
+      - id: 22
+        version: "2.0"
+        content_view_id: 37
+        content_view_name: RHEL9.6KickStart
+      - id: 25
+        version: "1.0"
+        content_view_id: 38
+        content_view_name: Onda Provision
+    last_sync:
+      username: admin
+      started_at: 2026-01-28 10:46:10 UTC
+      ended_at: 2026-01-28 10:54:46 UTC
+      state: stopped
+      result: success
+      progress: 1.0
+    content_view:
+      name: Default Organization View
+    content_view_version:
+      name: Default Organization View 1.0
+      content_view_id: 22
+    kt_environment:
+      name: Library
+    content_type: yum
+    url: https://cdn.redhat.com/content/dist/rhel9/9.6/x86_64/baseos/os
+    arch: noarch
+    content_id: 11049
+    major: 9
+    minor: 9.6
+    product: Red Hat Enterprise Linux for x86_64
+    content_label: rhel-9-for-x86_64-baseos-rpms
+    last_sync_words: 1 day
+    environment:
+      registry_unauthenticated_pull: False
+    verify_ssl_on_sync: True
+    unprotected: False
+    download_policy: on_demand
+    sync_dependencies: True
+    http_proxy_policy: global_default_http_proxy
+    allow_updates: True
+    is_container_push: False
+    permissions:
+      deletable: True
+      deletable_across_cv: True
+    upstream_password_exists: False
+    upstream_auth_exists: False
+  - relative_path: Umbrella/Library/content/dist/rhel9/9.6/x86_64/appstream/os
+    promoted: True
+    organization: Umbrella
+    backend_identifier: 9b112471-bb6f-45c1-8cb9-78a385e046b0
+    full_path: https://satellite-drs.bcnconsulting.com/pulp/content/Umbrella/Library/content/dist/rhel9/9.6/x86_64/appstream/os/
+    version_href: /pulp/api/v3/repositories/rpm/rpm/019be02a-0879-7541-b664-54fc3a95fada/versions/3/
+    remote_href: /pulp/api/v3/remotes/rpm/rpm/019be02a-06e6-7ba9-a0a6-0e1df74842ba/
+    publication_href: /pulp/api/v3/publications/rpm/rpm/019c043e-3936-74f8-b2f1-c1c4108deef8/
+    content_counts:
+      rpm: 27663
+      erratum: 5300
+      package_group: 63
+      srpm: 0
+      module_stream: 97
+    mirroring_policy: mirror_complete
+    name: Red Hat Enterprise Linux 9 for x86_64 - AppStream RPMs 9.6
+    label: Red_Hat_Enterprise_Linux_9_for_x86_64_-_AppStream_RPMs_9_6
+    content_view_versions:
+      - id: 16
+        version: "1.0"
+        content_view_id: 37
+        content_view_name: RHEL9.6KickStart
+      - id: 22
+        version: "2.0"
+        content_view_id: 37
+        content_view_name: RHEL9.6KickStart
+      - id: 25
+        version: "1.0"
+        content_view_id: 38
+        content_view_name: Onda Provision
+    last_sync:
+      username: admin
+      started_at: 2026-01-28 10:46:11 UTC
+      ended_at: 2026-01-28 11:00:02 UTC
+      state: stopped
+      result: success
+      progress: 1.0
+    content_view:
+      name: Default Organization View
+    content_view_version:
+      name: Default Organization View 1.0
+      content_view_id: 22
+    kt_environment:
+      name: Library
+    content_type: yum
+    url: https://cdn.redhat.com/content/dist/rhel9/9.6/x86_64/appstream/os
+    arch: noarch
+    content_id: 11055
+    major: 9
+    minor: 9.6
+    product: Red Hat Enterprise Linux for x86_64
+    content_label: rhel-9-for-x86_64-appstream-rpms
+    last_sync_words: 1 day
+    environment:
+      registry_unauthenticated_pull: False
+    verify_ssl_on_sync: True
+    unprotected: False
+    download_policy: on_demand
+    sync_dependencies: True
+    http_proxy_policy: global_default_http_proxy
+    allow_updates: True
+    is_container_push: False
+    permissions:
+      deletable: True
+      deletable_across_cv: True
+    upstream_password_exists: False
+    upstream_auth_exists: False
+  - relative_path: Umbrella/Library/content/dist/rhel8/8.10/x86_64/appstream/kickstart
+    promoted: True
+    distribution_version: 8.10
+    distribution_arch: x86_64
+    distribution_bootable: False
+    distribution_family: Red Hat Enterprise Linux
+    distribution_variant: AppStream
+    organization: Umbrella
+    backend_identifier: e4bd88ed-063b-48b9-b390-60c3fc11f1c6
+    full_path: https://satellite-drs.bcnconsulting.com/pulp/content/Umbrella/Library/content/dist/rhel8/8.10/x86_64/appstream/kickstart/
+    version_href: /pulp/api/v3/repositories/rpm/rpm/019c0434-2ead-7a54-941a-45b005275d53/versions/1/
+    remote_href: /pulp/api/v3/remotes/rpm/rpm/019c0434-2cef-7252-b616-8585a39e75ba/
+    publication_href: /pulp/api/v3/publications/rpm/rpm/019c043b-0666-73b5-b842-9d4ddc604429/
+    content_counts:
+      rpm: 7114
+      erratum: 0
+      package_group: 59
+      srpm: 0
+      module_stream: 219
+    mirroring_policy: mirror_complete
+    name: Red Hat Enterprise Linux 8 for x86_64 - AppStream Kickstart 8.10
+    label: Red_Hat_Enterprise_Linux_8_for_x86_64_-_AppStream_Kickstart_8_10
+    content_view_versions:
+      - id: 25
+        version: "1.0"
+        content_view_id: 38
+        content_view_name: Onda Provision
+    last_sync:
+      username: admin
+      started_at: 2026-01-28 10:46:12 UTC
+      ended_at: 2026-01-28 10:52:37 UTC
+      state: stopped
+      result: success
+      progress: 1.0
+    content_view:
+      name: Default Organization View
+    content_view_version:
+      name: Default Organization View 1.0
+      content_view_id: 22
+    kt_environment:
+      name: Library
+    content_type: yum
+    url: https://cdn.redhat.com/content/dist/rhel8/8.10/x86_64/appstream/kickstart
+    arch: noarch
+    content_id: 7446
+    major: 8
+    minor: 8.10
+    product: Red Hat Enterprise Linux for x86_64
+    content_label: rhel-8-for-x86_64-appstream-kickstart
+    last_sync_words: 1 day
+    environment:
+      registry_unauthenticated_pull: False
+    verify_ssl_on_sync: True
+    unprotected: True
+    download_policy: on_demand
+    sync_dependencies: True
+    http_proxy_policy: global_default_http_proxy
+    allow_updates: True
+    is_container_push: False
+    permissions:
+      deletable: True
+      deletable_across_cv: True
+    upstream_password_exists: False
+    upstream_auth_exists: False
+  - relative_path: Umbrella/Library/content/dist/rhel8/8.10/x86_64/baseos/kickstart
+    promoted: True
+    distribution_version: 8.10
+    distribution_arch: x86_64
+    distribution_bootable: True
+    distribution_family: Red Hat Enterprise Linux
+    distribution_variant: BaseOS
+    organization: Umbrella
+    backend_identifier: 7afc95cf-1947-4490-ac02-c657bd876a2a
+    full_path: https://satellite-drs.bcnconsulting.com/pulp/content/Umbrella/Library/content/dist/rhel8/8.10/x86_64/baseos/kickstart/
+    version_href: /pulp/api/v3/repositories/rpm/rpm/019c0434-3ab0-7635-b451-3c3481c33b34/versions/1/
+    remote_href: /pulp/api/v3/remotes/rpm/rpm/019c0434-38e9-7aa1-a5b4-d164db08dd80/
+    publication_href: /pulp/api/v3/publications/rpm/rpm/019c0436-8945-76ea-a99c-828d6a6d937f/
+    content_counts:
+      rpm: 1742
+      erratum: 0
+      package_group: 35
+      srpm: 0
+      module_stream: 0
+    mirroring_policy: mirror_complete
+    name: Red Hat Enterprise Linux 8 for x86_64 - BaseOS Kickstart 8.10
+    label: Red_Hat_Enterprise_Linux_8_for_x86_64_-_BaseOS_Kickstart_8_10
+    content_view_versions:
+      - id: 25
+        version: "1.0"
+        content_view_id: 38
+        content_view_name: Onda Provision
+    last_sync:
+      username: admin
+      started_at: 2026-01-28 10:46:13 UTC
+      ended_at: 2026-01-28 10:47:11 UTC
+      state: stopped
+      result: success
+      progress: 1.0
+    content_view:
+      name: Default Organization View
+    content_view_version:
+      name: Default Organization View 1.0
+      content_view_id: 22
+    kt_environment:
+      name: Library
+    content_type: yum
+    url: https://cdn.redhat.com/content/dist/rhel8/8.10/x86_64/baseos/kickstart
+    arch: noarch
+    content_id: 7421
+    major: 8
+    minor: 8.10
+    product: Red Hat Enterprise Linux for x86_64
+    content_label: rhel-8-for-x86_64-baseos-kickstart
+    last_sync_words: 1 day
+    environment:
+      registry_unauthenticated_pull: False
+    verify_ssl_on_sync: True
+    unprotected: True
+    download_policy: on_demand
+    sync_dependencies: True
+    http_proxy_policy: global_default_http_proxy
+    allow_updates: True
+    is_container_push: False
+    permissions:
+      deletable: True
+      deletable_across_cv: True
+    upstream_password_exists: False
+    upstream_auth_exists: False
+  - relative_path: Umbrella/Library/content/dist/rhel9/9.7/x86_64/baseos/kickstart
+    promoted: True
+    distribution_version: 9.7
+    distribution_arch: x86_64
+    distribution_bootable: True
+    distribution_family: Red Hat Enterprise Linux
+    distribution_variant: BaseOS
+    organization: Umbrella
+    backend_identifier: c0fb5152-0571-40a4-bd02-9c7b051ca97e
+    full_path: https://satellite-drs.bcnconsulting.com/pulp/content/Umbrella/Library/content/dist/rhel9/9.7/x86_64/baseos/kickstart/
+    version_href: /pulp/api/v3/repositories/rpm/rpm/019c0434-c3e9-7703-9676-acd29428a67a/versions/1/
+    remote_href: /pulp/api/v3/remotes/rpm/rpm/019c0434-c260-742c-91bc-8a2ba7a0ce4e/
+    publication_href: /pulp/api/v3/publications/rpm/rpm/019c0436-b3c5-705e-93d7-63bde00344fd/
+    content_counts:
+      rpm: 1180
+      erratum: 0
+      package_group: 34
+      srpm: 0
+      module_stream: 0
+    mirroring_policy: mirror_complete
+    name: Red Hat Enterprise Linux 9 for x86_64 - BaseOS Kickstart 9.7
+    label: Red_Hat_Enterprise_Linux_9_for_x86_64_-_BaseOS_Kickstart_9_7
+    content_view_versions:
+      - id: 25
+        version: "1.0"
+        content_view_id: 38
+        content_view_name: Onda Provision
+    last_sync:
+      username: admin
+      started_at: 2026-01-28 10:46:15 UTC
+      ended_at: 2026-01-28 10:50:54 UTC
+      state: stopped
+      result: success
+      progress: 1.0
+    content_view:
+      name: Default Organization View
+    content_view_version:
+      name: Default Organization View 1.0
+      content_view_id: 22
+    kt_environment:
+      name: Library
+    content_type: yum
+    url: https://cdn.redhat.com/content/dist/rhel9/9.7/x86_64/baseos/kickstart
+    arch: noarch
+    content_id: 11054
+    major: 9
+    minor: 9.7
+    product: Red Hat Enterprise Linux for x86_64
+    content_label: rhel-9-for-x86_64-baseos-kickstart
+    last_sync_words: 1 day
+    environment:
+      registry_unauthenticated_pull: False
+    verify_ssl_on_sync: True
+    unprotected: True
+    download_policy: on_demand
+    sync_dependencies: True
+    http_proxy_policy: global_default_http_proxy
+    allow_updates: True
+    is_container_push: False
+    permissions:
+      deletable: True
+      deletable_across_cv: True
+    upstream_password_exists: False
+    upstream_auth_exists: False
+  - relative_path: Umbrella/Library/content/dist/rhel9/9.7/x86_64/appstream/kickstart
+    promoted: True
+    distribution_version: 9.7
+    distribution_arch: x86_64
+    distribution_bootable: False
+    distribution_family: Red Hat Enterprise Linux
+    distribution_variant: AppStream
+    organization: Umbrella
+    backend_identifier: aa755501-e22b-481a-bf5d-07ba3c5babdf
+    full_path: https://satellite-drs.bcnconsulting.com/pulp/content/Umbrella/Library/content/dist/rhel9/9.7/x86_64/appstream/kickstart/
+    version_href: /pulp/api/v3/repositories/rpm/rpm/019c0434-ce2b-782c-9da3-09ed0dfbf6b1/versions/1/
+    remote_href: /pulp/api/v3/remotes/rpm/rpm/019c0434-cc73-7833-a844-7c294eaa5d00/
+    publication_href: /pulp/api/v3/publications/rpm/rpm/019c043a-8e58-7f9a-91b4-e113b15e099e/
+    content_counts:
+      rpm: 6356
+      erratum: 0
+      package_group: 63
+      srpm: 0
+      module_stream: 19
+    mirroring_policy: mirror_complete
+    name: Red Hat Enterprise Linux 9 for x86_64 - AppStream Kickstart 9.7
+    label: Red_Hat_Enterprise_Linux_9_for_x86_64_-_AppStream_Kickstart_9_7
+    content_view_versions:
+      - id: 25
+        version: "1.0"
+        content_view_id: 38
+        content_view_name: Onda Provision
+    last_sync:
+      username: admin
+      started_at: 2026-01-28 10:46:18 UTC
+      ended_at: 2026-01-28 10:51:55 UTC
+      state: stopped
+      result: success
+      progress: 1.0
+    content_view:
+      name: Default Organization View
+    content_view_version:
+      name: Default Organization View 1.0
+      content_view_id: 22
+    kt_environment:
+      name: Library
+    content_type: yum
+    url: https://cdn.redhat.com/content/dist/rhel9/9.7/x86_64/appstream/kickstart
+    arch: noarch
+    content_id: 11058
+    major: 9
+    minor: 9.7
+    product: Red Hat Enterprise Linux for x86_64
+    content_label: rhel-9-for-x86_64-appstream-kickstart
+    last_sync_words: 1 day
+    environment:
+      registry_unauthenticated_pull: False
+    verify_ssl_on_sync: True
+    unprotected: True
+    download_policy: on_demand
+    sync_dependencies: True
+    http_proxy_policy: global_default_http_proxy
+    allow_updates: True
+    is_container_push: False
+    permissions:
+      deletable: True
+      deletable_across_cv: True
+    upstream_password_exists: False
+    upstream_auth_exists: False
+  - relative_path: Umbrella/Library/content/dist/rhel8/8.10/x86_64/appstream/os
+    promoted: True
+    organization: Umbrella
+    backend_identifier: e0e7f228-1412-4c07-a169-6a230c3858a4
+    full_path: https://satellite-drs.bcnconsulting.com/pulp/content/Umbrella/Library/content/dist/rhel8/8.10/x86_64/appstream/os/
+    version_href: /pulp/api/v3/repositories/rpm/rpm/019c0435-0b6d-7a1e-8456-9e6864d42021/versions/1/
+    remote_href: /pulp/api/v3/remotes/rpm/rpm/019c0435-09eb-7c8a-bf8a-b23dff0c2183/
+    publication_href: /pulp/api/v3/publications/rpm/rpm/019c0445-78cf-759b-8e2e-3bbf91bad6c0/
+    content_counts:
+      rpm: 44431
+      erratum: 4464
+      package_group: 59
+      srpm: 0
+      module_stream: 992
+    mirroring_policy: mirror_complete
+    name: Red Hat Enterprise Linux 8 for x86_64 - AppStream RPMs 8.10
+    label: Red_Hat_Enterprise_Linux_8_for_x86_64_-_AppStream_RPMs_8_10
+    content_view_versions:
+      - id: 25
+        version: "1.0"
+        content_view_id: 38
+        content_view_name: Onda Provision
+    last_sync:
+      username: admin
+      started_at: 2026-01-28 10:46:19 UTC
+      ended_at: 2026-01-28 11:07:38 UTC
+      state: stopped
+      result: success
+      progress: 1.0
+    content_view:
+      name: Default Organization View
+    content_view_version:
+      name: Default Organization View 1.0
+      content_view_id: 22
+    kt_environment:
+      name: Library
+    content_type: yum
+    url: https://cdn.redhat.com/content/dist/rhel8/8.10/x86_64/appstream/os
+    arch: noarch
+    content_id: 7441
+    major: 8
+    minor: 8.10
+    product: Red Hat Enterprise Linux for x86_64
+    content_label: rhel-8-for-x86_64-appstream-rpms
+    last_sync_words: 1 day
+    environment:
+      registry_unauthenticated_pull: False
+    verify_ssl_on_sync: True
+    unprotected: False
+    download_policy: on_demand
+    sync_dependencies: True
+    http_proxy_policy: global_default_http_proxy
+    allow_updates: True
+    is_container_push: False
+    permissions:
+      deletable: True
+      deletable_across_cv: True
+    upstream_password_exists: False
+    upstream_auth_exists: False
+  - relative_path: Umbrella/Library/content/dist/rhel8/8.10/x86_64/baseos/os
+    promoted: True
+    organization: Umbrella
+    backend_identifier: 87de8b69-a7d7-4c8d-9807-de838b2cbc94
+    full_path: https://satellite-drs.bcnconsulting.com/pulp/content/Umbrella/Library/content/dist/rhel8/8.10/x86_64/baseos/os/
+    version_href: /pulp/api/v3/repositories/rpm/rpm/019c0435-2746-7ede-9a81-a1bfa144b5aa/versions/1/
+    remote_href: /pulp/api/v3/remotes/rpm/rpm/019c0435-25c9-7689-89fb-eb7e8e1104cc/
+    publication_href: /pulp/api/v3/publications/rpm/rpm/019c0441-42bc-7790-8129-26f6d0cb7397/
+    content_counts:
+      rpm: 22111
+      erratum: 2394
+      package_group: 35
+      srpm: 0
+      module_stream: 0
+    mirroring_policy: mirror_complete
+    name: Red Hat Enterprise Linux 8 for x86_64 - BaseOS RPMs 8.10
+    label: Red_Hat_Enterprise_Linux_8_for_x86_64_-_BaseOS_RPMs_8_10
+    content_view_versions:
+      - id: 25
+        version: "1.0"
+        content_view_id: 38
+        content_view_name: Onda Provision
+    last_sync:
+      username: admin
+      started_at: 2026-01-28 10:46:20 UTC
+      ended_at: 2026-01-28 11:01:16 UTC
+      state: stopped
+      result: success
+      progress: 1.0
+    content_view:
+      name: Default Organization View
+    content_view_version:
+      name: Default Organization View 1.0
+      content_view_id: 22
+    kt_environment:
+      name: Library
+    content_type: yum
+    url: https://cdn.redhat.com/content/dist/rhel8/8.10/x86_64/baseos/os
+    arch: noarch
+    content_id: 7416
+    major: 8
+    minor: 8.10
+    product: Red Hat Enterprise Linux for x86_64
+    content_label: rhel-8-for-x86_64-baseos-rpms
+    last_sync_words: 1 day
+    environment:
+      registry_unauthenticated_pull: False
+    verify_ssl_on_sync: True
+    unprotected: False
+    download_policy: on_demand
+    sync_dependencies: True
+    http_proxy_policy: global_default_http_proxy
+    allow_updates: True
+    is_container_push: False
+    permissions:
+      deletable: True
+      deletable_across_cv: True
+    upstream_password_exists: False
+    upstream_auth_exists: False
+  - relative_path: Umbrella/Library/content/dist/rhel9/9.7/x86_64/appstream/os
+    promoted: True
+    organization: Umbrella
+    backend_identifier: 6918fdd7-8fc7-4dcf-b396-20d2d30557ed
+    full_path: https://satellite-drs.bcnconsulting.com/pulp/content/Umbrella/Library/content/dist/rhel9/9.7/x86_64/appstream/os/
+    version_href: /pulp/api/v3/repositories/rpm/rpm/019c0435-42f3-7554-8dd1-b9ef03b8f89b/versions/1/
+    remote_href: /pulp/api/v3/remotes/rpm/rpm/019c0435-418a-7a51-8689-6561d325b2b5/
+    publication_href: /pulp/api/v3/publications/rpm/rpm/019c0442-2333-74c4-b33a-e05ae555fee3/
+    content_counts:
+      rpm: 30355
+      erratum: 5770
+      package_group: 63
+      srpm: 0
+      module_stream: 114
+    mirroring_policy: mirror_complete
+    name: Red Hat Enterprise Linux 9 for x86_64 - AppStream RPMs 9.7
+    label: Red_Hat_Enterprise_Linux_9_for_x86_64_-_AppStream_RPMs_9_7
+    content_view_versions:
+      - id: 25
+        version: "1.0"
+        content_view_id: 38
+        content_view_name: Onda Provision
+    last_sync:
+      username: admin
+      started_at: 2026-01-28 10:46:20 UTC
+      ended_at: 2026-01-28 11:02:43 UTC
+      state: stopped
+      result: success
+      progress: 1.0
+    content_view:
+      name: Default Organization View
+    content_view_version:
+      name: Default Organization View 1.0
+      content_view_id: 22
+    kt_environment:
+      name: Library
+    content_type: yum
+    url: https://cdn.redhat.com/content/dist/rhel9/9.7/x86_64/appstream/os
+    arch: noarch
+    content_id: 11055
+    major: 9
+    minor: 9.7
+    product: Red Hat Enterprise Linux for x86_64
+    content_label: rhel-9-for-x86_64-appstream-rpms
+    last_sync_words: 1 day
+    environment:
+      registry_unauthenticated_pull: False
+    verify_ssl_on_sync: True
+    unprotected: False
+    download_policy: on_demand
+    sync_dependencies: True
+    http_proxy_policy: global_default_http_proxy
+    allow_updates: True
+    is_container_push: False
+    permissions:
+      deletable: True
+      deletable_across_cv: True
+    upstream_password_exists: False
+    upstream_auth_exists: False
+  - relative_path: Umbrella/Library/content/dist/rhel9/9.7/x86_64/baseos/os
+    promoted: True
+    organization: Umbrella
+    backend_identifier: 0f32b5ea-996e-49d4-8b51-b020ab2cd419
+    full_path: https://satellite-drs.bcnconsulting.com/pulp/content/Umbrella/Library/content/dist/rhel9/9.7/x86_64/baseos/os/
+    version_href: /pulp/api/v3/repositories/rpm/rpm/019c0435-58cf-749e-910a-4d144944e481/versions/1/
+    remote_href: /pulp/api/v3/remotes/rpm/rpm/019c0435-56e8-7a28-9ceb-0004efd9ccf7/
+    publication_href: /pulp/api/v3/publications/rpm/rpm/019c0440-b094-73de-acbf-fb8f348ae3dd/
+    content_counts:
+      rpm: 12938
+      erratum: 1850
+      package_group: 34
+      srpm: 0
+      module_stream: 0
+    mirroring_policy: mirror_complete
+    name: Red Hat Enterprise Linux 9 for x86_64 - BaseOS RPMs 9.7
+    label: Red_Hat_Enterprise_Linux_9_for_x86_64_-_BaseOS_RPMs_9_7
+    content_view_versions:
+      - id: 25
+        version: "1.0"
+        content_view_id: 38
+        content_view_name: Onda Provision
+    last_sync:
+      username: admin
+      started_at: 2026-01-28 10:46:21 UTC
+      ended_at: 2026-01-28 10:59:39 UTC
+      state: stopped
+      result: success
+      progress: 1.0
+    content_view:
+      name: Default Organization View
+    content_view_version:
+      name: Default Organization View 1.0
+      content_view_id: 22
+    kt_environment:
+      name: Library
+    content_type: yum
+    url: https://cdn.redhat.com/content/dist/rhel9/9.7/x86_64/baseos/os
+    arch: noarch
+    content_id: 11049
+    major: 9
+    minor: 9.7
+    product: Red Hat Enterprise Linux for x86_64
+    content_label: rhel-9-for-x86_64-baseos-rpms
+    last_sync_words: 1 day
+    environment:
+      registry_unauthenticated_pull: False
+    verify_ssl_on_sync: True
+    unprotected: False
+    download_policy: on_demand
+    sync_dependencies: True
+    http_proxy_policy: global_default_http_proxy
+    allow_updates: True
+    is_container_push: False
+    permissions:
+      deletable: True
+      deletable_across_cv: True
+    upstream_password_exists: False
+    upstream_auth_exists: False
+...

@@ -1,0 +1,220 @@
+---
+satellite_lifecycle_environments:
+  - name: Development
+    label: Development
+    description: Development env for app servers
+    organization: red_ribbon
+    prior: Library
+    successor: UAT
+    counts:
+      content_hosts: 0
+      content_views: 1
+    permissions:
+      create_lifecycle_environments: True
+      view_lifecycle_environments: True
+      edit_lifecycle_environments: True
+      destroy_lifecycle_environments: True
+      promote_or_remove_content_views_to_environments: True
+    content_views:
+      - name: cv-test
+  - name: UAT
+    label: UAT
+    description: UAT env for app servers
+    organization: red_ribbon
+    prior: Development
+    successor: Integration
+    counts:
+      content_hosts: 0
+      content_views: 1
+    permissions:
+      create_lifecycle_environments: True
+      view_lifecycle_environments: True
+      edit_lifecycle_environments: True
+      destroy_lifecycle_environments: False
+      promote_or_remove_content_views_to_environments: True
+    content_views:
+      - name: cv-test
+  - name: Integration
+    label: Integration
+    description: Integration env for app servers
+    organization: red_ribbon
+    prior: UAT
+    successor: Preproduction
+    counts:
+      content_hosts: 0
+      content_views: 1
+    permissions:
+      create_lifecycle_environments: True
+      view_lifecycle_environments: True
+      edit_lifecycle_environments: True
+      destroy_lifecycle_environments: True
+      promote_or_remove_content_views_to_environments: True
+    content_views:
+      - name: cv-test
+  - name: Preproduction
+    label: Preproduction
+    description: Preproduction env for app servers
+    organization: red_ribbon
+    prior: Integration
+    successor: Production
+    counts:
+      content_hosts: 0
+      content_views: 1
+    permissions:
+      create_lifecycle_environments: True
+      view_lifecycle_environments: True
+      edit_lifecycle_environments: True
+      destroy_lifecycle_environments: True
+      promote_or_remove_content_views_to_environments: True
+    content_views:
+      - name: cv-test
+  - name: Production
+    label: Production
+    description: Production env for app servers
+    organization: red_ribbon
+    prior: Preproduction
+    counts:
+      content_hosts: 0
+      content_views: 1
+    permissions:
+      create_lifecycle_environments: True
+      view_lifecycle_environments: True
+      edit_lifecycle_environments: True
+      destroy_lifecycle_environments: True
+      promote_or_remove_content_views_to_environments: True
+    content_views:
+      - name: cv-test
+  - name: InfraTest
+    label: InfraTest
+    description: Test env for infra servers
+    organization: red_ribbon
+    prior: Library
+    successor: InfraProd
+    counts:
+      content_hosts: 0
+      content_views: 1
+    permissions:
+      create_lifecycle_environments: True
+      view_lifecycle_environments: True
+      edit_lifecycle_environments: True
+      destroy_lifecycle_environments: True
+      promote_or_remove_content_views_to_environments: True
+    content_views:
+      - name: cv-test
+  - name: InfraProd
+    label: InfraProd
+    description: Prod env for infra servers
+    organization: red_ribbon
+    prior: InfraTest
+    counts:
+      content_hosts: 0
+      content_views: 1
+    permissions:
+      create_lifecycle_environments: True
+      view_lifecycle_environments: True
+      edit_lifecycle_environments: True
+      destroy_lifecycle_environments: True
+      promote_or_remove_content_views_to_environments: True
+    content_views:
+      - name: cv-test
+  - name: test_path
+    label: test_path
+    organization: Umbrella
+    prior: Library
+    successor: testenv_1
+    counts:
+      content_hosts: 0
+      content_views: 0
+    permissions:
+      create_lifecycle_environments: True
+      view_lifecycle_environments: True
+      edit_lifecycle_environments: True
+      destroy_lifecycle_environments: True
+      promote_or_remove_content_views_to_environments: True
+  - name: testenv_1
+    label: testenv_1
+    organization: Umbrella
+    prior: test_path
+    successor: test_env2
+    counts:
+      content_hosts: 0
+      content_views: 0
+    permissions:
+      create_lifecycle_environments: True
+      view_lifecycle_environments: True
+      edit_lifecycle_environments: True
+      destroy_lifecycle_environments: True
+      promote_or_remove_content_views_to_environments: True
+  - name: test_env2
+    label: test_env2
+    organization: Umbrella
+    prior: testenv_1
+    counts:
+      content_hosts: 0
+      content_views: 0
+    permissions:
+      create_lifecycle_environments: True
+      view_lifecycle_environments: True
+      edit_lifecycle_environments: True
+      destroy_lifecycle_environments: True
+      promote_or_remove_content_views_to_environments: True
+  - name: Onda
+    label: Onda
+    organization: Umbrella
+    prior: Library
+    successor: Provision
+    counts:
+      content_hosts: 0
+      content_views: 1
+    permissions:
+      create_lifecycle_environments: True
+      view_lifecycle_environments: True
+      edit_lifecycle_environments: True
+      destroy_lifecycle_environments: True
+      promote_or_remove_content_views_to_environments: True
+    content_views:
+      - name: Onda Provision
+  - name: Provision
+    label: Provision
+    organization: Umbrella
+    prior: Onda
+    successor: Pre
+    counts:
+      content_hosts: 1
+      content_views: 1
+    permissions:
+      create_lifecycle_environments: True
+      view_lifecycle_environments: True
+      edit_lifecycle_environments: True
+      destroy_lifecycle_environments: False
+      promote_or_remove_content_views_to_environments: True
+    content_views:
+      - name: Onda Provision
+  - name: Pre
+    label: Pre
+    organization: Umbrella
+    prior: Provision
+    successor: Pro
+    counts:
+      content_hosts: 0
+      content_views: 0
+    permissions:
+      create_lifecycle_environments: True
+      view_lifecycle_environments: True
+      edit_lifecycle_environments: True
+      destroy_lifecycle_environments: True
+      promote_or_remove_content_views_to_environments: True
+  - name: Pro
+    label: Pro
+    organization: Umbrella
+    prior: Pre
+    counts:
+      content_hosts: 0
+      content_views: 0
+    permissions:
+      create_lifecycle_environments: True
+      view_lifecycle_environments: True
+      edit_lifecycle_environments: True
+      destroy_lifecycle_environments: True
+      promote_or_remove_content_views_to_environments: True
+...

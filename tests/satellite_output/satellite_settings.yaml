@@ -17,23 +17,19 @@ satellite_settings:
   - name: ansible_connection
     value: ssh
   - name: ansible_interval
-    value: 30
+    value: "30"
   - name: ansible_inventory_template
     value: Ansible - Ansible Inventory
   - name: ansible_out_of_sync_disabled
     value: ""
   - name: ansible_post_provision_timeout
-    value: 360
-  - name: ansible_roles_to_ignore
-    value: ""
-  - name: ansible_ssh_private_key_file
+    value: "360"
   - name: ansible_verbosity
-    value: 0
+    value: "0"
   - name: ansible_winrm_server_cert_validation
     value: validate
   - name: applicability_batch_size
     value: 50
-  - name: audits_period
   - name: authorize_login_delegation
     value: ""
   - name: authorize_login_delegation_api
@@ -47,7 +43,9 @@ satellite_settings:
   - name: bmc_credentials_accessible
     value: ""
   - name: bootdisk_allowed_types
-    value: ['subnet', 'full_host']
+    value:
+      - subnet
+      - full_host
   - name: bootdisk_cache_media
     value: True
   - name: bootdisk_generic_efi_host_template
@@ -74,13 +72,15 @@ satellite_settings:
     value: True
   - name: completed_pulp_task_protection_days
     value: 30
-  - name: content_default_http_proxy
   - name: create_new_host_when_facts_are_uploaded
     value: True
   - name: create_new_host_when_report_is_uploaded
     value: True
   - name: ct_arguments
-    value: ['--pretty', '--files-dir', '/usr/share/foreman/config/ct']
+    value:
+      - --pretty
+      - --files-dir
+      - /usr/share/foreman/config/ct
   - name: ct_location
     value: /usr/bin/ct
   - name: db_pending_seed
@@ -93,7 +93,6 @@ satellite_settings:
     value: Global Registration
   - name: default_host_init_config_template
     value: Linux host_init_config default
-  - name: default_locale
   - name: default_location
     value: Barcelona
   - name: default_location_subscribed_hosts
@@ -101,14 +100,15 @@ satellite_settings:
   - name: default_organization
     value: Umbrella
   - name: Default_parameters_Lookup_Path
-    value: ['fqdn', 'hostgroup', 'os', 'domain']
+    value:
+      - fqdn
+      - hostgroup
+      - os
+      - domain
   - name: default_proxy_download_policy
     value: on_demand
-  - name: default_pxe_item_global
-  - name: default_pxe_item_local
   - name: default_redhat_download_policy
     value: on_demand
-  - name: default_timezone
   - name: delete_repo_across_cv
     value: True
   - name: delivery_method
@@ -127,22 +127,13 @@ satellite_settings:
     value: ""
   - name: discovery_fact
     value: discovery_bootif
-  - name: discovery_fact_column
-    value: ""
-  - name: discovery_facts_hardware
-  - name: discovery_facts_highlights
-  - name: discovery_facts_ipmi
-  - name: discovery_facts_network
-  - name: discovery_facts_software
-  - name: discovery_facts_storage
   - name: discovery_hostname
-    value: ['discovery_bootif']
-  - name: discovery_location
+    value:
+      - discovery_bootif
   - name: discovery_lock
     value: ""
   - name: discovery_naming
     value: Fact
-  - name: discovery_organization
   - name: discovery_prefer_ipv6
     value: ""
   - name: discovery_prefix
@@ -160,9 +151,13 @@ satellite_settings:
   - name: distribute_archived_cvv
     value: ""
   - name: dns_timeout
-    value: [5, 10, 15, 20]
+    value:
+      - 5
+      - 10
+      - 15
+      - 20
   - name: download_rate_limit
-    value: ""
+    value: 0
   - name: dynflow_console_require_auth
     value: True
   - name: dynflow_enable_console
@@ -170,7 +165,7 @@ satellite_settings:
   - name: email_reply_address
     value: satellite-noreply@bcnconsulting.com
   - name: email_subject_prefix
-    value: [satellite]
+    value: '[satellite]'
   - name: entries_per_page
     value: 20
   - name: errata_status_installable
@@ -178,16 +173,51 @@ satellite_settings:
   - name: exclude_installed_packages
     value: ""
   - name: excluded_facts
-    value: ['lo', 'en*v*', 'usb*', 'vnet*', 'macvtap*', ';vdsmdummy;', 'veth*', 'docker*', 'tap*', 'qbr*', 'qvb*', 'qvo*', 'qr-*', 'qg-*', 'vlinuxbr*', 'vovsbr*', 'br-int', 'vif*', 'cali*', 'lxc*', 'load_averages::*', 'memory::swap::available*', 'memory::swap::capacity', 'memory::swap::used*', 'memory::system::available*', 'memory::system::capacity', 'memory::system::used*', 'memoryfree', 'memoryfree_mb', 'swapfree', 'swapfree_mb', 'uptime_hours', 'uptime_days']
+    value:
+      - lo
+      - env
+      - usb
+      - vnet
+      - macvtap
+      - ;vdsmdummy;
+      - veth
+      - docker
+      - tap
+      - qbr
+      - qvb
+      - qvo
+      - qr-
+      - qg-
+      - vlinuxbr
+      - vovsbr
+      - br-int
+      - vif
+      - cali
+      - lxc
+      - 'load_averages::'
+      - memory::swap::available
+      - memory::swap::capacity
+      - memory::swap::used
+      - memory::system::available
+      - memory::system::capacity
+      - memory::system::used
+      - memoryfree
+      - memoryfree_mb
+      - swapfree
+      - swapfree_mb
+      - uptime_hours
+      - uptime_days
   - name: expire_soon_days
     value: 120
   - name: failed_login_attempts_limit
     value: 30
   - name: fcct_arguments
-    value: ['--pretty', '--files-dir', '/usr/share/foreman/config/ct']
+    value:
+      - --pretty
+      - --files-dir
+      - /usr/share/foreman/config/ct
   - name: fcct_location
     value: /usr/bin/fcct
-  - name: foreman_ansible_proxy_batch_size
   - name: foreman_proxy_content_auto_sync
     value: True
   - name: foreman_proxy_content_batch_size
@@ -220,9 +250,6 @@ satellite_settings:
     value: ""
   - name: host_details_ui
     value: True
-  - name: host_dmi_uuid_duplicates
-    value: ""
-  - name: host_owner
   - name: host_profile_assume
     value: True
   - name: host_profile_assume_build_can_change
@@ -231,9 +258,6 @@ satellite_settings:
     value: ""
   - name: host_tasks_workers_pool_size
     value: 5
-  - name: http_proxy
-  - name: http_proxy_except_list
-    value: ""
   - name: idle_timeout
     value: 60
   - name: ignore_facts_for_domain
@@ -243,13 +267,33 @@ satellite_settings:
   - name: ignore_puppet_facts_for_provisioning
     value: ""
   - name: ignored_interface_identifiers
-    value: ['lo', 'en*v*', 'usb*', 'vnet*', 'macvtap*', ';vdsmdummy;', 'veth*', 'docker*', 'tap*', 'qbr*', 'qvb*', 'qvo*', 'qr-*', 'qg-*', 'vlinuxbr*', 'vovsbr*', 'br-int', 'vif*', 'cali*', 'lxc*']
+    value:
+      - lo
+      - env
+      - usb
+      - vnet
+      - macvtap
+      - ;vdsmdummy;
+      - veth
+      - docker
+      - tap
+      - qbr
+      - qvb
+      - qvo
+      - qr-
+      - qg-
+      - vlinuxbr
+      - vovsbr
+      - br-int
+      - vif
+      - cali
+      - lxc
   - name: include_parameter_tags
     value: ""
   - name: instance_color
+    value: #000000
   - name: instance_id
     value: ac581e18-d884-4475-8faa-1d00edfb603b
-  - name: instance_title
   - name: intermediate_ipxe_script
     value: iPXE intermediate script
   - name: interpolate_erb_in_parameters
@@ -288,7 +332,6 @@ satellite_settings:
     value: PXELinux default local boot
   - name: location_fact
     value: foreman_location
-  - name: login_delegation_logout_url
   - name: login_text
     value: Version 6.17.3
   - name: manage_puppetca
@@ -305,21 +348,10 @@ satellite_settings:
     value: ""
   - name: oauth_active
     value: True
-  - name: oauth_consumer_key
-    value: *****
-  - name: oauth_consumer_secret
-    value: *****
-  - name: oauth_map_users
-    value: ""
   - name: obfuscate_inventory_hostnames
     value: ""
   - name: obfuscate_inventory_ips
     value: ""
-  - name: oidc_algorithm
-  - name: oidc_audience
-    value: ""
-  - name: oidc_issuer
-  - name: oidc_jwks_url
   - name: organization_fact
     value: foreman_organization
   - name: orphan_protection_time
@@ -336,12 +368,10 @@ satellite_settings:
     value: /var/lib/pulp/exports
   - name: query_local_nameservers
     value: ""
-  - name: register_hostname_fact
   - name: register_hostname_fact_strict_match
     value: ""
   - name: remote_execution_cleanup_working_dirs
     value: True
-  - name: remote_execution_cockpit_url
   - name: remote_execution_connect_by_ip
     value: ""
   - name: remote_execution_connect_by_ip_prefer_ipv6
@@ -351,7 +381,7 @@ satellite_settings:
   - name: remote_execution_effective_user_method
     value: sudo
   - name: remote_execution_effective_user_password
-    value: *****
+    value:
   - name: remote_execution_fallback_proxy
     value: ""
   - name: remote_execution_form_job_template
@@ -363,9 +393,9 @@ satellite_settings:
   - name: remote_execution_prefer_registered_through_proxy
     value: ""
   - name: remote_execution_ssh_key_passphrase
-    value: *****
+    value:
   - name: remote_execution_ssh_password
-    value: *****
+    value:
   - name: remote_execution_ssh_port
     value: 22
   - name: remote_execution_ssh_user
@@ -378,9 +408,8 @@ satellite_settings:
     value: ""
   - name: restrict_registered_smart_proxies
     value: True
-  - name: rhc_instance_id
   - name: root_pass
-    value: *****
+    value:
   - name: rss_enable
     value: True
   - name: rss_url
@@ -393,20 +422,14 @@ satellite_settings:
     value: -i
   - name: sendmail_location
     value: /usr/sbin/sendmail
-  - name: server_ca_file
   - name: show_unsupported_templates
     value: True
-  - name: smtp_address
-  - name: smtp_authentication
-  - name: smtp_domain
   - name: smtp_enable_starttls_auto
     value: True
-  - name: smtp_openssl_verify_mode
   - name: smtp_password
-    value: *****
+    value:
   - name: smtp_port
     value: 25
-  - name: smtp_user_name
   - name: ssh_timeout
     value: 120
   - name: ssl_ca_file
@@ -433,12 +456,10 @@ satellite_settings:
     value: 3600
   - name: template_sync_associate
     value: new
-  - name: template_sync_branch
   - name: template_sync_commit_msg
     value: Templates export made by a Satellite user
   - name: template_sync_dirname
     value: /
-  - name: template_sync_filter
   - name: template_sync_force
     value: ""
   - name: template_sync_http_proxy_policy
@@ -449,17 +470,14 @@ satellite_settings:
     value: refresh
   - name: template_sync_negate
     value: ""
-  - name: template_sync_prefix
   - name: template_sync_repo
     value: https://github.com/theforeman/community-templates.git
   - name: template_sync_verbose
     value: ""
   - name: token_duration
     value: 360
-  - name: trusted_hosts
-    value: ""
   - name: unattended_url
-    value: http://satellite-drs.bcnconsulting.com
+    value: https://satellite-drs.bcnconsulting.com
   - name: unregister_delete_host
     value: ""
   - name: update_hostgroup_from_facts

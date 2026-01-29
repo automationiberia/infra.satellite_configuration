@@ -1,0 +1,20 @@
+---
+satellite_host_collections:
+  - name: test
+    total_hosts: 2
+    unlimited_hosts: True
+    permissions:
+      deletable: True
+      editable: True
+    organization: Umbrella
+    hosts:
+      - satellite-drs.bcnconsulting.com
+      - testhost.bcnconsulting.com
+  - name: test 2
+    total_hosts: 0
+    unlimited_hosts: True
+    permissions:
+      deletable: True
+      editable: True
+    organization: red_ribbon
+...

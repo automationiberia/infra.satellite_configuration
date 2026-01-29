@@ -1,0 +1,494 @@
+---
+satellite_content_views:
+  - composite: False
+    default: False
+    version_count: 3
+    latest_version: 3.0
+    auto_publish: False
+    solve_dependencies: False
+    import_only: False
+    generated_for: none
+    related_cv_count: 0
+    filtered: False
+    needs_publish: False
+    name: cv-test
+    label: cv-test
+    organization: red_ribbon
+    last_task:
+      started_at: 2026-01-22 14:12:57 UTC
+      result: success
+      last_sync_words: 7 days
+    latest_version_environments:
+      - name: Library
+        label: Library
+      - name: Development
+        label: Development
+      - name: UAT
+        label: UAT
+      - name: Integration
+        label: Integration
+      - name: Preproduction
+        label: Preproduction
+      - name: Production
+        label: Production
+      - name: InfraTest
+        label: InfraTest
+      - name: InfraProd
+        label: InfraProd
+    versions:
+      - version: 3.0
+        published: 2026-01-22 14:12:52 UTC
+        filters_applied: False
+        published_at_words: 7 days
+      - version: 2.0
+        published: 2026-01-22 11:30:52 UTC
+        filters_applied: False
+        published_at_words: 7 days
+      - version: 1.0
+        published: 2025-12-10 09:41:35 UTC
+        filters_applied: False
+        published_at_words: about 2 months
+    activation_keys:
+      - name: red_ribbonAK
+    next_version: 4.0
+    last_published: 2026-01-22 14:12:52 UTC
+    environments:
+      - label: Library
+        name: Library
+        permissions:
+          readable: True
+      - label: Development
+        name: Development
+        permissions:
+          readable: True
+      - label: UAT
+        name: UAT
+        activation_keys:
+          - 3
+        permissions:
+          readable: True
+      - label: Integration
+        name: Integration
+        permissions:
+          readable: True
+      - label: Preproduction
+        name: Preproduction
+        permissions:
+          readable: True
+      - label: Production
+        name: Production
+        permissions:
+          readable: True
+      - label: InfraTest
+        name: InfraTest
+        permissions:
+          readable: True
+      - label: InfraProd
+        name: InfraProd
+        permissions:
+          readable: True
+  - composite: False
+    default: False
+    version_count: 2
+    latest_version: 2.0
+    auto_publish: False
+    solve_dependencies: False
+    import_only: False
+    generated_for: none
+    related_cv_count: 0
+    filtered: False
+    needs_publish: False
+    name: cv-test-2
+    label: cv-test-2
+    organization: red_ribbon
+    last_task:
+      started_at: 2026-01-22 14:13:03 UTC
+      result: success
+      last_sync_words: 7 days
+    latest_version_environments:
+      - name: Library
+        label: Library
+    versions:
+      - version: 2.0
+        published: 2026-01-22 14:13:03 UTC
+        filters_applied: False
+        published_at_words: 7 days
+      - version: 1.0
+        published: 2026-01-22 13:02:38 UTC
+        filters_applied: False
+        published_at_words: 7 days
+    next_version: 3.0
+    last_published: 2026-01-22 14:13:03 UTC
+    environments:
+      - label: Library
+        name: Library
+        permissions:
+          readable: True
+  - composite: False
+    default: True
+    version_count: 1
+    latest_version: 1.0
+    auto_publish: False
+    solve_dependencies: False
+    import_only: False
+    generated_for: none
+    related_cv_count: 0
+    filtered: False
+    needs_publish: False
+    name: Default Organization View
+    label: Default_Organization_View
+    organization: Umbrella
+    latest_version_environments:
+      - name: Library
+        label: Library
+    versions:
+      - version: 1.0
+        published: 2025-12-18 14:50:47 UTC
+        published_at_words: about 1 month
+    next_version: 1.0
+    last_published: 2025-12-18 14:50:47 UTC
+    environments:
+      - label: Library
+        name: Library
+        permissions:
+          readable: True
+  - composite: False
+    default: True
+    version_count: 1
+    latest_version: 1.0
+    auto_publish: False
+    solve_dependencies: False
+    import_only: False
+    generated_for: none
+    related_cv_count: 0
+    filtered: False
+    needs_publish: False
+    name: Default Organization View
+    label: Default_Organization_View
+    organization: red_ribbon_new_demo_2
+    latest_version_environments:
+      - name: Library
+        label: Library
+    versions:
+      - version: 1.0
+        published: 2025-12-18 14:44:19 UTC
+        published_at_words: about 1 month
+    next_version: 1.0
+    last_published: 2025-12-18 14:44:19 UTC
+    environments:
+      - label: Library
+        name: Library
+        permissions:
+          readable: True
+  - composite: False
+    default: True
+    version_count: 1
+    latest_version: 1.0
+    auto_publish: False
+    solve_dependencies: False
+    import_only: False
+    generated_for: none
+    related_cv_count: 0
+    filtered: False
+    needs_publish: False
+    name: Default Organization View
+    label: Default_Organization_View
+    organization: red_ribbon_new_demo
+    latest_version_environments:
+      - name: Library
+        label: Library
+    versions:
+      - version: 1.0
+        published: 2025-12-17 12:47:14 UTC
+        published_at_words: about 1 month
+    next_version: 1.0
+    last_published: 2025-12-17 12:47:14 UTC
+    environments:
+      - label: Library
+        name: Library
+        permissions:
+          readable: True
+  - composite: False
+    default: True
+    version_count: 1
+    latest_version: 1.0
+    auto_publish: False
+    solve_dependencies: False
+    import_only: False
+    generated_for: none
+    related_cv_count: 0
+    filtered: False
+    needs_publish: False
+    name: Default Organization View
+    label: Default_Organization_View
+    organization: red_ribbon_new
+    latest_version_environments:
+      - name: Library
+        label: Library
+    versions:
+      - version: 1.0
+        published: 2025-12-17 12:03:40 UTC
+        published_at_words: about 1 month
+    next_version: 1.0
+    last_published: 2025-12-17 12:03:40 UTC
+    environments:
+      - label: Library
+        name: Library
+        permissions:
+          readable: True
+  - composite: False
+    default: True
+    version_count: 1
+    latest_version: 1.0
+    auto_publish: False
+    solve_dependencies: False
+    import_only: False
+    generated_for: none
+    related_cv_count: 0
+    filtered: False
+    needs_publish: False
+    name: Default Organization View
+    label: Default_Organization_View
+    organization: red_ribbon
+    latest_version_environments:
+      - name: Library
+        label: Library
+    versions:
+      - version: 1.0
+        published: 2025-08-19 10:34:02 UTC
+        published_at_words: 5 months
+    next_version: 1.0
+    last_published: 2025-08-19 10:34:02 UTC
+    environments:
+      - label: Library
+        name: Library
+        permissions:
+          readable: True
+  - composite: False
+    default: False
+    version_count: 1
+    latest_version: 1.0
+    auto_publish: False
+    solve_dependencies: True
+    import_only: False
+    generated_for: none
+    related_cv_count: 0
+    filtered: False
+    needs_publish: False
+    name: Onda Provision
+    label: Onda_Provision
+    organization: Umbrella
+    last_task:
+      started_at: 2026-01-28 11:35:00 UTC
+      result: success
+      last_sync_words: 1 day
+    latest_version_environments:
+      - name: Library
+        label: Library
+      - name: Onda
+        label: Onda
+      - name: Provision
+        label: Provision
+    repositories:
+      - name: Red Hat Enterprise Linux 9 for x86_64 - AppStream Kickstart 9.6
+        product: Red Hat Enterprise Linux for x86_64
+      - name: Red Hat Enterprise Linux 9 for x86_64 - BaseOS Kickstart 9.6
+        product: Red Hat Enterprise Linux for x86_64
+      - name: Red Hat Enterprise Linux 8 for x86_64 - AppStream Kickstart 8.10
+        product: Red Hat Enterprise Linux for x86_64
+      - name: Red Hat Enterprise Linux 8 for x86_64 - BaseOS Kickstart 8.10
+        product: Red Hat Enterprise Linux for x86_64
+      - name: Red Hat Enterprise Linux 9 for x86_64 - BaseOS Kickstart 9.7
+        product: Red Hat Enterprise Linux for x86_64
+      - name: Red Hat Enterprise Linux 9 for x86_64 - AppStream Kickstart 9.7
+        product: Red Hat Enterprise Linux for x86_64
+      - name: Red Hat Enterprise Linux 9 for x86_64 - BaseOS RPMs 9.6
+        product: Red Hat Enterprise Linux for x86_64
+      - name: Red Hat Enterprise Linux 9 for x86_64 - AppStream RPMs 9.6
+        product: Red Hat Enterprise Linux for x86_64
+      - name: Red Hat Enterprise Linux 8 for x86_64 - AppStream RPMs 8.10
+        product: Red Hat Enterprise Linux for x86_64
+      - name: Red Hat Enterprise Linux 8 for x86_64 - BaseOS RPMs 8.10
+        product: Red Hat Enterprise Linux for x86_64
+      - name: Red Hat Enterprise Linux 9 for x86_64 - AppStream RPMs 9.7
+        product: Red Hat Enterprise Linux for x86_64
+      - name: Red Hat Enterprise Linux 9 for x86_64 - BaseOS RPMs 9.7
+        product: Red Hat Enterprise Linux for x86_64
+    versions:
+      - version: 1.0
+        published: 2026-01-28 11:35:00 UTC
+        filters_applied: False
+        published_at_words: 1 day
+    hosts:
+      - name: jan-treece.onda.bcnconsulting.com
+    next_version: 2.0
+    last_published: 2026-01-28 11:35:00 UTC
+    environments:
+      - label: Library
+        name: Library
+        permissions:
+          readable: True
+      - label: Onda
+        name: Onda
+        permissions:
+          readable: True
+      - label: Provision
+        name: Provision
+        hosts:
+          - 9
+        permissions:
+          readable: True
+  - composite: False
+    default: False
+    version_count: 2
+    latest_version: 2.0
+    auto_publish: False
+    solve_dependencies: True
+    import_only: False
+    generated_for: none
+    related_cv_count: 0
+    filtered: False
+    needs_publish: True
+    name: RHEL9.6KickStart
+    label: RHEL9_6KickStart
+    organization: Umbrella
+    last_task:
+      started_at: 2026-01-22 14:13:15 UTC
+      result: success
+      last_sync_words: 7 days
+    latest_version_environments:
+      - name: Library
+        label: Library
+    repositories:
+      - name: Red Hat Ansible Automation Platform 2.5 for RHEL 9 x86_64 RPMs
+        product: Red Hat Ansible Automation Platform
+      - name: Red Hat Enterprise Linux 9 for x86_64 - AppStream Kickstart 9.6
+        product: Red Hat Enterprise Linux for x86_64
+      - name: Red Hat Enterprise Linux 9 for x86_64 - AppStream RPMs 9.6
+        product: Red Hat Enterprise Linux for x86_64
+      - name: Red Hat Enterprise Linux 9 for x86_64 - BaseOS Kickstart 9.6
+        product: Red Hat Enterprise Linux for x86_64
+      - name: Red Hat Enterprise Linux 9 for x86_64 - BaseOS RPMs 9.6
+        product: Red Hat Enterprise Linux for x86_64
+    versions:
+      - version: 2.0
+        published: 2026-01-22 14:13:15 UTC
+        filters_applied: False
+        published_at_words: 7 days
+      - version: 1.0
+        published: 2026-01-21 12:57:08 UTC
+        filters_applied: False
+        published_at_words: 8 days
+    next_version: 3.0
+    last_published: 2026-01-22 14:13:15 UTC
+    environments:
+      - label: Library
+        name: Library
+        permissions:
+          readable: True
+  - composite: False
+    default: False
+    version_count: 1
+    latest_version: 1.0
+    auto_publish: False
+    solve_dependencies: False
+    import_only: False
+    generated_for: none
+    related_cv_count: 0
+    filtered: True
+    needs_publish: False
+    name: test
+    label: test
+    organization: Umbrella
+    last_task:
+      started_at: 2026-01-22 14:15:32 UTC
+      result: success
+      last_sync_words: 7 days
+    latest_version_environments:
+      - name: Library
+        label: Library
+    repositories:
+      - name: Red Hat Ansible Automation Platform 2.5 for RHEL 9 x86_64 RPMs
+        product: Red Hat Ansible Automation Platform
+    versions:
+      - version: 1.0
+        published: 2026-01-22 14:15:32 UTC
+        filters_applied: True
+        published_at_words: 7 days
+    next_version: 2.0
+    last_published: 2026-01-22 14:15:32 UTC
+    environments:
+      - label: Library
+        name: Library
+        permissions:
+          readable: True
+    filters:
+      - name: test_filter
+        inclusion: False
+        filter_state: present
+        filter_type: rpm
+        rule_name: aap-metrics-utility
+      - name: test_filter2
+        inclusion: False
+        filter_state: present
+        filter_type: rpm
+        rule_name: ansible-core
+      - name: test_filter2
+        inclusion: False
+        filter_state: present
+        filter_type: rpm
+        rule_name: ansible-navigator
+      - name: test_filter2
+        inclusion: False
+        filter_state: present
+        filter_type: rpm
+        rule_name: ansible-builder
+      - name: test_filter3
+        inclusion: True
+        description: Testing descriptions in the filters
+        filter_state: present
+        filter_type: rpm
+        rule_name: ansible-lint
+  - composite: False
+    default: False
+    version_count: 1
+    latest_version: 1.0
+    auto_publish: False
+    solve_dependencies: False
+    import_only: False
+    generated_for: none
+    related_cv_count: 0
+    filtered: True
+    needs_publish: False
+    name: test2
+    label: test2
+    organization: Umbrella
+    last_task:
+      started_at: 2026-01-22 14:15:42 UTC
+      result: success
+      last_sync_words: 7 days
+    latest_version_environments:
+      - name: Library
+        label: Library
+    repositories:
+      - name: Red Hat Ansible Automation Platform 2.5 for RHEL 9 x86_64 RPMs
+        product: Red Hat Ansible Automation Platform
+    versions:
+      - version: 1.0
+        published: 2026-01-22 14:15:42 UTC
+        filters_applied: True
+        published_at_words: 7 days
+    next_version: 2.0
+    last_published: 2026-01-22 14:15:42 UTC
+    environments:
+      - label: Library
+        name: Library
+        permissions:
+          readable: True
+    filters:
+      - name: test_filter
+        inclusion: False
+        filter_state: present
+        filter_type: rpm
+        rule_name: aap-metrics-utility
+...

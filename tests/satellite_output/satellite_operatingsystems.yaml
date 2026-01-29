@@ -1,0 +1,43 @@
+---
+satellite_operatingsystems:
+  - name: RedHat
+    description: RHEL 9.6
+    os_family: Redhat
+    major: "9"
+    password_hash: SHA512
+    state: present
+    architectures:
+      - x86_64
+    ptables:
+      - Kickstart default
+  - name: RedHat
+    description: ""
+    os_family: Redhat
+    major: "8"
+    password_hash: SHA512
+    state: present
+    architectures:
+      - x86_64
+    ptables:
+      - Kickstart default
+  - name: RedHat
+    description: ""
+    os_family: Redhat
+    major: "9"
+    password_hash: SHA512
+    state: present
+    architectures:
+      - x86_64
+    ptables:
+      - Kickstart default
+  - name: OndaRedHat
+    description: ""
+    os_family: Redhat
+    major: "9"
+    password_hash: SHA512
+    state: present
+    architectures:
+      - x86_64
+    ptables:
+      - Onda Partition Table
+...

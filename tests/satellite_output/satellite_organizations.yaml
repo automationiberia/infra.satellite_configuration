@@ -1,0 +1,18 @@
+---
+satellite_organizations:
+  - label: Red_Ribbon
+    name: red_ribbon
+    title: red_ribbon
+  - label: red_ribbon_new
+    name: red_ribbon_new
+    title: red_ribbon_new
+  - label: red_ribbon_new_demo
+    name: red_ribbon_new_demo
+    title: red_ribbon_new_demo
+  - label: red_ribbon_new_demo_2
+    name: red_ribbon_new_demo_2
+    title: red_ribbon_new_demo_2
+  - label: Umbrella
+    name: Umbrella
+    title: Umbrella
+...

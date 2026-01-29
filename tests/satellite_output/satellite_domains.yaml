@@ -2,4 +2,5 @@
 satellite_domains:
   - name: bcnconsulting.com
   - name: test.ansible.com
+  - name: onda.bcnconsulting.com
 ...
