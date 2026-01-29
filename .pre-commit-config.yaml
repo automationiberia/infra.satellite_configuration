@@ -14,7 +14,7 @@ repos:
       # https://github.com/ansible/ansible-lint/issues/808
       - id: ansible-lint
         environment:
-          ANSIBLE_COLLECTIONS_PATH: /home/ivan/.ansible/collections/
+          ANSIBLE_COLLECTIONS_PATH: ~/.ansible/collections/
         pass_filenames: false
         always_run: true
         entry: "ansible-lint"
