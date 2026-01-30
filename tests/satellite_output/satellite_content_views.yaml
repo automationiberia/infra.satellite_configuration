@@ -17,7 +17,7 @@ satellite_content_views:
     last_task:
       started_at: 2026-01-22 14:12:57 UTC
       result: success
-      last_sync_words: 7 days
+      last_sync_words: 8 days
     latest_version_environments:
       - name: Library
         label: Library
@@ -39,11 +39,11 @@ satellite_content_views:
       - version: 3.0
         published: 2026-01-22 14:12:52 UTC
         filters_applied: False
-        published_at_words: 7 days
+        published_at_words: 8 days
       - version: 2.0
         published: 2026-01-22 11:30:52 UTC
         filters_applied: False
-        published_at_words: 7 days
+        published_at_words: 8 days
       - version: 1.0
         published: 2025-12-10 09:41:35 UTC
         filters_applied: False
@@ -104,7 +104,7 @@ satellite_content_views:
     last_task:
       started_at: 2026-01-22 14:13:03 UTC
       result: success
-      last_sync_words: 7 days
+      last_sync_words: 8 days
     latest_version_environments:
       - name: Library
         label: Library
@@ -112,11 +112,11 @@ satellite_content_views:
       - version: 2.0
         published: 2026-01-22 14:13:03 UTC
         filters_applied: False
-        published_at_words: 7 days
+        published_at_words: 8 days
       - version: 1.0
         published: 2026-01-22 13:02:38 UTC
         filters_applied: False
-        published_at_words: 7 days
+        published_at_words: 8 days
     next_version: 3.0
     last_published: 2026-01-22 14:13:03 UTC
     environments:
@@ -281,7 +281,7 @@ satellite_content_views:
     last_task:
       started_at: 2026-01-28 11:35:00 UTC
       result: success
-      last_sync_words: 1 day
+      last_sync_words: 2 days
     latest_version_environments:
       - name: Library
         label: Library
@@ -318,7 +318,7 @@ satellite_content_views:
       - version: 1.0
         published: 2026-01-28 11:35:00 UTC
         filters_applied: False
-        published_at_words: 1 day
+        published_at_words: 2 days
     hosts:
       - name: jan-treece.onda.bcnconsulting.com
     next_version: 2.0
@@ -355,7 +355,7 @@ satellite_content_views:
     last_task:
       started_at: 2026-01-22 14:13:15 UTC
       result: success
-      last_sync_words: 7 days
+      last_sync_words: 8 days
     latest_version_environments:
       - name: Library
         label: Library
@@ -374,11 +374,11 @@ satellite_content_views:
       - version: 2.0
         published: 2026-01-22 14:13:15 UTC
         filters_applied: False
-        published_at_words: 7 days
+        published_at_words: 8 days
       - version: 1.0
         published: 2026-01-21 12:57:08 UTC
         filters_applied: False
-        published_at_words: 8 days
+        published_at_words: 9 days
     next_version: 3.0
     last_published: 2026-01-22 14:13:15 UTC
     environments:
@@ -403,7 +403,7 @@ satellite_content_views:
     last_task:
       started_at: 2026-01-22 14:15:32 UTC
       result: success
-      last_sync_words: 7 days
+      last_sync_words: 8 days
     latest_version_environments:
       - name: Library
         label: Library
@@ -414,7 +414,7 @@ satellite_content_views:
       - version: 1.0
         published: 2026-01-22 14:15:32 UTC
         filters_applied: True
-        published_at_words: 7 days
+        published_at_words: 8 days
     next_version: 2.0
     last_published: 2026-01-22 14:15:32 UTC
     environments:
@@ -466,7 +466,7 @@ satellite_content_views:
     last_task:
       started_at: 2026-01-22 14:15:42 UTC
       result: success
-      last_sync_words: 7 days
+      last_sync_words: 8 days
     latest_version_environments:
       - name: Library
         label: Library
@@ -477,7 +477,7 @@ satellite_content_views:
       - version: 1.0
         published: 2026-01-22 14:15:42 UTC
         filters_applied: True
-        published_at_words: 7 days
+        published_at_words: 8 days
     next_version: 2.0
     last_published: 2026-01-22 14:15:42 UTC
     environments:

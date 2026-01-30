@@ -1653,7 +1653,7 @@ satellite_products:
       success: 14
     sync_state: Syncing Complete.
     last_sync: 2026-01-28 10:46:21 UTC
-    last_sync_words: 1 day
+    last_sync_words: 2 days
     organization: Umbrella
     sync_plan: TestSyncPlan
     repository_count: 14
@@ -1665,7 +1665,7 @@ satellite_products:
       success: 1
     sync_state: Syncing Complete.
     last_sync: 2026-01-28 10:46:12 UTC
-    last_sync_words: 1 day
+    last_sync_words: 2 days
     organization: Umbrella
     sync_plan: TestSyncPlan
     repository_count: 1

@@ -5,3 +5,5 @@
 export
 import
 my_vars
+*.tar.gz
+tests/output

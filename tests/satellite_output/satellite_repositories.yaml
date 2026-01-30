@@ -39,7 +39,7 @@ satellite_repositories:
     minor: 10
     product: Red Hat Enterprise Linux for x86_64
     content_label: rhel-10-for-x86_64-appstream-rpms
-    last_sync_words: 1 day
+    last_sync_words: 2 days
     environment:
       registry_unauthenticated_pull: False
     verify_ssl_on_sync: True
@@ -93,7 +93,7 @@ satellite_repositories:
     minor: 10
     product: Red Hat Enterprise Linux for x86_64
     content_label: rhel-10-for-x86_64-baseos-rpms
-    last_sync_words: 1 day
+    last_sync_words: 2 days
     environment:
       registry_unauthenticated_pull: False
     verify_ssl_on_sync: True
@@ -162,7 +162,7 @@ satellite_repositories:
     content_id: 20417
     product: Red Hat Ansible Automation Platform
     content_label: ansible-automation-platform-2.5-for-rhel-9-x86_64-rpms
-    last_sync_words: 1 day
+    last_sync_words: 2 days
     environment:
       registry_unauthenticated_pull: False
     verify_ssl_on_sync: True
@@ -276,7 +276,7 @@ satellite_repositories:
     minor: 9.6
     product: Red Hat Enterprise Linux for x86_64
     content_label: rhel-9-for-x86_64-appstream-kickstart
-    last_sync_words: 1 day
+    last_sync_words: 2 days
     environment:
       registry_unauthenticated_pull: False
     verify_ssl_on_sync: True
@@ -348,7 +348,7 @@ satellite_repositories:
     minor: 9.6
     product: Red Hat Enterprise Linux for x86_64
     content_label: rhel-9-for-x86_64-baseos-kickstart
-    last_sync_words: 1 day
+    last_sync_words: 2 days
     environment:
       registry_unauthenticated_pull: False
     verify_ssl_on_sync: True
@@ -415,7 +415,7 @@ satellite_repositories:
     minor: 9.6
     product: Red Hat Enterprise Linux for x86_64
     content_label: rhel-9-for-x86_64-baseos-rpms
-    last_sync_words: 1 day
+    last_sync_words: 2 days
     environment:
       registry_unauthenticated_pull: False
     verify_ssl_on_sync: True
@@ -482,7 +482,7 @@ satellite_repositories:
     minor: 9.6
     product: Red Hat Enterprise Linux for x86_64
     content_label: rhel-9-for-x86_64-appstream-rpms
-    last_sync_words: 1 day
+    last_sync_words: 2 days
     environment:
       registry_unauthenticated_pull: False
     verify_ssl_on_sync: True
@@ -546,7 +546,7 @@ satellite_repositories:
     minor: 8.10
     product: Red Hat Enterprise Linux for x86_64
     content_label: rhel-8-for-x86_64-appstream-kickstart
-    last_sync_words: 1 day
+    last_sync_words: 2 days
     environment:
       registry_unauthenticated_pull: False
     verify_ssl_on_sync: True
@@ -610,7 +610,7 @@ satellite_repositories:
     minor: 8.10
     product: Red Hat Enterprise Linux for x86_64
     content_label: rhel-8-for-x86_64-baseos-kickstart
-    last_sync_words: 1 day
+    last_sync_words: 2 days
     environment:
       registry_unauthenticated_pull: False
     verify_ssl_on_sync: True
@@ -674,7 +674,7 @@ satellite_repositories:
     minor: 9.7
     product: Red Hat Enterprise Linux for x86_64
     content_label: rhel-9-for-x86_64-baseos-kickstart
-    last_sync_words: 1 day
+    last_sync_words: 2 days
     environment:
       registry_unauthenticated_pull: False
     verify_ssl_on_sync: True
@@ -738,7 +738,7 @@ satellite_repositories:
     minor: 9.7
     product: Red Hat Enterprise Linux for x86_64
     content_label: rhel-9-for-x86_64-appstream-kickstart
-    last_sync_words: 1 day
+    last_sync_words: 2 days
     environment:
       registry_unauthenticated_pull: False
     verify_ssl_on_sync: True
@@ -797,7 +797,7 @@ satellite_repositories:
     minor: 8.10
     product: Red Hat Enterprise Linux for x86_64
     content_label: rhel-8-for-x86_64-appstream-rpms
-    last_sync_words: 1 day
+    last_sync_words: 2 days
     environment:
       registry_unauthenticated_pull: False
     verify_ssl_on_sync: True
@@ -856,7 +856,7 @@ satellite_repositories:
     minor: 8.10
     product: Red Hat Enterprise Linux for x86_64
     content_label: rhel-8-for-x86_64-baseos-rpms
-    last_sync_words: 1 day
+    last_sync_words: 2 days
     environment:
       registry_unauthenticated_pull: False
     verify_ssl_on_sync: True
@@ -915,7 +915,7 @@ satellite_repositories:
     minor: 9.7
     product: Red Hat Enterprise Linux for x86_64
     content_label: rhel-9-for-x86_64-appstream-rpms
-    last_sync_words: 1 day
+    last_sync_words: 2 days
     environment:
       registry_unauthenticated_pull: False
     verify_ssl_on_sync: True
@@ -974,7 +974,7 @@ satellite_repositories:
     minor: 9.7
     product: Red Hat Enterprise Linux for x86_64
     content_label: rhel-9-for-x86_64-baseos-rpms
-    last_sync_words: 1 day
+    last_sync_words: 2 days
     environment:
       registry_unauthenticated_pull: False
     verify_ssl_on_sync: True
