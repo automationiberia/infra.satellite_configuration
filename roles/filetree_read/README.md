@@ -1,33 +1,96 @@
-# Role Name
+# automationiberia.satellite_configuration.filetree_read
 
-A brief description of the role goes here.
+An ansible role which reads variables from a hierarchical and scalable directory structure which is grouped based on the configuration code life-cycle. It could be used to run the role `automationiberia.satellite_configuration.filetree_read` to load variables followed by `automationiberia.satellite_configuration.dispatch` role to apply the configuration.
 
 ## Requirements
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+This role have no requirements.
 
 ## Role Variables
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+The following Variables set the organization where should be applied the configuration, the absolute or relative of the directory structure where the variables will be stored and the life-cycle environment to use.
 
-## Dependencies
+|Variable Name|Type|Default Value|Required|Description|
+|:---:|:---:|:---:|:---:|:---:|
+|`satellite_configuration_filetree_read_tasks`|List(Dict)|See the [defaults file][link_defaults_line_27]|yes|This variable defines all the object types to be read, with the information shown in the `items` Dict below.|
+|`items.name`|String|See the [defaults file][link_defaults_line_27]|yes|Name of the object type to be read|
+|`items.var`|String|See the [defaults file][link_defaults_line_27]|yes|Name of the variable where to store the objects in memory|
+|`items.tags`|String|See the [defaults file][link_defaults_line_27]|yes|Tags to let the playbook filter what object types must be exported|
+|`items.path`|String|See the [defaults file][link_defaults_line_27]|yes|Path where are stored the objects to be read for the current object type|
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+### Input Data Structure
+
+Variables should be stored in yaml files. It could be used vault to encrypt sensitive data when needed.
+
+There's a complete example of the generated files at the [tests/satellite_output][link_satellite_output] directory. Follows a sample for the `satellite_locations`:
+
+```yaml
+---
+satellite_locations:
+  - name: Barcelona
+    organizations:
+      - red_ribbon
+      - red_ribbon_new
+      - red_ribbon_new_demo
+      - red_ribbon_new_demo_2
+      - Umbrella
+  - name: Onda
+    organizations:
+      - red_ribbon
+      - Umbrella
+...
+```
+
+## Role Tags
+
+The role is designed to be used with tags, each tags correspond to an AWX or Automation Controller object to be managed by ansible.
+
+```console
+$ ansible-playbook automationiberia.satellite_configuration.run_filetree_create.yaml --list-tags
+
+  play #1 (localhost): Export Satellite Configuration TAGS: []
+    TASK TAGS: [activation_keys, always, auth_sources_ldap, content_credentials, content_views, domains, host_collections, hostgroups, lifecycle_environments, locations, operatingsystems, organizations, products, repositories, repository_sets, settings, subnets, sync_plans, usergroups]
+```
 
 ## Example Playbook
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
-
 ```yaml
-- hosts: servers
+---
+- name: Playbook to test the roles 'automationiberia.satellite_configuration'.'filetree_read' and 'dispatch'
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  vars:
+    username: &username "{{ satellite.admin.username }}"
+    password: &password "{{ satellite.admin.password }}"
+    server_url: &server_url "{{ satellite.server_url }}"
+    validate_certs: &validate_certs "{{ satellite.validate_certs }}"
+  module_defaults:
+    group/redhat.satellite.satellite: &creds
+      username: *username
+      password: *password
+      server_url: *server_url
+      validate_certs: *validate_certs
   roles:
-      - { role: username.rolename, x: 42 }
+    - role: automationiberia.satellite_configuration.filetree_read
+    - role: automationiberia.satellite_configuration.dispatch
+...
+```
+
+```console
+ansible-playbook -i localhost, automationiberia.satellite_configuration.run_filetree_read.yaml -e@vars/satellite.yaml
 ```
 
 ## License
 
-BSD
+GPLv3+
 
 ## Author Information
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+- [Silvio Pérez][link_silvinux]
+- [Ivan Aragonés][link_ivarmu]
+
+[link_satellite_output]: https://github.com/automationiberia/satellite-configuration/tree/devel/tests/satellite_output
+[link_defaults_line_27]: https://github.com/automationiberia/satellite-configuration/blob/b458b309405ba9aa61b0f7de4078c01169c48419/roles/filetree_read/defaults/main.yml#L27
+[link_silvinux]: https://github.com/silvinux
+[link_ivarmu]: https://github.com/ivarmu
