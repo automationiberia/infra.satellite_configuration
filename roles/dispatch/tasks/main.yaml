@@ -128,4 +128,11 @@
     apply:
       tags: satellite_provisioning_templates
   tags: satellite_provisioning_templates
+
+- name: Create OperatingSystems
+  include_tasks: satellite_operatingsystems.yaml
+  args:
+    apply:
+      tags: satellite_operatingsystems
+  tags: satellite_operatingsystems
 ...

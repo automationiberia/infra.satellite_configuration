@@ -1,0 +1,10 @@
+---
+- name: Create OperatingSystems
+  ansible.builtin.import_role:
+    name: redhat.satellite.operatingsystems
+  vars:
+    satellite_username: "{{ username }}"
+    satellite_password: "{{ password }}"
+    satellite_server_url: "{{ server_url }}"
+    satellite_validate_certs: "{{ validate_certs }}"
+...

@@ -1,0 +1,20 @@
+---
+- name: Operating System (Do Work) | Reset the results variable
+  ansible.builtin.set_fact:
+    result_api_response: {}
+
+- name: Operating System (Do Work) | Get Operating Systems
+  include_tasks: api_call.yaml
+  vars:
+    call_type: Operating System (Do Work)
+    api_link: "/api/operatingsystems/{{ __current_operatingsystem.id }}/"
+
+- name: Operating System (Do Work) | Block to do the job when there's a job to do
+  when:
+    - result_api_response.content is defined
+    - result_api_response.content | length > 0
+  block:
+    - name: Operating System (Do Work) | Set Info List (can take a while...)
+      ansible.builtin.set_fact:
+        __rs_info_list: "{{ __rs_info_list + [result_api_response.content | from_json] }}"
+...

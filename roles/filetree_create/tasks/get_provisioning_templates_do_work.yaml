@@ -1,12 +1,12 @@
 ---
-- name: Provisioning Templates | Reset the results variable
+- name: Provisioning Template (Do Work) | Reset the results variable
   ansible.builtin.set_fact:
     result_api_response: {}
 
-- name: Provisioning Templates | Get Usergroups
+- name: Provisioning Template (Do Work) | Get Provisioning Template
   include_tasks: api_call.yaml
   vars:
-    call_type: Provisioning Templates
+    call_type: Provisioning Template (Do Work)
     api_link: "/api/provisioning_templates/{{ __current_provisioning_template.id }}/"
 
 - name: Provisioning Template (Do Work) | Block to do the job when there's a job to do

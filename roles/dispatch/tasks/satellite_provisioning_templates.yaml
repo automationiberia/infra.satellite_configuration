@@ -20,4 +20,21 @@
     - satellite_provisioning_templates is defined
     - not __current_provisioning_template.locked
   delegate_to: localhost
+
+- name: Assign default Provisioning Templates to Operating Systems
+  redhat.satellite.os_default_template:
+    # Mandatory params
+    operatingsystem: "{{ __current_provisioning_template[1] }}"
+    template_kind: "{{ __current_provisioning_template[0].kind }}"
+    # Optional params
+    provisioning_template: "{{ __current_provisioning_template[0].name | default(omit) }}"
+    state: "{{ __current_provisioning_template[0].state | default('present') }}"
+  loop: "{{ satellite_provisioning_templates | subelements('operatingsystems', skip_missing=true) }}"
+  loop_control:
+    loop_var: __current_provisioning_template
+    label: "{{ __current_provisioning_template[0].name }}"
+  when:
+    - satellite_provisioning_templates is defined
+    - not __current_provisioning_template[0].locked
+  delegate_to: localhost
 ...

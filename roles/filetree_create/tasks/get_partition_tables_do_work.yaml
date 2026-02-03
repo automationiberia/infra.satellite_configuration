@@ -1,12 +1,12 @@
 ---
-- name: Partition Tables | Reset the results variable
+- name: Partition Table (Do Work) | Reset the results variable
   ansible.builtin.set_fact:
     result_api_response: {}
 
-- name: Partition Tables | Get Usergroups
+- name: Partition Table (Do Work) | Get Partition Table
   include_tasks: api_call.yaml
   vars:
-    call_type: Partition Tables
+    call_type: Partition Table (Do Work)
     api_link: "/api/ptables/{{ __current_partition_table.id }}/"
 
 - name: Partition Table (Do Work) | Block to do the job when there's a job to do
