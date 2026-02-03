@@ -1,0 +1,28 @@
+---
+- name: Partition Tables | Reset the results variable
+  ansible.builtin.set_fact:
+    result_api_response: {}
+    __rs_info_list: []
+
+- name: Partition Tables | Get Partition Tables
+  include_tasks: api_call.yaml
+  vars:
+    call_type: Partition Tables
+    api_link: "/api/ptables?per_page=all"
+
+- name: Partition Tables | Retain the Partition Tables' info
+  ansible.builtin.set_fact:
+    __partition_tables_list: "{{ result_api_response.json.results }}"
+
+- name: Partition Tables | Get External Partition Tables Info
+  include_tasks: get_partition_tables_do_work.yaml
+  loop: "{{ __partition_tables_list }}"
+  loop_control:
+    loop_var: __current_partition_table
+
+- name: Partition Tables | Template Out Results
+  include_tasks: template_out.yaml
+  vars:
+    template_type: satellite_partition_tables
+    info_list: "{{ __rs_info_list | default([]) }}"
+...

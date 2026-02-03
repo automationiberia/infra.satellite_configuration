@@ -1,0 +1,22 @@
+---
+- name: Create/Update Partition Tables
+  redhat.satellite.partition_table:
+    # Mandatory params
+    name: "{{ __current_partition_table.name }}"
+    layout: "{{ __current_partition_table.layout }}"
+    # Optional params
+    locked: "{{ __current_partition_table.locked | default(omit) }}"
+    os_family: "{{ __current_partition_table.os_family | default(omit) }}"
+    locations: "{{ __current_partition_table.locations | default(omit) }}"
+    organizations: "{{ __current_partition_table.organizations | default(omit) }}"
+    updated_name: "{{ __current_partition_table.updated_name | default(omit) }}"
+    state: "{{ __current_partition_table.state | default('present') }}"
+  loop: "{{ satellite_partition_tables }}"
+  loop_control:
+    loop_var: __current_partition_table
+    label: "{{ __current_partition_table.name }}"
+  when:
+    - satellite_partition_tables is defined
+    - not __current_partition_table.locked
+  delegate_to: localhost
+...

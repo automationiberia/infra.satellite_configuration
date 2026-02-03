@@ -124,4 +124,11 @@
   block:
     - name: Get External Usergroups
       include_tasks: get_usergroups.yaml
+
+- name: Block
+  tags:
+    - 'partition_tables'
+  block:
+    - name: Get Partition Tables
+      include_tasks: get_partition_tables.yaml
 ...

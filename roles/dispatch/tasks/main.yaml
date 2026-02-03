@@ -114,4 +114,11 @@
     apply:
       tags: satellite_content_credentials
   tags: satellite_content_credentials
+
+- name: Create Partition Tables
+  include_tasks: satellite_partition_tables.yaml
+  args:
+    apply:
+      tags: satellite_partition_tables
+  tags: satellite_partition_tables
 ...

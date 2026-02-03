@@ -1,0 +1,20 @@
+---
+- name: Partition Tables | Reset the results variable
+  ansible.builtin.set_fact:
+    result_api_response: {}
+
+- name: Partition Tables | Get Usergroups
+  include_tasks: api_call.yaml
+  vars:
+    call_type: Partition Tables
+    api_link: "/api/ptables/{{ __current_partition_table.id }}/"
+
+- name: Partition Table (Do Work) | Block to do the job when there's a job to do
+  when:
+    - result_api_response.content is defined
+    - result_api_response.content | length > 0
+  block:
+    - name: Partition Table (Do Work) | Set Info List (can take a while...)
+      ansible.builtin.set_fact:
+        __rs_info_list: "{{ __rs_info_list + [result_api_response.content | from_json] }}"
+...
