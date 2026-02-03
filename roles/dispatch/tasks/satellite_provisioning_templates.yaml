@@ -1,0 +1,23 @@
+---
+- name: Create/Update Provisioning Templates
+  redhat.satellite.provisioning_template:
+    # Mandatory params
+    name: "{{ __current_provisioning_template.name }}"
+    template: "{{ __current_provisioning_template.template }}"
+    # Optional params
+    locked: "{{ __current_provisioning_template.locked | default(omit) }}"
+    organizations: "{{ __current_provisioning_template.organizations | default(omit) }}"
+    locations: "{{ __current_provisioning_template.locations | default(omit) }}"
+    kind: "{{ __current_provisioning_template.kind | default(omit) }}"
+    operatingsystems: "{{ __current_provisioning_template.operatingsystems | default(omit) }}"
+    updated_name: "{{ __current_provisioning_template.updated_name | default(omit) }}"
+    state: "{{ __current_provisioning_template.state | default('present') }}"
+  loop: "{{ satellite_provisioning_templates }}"
+  loop_control:
+    loop_var: __current_provisioning_template
+    label: "{{ __current_provisioning_template.name }}"
+  when:
+    - satellite_provisioning_templates is defined
+    - not __current_provisioning_template.locked
+  delegate_to: localhost
+...

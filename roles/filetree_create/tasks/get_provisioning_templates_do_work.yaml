@@ -1,0 +1,20 @@
+---
+- name: Provisioning Templates | Reset the results variable
+  ansible.builtin.set_fact:
+    result_api_response: {}
+
+- name: Provisioning Templates | Get Usergroups
+  include_tasks: api_call.yaml
+  vars:
+    call_type: Provisioning Templates
+    api_link: "/api/provisioning_templates/{{ __current_provisioning_template.id }}/"
+
+- name: Provisioning Template (Do Work) | Block to do the job when there's a job to do
+  when:
+    - result_api_response.content is defined
+    - result_api_response.content | length > 0
+  block:
+    - name: Provisioning Template (Do Work) | Set Info List (can take a while...)
+      ansible.builtin.set_fact:
+        __rs_info_list: "{{ __rs_info_list + [result_api_response.content | from_json] }}"
+...

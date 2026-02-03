@@ -121,4 +121,11 @@
     apply:
       tags: satellite_partition_tables
   tags: satellite_partition_tables
+
+- name: Create Provisioning Templates
+  include_tasks: satellite_provisioning_templates.yaml
+  args:
+    apply:
+      tags: satellite_provisioning_templates
+  tags: satellite_provisioning_templates
 ...

@@ -131,4 +131,11 @@
   block:
     - name: Get Partition Tables
       include_tasks: get_partition_tables.yaml
+
+- name: Block
+  tags:
+    - 'provisioning_templates'
+  block:
+    - name: Get Provisioning Templates
+      include_tasks: get_provisioning_templates.yaml
 ...

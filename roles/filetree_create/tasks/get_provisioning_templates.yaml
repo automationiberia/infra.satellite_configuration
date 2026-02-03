@@ -1,0 +1,28 @@
+---
+- name: Provisioning Templates | Reset the results variable
+  ansible.builtin.set_fact:
+    result_api_response: {}
+    __rs_info_list: []
+
+- name: Provisioning Templates | Get Provisioning Templates
+  include_tasks: api_call.yaml
+  vars:
+    call_type: Provisioning Templates
+    api_link: "/api/provisioning_templates?per_page=all"
+
+- name: Provisioning Templates | Retain the Provisioning Templates' info
+  ansible.builtin.set_fact:
+    __provisioning_templates_list: "{{ result_api_response.json.results }}"
+
+- name: Provisioning Templates | Get External Provisioning Templates Info
+  include_tasks: get_provisioning_templates_do_work.yaml
+  loop: "{{ __provisioning_templates_list }}"
+  loop_control:
+    loop_var: __current_provisioning_template
+
+- name: Provisioning Templates | Template Out Results
+  include_tasks: template_out.yaml
+  vars:
+    template_type: satellite_provisioning_templates
+    info_list: "{{ __rs_info_list | default([]) }}"
+...

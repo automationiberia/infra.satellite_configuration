@@ -17,6 +17,7 @@ satellite_operatingsystems: []
 satellite_organizations: []
 satellite_partition_tables: []
 satellite_products: []
+satellite_provisioning_templates: []
 satellite_repositories: []
 satellite_repository_sets: []
 satellite_settings: []
@@ -40,6 +41,7 @@ satellite_configuration_filetree_read_tasks:
   - {name: satellite_organizations,           var: satellite_organizations,           tags: satellite_organizations,           path: "{{ dir_orgs_vars }}/{{ orgs }}/env/common/satellite_organizations.d/"}
   - {name: satellite_partition_tables,        var: satellite_partition_tables,        tags: satellite_partition_tables,        path: "{{ dir_orgs_vars }}/{{ orgs }}/env/common/satellite_partition_tables.d/"}
   - {name: satellite_products,                var: satellite_products,                tags: satellite_products,                path: "{{ dir_orgs_vars }}/{{ orgs }}/env/common/satellite_products.d/"}
+  - {name: satellite_provisioning_templates,  var: satellite_provisioning_templates,  tags: satellite_provisioning_templates,  path: "{{ dir_orgs_vars }}/{{ orgs }}/env/common/satellite_provisioning_templates.d/"}
   - {name: satellite_repositories,            var: satellite_repositories,            tags: satellite_repositories,            path: "{{ dir_orgs_vars }}/{{ orgs }}/env/common/satellite_repositories.d/"}
   - {name: satellite_repository_sets,         var: satellite_repository_sets,         tags: satellite_repository_sets,         path: "{{ dir_orgs_vars }}/{{ orgs }}/env/common/satellite_repository_sets.d/"}
   - {name: satellite_settings,                var: satellite_settings,                tags: satellite_settings,                path: "{{ dir_orgs_vars }}/{{ orgs }}/env/common/satellite_settings.d/"}

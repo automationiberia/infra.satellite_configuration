@@ -1,0 +1,30 @@
+---
+{% from 'clean_fields.j2' import discard_unwanted_fields %}
+{% set __excluded_fields = ['id', 'created_at', 'updated_at', 'template_kind_id', 'cloned_from_id', 'os_default_templates'] %}
+{% set __excluded_subitems = [] %}
+{% set __list_items_to_name = ['locations', 'organizations', 'operatingsystems'] %}
+{% set __empty_values = [None, 'None', '', {}, [], [{}]] %}
+{% set __reduce_to_name = [] %}
+{% set __translate = [] %}
+{% set __raw_fields = ['template', 'description'] %}
+satellite_provisioning_templates:
+{% for i in info_list %}
+{%   for __map_item in (i | dict2items) if __map_item.key not in __excluded_fields and __map_item.value not in __empty_values %}
+{%     if __map_item.key == 'template_kind_name' %}
+  {{ '-' if loop.index == 1 else ' ' }} kind: {{ discard_unwanted_fields(__map_item.value, __excluded_fields, __empty_values, __reduce_to_name, __translate) }}
+{%     elif __map_item.key in __raw_fields %}
+  {{ '-' if loop.index == 1 else ' ' }} {{ __map_item.key }}: |-
+      {{ '{%- raw -%}' }}
+      {{ discard_unwanted_fields(__map_item.value, __excluded_fields, __empty_values, __reduce_to_name, __translate) | trim("'") | indent(6) }}
+      {{ '{%- endraw -%}' }}
+{%     elif __map_item.key in __list_items_to_name %}
+  {{ '-' if loop.index == 1 else ' ' }} {{ __map_item.key }}:
+{%       for __inner_item in __map_item.value %}
+      - {{ (dict(__inner_item.items() | selectattr('0', 'in', 'name'))['name']) }}
+{%       endfor %}
+{%     else %}
+  {{ '-' if loop.index == 1 else ' ' }} {{ __map_item.key }}: {{ discard_unwanted_fields(__map_item.value, __excluded_fields, __empty_values, __reduce_to_name, __translate) }}
+{%     endif %}
+{%-  endfor %}
+{% endfor %}
+...
