@@ -20,7 +20,7 @@ satellite_provisioning_templates:
 {%     elif __map_item.key in __list_items_to_name %}
   {{ '-' if loop.index == 1 else ' ' }} {{ __map_item.key }}:
 {%       for __inner_item in __map_item.value %}
-      - {{ (dict(__inner_item.items() | selectattr('0', 'in', 'name'))['name']) }}
+      - {{ (dict(__inner_item.items() | selectattr('0', 'in', 'title' if __map_item.key == 'operatingsystems' else 'name'))['title' if __map_item.key == 'operatingsystems' else 'name']) }}
 {%       endfor %}
 {%     else %}
   {{ '-' if loop.index == 1 else ' ' }} {{ __map_item.key }}: {{ discard_unwanted_fields(__map_item.value, __excluded_fields, __empty_values, __reduce_to_name, __translate) }}
