@@ -19,7 +19,7 @@
 ]
 {%-   else -%}
 {%-     if __input | type_debug == 'str' and (',' in __input or '\n' in __input or '\r' in __input) -%}
-'{{ __input | replace('\r\n', '\n') | replace('\n', '\n\n') | replace('\n\n', '\n') }}'
+'{{ __input | replace('\r\n', '\n') | replace('\n', '\n\n') | replace('\n\n', '\n') | regex_replace('\s*\n', '\n') }}'
 {%-     else -%}
 {{ __input }}
 {%-     endif -%}
