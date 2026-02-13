@@ -2,7 +2,7 @@
 {% from 'clean_fields.j2' import discard_unwanted_fields %}
 {% set __excluded_fields = ['id', 'created_at', 'updated_at'] %}
 {% set __excluded_subitems = [] %}
-{% set __list_items_to_name = ['locations', 'organizations'] %}
+{% set __list_items_to_name = ['locations', 'organizations', 'operatingsystems'] %}
 {% set __empty_values = [None, 'None', '', {}, [], [{}]] %}
 {% set __reduce_to_name = [] %}
 {% set __translate = [] %}
@@ -18,7 +18,7 @@ satellite_partition_tables:
 {%     elif __map_item.key in __list_items_to_name %}
   {{ '-' if loop.index == 1 else ' ' }} {{ __map_item.key }}:
 {%       for __inner_item in __map_item.value %}
-      - {{ (dict(__inner_item.items() | selectattr('0', 'in', 'name'))['name']) }}
+      - {{ (dict(__inner_item.items() | selectattr('0', 'in', 'title' if __map_item.key == 'operatingsystems' else 'name'))['title' if __map_item.key == 'operatingsystems' else 'name']) }}
 {%       endfor %}
 {%     else %}
   {{ '-' if loop.index == 1 else ' ' }} {{ __map_item.key }}: {{ discard_unwanted_fields(__map_item.value, __excluded_fields, __empty_values, __reduce_to_name, __translate) }}
