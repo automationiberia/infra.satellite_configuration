@@ -15,7 +15,7 @@ satellite_locations: {{ [] if info_list | length == 0 }}
     {{ __map_item.key }}: {{ __map_item_value if (__map_item.value | type_debug == 'dict') else __map_item.value | default('""' if __map_item.key not in __list_items else [], true) | replace("\\'", "''") }}
 {%     endif %}
 {%-  endfor %}
-{%   set __location_organizations = lookup('ansible.builtin.url', satellite.server_url + '/api/locations/' + i.name + '/organizations?per_page=all',
+{%   set __location_organizations = lookup('ansible.builtin.url', satellite.server_url + '/api/locations/' + (i.name | urlencode) + '/organizations?per_page=all',
                                          username=satellite.admin.username, password=satellite.admin.password,
                                          validate_certs=satellite.validate_certs, force_basic_auth='True', split_lines='False') | from_json %}
 {%   if __location_organizations | length > 0 %}

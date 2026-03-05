@@ -25,16 +25,16 @@ satellite_host_collections: {{ [] if info_list | length == 0 }}
     {{ __map_item.key }}: {{ __var.map_item_value if (__var.map_item_value | length > 0) else __map_item.value | default('""' if __map_item.key not in __list_items else []) | replace("\\'", "''") }}
 {%     endif %}
 {%-  endfor %}
-    organization: {{ (lookup('ansible.builtin.url', satellite.server_url + '/katello/api/organizations/' + (i.organization_id | string),
+    organization: {{ (lookup('ansible.builtin.url', satellite.server_url + '/katello/api/organizations/' + (i.organization_id | string | urlencode),
                             username=satellite.admin.username, password=satellite.admin.password,
                             validate_certs=satellite.validate_certs, force_basic_auth='True', split_lines='False') | from_json).name }}
 {% if i.total_hosts > 0 %}
     hosts:
-{%   set __host_collection_hosts_ids = (lookup('ansible.builtin.url', satellite.server_url + '/katello/api/host_collections/' + (i.id | string),
+{%   set __host_collection_hosts_ids = (lookup('ansible.builtin.url', satellite.server_url + '/katello/api/host_collections/' + (i.id | string | urlencode),
                             username=satellite.admin.username, password=satellite.admin.password,
                             validate_certs=satellite.validate_certs, force_basic_auth='True', split_lines='False') | from_json).host_ids %}
 {%   for __host_id in __host_collection_hosts_ids %}
-      - {{ (lookup('ansible.builtin.url', satellite.server_url + '/api/hosts/' + (__host_id | string),
+      - {{ (lookup('ansible.builtin.url', satellite.server_url + '/api/hosts/' + (__host_id | string | urlencode),
                             username=satellite.admin.username, password=satellite.admin.password,
                             validate_certs=satellite.validate_certs, force_basic_auth='True', split_lines='False') | from_json).name }}
 {%   endfor %}
