@@ -4,7 +4,7 @@
   args:
     apply:
       tags: "{{ __task_filetree_read.tags }}"
-  tags: "{{ satellite_configuration_filetree_read_tasks | map(attribute='tags') }}"
+  tags: always
   loop: "{{ satellite_configuration_filetree_read_tasks }}"
   loop_control:
     loop_var: __task_filetree_read
