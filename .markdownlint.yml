@@ -17,7 +17,18 @@ MD046:
 
 MD033:
   allowed_elements:
-    - br
     - a
+    - br
+    - code
+    - em
     - img
+    - li
+    - strong
+    - table
+    - tbody
+    - td
+    - th
+    - thead
+    - tr
+    - ul
 ...
