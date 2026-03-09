@@ -174,7 +174,7 @@ Following there's an example of how this collection can be used to export and im
     </tr>
     <tr>
       <td><code>satellite_configuration_filetree_read_tasks</code></td>
-      <td>[See defaults file](https://github.com/automationiberia/satellite-configuration/blob/a3a7658d78a04fb15466461763c946c0c8c3a455/roles/filetree_read/defaults/main.yml#L29-L50)</td>
+      <td><a href="https://github.com/automationiberia/satellite-configuration/blob/a3a7658d78a04fb15466461763c946c0c8c3a455/roles/filetree_read/defaults/main.yml#L29-L50">See defaults file</a></td>
       <td>List to define how to read each object type. Each list item needs the following information:
         <ul>
           <li> <strong>name</strong>: Name of the Object Type,
