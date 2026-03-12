@@ -4,16 +4,19 @@
     result_api_response: {}
 
 - name: Repository Sets | Get Organizations
-  include_tasks: get_organizations.yaml
+  ansible.builtin.include_tasks: get_organizations.yaml
 
 - name: Repository Sets | Get Syn Plans Info
-  include_tasks: get_repository_sets_do_work.yaml
+  ansible.builtin.include_tasks: get_repository_sets_do_work.yaml
   loop: "{{ info_list }}"
   loop_control:
     loop_var: __current_org
 
 - name: Repository Sets | Template Out Results
-  include_tasks: template_out.yaml
+  when:
+    - __rs_info_list is defined
+    - __rs_info_list | length > 0
+  ansible.builtin.include_tasks: template_out.yaml
   vars:
     template_type: satellite_repository_sets
     info_list: "{{ __rs_info_list | default({}) }}"

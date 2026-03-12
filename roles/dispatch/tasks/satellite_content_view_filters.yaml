@@ -17,7 +17,7 @@
     rule_name: "{{ __current_content_view_filter.rule_name | default(omit) }}"
     start_date: "{{ __current_content_view_filter.start_date | default(omit) }}"
     types: "{{ __current_content_view_filter.types | default(omit) }}"
-    version: "{{ __current_content_view_filter. version| default(omit) }}"
+    version: "{{ __current_content_view_filter.version | default(omit) }}"
     filter_state: "{{ __current_content_view_filter.filter_state | default(omit) }}"
     rule_state: "{{ __current_content_view_filter.rule_state | default(omit) }}"
   loop: "{{ satellite_content_view_filters }}"

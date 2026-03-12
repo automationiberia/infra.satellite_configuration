@@ -1,5 +1,5 @@
 ---
 # handlers file for filetree_read
 - name: Sync all repositories
-  include_tasks: "{{ role_path }}/handlers/sync_repositories.yml"
+  ansible.builtin.include_tasks: "{{ role_path }}/handlers/sync_repositories.yml"
 ...

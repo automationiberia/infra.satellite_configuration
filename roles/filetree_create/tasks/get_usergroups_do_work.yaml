@@ -8,7 +8,7 @@
     __usergroups_list: []
 
 - name: External Usergroups | Get Usergroups
-  include_tasks: api_call.yaml
+  ansible.builtin.include_tasks: api_call.yaml
   vars:
     call_type: Usergroups
     api_link: "/api/usergroups/{{ __current_usergroup.id }}/external_usergroups"
@@ -48,4 +48,6 @@
                                                                                      'usergroups': __usergroups_list,
                                                                                      'external_usergroups': result_api_response.json.results
                                                                                    })] }}"
+        # noqa: jinja[spacing]
+
 ...

@@ -4,7 +4,7 @@
     result_api_response: {}
 
 - name: "Get the id of the Host Collection '{{ __current_host_to_assign[0].name }}'"
-  include_tasks: api_call.yaml
+  ansible.builtin.include_tasks: api_call.yaml
   vars:
     call_type: "Get the id of the Host Collection '{{ __current_host_to_assign[0].name }}'"
     api_link: "/katello/api/host_collections/?name={{ __current_host_to_assign[0].name }}"
@@ -37,7 +37,7 @@
     result_api_response: {}
 
 - name: "Add the host '{{ __current_host.name }}' to the Host Collection '{{ __current_host_collection.name }}'"
-  include_tasks: api_call.yaml
+  ansible.builtin.include_tasks: api_call.yaml
   vars:
     api_method: PUT
     call_type: "Add the host '{{ __current_host.name }}' to the Host Collection '{{ __current_host_collection.name }}'"

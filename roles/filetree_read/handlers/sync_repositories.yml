@@ -53,7 +53,7 @@
     validate_certs: "{{ satellite.validate_certs }}"
     resource: foreman_tasks
     search: "(label = Actions::Katello::Repository::Sync and state = running)"
-  register: tasks
+  register: __tasks
 
 - name: Wait for all found tasks to finish
   redhat.satellite.wait_for_task:
@@ -63,6 +63,6 @@
     validate_certs: "{{ satellite.validate_certs }}"
     task: "{{ item }}"
     timeout: 900
-  loop: "{{ tasks.resources | map(attribute='id') | list }}"
+  loop: "{{ __tasks.resources | map(attribute='id') | list }}"
 
 ...

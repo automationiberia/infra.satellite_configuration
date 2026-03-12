@@ -1,6 +1,6 @@
 ---
 - name: Sync Plans (Do Work) | Get Info
-  include_tasks: api_call.yaml
+  ansible.builtin.include_tasks: api_call.yaml
   vars:
     call_type: Sync Plans
     api_link: "/katello/api/sync_plans?organization_id={{ __current_org.id }}&full_result=true"

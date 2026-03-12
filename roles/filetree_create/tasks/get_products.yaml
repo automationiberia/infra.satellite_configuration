@@ -12,7 +12,7 @@
   register: __result_organizations
 
 - name: Products | Get Info
-  include_tasks: api_call.yaml
+  ansible.builtin.include_tasks: api_call.yaml
   vars:
     call_type: Products
     api_link: "/katello/api/products?organization_id={{ __current_org.id }}&full_result=true"
@@ -26,7 +26,10 @@
     info_list: "{{ result_api_response.json.results | sort(attribute='id') }}"
 
 - name: Products | Template Out Results
-  include_tasks: template_out.yaml
+  when:
+    - info_list is defined
+    - info_list | length > 0
+  ansible.builtin.include_tasks: template_out.yaml
   vars:
     template_type: satellite_products
 ...
@@ -37,7 +40,7 @@
 ###     result_api_response: {}
 ###
 ### - name: Custom Products | Get Info
-###   include_tasks: api_call.yaml
+###   ansible.builtin.include_tasks: api_call.yaml
 ###   vars:
 ###     call_type: Products
 ###     # api_link: /katello/api/products?organization_id=1&custom=true&full_result=true
@@ -48,6 +51,6 @@
 ###     info_list: "{{ result_api_response.json.results | sort(attribute='id') }}"
 ###
 ### - name: Custom Products | Template Out Results
-###   include_tasks: template_out.yaml
+###   ansible.builtin.include_tasks: template_out.yaml
 ###   vars:
 ###     template_type: satellite_products

@@ -47,7 +47,7 @@
   vars:
     __current_cv_component:
       content_view: "{{ __current_component.content_view.name }}"
-      content_view_version: "{{ __current_component.content_view.next_version  }}"
+      content_view_version: "{{ __current_component.content_view.next_version }}"
       latest: "{{ __current_component.latest }}"
   loop: "{{ __current_content_view.content_view_components }}"
   loop_control:

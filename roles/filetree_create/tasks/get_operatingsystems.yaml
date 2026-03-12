@@ -5,7 +5,7 @@
     __rs_info_list: []
 
 - name: Operating Systems | Get Operating Systems
-  include_tasks: api_call.yaml
+  ansible.builtin.include_tasks: api_call.yaml
   vars:
     call_type: Operating Systems
     api_link: "/api/operatingsystems?per_page=all"
@@ -15,13 +15,16 @@
     __operatingsystems_list: "{{ result_api_response.json.results }}"
 
 - name: Operating Systems | Get External Operating Systems Info
-  include_tasks: get_operatingsystems_do_work.yaml
+  ansible.builtin.include_tasks: get_operatingsystems_do_work.yaml
   loop: "{{ __operatingsystems_list }}"
   loop_control:
     loop_var: __current_operatingsystem
 
 - name: Operating Systems | Template Out Results
-  include_tasks: template_out.yaml
+  when:
+    - __rs_info_list is defined
+    - __rs_info_list | length > 0
+  ansible.builtin.include_tasks: template_out.yaml
   vars:
     template_type: satellite_operatingsystems
     info_list: "{{ __rs_info_list | default([]) }}"

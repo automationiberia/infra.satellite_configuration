@@ -5,7 +5,7 @@
     __rs_info_list: []
 
 - name: Provisioning Templates | Get Provisioning Templates
-  include_tasks: api_call.yaml
+  ansible.builtin.include_tasks: api_call.yaml
   vars:
     call_type: Provisioning Templates
     api_link: "/api/provisioning_templates?per_page=all"
@@ -15,13 +15,16 @@
     __provisioning_templates_list: "{{ result_api_response.json.results }}"
 
 - name: Provisioning Templates | Get External Provisioning Templates Info
-  include_tasks: get_provisioning_templates_do_work.yaml
+  ansible.builtin.include_tasks: get_provisioning_templates_do_work.yaml
   loop: "{{ __provisioning_templates_list }}"
   loop_control:
     loop_var: __current_provisioning_template
 
 - name: Provisioning Templates | Template Out Results
-  include_tasks: template_out.yaml
+  when:
+    - __rs_info_list is defined
+    - __rs_info_list | length > 0
+  ansible.builtin.include_tasks: template_out.yaml
   vars:
     template_type: satellite_provisioning_templates
     info_list: "{{ __rs_info_list | default([]) }}"

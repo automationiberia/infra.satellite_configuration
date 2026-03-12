@@ -12,7 +12,7 @@
   register: __result_organizations
 
 - name: Activation Keys | Get Info
-  include_tasks: api_call.yaml
+  ansible.builtin.include_tasks: api_call.yaml
   vars:
     call_type: Activation Keys
     api_link: "/katello/api/activation_keys?organization_id={{ __current_org.id }}&full_result=true"
@@ -23,10 +23,13 @@
 
 - name: Activation Keys | Set Info List
   ansible.builtin.set_fact:
-    info_list: "{{ result_api_response.json.results | rejectattr('name','==', 'Library') | sort(attribute='id') }}"
+    info_list: "{{ result_api_response.json.results | rejectattr('name', '==', 'Library') | sort(attribute='id') }}"
 
 - name: Activation Keys | Template Out Results
-  include_tasks: template_out.yaml
+  when:
+    - info_list is defined
+    - info_list | length > 0
+  ansible.builtin.include_tasks: template_out.yaml
   vars:
     template_type: satellite_activation_keys
 ...

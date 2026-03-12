@@ -20,7 +20,7 @@
       tags: always
 
     - name: Get Organizations
-      import_role:
+      ansible.builtin.import_role:
         name: automationiberia.satellite_configuration.filetree_create
 
     - name: "Block to fix the output files' format"

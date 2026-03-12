@@ -5,9 +5,9 @@
     name: "{{ __current_host_collection.name }}"
     organization: "{{ __current_host_collection.organization }}"
     # Optional parameters
-    description: "{{ __current_host_collection.description  | default(omit) }}"
-    updated_name: "{{ __current_host_collection.updated_name  | default(omit) }}"
-    state: "{{ __current_host_collection.state  | default(omit) }}"
+    description: "{{ __current_host_collection.description | default(omit) }}"
+    updated_name: "{{ __current_host_collection.updated_name | default(omit) }}"
+    state: "{{ __current_host_collection.state | default(omit) }}"
   loop: "{{ satellite_host_collections }}"
   loop_control:
     loop_var: __current_host_collection
@@ -17,7 +17,7 @@
 
 # https://github.com/theforeman/foreman-ansible-modules/issues/1178
 - name: Assign the Host Collection to each host
-  include_tasks: satellite_host_collections_assign_to_host.yaml
+  ansible.builtin.include_tasks: satellite_host_collections_assign_to_host.yaml
   loop: "{{ satellite_host_collections | subelements('hosts', skip_missing=true) }}"
   loop_control:
     loop_var: __current_host_to_assign

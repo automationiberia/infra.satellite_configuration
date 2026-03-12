@@ -4,17 +4,20 @@
     result_api_response: {}
 
 - name: Lifecycle Environments | Get Info
-  include_tasks: api_call.yaml
+  ansible.builtin.include_tasks: api_call.yaml
   vars:
     call_type: Lifecycle Environments
     api_link: /katello/api/environments?full_result=true
 
 - name: Lifecycle Environments | Set Info List
   ansible.builtin.set_fact:
-    info_list: "{{ result_api_response.json.results | rejectattr('name','==', 'Library') | sort(attribute='id') }}"
+    info_list: "{{ result_api_response.json.results | rejectattr('name', '==', 'Library') | sort(attribute='id') }}"
 
 - name: Lifecycle Environments | Template Out Results
-  include_tasks: template_out.yaml
+  when:
+    - info_list is defined
+    - info_list | length > 0
+  ansible.builtin.include_tasks: template_out.yaml
   vars:
     template_type: satellite_lifecycle_environments
 ...

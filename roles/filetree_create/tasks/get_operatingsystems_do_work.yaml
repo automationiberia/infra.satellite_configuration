@@ -4,7 +4,7 @@
     result_api_response: {}
 
 - name: Operating System (Do Work) | Get Operating Systems
-  include_tasks: api_call.yaml
+  ansible.builtin.include_tasks: api_call.yaml
   vars:
     call_type: Operating System (Do Work)
     api_link: "/api/operatingsystems/{{ __current_operatingsystem.id }}/"

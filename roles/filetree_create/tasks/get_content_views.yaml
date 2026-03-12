@@ -5,7 +5,7 @@
     __rs_info_list: []
 
 - name: Content Views | Get Content Views
-  include_tasks: api_call.yaml
+  ansible.builtin.include_tasks: api_call.yaml
   vars:
     call_type: Content Views
     api_link: "/katello/api/content_views?full_result=true"
@@ -20,13 +20,16 @@
     verbosity: 1
 
 - name: Content Views | Get Content View filters Info
-  include_tasks: get_content_view_filters.yaml
+  ansible.builtin.include_tasks: get_content_view_filters.yaml
   loop: "{{ __content_views_list }}"
   loop_control:
     loop_var: __current_content_view
 
 - name: Content Views | Template Out Results
-  include_tasks: template_out.yaml
+  when:
+    - __rs_info_list is defined
+    - __rs_info_list | length > 0
+  ansible.builtin.include_tasks: template_out.yaml
   vars:
     template_type: satellite_content_views
     info_list: "{{ __rs_info_list | default([]) }}"

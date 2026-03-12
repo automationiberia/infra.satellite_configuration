@@ -4,7 +4,7 @@
     result_api_response: {}
 
 - name: Partition Table (Do Work) | Get Partition Table
-  include_tasks: api_call.yaml
+  ansible.builtin.include_tasks: api_call.yaml
   vars:
     call_type: Partition Table (Do Work)
     api_link: "/api/ptables/{{ __current_partition_table.id }}/"

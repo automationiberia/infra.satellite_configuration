@@ -1,70 +1,70 @@
 ---
 # defaults file for dispatch
 - name: Manage Satellite Settings
-  include_tasks: satellite_settings.yaml
+  ansible.builtin.include_tasks: satellite_settings.yaml
   args:
     apply:
       tags: settings
   tags: settings
 
 - name: Manage LDAP Authentication
-  include_tasks: satellite_auth_sources_ldap.yaml
+  ansible.builtin.include_tasks: satellite_auth_sources_ldap.yaml
   args:
     apply:
       tags: auth_sources_ldap
   tags: auth_sources_ldap
 
 - name: Manage User Groups
-  include_tasks: satellite_usergroups.yaml
+  ansible.builtin.include_tasks: satellite_usergroups.yaml
   args:
     apply:
       tags: usergroups
   tags: usergroups
 
 - name: Create Organizations
-  include_tasks: satellite_organizations.yaml
+  ansible.builtin.include_tasks: satellite_organizations.yaml
   args:
     apply:
       tags: organizations
   tags: organizations
 
 - name: Manage Locations
-  include_tasks: satellite_locations.yaml
+  ansible.builtin.include_tasks: satellite_locations.yaml
   args:
     apply:
       tags: locations
   tags: locations
 
 - name: Manage Lifecycle Environments
-  include_tasks: satellite_lifecycle_environments.yaml
+  ansible.builtin.include_tasks: satellite_lifecycle_environments.yaml
   args:
     apply:
       tags: lifecycle_environments
   tags: lifecycle_environments
 
 - name: Manage Repository Sets
-  include_tasks: satellite_repository_sets.yaml
+  ansible.builtin.include_tasks: satellite_repository_sets.yaml
   args:
     apply:
       tags: repository_sets
   tags: repository_sets
 
 - name: Manage Repositories
-  include_tasks: satellite_repositories.yaml
+  ansible.builtin.include_tasks: satellite_repositories.yaml
   args:
     apply:
       tags: repositories
   tags: repositories
 
 - name: Manage Sync Plans
-  include_tasks: satellite_sync_plans.yaml
+  ansible.builtin.include_tasks: satellite_sync_plans.yaml
   args:
     apply:
       tags: sync_plans
   tags: sync_plans
 
 - name: Manage Content Views
-  include_tasks: satellite_content_views.yaml
+  ansible.builtin.include_tasks: satellite_content_views.yaml
   args:
     apply:
       tags: content_views
@@ -72,7 +72,7 @@
 
 # Don't treat this appart from Content Views by now
 # - name: Manage Content Views Filters
-#   include_tasks: satellite_content_view_filters.yaml
+#   ansible.builtin.include_tasks: satellite_content_view_filters.yaml
 #   args:
 #     apply:
 #       tags: content_view_filters
@@ -81,56 +81,56 @@
 
 - name: Publish and Promote Content Views
   when: false
-  include_tasks: satellite_cv_versions.yaml
+  ansible.builtin.include_tasks: satellite_cv_versions.yaml
   args:
     apply:
       tags: cv_publish_promote
   tags: cv_publish_promote
 
 - name: Manage Activation Keys
-  include_tasks: satellite_activation_keys.yaml
+  ansible.builtin.include_tasks: satellite_activation_keys.yaml
   args:
     apply:
       tags: activation_keys
   tags: activation_keys
 
 - name: Manage Host Collections
-  include_tasks: satellite_host_collections.yaml
+  ansible.builtin.include_tasks: satellite_host_collections.yaml
   args:
     apply:
       tags: host_collections
   tags: host_collections
 
 - name: Create Products
-  include_tasks: satellite_products.yaml
+  ansible.builtin.include_tasks: satellite_products.yaml
   args:
     apply:
       tags: products
   tags: products
 
 - name: Create Content Credentials
-  include_tasks: satellite_content_credentials.yaml
+  ansible.builtin.include_tasks: satellite_content_credentials.yaml
   args:
     apply:
       tags: content_credentials
   tags: content_credentials
 
 - name: Create Partition Tables
-  include_tasks: satellite_partition_tables.yaml
+  ansible.builtin.include_tasks: satellite_partition_tables.yaml
   args:
     apply:
       tags: partition_tables
   tags: partition_tables
 
 - name: Create Provisioning Templates
-  include_tasks: satellite_provisioning_templates.yaml
+  ansible.builtin.include_tasks: satellite_provisioning_templates.yaml
   args:
     apply:
       tags: provisioning_templates
   tags: provisioning_templates
 
 - name: Create OperatingSystems
-  include_tasks: satellite_operatingsystems.yaml
+  ansible.builtin.include_tasks: satellite_operatingsystems.yaml
   args:
     apply:
       tags: operatingsystems

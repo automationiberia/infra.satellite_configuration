@@ -5,7 +5,7 @@
     name: "{{ __current_organization.name }}"
     # Optional parameters
     state: "{{ __current_organization.state | default(omit) }}"
-    organizations: "{{ __current_organization.organizations | default(omit) }}"
+    organizations: "{{ __current_organization.organizations | default([]) }}"
   loop: "{{ satellite_locations }}"
   loop_control:
     loop_var: __current_organization

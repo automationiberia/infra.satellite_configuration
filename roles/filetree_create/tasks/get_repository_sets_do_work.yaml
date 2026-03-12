@@ -1,6 +1,6 @@
 ---
 - name: Repository Sets (Do Work) | Get Info (can take a while...)
-  include_tasks: api_call.yaml
+  ansible.builtin.include_tasks: api_call.yaml
   vars:
     call_type: Repository Sets
     api_link: "/katello/api/repository_sets?organization_id={{ __current_org.id }}&full_result=true"

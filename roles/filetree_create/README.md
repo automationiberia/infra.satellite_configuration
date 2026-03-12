@@ -53,7 +53,7 @@ The following variables are required for that role to work properly:
       tags: always
 
     - name: Get Organizations
-      import_role:
+      ansible.builtin.import_role:
         name: automationiberia.satellite_configuration.filetree_create
 
     - name: "Block to fix the output files' format"
