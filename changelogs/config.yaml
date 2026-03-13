@@ -28,7 +28,7 @@ sections:
   - Bugfixes
 - - known_issues
   - Known Issues
-title: automationiberia.satellite_configuration
+title: infra.satellite_configuration
 trivial_section_name: trivial
 use_fqcn: true
 ...

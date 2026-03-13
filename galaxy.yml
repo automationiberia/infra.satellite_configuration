@@ -3,7 +3,7 @@
 # The namespace of the collection. This can be a company/brand/organization or product namespace under which all
 # content lives. May only contain alphanumeric lowercase characters and underscores. Namespaces cannot start with
 # underscores or numbers and cannot contain consecutive underscores
-namespace: automationiberia
+namespace: infra
 
 # The name of the collection. Has the same character restrictions as 'namespace'
 name: satellite_configuration
@@ -49,16 +49,16 @@ dependencies:
   redhat.satellite: "5.8.0"
 
 # The URL of the originating SCM repository
-repository: https://github.com/automationiberia/satellite-configuration.git
+repository: https://github.com/redhat-cop/infra.satellite_configuration.git
 
 # The URL to any online docs
-documentation: https://github.com/automationiberia/satellite-configuration.git
+documentation: https://github.com/redhat-cop/infra.satellite_configuration.git
 
 # The URL to the homepage of the collection/project
-homepage: https://github.com/automationiberia/satellite-configuration.git
+homepage: https://github.com/redhat-cop/infra.satellite_configuration.git
 
 # The URL to the collection issue tracker
-issues: https://github.com/automationiberia/satellite-configuration.git
+issues: https://github.com/redhat-cop/infra.satellite_configuration.git
 
 # A list of file glob-like patterns used to filter any files or directories that should not be included in the build
 # artifact. A pattern is matched from the relative path of the file or directory of the collection directory. This

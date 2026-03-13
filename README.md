@@ -2,10 +2,10 @@
 # Red Hat Communities of Practice AAP Configuration Extended Collection
 -->
 
-# Automation Iberia - Satellite Configuration Collection (automationiberia.satellite_configuration)
+# Automation Iberia - Satellite Configuration Collection (infra.satellite_configuration)
 
-![pre-commit tests](https://github.com/automationiberia/satellite_configuration/actions/workflows/pre-commit.yml/badge.svg)
-![Release](https://github.com/automationiberia/satellite_configuration/actions/workflows/release.yml/badge.svg)
+![pre-commit tests](https://github.com/redhat-cop/infra.satellite_configuration/actions/workflows/pre-commit.yml/badge.svg)
+![Release](https://github.com/redhat-cop/infra.satellite_configuration/actions/workflows/release.yml/badge.svg)
 <!-- Further CI badges go here as above -->
 
 This Ansible Collection provides **Configuration as Code** for **Red Hat Satellite** using Ansible.
@@ -21,12 +21,12 @@ The collection is designed to work both with `ansible-playbook` and with `ansibl
 
 ## Requirements
 
-The only one collection required by `automationiberia.satellite_configuration` is the `redhat.satellite`. You can copy this `requirements.yaml` file example:
+The only one collection required by `infra.satellite_configuration` is the `redhat.satellite`. You can copy this `requirements.yaml` file example:
 
 ```yaml
 ---
 collections:
-  - name: automationiberia.satellite_configuration
+  - name: infra.satellite_configuration
   - name: redhat.satellite
 ...
 ```
@@ -46,15 +46,15 @@ The following are also requirements:
 
 |                                      Collection Name                                                          |            Purpose                        |
 |:-------------------------------------------------------------------------------------------------------------:|:-----------------------------------------:|
-| [automationiberia.satellite_configuration repo](https://github.com/automation_iberia/satellite_configuration) | Export/Import Satellite Configuration     |
+| [infra.satellite_configuration repo](https://github.com/redhat-cop/infra.satellite_configuration)             | Export/Import Satellite Configuration     |
 | [redhat.satellite repo](https://github.com/RedHatSatellite/satellite-ansible-collection.git)                  | Communicate with the Satellite Server API |
 
 ## Installing this collection
 
-You can install the `automationiberia.satellite_configuration` collection with the Ansible Galaxy CLI (the dependency -redhat.satellite- will be installed automatically when possible):
+You can install the `infra.satellite_configuration` collection with the Ansible Galaxy CLI (the dependency -redhat.satellite- will be installed automatically when possible):
 
 ```console
-ansible-galaxy collection install automationiberia.satellite_configuration
+ansible-galaxy collection install infra.satellite_configuration
 ```
 
 You can also include it in a `requirements.yml` file and install it with `ansible-galaxy collection install -r requirements.yml`, using the format:
@@ -62,7 +62,7 @@ You can also include it in a `requirements.yml` file and install it with `ansibl
 ```yaml
 ---
 collections:
-  - name: automationiberia.satellite_configuration
+  - name: infra.satellite_configuration
   - name: redhat.satellite
     # If you need a specific version of the collection, you can specify like this:
     # version: ...
@@ -83,7 +83,7 @@ The input data can be organized in a very flexible way, letting the user use any
 
 ## Release and Upgrade Notes
 
-For details on changes between versions, please see [the changelog for this collection](https://github.com/automationiberia/satellite_configuration/blob/devel/CHANGELOG.rst).
+For details on changes between versions, please see [the changelog for this collection](https://github.com/redhat-cop/infra.satellite_configuration/blob/devel/CHANGELOG.rst).
 
 ## Releasing, Versioning and Deprecation
 
@@ -95,8 +95,8 @@ Releasing the current major version happens from the `devel` branch.
 
 ## Contributing to this collection
 
-We welcome community contributions to this collection. If you find problems, please open an issue or create a PR against the [Satellite Configuration repository](https://github.com/automationiberia/satellite_configuration).
-More information about contributing can be found in our [Contribution Guidelines.](https://github.com/automationiberia/satellite_configuration/blob/devel/.github/CONTRIBUTING.md)
+We welcome community contributions to this collection. If you find problems, please open an issue or create a PR against the [Satellite Configuration repository](https://github.com/redhat-cop/infra.satellite_configuration).
+More information about contributing can be found in our [Contribution Guidelines.](https://github.com/redhat-cop/infra.satellite_configuration/blob/devel/.github/CONTRIBUTING.md)
 
 ## Code of Conduct
 
@@ -108,4 +108,4 @@ Please read and familiarize yourself with this document.
 
 GNU General Public License v3.0 or later.
 
-See [LICENSE](https://github.com/automationiberia/satellite_configuration/blob/devel/LICENSE) to see the full text.
+See [LICENSE](https://github.com/redhat-cop/infra.satellite_configuration/blob/devel/LICENSE) to see the full text.

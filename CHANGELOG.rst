@@ -1,5 +1,5 @@
 ================================================
-automationiberia.satellite\_configuration Release Notes
+infra.satellite\_configuration Release Notes
 ================================================
 
 .. contents:: Topics

@@ -1,5 +1,5 @@
 ---
-- name: Playbook to test the roles 'automationiberia.satellite_configuration'.'filetree_read' and 'dispatch'
+- name: Playbook to test the roles 'infra.satellite_configuration'.'filetree_read' and 'dispatch'
   hosts: localhost
   connection: local
   gather_facts: false
@@ -15,6 +15,6 @@
       server_url: *server_url
       validate_certs: *validate_certs
   roles:
-    - role: automationiberia.satellite_configuration.filetree_read
-    - role: automationiberia.satellite_configuration.dispatch
+    - role: infra.satellite_configuration.filetree_read
+    - role: infra.satellite_configuration.dispatch
 ...

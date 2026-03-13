@@ -1,6 +1,6 @@
-# automationiberia.satellite_configuration.filetree_read
+# infra.satellite_configuration.filetree_read
 
-An ansible role which reads variables from a hierarchical and scalable directory structure which is grouped based on the configuration code life-cycle. It could be used to run the role `automationiberia.satellite_configuration.filetree_read` to load variables followed by `automationiberia.satellite_configuration.dispatch` role to apply the configuration.
+An ansible role which reads variables from a hierarchical and scalable directory structure which is grouped based on the configuration code life-cycle. It could be used to run the role `infra.satellite_configuration.filetree_read` to load variables followed by `infra.satellite_configuration.dispatch` role to apply the configuration.
 
 ## Requirements
 
@@ -46,7 +46,7 @@ satellite_locations:
 The role is designed to be used with tags, each tags correspond to an AWX or Automation Controller object to be managed by ansible.
 
 ```console
-$ ansible-playbook automationiberia.satellite_configuration.run_filetree_create.yaml --list-tags
+$ ansible-playbook infra.satellite_configuration.run_filetree_create.yaml --list-tags
 
   play #1 (localhost): Export Satellite Configuration TAGS: []
     TASK TAGS: [activation_keys, always, auth_sources_ldap, content_credentials, content_views, domains, host_collections, hostgroups, lifecycle_environments, locations, operatingsystems, organizations, products, repositories, repository_sets, settings, subnets, sync_plans, usergroups]
@@ -56,7 +56,7 @@ $ ansible-playbook automationiberia.satellite_configuration.run_filetree_create.
 
 ```yaml
 ---
-- name: Playbook to test the roles 'automationiberia.satellite_configuration'.'filetree_read' and 'dispatch'
+- name: Playbook to test the roles 'infra.satellite_configuration'.'filetree_read' and 'dispatch'
   hosts: localhost
   connection: local
   gather_facts: false
@@ -72,13 +72,13 @@ $ ansible-playbook automationiberia.satellite_configuration.run_filetree_create.
       server_url: *server_url
       validate_certs: *validate_certs
   roles:
-    - role: automationiberia.satellite_configuration.filetree_read
-    - role: automationiberia.satellite_configuration.dispatch
+    - role: infra.satellite_configuration.filetree_read
+    - role: infra.satellite_configuration.dispatch
 ...
 ```
 
 ```console
-ansible-playbook -i localhost, automationiberia.satellite_configuration.run_filetree_read.yaml -e@vars/satellite.yaml
+ansible-playbook -i localhost, infra.satellite_configuration.run_filetree_read.yaml -e@vars/satellite.yaml
 ```
 
 ## License
@@ -90,7 +90,7 @@ GPLv3+
 - [Silvio Pérez][link_silvinux]
 - [Ivan Aragonés][link_ivarmu]
 
-[link_satellite_output]: https://github.com/automationiberia/satellite-configuration/tree/devel/tests/satellite_output
-[link_defaults_line_27]: https://github.com/automationiberia/satellite-configuration/blob/b458b309405ba9aa61b0f7de4078c01169c48419/roles/filetree_read/defaults/main.yml#L27
+[link_satellite_output]: https://github.com/redhat-cop/infra.satellite_configuration/tree/devel/tests/satellite_output
+[link_defaults_line_27]: https://github.com/redhat-cop/infra.satellite_configuration/tree/devel/roles/filetree_read/defaults/main.yml#L29
 [link_silvinux]: https://github.com/silvinux
 [link_ivarmu]: https://github.com/ivarmu

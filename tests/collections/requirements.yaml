@@ -1,5 +1,5 @@
 ---
 collections:
   - name: redhat.satellite
-  - name: automationiberia.satellite_configuration
+  - name: infra.satellite_configuration
 ...

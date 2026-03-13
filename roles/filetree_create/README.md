@@ -1,6 +1,6 @@
-# automationiberia.satellite.filetree_create
+# infra.satellite.filetree_create
 
-The role `automationiberia.satellite.filetree_create` is intended to be used as the first step to begin using the Configuration as Code on Red Hat Satellite, when you already have a running instance of any of them. Obviously, you also could start to write your objects as code from scratch, but the idea behind the creation of that role is to simplify your lives and make that task a little bit easier.
+The role `infra.satellite.filetree_create` is intended to be used as the first step to begin using the Configuration as Code on Red Hat Satellite, when you already have a running instance of any of them. Obviously, you also could start to write your objects as code from scratch, but the idea behind the creation of that role is to simplify your lives and make that task a little bit easier.
 
 ## Requirements
 
@@ -54,7 +54,7 @@ The following variables are required for that role to work properly:
 
     - name: Get Organizations
       ansible.builtin.import_role:
-        name: automationiberia.satellite_configuration.filetree_create
+        name: infra.satellite_configuration.filetree_create
 
     - name: "Block to fix the output files' format"
       tags: always
@@ -90,12 +90,12 @@ The following variables are required for that role to work properly:
 ...
 ```
 
-The output files are all located in the same directory. Each file contains a YAML list with all the objects belonging to the same object type. This output format allows to load all the objects both from the standard Ansible `group_vars` and from the `automationiberia.satellite_configuration.filetree_read` role.
+The output files are all located in the same directory. Each file contains a YAML list with all the objects belonging to the same object type. This output format allows to load all the objects both from the standard Ansible `group_vars` and from the `infra.satellite_configuration.filetree_read` role.
 
 The exportation can be triggered with the following command:
 
 ```console
-ansible-playbook automationiberia.satellite_configuration.run_filetree_create.yaml -e@vars/satellite.yaml -e '{output_path: /tmp/satellite_output}'
+ansible-playbook infra.satellite_configuration.run_filetree_create.yaml -e@vars/satellite.yaml -e '{output_path: /tmp/satellite_output}'
 ```
 
 Where the `vars/satellite.yaml` file is defined as follows:
