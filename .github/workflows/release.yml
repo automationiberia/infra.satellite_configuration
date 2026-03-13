@@ -1,4 +1,4 @@
----
+--
 name: Release - Automated
 
 on:
@@ -12,18 +12,18 @@ jobs:
     uses: "redhat-cop/ansible_collections_tooling/.github/workflows/release_pipeline_dual_crc.yml@main"
     with:
       # Galaxy Publish
-      collection_namespace_1: automationiberia
+      collection_namespace_1: infra
       collection_name_1: satellite_configuration
       publish_url_collection_1: https://galaxy.ansible.com/api/
       galaxy_publish_1: true
       ah_publish_1: false
       # CRC Publish
-      collection_namespace_2: automationiberia
+      collection_namespace_2: infra
       collection_name_2: satellite_configuration
       publish_url_collection_2: https://cloud.redhat.com/api/automation-hub/
       galaxy_publish_2: false
       ah_publish_2: true
-      collection_repo: https://github.com/automationiberia/satellite_configuration
+      collection_repo: https://github.com/infra/satellite_configuration
       quay_username: redhat_cop
       collection_dependencies: redhat.satellite
       matrix_message: This Ansible collection allows for easy interaction with an Red Hat Satellite server via Ansible roles using the Satellite collection modules.
