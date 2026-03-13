@@ -24,7 +24,7 @@ jobs:
       collection_namespace: infra
       collection_name: satellite_configuration
       collection_version: 1.0.0
-      collection_repo: https://github.com/redhat-cop/infra.satellite_configuration/
+      collection_repo: https://github.com/redhat-cop/infra.satellite_configuration.git
       base_branch: devel
       collection_dependencies: redhat.satellite
     secrets:
@@ -36,6 +36,6 @@ jobs:
   #     collection_namespace: infra
   #     collection_name: satellite_configuration
   #     collection_version: 1.0.0
-  #     collection_repo: https://github.com/automationiberia/satellite_configuration
+  #     collection_repo: https://github.com/redhat-cop/infra.satellite_configuration.git
   #     collection_dependencies: redhat.satellite
 ...

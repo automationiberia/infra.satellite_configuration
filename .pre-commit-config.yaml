@@ -13,10 +13,11 @@ repos:
       # Roles will trigger an "unknown file type"
       # https://github.com/ansible/ansible-lint/issues/808
       - id: ansible-lint
-        language_version: python3
         pass_filenames: false
         always_run: true
-        entry: "ansible-lint"
+        entry: "python3 -m ansiblelint -v --force-color"
+        language: python
+        language_version: python3.14
         args:
           - "--profile=production"
         additional_dependencies:

@@ -5,6 +5,7 @@
 # exclude_paths:
 #  - roles/master_role_example/
 exclude_paths:
+  - .ansible/
   - '.github/'
   - '.ansible/'
   - 'changelogs/'
@@ -38,6 +39,6 @@ kinds:
   - vars: "**/examples/configs_export_model/*.yml"
   - vars: "**/examples/vars/*.yml"
   - vars: "**/roles/**/tests/configs/*.yml"
-mock_modules:
-  - redhat.satellite.satellite
+# mock_modules:
+#   - redhat.satellite.satellite
 ...
