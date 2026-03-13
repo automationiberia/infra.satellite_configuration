@@ -13,14 +13,14 @@ repos:
       # Roles will trigger an "unknown file type"
       # https://github.com/ansible/ansible-lint/issues/808
       - id: ansible-lint
+        language_version: python3
         pass_filenames: false
         always_run: true
         entry: "ansible-lint"
         args:
           - "--profile=production"
         additional_dependencies:
-          - "ansible"
-          - "ansible-core>=2.15"
+          - "ansible-core>=2.20"
           - "yamllint>=1.26,<2.0"
   - repo: https://github.com/DavidAnson/markdownlint-cli2
     rev: v0.21.0
