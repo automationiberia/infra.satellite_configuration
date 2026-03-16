@@ -15,7 +15,8 @@ repos:
       - id: ansible-lint
         pass_filenames: false
         always_run: true
-        entry: "python3 -m ansiblelint -v --force-color"
+        # entry: "python3 -m ansiblelint -v --force-color"
+        entry: "ansible-lint"
         language: python
         language_version: python3.14
         args:
