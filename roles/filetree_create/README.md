@@ -28,6 +28,10 @@ The following variables are required for that role to work properly:
 | `satellite.template.mode` | N/A | yes | str | Specifies the permissions the generated files will have. |
 | `output_path` | `/tmp/satellite_filetree_config` | no | str | The path to the output directory where all the generated `yaml` files with the corresponding objects as code will be written to. |
 
+## Output files format
+
+By default, `infra.aap_configuration_extended.filetree` role is running `yq -P` to enhance the readability of the generated files. This can be skipped thanks to the tag `yq_format`, that can be used in the `--skip-tags yq_format` ansible-playbook parameter.
+
 ## Example Playbook
 
 ```yaml
