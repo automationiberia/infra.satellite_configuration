@@ -140,7 +140,9 @@
       ansible.builtin.include_tasks: get_provisioning_templates.yaml
 
 - name: "Block to fix the output files' format"
-  tags: always
+  tags:
+    - always
+    - yq_format
   block:
     - name: "Search for all the generated files"
       ansible.builtin.find:
