@@ -1,4 +1,5 @@
 ---
 bugfixes:
   - Add the yq binary and use it from the collection to avoid external dependencies
+  - Add the tag 'yq_format' to let skip the usage of 'yq' to format the output files
 ...
