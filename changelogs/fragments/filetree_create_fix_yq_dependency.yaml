@@ -1,0 +1,4 @@
+---
+bugfixes:
+  - Add the yq binary and use it from the collection to avoid external dependencies
+...
