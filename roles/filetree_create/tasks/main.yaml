@@ -1,138 +1,138 @@
 ---
-- name: Block
+- name: Organizations Block
   tags:
     - "organizations"
   block:
     - name: Get Organizations
       ansible.builtin.include_tasks: get_organizations.yaml
 
-- name: Block
+- name: Locations Block
   tags:
     - "locations"
   block:
     - name: Get Locations
       ansible.builtin.include_tasks: get_locations.yaml
 
-- name: Block
+- name: Domains Block
   tags:
     - "domains"
   block:
     - name: Get Domains
       ansible.builtin.include_tasks: get_domains.yaml
 
-- name: Block
+- name: Subnets Block
   tags:
     - "subnets"
   block:
     - name: Get Subnets
       ansible.builtin.include_tasks: get_subnets.yaml
 
-- name: Block
+- name: Repositories Block
   tags:
     - "repositories"
   block:
     - name: Get Repositories
       ansible.builtin.include_tasks: get_repositories.yaml
 
-- name: Block
+- name: Repository Sets Block
   tags:
     - "repository_sets"
   block:
     - name: Get Repositories
       ansible.builtin.include_tasks: get_repository_sets.yaml
 
-- name: Block
+- name: Hostgroups Block
   tags:
     - "hostgroups"
   block:
     - name: Get Host Groups
       ansible.builtin.include_tasks: get_hostgroups.yaml
 
-- name: Block
+- name: Operating Systems Block
   tags:
     - "operatingsystems"
   block:
     - name: Get Operating Systems
       ansible.builtin.include_tasks: get_operatingsystems.yaml
 
-- name: Block
+- name: Lifecycle Environments Block
   tags:
     - "lifecycle_environments"
   block:
     - name: Get Lifecycle Environments
       ansible.builtin.include_tasks: get_lifecycle_environments.yaml
 
-- name: Block
+- name: Content Views Block
   tags:
     - "content_views"
   block:
     - name: Get Content Views
       ansible.builtin.include_tasks: get_content_views.yaml
 
-- name: Block
+- name: Products Block
   tags:
     - "products"
   block:
     - name: Get Custom Products
       ansible.builtin.include_tasks: get_products.yaml
 
-- name: Block
+- name: Settings Block
   tags:
     - "settings"
   block:
     - name: Get Settings
       ansible.builtin.include_tasks: get_settings.yaml
 
-- name: Block
+- name: Content Credentials Block
   tags:
     - "content_credentials"
   block:
     - name: Get Content Credentials
       ansible.builtin.include_tasks: get_content_credentials.yaml
 
-- name: Block
+- name: Activation Keys Block
   tags:
     - "activation_keys"
   block:
     - name: Get Activation Keys
       ansible.builtin.include_tasks: get_activation_keys.yaml
 
-- name: Block
+- name: Sync Plans Block
   tags:
     - "sync_plans"
   block:
     - name: Get Sync Plans
       ansible.builtin.include_tasks: get_sync_plans.yaml
 
-- name: Block
+- name: Auth Sources LDAP Block
   tags:
     - "auth_sources_ldap"
   block:
     - name: Get Auth Sources LDAP
       ansible.builtin.include_tasks: get_auth_sources_ldap.yaml
 
-- name: Block
+- name: Host Collections Block
   tags:
     - "host_collections"
   block:
     - name: Get Host Collections
       ansible.builtin.include_tasks: get_host_collections.yaml
 
-- name: Block
+- name: Usergroups Block
   tags:
     - "usergroups"
   block:
     - name: Get External Usergroups
       ansible.builtin.include_tasks: get_usergroups.yaml
 
-- name: Block
+- name: Partition Tables Block
   tags:
     - "partition_tables"
   block:
     - name: Get Partition Tables
       ansible.builtin.include_tasks: get_partition_tables.yaml
 
-- name: Block
+- name: Provisioning Templates Block
   tags:
     - "provisioning_templates"
   block:
