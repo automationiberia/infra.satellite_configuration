@@ -33,3 +33,24 @@
   vars:
     template_type: satellite_products
 ...
+###
+### ---
+### - name: Custom Products | Reset the results variable
+###   ansible.builtin.set_fact:
+###     result_api_response: {}
+###
+### - name: Custom Products | Get Info
+###   ansible.builtin.include_tasks: api_call.yaml
+###   vars:
+###     call_type: Products
+###     # api_link: /katello/api/products?organization_id=1&custom=true&full_result=true
+###     api_link: /katello/api/products?full_result=true
+###
+### - name: Custom Products | Create a List
+###   ansible.builtin.set_fact:
+###     info_list: "{{ result_api_response.json.results | sort(attribute='id') }}"
+###
+### - name: Custom Products | Template Out Results
+###   ansible.builtin.include_tasks: template_out.yaml
+###   vars:
+###     template_type: satellite_products

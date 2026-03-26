@@ -40,19 +40,19 @@ repos:
           - ruamel.yaml
         pass_filenames: false
         always_run: true
-# - repo: https://github.com/ambv/black
-#   rev: 26.1.0
-#   hooks:
-#     - id: black
-#       name: black
-#       entry: black
-#       args: [--config=.black.cfg, --check, --diff]
-#       types: [python]
-# - repo: https://github.com/pycqa/flake8
-#   rev: 7.3.0
-#   hooks:
-#     - id: flake8
-#       name: flake8
-#       entry: flake8
-#       types: [python]
+  - repo: https://github.com/ambv/black
+    rev: 26.1.0
+    hooks:
+      - id: black
+        name: black
+        entry: black
+        args: [--config=.black.cfg, --check, --diff]
+        types: [python]
+  - repo: https://github.com/pycqa/flake8
+    rev: 7.3.0
+    hooks:
+      - id: flake8
+        name: flake8
+        entry: flake8
+        types: [python]
 ...

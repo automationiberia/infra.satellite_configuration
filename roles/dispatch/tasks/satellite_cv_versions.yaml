@@ -44,3 +44,13 @@
   delegate_to: "{{ 'localhost' if foreman_local else omit }}"
   # noqa: name[template]
 ...
+#  - name: Content Views purge except last {{ content_views_purge_count }} newest versions
+#    command: "hammer content-view purge --name {{ item.content_view }} --count {{ content_views_purge_count }} --organization {{ orgs }}"
+#    become: "yes"
+#    register: cmd_purge_result
+#    loop: "{{ configure_katello_content_view_versions }}"
+#    failed_when: >
+#      (cmd_purge_result.rc not in [0, 128])
+#    changed_when: (cmd_purge_result.rc in [0])
+#    when: cvaction == 'publish' and content_views_purge_count is defined and cvtype is defined
+#    delegate_to: "{{ satellite_fqdn }}"
