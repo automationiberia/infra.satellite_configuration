@@ -6,7 +6,7 @@ satellite:
     username: admin
     password: redhat00
   template:
-    owner: '1000'
-    group: '1000'
-    mode: '0666'
+    owner: "1000"
+    group: "1000"
+    mode: "0666"
 ...

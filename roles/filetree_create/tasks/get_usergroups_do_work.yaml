@@ -42,12 +42,8 @@
   block:
     - name: External Usergroup (Do Work) | Set Info List (can take a while...)
       ansible.builtin.set_fact:
-        __rs_info_list: "{{ __rs_info_list + [__result_api_response.json | combine({
-                                                                                     'roles': __roles_list,
-                                                                                     'users': __users_list,
-                                                                                     'usergroups': __usergroups_list,
-                                                                                     'external_usergroups': result_api_response.json.results
-                                                                                   })] }}"
+        __rs_info_list: "{{ __rs_info_list + [__result_api_response.json | combine({ 'roles': __roles_list, 'users': __users_list, 'usergroups': __usergroups_list,
+          'external_usergroups': result_api_response.json.results })] }}"
         # noqa: jinja[spacing]
 
 ...

@@ -22,5 +22,5 @@
 - name: "{{ call_type }} | API call - merge results 2/2"
   ansible.builtin.set_fact:
     result_api_response: "{{ __result_api_response | combine({'json': __result_api_response_results}) }}"
-  # noqa: name[template]
+# noqa: name[template]
 ...

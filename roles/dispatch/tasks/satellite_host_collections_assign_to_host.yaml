@@ -53,13 +53,7 @@
 - name: "Show the result of the operation on the Host Collection '{{ __current_host_collection.name }}' for the host '{{ __current_host.name }}'"
   ansible.builtin.debug:
     msg:
-      - "{{ 'Changed' if __changed
-                       else
-                         'Failed: ' + (result_api_response.json.displayMessages.error | string) if __failed
-                                  else
-                                    'OK' if __ok
-                                        else 'Unknown'
-          }}"
+      - "{{ 'Changed' if __changed else 'Failed: ' + (result_api_response.json.displayMessages.error | string) if __failed else 'OK' if __ok else 'Unknown' }}"
   vars:
     __changed: "{{ 'Successfully added' in result_api_response.json.displayMessages.success | join(',') }}"
     __ok: "{{ 'already exists' in result_api_response.json.displayMessages.error | join(',') }}"
