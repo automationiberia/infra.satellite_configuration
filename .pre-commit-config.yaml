@@ -28,6 +28,18 @@ repos:
     rev: v0.22.0
     hooks:
       - id: markdownlint-cli2
+  - repo: local
+    hooks:
+      - id: unit-tests
+        name: unit-tests
+        entry: pytest -q tests/unit
+        language: python
+        additional_dependencies:
+          - pytest
+          - ansible-core>=2.20
+          - ruamel.yaml
+        pass_filenames: false
+        always_run: true
 # - repo: https://github.com/ambv/black
 #   rev: 26.1.0
 #   hooks:

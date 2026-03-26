@@ -1,8 +1,8 @@
 ---
 # defaults file for dispatch
-satellite_username: '{{ lookup("env", "SATELLITE_SERVER_URL") }}'
-satellite_password: '{{ lookup("env", "SATELLITE_USERNAME") }}'
-satellite_server_url: '{{ lookup("env", "SATELLITE_PASSWORD") }}'
+satellite_username: '{{ lookup("env", "SATELLITE_USERNAME") }}'
+satellite_password: '{{ lookup("env", "SATELLITE_PASSWORD") }}'
+satellite_server_url: '{{ lookup("env", "SATELLITE_SERVER_URL") }}'
 ###################
 ## ContentViews:
 ###################

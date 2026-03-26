@@ -67,7 +67,7 @@ By default, `infra.aap_configuration_extended.filetree` role formats generated Y
   connection: local
   gather_facts: false
   module_defaults:
-    redhat.satellite.organization_info: &satellite_creds
+    redhat.satellite.organization_info:
       username: "{{ satellite.admin.username }}"
       password: "{{ satellite.admin.password }}"
       server_url: "{{ satellite.server_url }}"
