@@ -9,7 +9,7 @@
     server_url: &server_url "{{ satellite.server_url }}"
     validate_certs: &validate_certs "{{ satellite.validate_certs }}"
   module_defaults:
-    group/redhat.satellite.satellite: &creds
+    group/redhat.satellite.satellite:
       username: *username
       password: *password
       server_url: *server_url

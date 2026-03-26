@@ -24,7 +24,6 @@ satellite_settings: []
 satellite_subnets: []
 satellite_sync_plans: []
 satellite_usergroups: []
-
 # yamllint disable rule:commas
 satellite_configuration_filetree_read_tasks:
   - {name: satellite_activation_keys,         var: satellite_activation_keys,         tags: activation_keys,         path: "{{ dir_orgs_vars }}/{{ orgs }}/env/common/satellite_activation_keys.d/"}

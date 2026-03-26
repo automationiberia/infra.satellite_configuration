@@ -9,7 +9,8 @@
     - "{{ dir_orgs_vars }}/{{ orgs }}/cv/{{ cvaction }}/{{ cvtype }}/configure_katello_cv_versions_{{ cvaction }}_{{ cvtype }}_{{ cvname }}_{{ env }}.yml"
   when: orgs is defined and dir_orgs_vars is defined and env is defined and cvaction is defined and cvtype is defined and cvname is defined
 
-- name: "{% if cvaction %}{{ cvaction | capitalize }}{% else %}Publish or Promote{% endif %} {% if cvtype == 'ccv' %}Compositive Content View Versions{% else %}Content View Versions{% endif %}"
+- name: "{% if cvaction %}{{ cvaction | capitalize }}{% else %}Publish or Promote{% endif %} {% if cvtype == 'ccv' %}Compositive Content View Versions{% else %}Content
+    View Versions{% endif %}"
   redhat.satellite.content_view_version:
     username: "{{ configure_foreman_username }}"
     password: "{{ configure_foreman_password }}"

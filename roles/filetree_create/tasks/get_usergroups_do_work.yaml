@@ -49,5 +49,4 @@
                                                                                      'external_usergroups': result_api_response.json.results
                                                                                    })] }}"
         # noqa: jinja[spacing]
-
 ...

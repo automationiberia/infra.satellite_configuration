@@ -2,6 +2,7 @@ ansible
 docker
 docker-compose
 jmespath
+ruamel.yaml
 requests
 requests-oauthlib
 openshift

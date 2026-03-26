@@ -1,3 +1,4 @@
+---
 galaxy_info:
   author: ivarmu @ivarmu
   description: Role to apply the already loaded Configuration as Code into Satellite

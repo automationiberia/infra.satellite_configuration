@@ -7,3 +7,6 @@ import
 my_vars
 *.tar.gz
 tests/output
+*__pycache__*
+*pyc
+.pre-commit-cache
