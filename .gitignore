@@ -10,3 +10,10 @@ tests/output
 *__pycache__*
 *pyc
 .pre-commit-cache
+
+# Secrets and credentials
+.env
+.env.*
+*.pem
+*.key
+credentials.json
