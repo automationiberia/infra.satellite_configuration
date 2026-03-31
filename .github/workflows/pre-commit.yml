@@ -17,9 +17,22 @@ on:
   schedule:
     - cron: "0 6 * * *"
 
+permissions:
+  contents: read
+
 jobs:
+  approve:
+    if: github.event_name == 'pull_request_target'
+    runs-on: ubuntu-latest
+    environment:
+      name: pr-approval
+    steps:
+      - run: echo "PR approved for workflow execution"
+
   pre-commit_and_sanity:
-    uses: "redhat-cop/ansible_collections_tooling/.github/workflows/pre_commit_workflow_crc.yml@main"
+    if: always() && (github.event_name != 'pull_request_target' || needs.approve.result == 'success')
+    needs: [approve]
+    uses: "redhat-cop/ansible_collections_tooling/.github/workflows/pre_commit_workflow_crc.yml@634342818b5d5fa2fa92b2c68c78a2bbe8aa4f10" # main
     with:
       collection_namespace: infra
       collection_name: satellite_configuration
