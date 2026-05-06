@@ -8,32 +8,32 @@ The role `infra.satellite.filetree_create` is intended to be used as the first s
   * [redhat.satellite][link_redhat.satellite]: Can be installed with the command `ansible-galaxy collection install redhat.satellite` (Requires [configuration][link_galaxy_configuration]).
 
 * Python libraries:
-  * [`ruamel.yaml`][link_ruamel_yaml]: Can be installed with one of the following methods:
+  * [`PyYAML`][link_pyyaml]: Can be installed with one of the following methods:
 
     **RHEL 8**
 
     ```console
     sudo dnf install -y epel-release
-    sudo dnf install -y python3-ruamel-yaml
+    sudo dnf install -y python3-yaml
     ```
 
     **RHEL 9**
 
     ```console
     sudo dnf config-manager --set-enabled crb
-    sudo dnf install -y python3-ruamel-yaml
+    sudo dnf install -y python3-yaml
     ```
 
     **RHEL 10**
 
     ```console
-    sudo dnf install -y python3-ruamel-yaml
+    sudo dnf install -y python3-yaml
     ```
 
     **Pip**
 
     ```console
-    pip install ruamel.yaml
+    pip install pyyaml
     ```
 
 ## Role Variables
@@ -56,7 +56,7 @@ The following variables are required for that role to work properly:
 
 ## Output files format
 
-By default, `infra.aap_configuration_extended.filetree` role formats generated YAML files with `infra.satellite_configuration.format_yaml` (backed by `ruamel.yaml`) to enhance readability. This can be skipped thanks to the tag `yq_format`, that can be used in the `--skip-tags yq_format` ansible-playbook parameter.
+By default, `infra.aap_configuration_extended.filetree` role formats generated YAML files with `infra.satellite_configuration.format_yaml` (backed by `PyYAML`) to enhance readability. This can be skipped thanks to the tag `yaml_format`, that can be used in the `--skip-tags yaml_format` ansible-playbook parameter.
 
 ## Example Playbook
 
@@ -178,7 +178,7 @@ GPLv3+
 * [Silvio Pérez][link_silvinux]
 * [Ivan Aragonés][link_ivarmu]
 
-[link_ruamel_yaml]: https://pypi.org/project/ruamel.yaml/
+[link_pyyaml]: https://pypi.org/project/PyYAML/
 [link_redhat.satellite]: https://console.redhat.com/ansible/automation-hub/repo/published/redhat/satellite/
 [link_galaxy_configuration]: https://console.redhat.com/ansible/automation-hub/repo/published/redhat/satellite/distributions/
 [link_silvinux]: https://github.com/silvinux

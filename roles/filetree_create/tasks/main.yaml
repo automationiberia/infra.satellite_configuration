@@ -141,8 +141,7 @@
 
 - name: "Block to fix the output files' format"
   tags:
-    - never
-    - yq_format
+    - yaml_format
   block:
     - name: "Search for all the generated files"
       ansible.builtin.find:
@@ -158,7 +157,8 @@
         path: "{{ _current_file.path }}"
         explicit_start: true # Forces ---
         explicit_end: true # Forces ...
-        auto_block_scalars: true # If a string contains a newline, convert it to a PreservedScalarString (|).
+        preserve_comments: false # Force canonical block-style YAML for lists/dicts.
+        auto_block_scalars: true # If a string contains a newline, convert it to a YAML literal block scalar (|).
       loop: "{{ _generated_files.files }}"
       loop_control:
         loop_var: _current_file

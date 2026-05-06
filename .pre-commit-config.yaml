@@ -37,7 +37,7 @@ repos:
         additional_dependencies:
           - pytest
           - ansible-core==2.20.0
-          - ruamel.yaml
+          - PyYAML
         pass_filenames: false
         always_run: true
   - repo: https://github.com/ambv/black
