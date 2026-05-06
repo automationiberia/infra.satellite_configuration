@@ -49,9 +49,12 @@ The following variables are required for that role to work properly:
 | `satellite.admin.username` | N/A | yes | str | Specifies the username to be used. |
 | `satellite.admin.password` | N/A | yes | str | Specifies the password to be used. |
 | `satellite.template` | N/A | yes | dict | Contains the information needed for the generated files' permissions. Fields are described below. |
-| `satellite.template.owner` | N/A | yes | str | Specifies the user name/UID who the generated files will belong to. |
-| `satellite.template.group` | N/A | yes | str | Specifies the group name/GID who the generated files will belong to. |
+| `satellite.template.set_ownership` | `false` | no | bool | When `true`, `owner` and `group` are applied to generated files. When `false` (default), files are owned by the Ansible user (avoids `chown` failures without root). The export directory is always created with `mode` only. |
+| `satellite.template.owner` | N/A | if `set_ownership` | str | User name or UID for generated files when `set_ownership` is `true`. |
+| `satellite.template.group` | N/A | if `set_ownership` | str | Group name or GID for generated files when `set_ownership` is `true`. |
 | `satellite.template.mode` | N/A | yes | str | Specifies the permissions the generated files will have. |
+| `filetree_create_roles_name_excludes` | see `defaults/main.yml` | no | list | Exact role names skipped as built-in defaults before `GET /api/roles/:id`. |
+| `filetree_create_roles_name_excludes_extra` | `[]` | no | list | Additional role names to skip (e.g. site-specific clones of built-ins you do not want exported). |
 | `output_path` | `/tmp/satellite_filetree_config` | no | str | The path to the output directory where all the generated `yaml` files with the corresponding objects as code will be written to. |
 
 ## Output files format
@@ -66,18 +69,10 @@ By default, `infra.aap_configuration_extended.filetree` role formats generated Y
   hosts: localhost
   connection: local
   gather_facts: false
-  module_defaults:
-    redhat.satellite.organization_info:
-      username: "{{ satellite.admin.username }}"
-      password: "{{ satellite.admin.password }}"
-      server_url: "{{ satellite.server_url }}"
-      validate_certs: "{{ satellite.validate_certs }}"
   tasks:
     - name: Ensure that the output_path exists
       ansible.builtin.file:
         path: "{{ output_path }}"
-        owner: "{{ satellite.template.owner }}"
-        group: "{{ satellite.template.group }}"
         mode: "0777"
         state: directory
       tags: always
@@ -139,9 +134,10 @@ satellite:
     username: username
     password: password
   template:
-    owner: '1000'
-    group: '1000'
     mode: '0666'
+    # Optional: set set_ownership: true and owner/group when your environment can chown (e.g. root).
+    # owner: '1000'
+    # group: '1000'
 ...
 ```
 
@@ -163,11 +159,15 @@ One example of the generated files follows:
 ├── satellite_products.yaml
 ├── satellite_repositories.yaml
 ├── satellite_repository_sets.yaml
+├── satellite_roles.yaml
 ├── satellite_settings.yaml
 ├── satellite_subnets.yaml
 ├── satellite_sync_plans.yaml
-└── satellite_usergroups.yaml
+├── satellite_usergroups.yaml
+└── satellite_users.yaml
 ```
+
+`satellite_roles.yaml` includes **custom roles only**: the `/api/roles` index is often missing `builtin`, so known **built-in role names** are removed first (`filetree_create_roles_name_excludes` plus optional `filetree_create_roles_name_excludes_extra`), then each **`GET /api/roles/:id`** payload is dropped when `builtin` or `locked` still indicates a system role. **Filter rows** are filled by calling **`GET /api/filters/:id`** for each stub (Foreman embeds only `id` / `resource_type` on the role), so **permissions** and **search** export correctly.
 
 ## License
 

@@ -1,0 +1,11 @@
+---
+satellite_users: 
+  - name: "admin"
+    firstname: "Admin"
+    lastname: "User"
+    mail: "root@bcnconsulting.com"
+    admin: true
+    default_location: "Barcelona"
+    locations:
+      - Barcelona
+...

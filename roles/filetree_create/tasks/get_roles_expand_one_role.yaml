@@ -1,0 +1,26 @@
+---
+- name: Roles expand one | Append role without filter expansion
+  ansible.builtin.set_fact:
+    __roles_expanded_results: "{{ __roles_expanded_results + [__role_wrap] }}"
+  when: __role_wrap.json.filters | default([]) | length == 0
+
+- name: Roles expand one | Fetch full filter documents and merge into role JSON
+  when: __role_wrap.json.filters | default([]) | length > 0
+  block:
+    - name: GET /api/filters/:id for each filter on this role
+      ansible.builtin.uri:
+        method: GET
+        url: "{{ satellite.server_url }}/api/filters/{{ item.id }}"
+        user: "{{ satellite.admin.username }}"
+        password: "{{ satellite.admin.password }}"
+        validate_certs: "{{ satellite.validate_certs }}"
+        force_basic_auth: true
+        return_content: true
+        timeout: 1200
+      loop: "{{ __role_wrap.json.filters }}"
+      register: __filt_full
+
+    - name: Roles expand one | Merge full filters into role JSON for the template
+      ansible.builtin.set_fact:
+        __roles_expanded_results: "{{ __roles_expanded_results + [{'json': __role_wrap.json | combine({'filters': __filt_full.results | map(attribute='json') | list})}] }}"
+...

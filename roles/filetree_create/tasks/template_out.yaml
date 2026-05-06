@@ -3,7 +3,7 @@
   ansible.builtin.template:
     src: "{{ template_type }}.yaml.j2"
     dest: "{{ output_path }}/{{ template_type }}.yaml"
-    owner: "{{ satellite.template.owner }}"
-    group: "{{ satellite.template.group }}"
+    owner: "{{ satellite.template.owner if (satellite.template.set_ownership | default(false)) else omit }}"
+    group: "{{ satellite.template.group if (satellite.template.set_ownership | default(false)) else omit }}"
     mode: "{{ satellite.template.mode }}"
 ...

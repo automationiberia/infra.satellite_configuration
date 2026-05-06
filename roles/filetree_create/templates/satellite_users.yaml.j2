@@ -1,0 +1,54 @@
+---
+satellite_users: {{ [] if detailed_info.results | length == 0 }}
+{% for u in detailed_info.results %}
+  - name: "{{ u.json.login | trim }}"
+{% if u.json.firstname is defined and u.json.firstname is not none and u.json.firstname | trim | length > 0 %}
+    firstname: "{{ u.json.firstname | trim }}"
+{% endif %}
+{% if u.json.lastname is defined and u.json.lastname is not none and u.json.lastname | trim | length > 0 %}
+    lastname: "{{ u.json.lastname | trim }}"
+{% endif %}
+{% if u.json.mail is defined and u.json.mail is not none and u.json.mail | trim | length > 0 %}
+    mail: "{{ u.json.mail | trim }}"
+{% endif %}
+{% if u.json.description is defined and u.json.description is not none and u.json.description | trim | length > 0 %}
+    description: "{{ u.json.description | trim }}"
+{% endif %}
+{% if u.json.admin is defined %}
+    admin: {{ u.json.admin | bool | lower }}
+{% endif %}
+{% if u.json.default_organization is defined and u.json.default_organization is not none and u.json.default_organization.name is defined %}
+    default_organization: "{{ u.json.default_organization.name | trim }}"
+{% endif %}
+{% if u.json.default_location is defined and u.json.default_location is not none and u.json.default_location.name is defined %}
+    default_location: "{{ u.json.default_location.name | trim }}"
+{% endif %}
+{% if u.json.auth_source is defined and u.json.auth_source is not none and u.json.auth_source.name is defined %}
+    auth_source: "{{ u.json.auth_source.name | trim }}"
+{% endif %}
+{% if u.json.timezone is defined and u.json.timezone is not none and u.json.timezone | trim | length > 0 %}
+    timezone: "{{ u.json.timezone | trim }}"
+{% endif %}
+{% if u.json.locale is defined and u.json.locale is not none and u.json.locale | trim | length > 0 %}
+    locale: "{{ u.json.locale | trim }}"
+{% endif %}
+{% if u.json.roles is defined and u.json.roles | length > 0 %}
+    roles:
+{% for r in u.json.roles %}
+      - {{ r.name | trim }}
+{% endfor %}
+{% endif %}
+{% if u.json.organizations is defined and u.json.organizations | length > 0 %}
+    organizations:
+{% for org in u.json.organizations %}
+      - {{ org.name | trim }}
+{% endfor %}
+{% endif %}
+{% if u.json.locations is defined and u.json.locations | length > 0 %}
+    locations:
+{% for loc in u.json.locations %}
+      - {{ loc.name | trim }}
+{% endfor %}
+{% endif %}
+{% endfor %}
+...

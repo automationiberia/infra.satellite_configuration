@@ -1,0 +1,3 @@
+---
+bugfixes:
+  - run_filetree_create playbook - drop ``module_defaults`` for ``redhat.satellite.organization_info`` so the play can be parsed without the Satellite collection installed; role tasks already pass connection parameters explicitly.

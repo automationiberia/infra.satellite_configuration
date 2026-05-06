@@ -1,0 +1,47 @@
+---
+{% if detailed_info.results | length == 0 %}
+satellite_roles: []
+{% else %}
+satellite_roles:
+{% for role in detailed_info.results %}
+{% set __role_filters_ns = namespace(has_permissions=false) %}
+{% for __rf in role.json.filters | default([]) %}
+{% set __pl = (__rf.permissions.values() | list) if (__rf.permissions is mapping) else ([__rf.permissions] if (__rf.permissions is string) else (__rf.permissions | default([]))) %}
+{% if __pl | length > 0 %}
+{% set __role_filters_ns.has_permissions = true %}
+{% endif %}
+{% endfor %}
+  - name: {{ role.json.name | trim | to_json }}
+{% if role.json.description is defined and role.json.description is not none and role.json.description | trim | length > 0 %}
+    description: {{ role.json.description | trim | to_json }}
+{% endif %}
+{% if role.json.organizations is defined and role.json.organizations | length > 0 %}
+    organizations:
+{% for org in role.json.organizations %}
+      - {{ org.name | trim | to_json }}
+{% endfor %}
+{% endif %}
+{% if role.json.locations is defined and role.json.locations | length > 0 %}
+    locations:
+{% for loc in role.json.locations %}
+      - {{ loc.name | trim | to_json }}
+{% endfor %}
+{% endif %}
+{% if __role_filters_ns.has_permissions %}
+    filters:
+{% for filt in role.json.filters | default([]) %}
+{% set __pl = (filt.permissions.values() | list) if (filt.permissions is mapping) else ([filt.permissions] if (filt.permissions is string) else (filt.permissions | default([]))) %}
+{% if __pl | length > 0 %}
+      - permissions:
+{% for perm in __pl %}
+          - {% if perm is mapping %}{{ perm.name | to_json }}{% else %}{{ perm | to_json }}{% endif %}{{ "\n" }}
+{%- endfor %}
+{% if filt.search is defined and filt.search is not none and filt.search | trim | length > 0 %}
+        search: {{ filt.search | trim | to_json }}{{ "\n" }}
+{%- endif %}
+{% if not loop.last %}{{ "\n" }}{% endif %}
+{% endif %}
+{% endfor %}
+{% endif %}
+{% endfor %}
+{% endif %}

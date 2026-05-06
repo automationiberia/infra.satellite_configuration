@@ -3,23 +3,16 @@
   hosts: localhost
   connection: local
   gather_facts: false
-  module_defaults:
-    redhat.satellite.organization_info:
-      username: "{{ satellite.admin.username }}"
-      password: "{{ satellite.admin.password }}"
-      server_url: "{{ satellite.server_url }}"
-      validate_certs: "{{ satellite.validate_certs }}"
   tasks:
     - name: Ensure that the output_path exists
       ansible.builtin.file:
         path: "{{ output_path }}"
-        owner: "{{ satellite.template.owner }}"
-        group: "{{ satellite.template.group }}"
         mode: "0777"
         state: directory
       tags: always
 
     - name: Get Satellite Objects
       ansible.builtin.import_role:
-        name: infra.satellite_configuration.filetree_create
+        # Resolve sibling roles/ from this playbook (git checkout or installed collection layout).
+        name: "{{ [playbook_dir | dirname, 'roles', 'filetree_create'] | path_join }}"
 ...
