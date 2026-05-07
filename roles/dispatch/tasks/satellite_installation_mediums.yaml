@@ -1,0 +1,21 @@
+---
+- name: Create/Update Installation Mediums
+  redhat.satellite.installation_medium:
+    # Mandatory params
+    name: "{{ __current_installation_medium.name }}"
+    # Optional params
+    path: "{{ __current_installation_medium.path | default(omit) }}"
+    os_family: "{{ __current_installation_medium.os_family | default(omit) }}"
+    organizations: "{{ __current_installation_medium.organizations | default(omit) }}"
+    locations: "{{ __current_installation_medium.locations | default(omit) }}"
+    operatingsystems: "{{ __current_installation_medium.operatingsystems | default(omit) }}"
+    updated_name: "{{ __current_installation_medium.updated_name | default(omit) }}"
+    state: "{{ __current_installation_medium.state | default('present') }}"
+  loop: "{{ satellite_installation_mediums }}"
+  loop_control:
+    loop_var: __current_installation_medium
+    label: "{{ __current_installation_medium.name }}"
+  when:
+    - satellite_installation_mediums is defined
+  delegate_to: localhost
+...
