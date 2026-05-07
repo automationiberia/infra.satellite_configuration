@@ -1,0 +1,19 @@
+---
+description: Configure LDAP authentication sources in Satellite using the standard dispatch import-role pattern.
+alwaysApply: false
+---
+
+# Manage LDAP Auth Sources
+
+Use this for `satellite_auth_sources_ldap`.
+
+## Steps
+1. Declare LDAP sources in `satellite_auth_sources_ldap`.
+2. Apply via `roles/dispatch/tasks/satellite_auth_sources_ldap.yaml`.
+3. Use `redhat.satellite.auth_sources_ldap` through `ansible.builtin.import_role`.
+4. Keep bind and server parameters sourced from vars.
+
+## Checklist
+- Uses FQCN `redhat.satellite.auth_sources_ldap`.
+- Keeps data list name in `satellite_*` format.
+- Preserves idempotent state.

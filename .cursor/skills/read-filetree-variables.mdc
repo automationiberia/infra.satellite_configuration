@@ -1,0 +1,20 @@
+---
+description: Load Satellite filetree fragments into satellite_* facts using find/include_vars/set_fact merge workflow.
+alwaysApply: false
+---
+
+# Read Filetree Variables
+
+Use this for `infra.satellite_configuration.filetree_read` workflows.
+
+## Steps
+1. Discover variable fragments with `ansible.builtin.find`.
+2. Load files with `ansible.builtin.include_vars`.
+3. Merge into `satellite_*` lists using internal `__populate_*` facts.
+4. Pass resulting data to `infra.satellite_configuration.dispatch`.
+
+## Checklist
+- Input directories end in `.d/`.
+- Merge facts are temporary and `__`-prefixed.
+- Resulting variables are list-of-dicts.
+- Resulting data is intended for `dispatch` tasks that prefer `redhat.satellite` roles/modules when available.

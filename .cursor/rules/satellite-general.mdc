@@ -1,0 +1,37 @@
+---
+description: Enforce repository-wide Satellite naming conventions, task file naming, and FQCN usage.
+alwaysApply: true
+---
+
+# Satellite General Conventions
+
+Apply these conventions to all changes in this repository.
+
+## Naming Conventions
+- Use `satellite_<resource_plural>` for top-level data lists.
+- Use `satellite_<domain>.yaml` for dispatch task files.
+- Use `get_<domain>.yaml` for filetree export task files.
+- Use `satellite_<resource>.d/` for filetree fragment directories.
+- Use `__` prefix for temporary loop/internal variables (example: `__current_repository`).
+
+## FQCN Rules
+- Always use `ansible.builtin.*` for builtin modules and task includes.
+- Always use `redhat.satellite.*` for Satellite resources and helper modules.
+- Prefer `redhat.satellite` roles via `ansible.builtin.import_role` when available; otherwise use `redhat.satellite.*` modules.
+- Use `ansible.builtin.uri` only when no `redhat.satellite` role/module is available for that operation.
+- Use `infra.satellite_configuration.*` for this collection's roles/modules.
+- Do not introduce new `theforeman.foreman.*` tasks.
+
+## Task Style
+- Prefer loops over `satellite_*` lists, not duplicated one-off tasks.
+- Use `| default(omit)` for optional module parameters.
+- Delegate Satellite API operations to `localhost` when appropriate.
+- Keep changes idempotent and data-driven.
+
+## Cross-Role Consistency Rule
+- When adding a new object type, update all three roles in the same change:
+  - `roles/filetree_create` (export)
+  - `roles/filetree_read` (ingest)
+  - `roles/dispatch` (apply)
+- Add matching tags and naming across the three roles for the same object type.
+- Do not add partial support for a new object type in only one role.

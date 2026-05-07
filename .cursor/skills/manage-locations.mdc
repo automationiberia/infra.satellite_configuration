@@ -1,0 +1,19 @@
+---
+description: Manage Satellite locations with redhat.satellite.location and the collection's standard loop-driven task conventions.
+alwaysApply: false
+---
+
+# Manage Locations
+
+Use this for `satellite_locations`.
+
+## Steps
+1. Define location data in `satellite_locations`.
+2. Apply via `roles/dispatch/tasks/satellite_locations.yaml`.
+3. Use `redhat.satellite.location` with looped records.
+4. Keep organization associations explicit when present.
+
+## Checklist
+- Uses FQCN `redhat.satellite.location`.
+- Optional attributes use `default(omit)`.
+- Task tags align to `locations`.
