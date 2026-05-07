@@ -1,0 +1,31 @@
+---
+- name: Installation Mediums | Reset the results variable
+  ansible.builtin.set_fact:
+    result_api_response: {}
+    __rs_info_list: []
+
+- name: Installation Mediums | Get Installation Mediums
+  ansible.builtin.include_tasks: api_call.yaml
+  vars:
+    call_type: Installation Mediums
+    api_link: "/api/media?per_page=all"
+
+- name: Installation Mediums | Retain the Installation Mediums' info
+  ansible.builtin.set_fact:
+    __installation_mediums_list: "{{ result_api_response.json.results }}"
+
+- name: Installation Mediums | Get External Installation Mediums Info
+  ansible.builtin.include_tasks: get_installation_mediums_do_work.yaml
+  loop: "{{ __installation_mediums_list }}"
+  loop_control:
+    loop_var: __current_installation_medium
+
+- name: Installation Mediums | Template Out Results
+  when:
+    - __rs_info_list is defined
+    - __rs_info_list | length > 0
+  ansible.builtin.include_tasks: template_out.yaml
+  vars:
+    template_type: satellite_installation_mediums
+    info_list: "{{ __rs_info_list | default([]) }}"
+...
