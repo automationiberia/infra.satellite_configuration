@@ -1,3 +1,4 @@
+.cache/
 ansible.cfg
 collections
 satellite.yaml

@@ -1,0 +1,3 @@
+---
+bugfixes:
+  - filetree_create - restore ``preserve_comments: false`` for ``format_yaml`` so generated YAML is fully canonicalized (block-style lists/dicts) rather than only having indentation adjusted (module default preserves comments).

@@ -159,3 +159,4 @@
       block:
         - name: Get Provisioning Templates
           ansible.builtin.include_tasks: tasks/get_provisioning_templates.yaml
+...
