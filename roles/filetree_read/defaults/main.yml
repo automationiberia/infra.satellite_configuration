@@ -11,6 +11,7 @@ satellite_content_views: []
 satellite_domains: []
 satellite_host_collections: []
 satellite_hostgroups: []
+satellite_installation_mediums: []
 satellite_lifecycle_environments: []
 satellite_locations: []
 satellite_operatingsystems: []
@@ -34,6 +35,7 @@ satellite_configuration_filetree_read_tasks:
   - {name: satellite_domains,                 var: satellite_domains,                 tags: domains,                 path: "{{ dir_orgs_vars }}/{{ orgs }}/env/common/satellite_domains.d/"}
   - {name: satellite_host_collections,        var: satellite_host_collections,        tags: host_collections,        path: "{{ dir_orgs_vars }}/{{ orgs }}/env/common/satellite_host_collections.d/"}
   - {name: satellite_hostgroups,              var: satellite_hostgroups,              tags: hostgroups,              path: "{{ dir_orgs_vars }}/{{ orgs }}/env/common/satellite_hostgroups.d/"}
+  - {name: satellite_installation_mediums,    var: satellite_installation_mediums,    tags: installation_mediums,    path: "{{ dir_orgs_vars }}/{{ orgs }}/env/common/satellite_installation_mediums.d/"}
   - {name: satellite_lifecycle_environments,  var: satellite_lifecycle_environments,  tags: lifecycle_environments,  path: "{{ dir_orgs_vars }}/{{ orgs }}/env/common/satellite_lifecycle_environments.d/"}
   - {name: satellite_locations,               var: satellite_locations,               tags: locations,               path: "{{ dir_orgs_vars }}/{{ orgs }}/env/common/satellite_locations.d/"}
   - {name: satellite_operatingsystems,        var: satellite_operatingsystems,        tags: operatingsystems,        path: "{{ dir_orgs_vars }}/{{ orgs }}/env/common/satellite_operatingsystems.d/"}

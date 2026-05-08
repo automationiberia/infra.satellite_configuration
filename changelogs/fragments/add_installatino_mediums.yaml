@@ -1,0 +1,4 @@
+---
+bugfixes:
+  - Add installation_mediums. This has been added using the cursor skills provided by the PR #16
+...

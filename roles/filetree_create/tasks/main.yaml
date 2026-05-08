@@ -55,6 +55,13 @@
     - name: Get Operating Systems
       ansible.builtin.include_tasks: get_operatingsystems.yaml
 
+- name: Installation Mediums Block
+  tags:
+    - "installation_mediums"
+  block:
+    - name: Get Installation Mediums
+      ansible.builtin.include_tasks: get_installation_mediums.yaml
+
 - name: Lifecycle Environments Block
   tags:
     - "lifecycle_environments"

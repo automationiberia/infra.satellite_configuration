@@ -129,6 +129,13 @@
       tags: provisioning_templates
   tags: provisioning_templates
 
+- name: Create Installation Mediums
+  ansible.builtin.include_tasks: satellite_installation_mediums.yaml
+  args:
+    apply:
+      tags: installation_mediums
+  tags: installation_mediums
+
 - name: Create OperatingSystems
   ansible.builtin.include_tasks: satellite_operatingsystems.yaml
   args:
