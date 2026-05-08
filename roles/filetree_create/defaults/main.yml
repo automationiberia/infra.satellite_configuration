@@ -4,6 +4,7 @@
 output_path: "/tmp/satellite_filetree_config"
 # Optional (set under satellite.template in your vars): set_ownership: true applies owner/group on
 # generated files. Default is false so exports work as a normal local user without chown to another UID.
+set_ownership: false
 
 # Foreman/Satellite built-in role names (index API is often "thin" and omits builtin; we exclude by name, then
 # filter again on GET /api/roles/:id). Override the whole list if needed, or append via filetree_create_roles_name_excludes_extra.
