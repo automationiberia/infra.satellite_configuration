@@ -22,6 +22,11 @@ The following variables are required for that role to work properly:
 | `satellite.template.mode` | N/A | yes | str | Specifies the permissions the generated files will have. |
 | `output_path` | `/tmp/satellite_filetree_config` | no | str | The path to the output directory where all the generated `yaml` files with the corresponding objects as code will be written to. |
 | `satellite_<object_type_variable>` | N/A | yes | list | The input configuration to be applied. Each object type is defined in a dedicated variable. The list of valid input variables can be found at the [`infra.satellite_configuration.filetree_read` defaults' file][link_filetree_read_defaults] |
+| `satellite_users_default_password` | unset | no | str | Optional fallback for `redhat.satellite.user` **`user_password`** when a `satellite_users` item omits it. Foreman requires a password to **create** Internal-auth users; prefer **`user_password`** per user from Vault. |
+
+### `satellite_users` and passwords
+
+Exports do not include passwords. When **creating** a user with **`auth_source: Internal`** (or default Internal), set **`user_password`** on that list entry (from Vault), or define **`satellite_users_default_password`** for bootstrap environments only. Omit `user_password` on existing users you only update.
 
 ## Example Playbook
 

@@ -1,6 +1,6 @@
 ---
 {% from 'clean_fields.j2' import discard_unwanted_fields %}
-{% set __excluded_fields = ['id', 'created_at', 'updated_at', 'last_login_on', 'last_login_at', 'auth_source_id', 'default_location_id', 'default_organization_id', 'effective_admin', 'otp_required_for_login', 'otp_enabled', 'personal', 'avatar_path', 'locale_name', 'mail_enabled', 'current_login_at', 'current_login_ip', 'login_count', 'password_hash'] %}
+{% set __excluded_fields = ['id', 'created_at', 'updated_at', 'last_login_on', 'last_login_at', 'auth_source_id', 'default_location_id', 'default_organization_id', 'effective_admin', 'otp_required_for_login', 'otp_enabled', 'personal', 'avatar_path', 'locale_name', 'mail_enabled', 'current_login_at', 'current_login_ip', 'login_count', 'password_hash', 'mail_notifications', 'cached_usergroups', 'disabled', 'auth_source_internal', 'auth_source_external', 'auth_source_name', 'usergroups'] %}
 {% set __empty_values = [None, 'None', '', {}, [], [{}]] %}
 {% set __reduce_to_name = ['default_organization', 'default_location', 'auth_source'] %}
 {% set __list_items_to_name = ['roles', 'organizations', 'locations'] %}
@@ -19,10 +19,15 @@ satellite_users: {{ [] if detailed_info.results | length == 0 }}
 {%       endfor %}
 {%     elif (__translate | selectattr(__map_item.key, 'defined') | list | length) > 0 %}
     {{ (__translate | selectattr(__map_item.key, 'defined') | list | first)[__map_item.key] }}: {{ discard_unwanted_fields(__map_item.value, __excluded_fields, __empty_values, __reduce_to_name, __translate) }}
+{%     elif __map_item.key in __reduce_to_name %}
+    {{ __map_item.key }}: {{ discard_unwanted_fields((__map_item.value.name if (__map_item.value is mapping and __map_item.value.name is defined and __map_item.value.name not in __empty_values) else (__map_item.value.title if (__map_item.value is mapping and __map_item.value.title is defined and __map_item.value.title not in __empty_values) else __map_item.value)), __excluded_fields, __empty_values, __reduce_to_name, __translate) }}
 {%     else %}
     {{ __map_item.key }}: {{ discard_unwanted_fields(__map_item.value, __excluded_fields, __empty_values, __reduce_to_name, __translate) }}
 {%     endif %}
 {%   endfor %}
+{%   if (user.json.auth_source is not defined or user.json.auth_source in __empty_values) and ((user.json.auth_source_internal is defined and user.json.auth_source_internal not in __empty_values) or (user.json.auth_source_name is defined and user.json.auth_source_name not in __empty_values)) %}
+    auth_source: {{ discard_unwanted_fields((user.json.auth_source_internal.name if (user.json.auth_source_internal is mapping and user.json.auth_source_internal.name is defined) else user.json.auth_source_name), __excluded_fields, __empty_values, __reduce_to_name, __translate) }}
+{%   endif %}
 {%   endif %}
 {% endfor %}
 ...

@@ -1,4 +1,9 @@
 ---
+# New Internal-auth users need user_password (not present in exports). Example:
+#   - name: ondaadmin
+#     mail: user@example.com
+#     auth_source: Internal
+#     user_password: "{{ vault_ondaadmin_password }}"
 satellite_users:
   - name: "admin"
     firstname: "Admin"

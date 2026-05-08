@@ -163,7 +163,6 @@
 # In a separate file so Ansible does not resolve format_yaml at parse time when this block is skipped (e.g. --tags roles,users).
 - name: "Block to fix the output files' format"
   tags:
-    - never
-    - yq_format
-  ansible.builtin.include_tasks: yq_format_output.yaml
+    - yaml_format
+  ansible.builtin.include_tasks: yaml_format_output.yaml
 ...

@@ -9,4 +9,7 @@ satellite_server_url: '{{ lookup("env", "SATELLITE_SERVER_URL") }}'
 content_views_purge_count: 6
 
 satellite_configuration_dispatch_secure_logging: true
+
+# Optional: used only when a `satellite_users` entry has no `user_password` (Foreman requires a password to create Internal-auth users). Prefer per-user `user_password` from Vault.
+# satellite_users_default_password: "{{ my_vault_new_user_password }}"
 ...
