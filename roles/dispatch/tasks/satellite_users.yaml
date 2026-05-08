@@ -1,0 +1,41 @@
+---
+# Normalize CaC and legacy/API-shaped user dicts for redhat.satellite.user (scalars for auth_source, default org/location; list of names for organizations, locations, roles).
+- name: Ensure users are correct
+  redhat.satellite.user:
+    login: "{{ __current_user.name }}"
+    firstname: "{{ __current_user.firstname | default(omit) }}"
+    lastname: "{{ __current_user.lastname | default(omit) }}"
+    mail: "{{ __current_user.mail | default(omit) }}"
+    description: "{{ __current_user.description | default(omit) }}"
+    admin: "{{ __current_user.admin | default(omit) }}"
+    auth_source: "{{ _sat_user_auth_source | default(omit, true) }}"
+    default_organization: "{{ _sat_user_default_organization | default(omit, true) }}"
+    default_location: "{{ _sat_user_default_location | default(omit, true) }}"
+    organizations: "{{ _sat_user_organizations | default(omit, true) }}"
+    locations: "{{ _sat_user_locations | default(omit, true) }}"
+    roles: "{{ _sat_user_roles | default(omit, true) }}"
+    # Required by Foreman when creating users on Internal auth (not returned on export); omit on update unless set.
+    user_password: "{{ __current_user.user_password | default(satellite_users_default_password | default(omit), true) }}"
+    timezone: "{{ __current_user.timezone | default(omit) }}"
+    locale: "{{ __current_user.locale | default(omit) }}"
+    state: "{{ __current_user.state | default(omit) }}"
+  loop: "{{ satellite_users }}"
+  loop_control:
+    loop_var: __current_user
+    label: "{{ __current_user.name }}"
+  when: satellite_users is defined
+  delegate_to: localhost
+  vars:
+    _sat_user_default_location: >-
+      {{ omit if (__current_user.default_location is not defined) else (__current_user.default_location if not (__current_user.default_location is mapping) else (__current_user.default_location.name | default(__current_user.default_location.title) | default(omit))) }}
+    _sat_user_default_organization: >-
+      {{ omit if (__current_user.default_organization is not defined) else (__current_user.default_organization if not (__current_user.default_organization is mapping) else (__current_user.default_organization.name | default(__current_user.default_organization.title) | default(omit))) }}
+    _sat_user_auth_source: >-
+      {{ omit if __current_user is not defined else (__current_user.auth_source if (__current_user.auth_source is defined and not (__current_user.auth_source is mapping)) else (__current_user.auth_source.name if (__current_user.auth_source is defined and __current_user.auth_source is mapping and __current_user.auth_source.name is defined) else (__current_user.auth_source_name if __current_user.auth_source_name is defined else (__current_user.auth_source_internal.name if (__current_user.auth_source_internal is defined and __current_user.auth_source_internal is mapping and __current_user.auth_source_internal.name is defined) else omit)))) }}
+    _sat_user_organizations: >-
+      {{ omit if (__current_user.organizations is not defined) else (__current_user.organizations if ((__current_user.organizations | length) == 0 or not (__current_user.organizations[0] is mapping)) else (__current_user.organizations | map(attribute='name') | list)) }}
+    _sat_user_locations: >-
+      {{ omit if (__current_user.locations is not defined) else (__current_user.locations if ((__current_user.locations | length) == 0 or not (__current_user.locations[0] is mapping)) else (__current_user.locations | map(attribute='name') | list)) }}
+    _sat_user_roles: >-
+      {{ omit if (__current_user.roles is not defined) else (__current_user.roles if ((__current_user.roles | length) == 0 or not (__current_user.roles[0] is mapping)) else (__current_user.roles | map(attribute='name') | list)) }}
+...

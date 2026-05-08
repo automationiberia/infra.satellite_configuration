@@ -15,7 +15,7 @@ description:
   - Reformats a YAML file in place using PyYAML (same stack as ansible-core).
   - With I(preserve_comments=true) (default), only adjusts indentation of block sequences that YAML parsed as
     "indentless" (using C(yaml.compose) line marks). Comments and overall structure are kept.
-  - If flow-style collections are found (e.g. C([{a: 1}])), the module canonicalizes them to block style to ensure
+  - If flow-style collections are found (e.g. C([{a:1}])), the module canonicalizes them to block style to ensure
     readable YAML output.
   - With I(preserve_comments=false), performs a full load and dump (comments are lost). Enables I(auto_block_scalars),
     PEM-in-one-line repair, Ansible C(!unsafe) round-trip (scalars keep the tag; multiline unsafe uses a literal block),

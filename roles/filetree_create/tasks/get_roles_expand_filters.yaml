@@ -1,0 +1,18 @@
+---
+# Foreman GET /api/roles/:id embeds filters via filters/base (id + resource_type only).
+# Permissions and search require GET /api/filters/:id for each filter before templating.
+- name: Roles | Initialize list for filter-expanded role results
+  ansible.builtin.set_fact:
+    __roles_expanded_results: []
+
+- name: Roles | Expand thin filters for each role
+  ansible.builtin.include_tasks: get_roles_expand_one_role.yaml
+  loop: "{{ detailed_info.results }}"
+  loop_control:
+    loop_var: __role_wrap
+
+- name: Roles | Replace detailed results with expanded payloads
+  ansible.builtin.set_fact:
+    detailed_info:
+      results: "{{ __roles_expanded_results }}"
+...

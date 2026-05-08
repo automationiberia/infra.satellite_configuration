@@ -103,4 +103,60 @@
       block:
         - name: Get Activation Keys
           ansible.builtin.include_tasks: tasks/get_activation_keys.yaml
+
+    - name: Sync Plans Block
+      tags:
+        - "sync_plans"
+      block:
+        - name: Get Sync Plans
+          ansible.builtin.include_tasks: tasks/get_sync_plans.yaml
+
+    - name: Auth Sources LDAP Block
+      tags:
+        - "auth_sources_ldap"
+      block:
+        - name: Get Auth Sources LDAP
+          ansible.builtin.include_tasks: tasks/get_auth_sources_ldap.yaml
+
+    - name: Host Collections Block
+      tags:
+        - "host_collections"
+      block:
+        - name: Get Host Collections
+          ansible.builtin.include_tasks: tasks/get_host_collections.yaml
+
+    - name: Usergroups Block
+      tags:
+        - "usergroups"
+      block:
+        - name: Get External Usergroups
+          ansible.builtin.include_tasks: tasks/get_usergroups.yaml
+
+    - name: Roles Block
+      tags:
+        - "roles"
+      block:
+        - name: Get Roles
+          ansible.builtin.include_tasks: tasks/get_roles.yaml
+
+    - name: Users Block
+      tags:
+        - "users"
+      block:
+        - name: Get Users
+          ansible.builtin.include_tasks: tasks/get_users.yaml
+
+    - name: Partition Tables Block
+      tags:
+        - "partition_tables"
+      block:
+        - name: Get Partition Tables
+          ansible.builtin.include_tasks: tasks/get_partition_tables.yaml
+
+    - name: Provisioning Templates Block
+      tags:
+        - "provisioning_templates"
+      block:
+        - name: Get Provisioning Templates
+          ansible.builtin.include_tasks: tasks/get_provisioning_templates.yaml
 ...

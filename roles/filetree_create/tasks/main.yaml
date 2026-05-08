@@ -132,6 +132,20 @@
     - name: Get External Usergroups
       ansible.builtin.include_tasks: get_usergroups.yaml
 
+- name: Roles Block
+  tags:
+    - "roles"
+  block:
+    - name: Get Roles
+      ansible.builtin.include_tasks: get_roles.yaml
+
+- name: Users Block
+  tags:
+    - "users"
+  block:
+    - name: Get Users
+      ansible.builtin.include_tasks: get_users.yaml
+
 - name: Partition Tables Block
   tags:
     - "partition_tables"
@@ -146,28 +160,9 @@
     - name: Get Provisioning Templates
       ansible.builtin.include_tasks: get_provisioning_templates.yaml
 
+# In a separate file so Ansible does not resolve format_yaml at parse time when this block is skipped (e.g. --tags roles,users).
 - name: "Block to fix the output files' format"
   tags:
     - yaml_format
-  block:
-    - name: "Search for all the generated files"
-      ansible.builtin.find:
-        paths: "{{ output_path }}"
-        recurse: true
-        patterns:
-          - "*.yaml"
-          - "*.yml"
-      register: _generated_files
-
-    - name: Format the application config file
-      infra.satellite_configuration.format_yaml:
-        path: "{{ _current_file.path }}"
-        explicit_start: true # Forces ---
-        explicit_end: true # Forces ...
-        preserve_comments: false # Force canonical block-style YAML for lists/dicts.
-        auto_block_scalars: true # If a string contains a newline, convert it to a YAML literal block scalar (|).
-      loop: "{{ _generated_files.files }}"
-      loop_control:
-        loop_var: _current_file
-        label: "{{ _current_file.path }}"
+  ansible.builtin.include_tasks: yaml_format_output.yaml
 ...

@@ -1,0 +1,38 @@
+---
+- name: Users | Reset the results variable
+  ansible.builtin.set_fact:
+    result_api_response: {}
+
+- name: Users | Get Basic Info
+  ansible.builtin.include_tasks: api_call.yaml
+  vars:
+    call_type: Users
+    api_link: /api/users?per_page=all
+
+- name: Users | Create a List
+  ansible.builtin.set_fact:
+    all_results: "{{ result_api_response.json.results | sort(attribute='id') }}"
+
+- name: Users | Get Detailed Info
+  when: all_results | length > 0
+  ansible.builtin.include_tasks: detailed_api_call.yaml
+  vars:
+    call_type: Users
+    api_link: /api/users/
+    loop_var: "{{ all_results }}"
+
+- name: Users | No users to detail
+  when: all_results | length == 0
+  ansible.builtin.set_fact:
+    detailed_info:
+      results: []
+
+- name: Users | Template Out Results
+  when:
+    - detailed_info is defined
+    - detailed_info.results is defined
+    - detailed_info.results | length > 0
+  ansible.builtin.include_tasks: template_out.yaml
+  vars:
+    template_type: satellite_users
+...

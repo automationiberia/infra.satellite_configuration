@@ -1,0 +1,38 @@
+---
+{% from 'clean_fields.j2' import discard_unwanted_fields %}
+{% set __excluded_fields = ['id', 'builtin', 'locked', 'origin', 'created_at', 'updated_at', 'organization_ids', 'location_ids', 'permission_ids', 'user_ids', 'usergroup_ids', 'role_id'] %}
+{% set __empty_values = [None, 'None', '', {}, [], [{}]] %}
+{% set __reduce_to_name = [] %}
+{% set __list_items_to_name = ['organizations', 'locations'] %}
+{% set __translate = [{'permissions': 'name'}] %}
+satellite_roles: {{ [] if detailed_info.results | length == 0 }}
+{% for role in detailed_info.results %}
+  - name: {{ discard_unwanted_fields(role.json.name, __excluded_fields, __empty_values, __reduce_to_name, __translate) }}
+{%   for __map_item in (role.json | dict2items) if __map_item.key not in (__excluded_fields + ['name']) and __map_item.value not in __empty_values %}
+{%     if __map_item.key in __list_items_to_name %}
+    {{ __map_item.key }}:
+{%       set __item_key = (__translate | selectattr(__map_item.key, 'defined') | list | first | default({})).get(__map_item.key, 'name') %}
+{%       for __inner_item in __map_item.value %}
+      - {{ discard_unwanted_fields((__inner_item[__item_key] if (__inner_item is mapping and __item_key in __inner_item) else __inner_item), __excluded_fields, __empty_values, __reduce_to_name, __translate) }}
+{%       endfor %}
+{%     elif __map_item.key == 'filters' %}
+    filters:
+{%       for __current_filter in __map_item.value %}
+{%         set __permissions_list = (__current_filter.permissions.values() | list) if (__current_filter.permissions is mapping) else ([__current_filter.permissions] if (__current_filter.permissions is string) else (__current_filter.permissions | default([]))) %}
+{%         if __permissions_list | length > 0 %}
+      - permissions:
+{%           set __perm_key = (__translate | selectattr('permissions', 'defined') | list | first | default({})).get('permissions', 'name') %}
+{%           for __permission in __permissions_list %}
+          - {{ discard_unwanted_fields((__permission[__perm_key] if (__permission is mapping and __perm_key in __permission) else __permission), __excluded_fields, __empty_values, __reduce_to_name, __translate) }}
+{%           endfor %}
+{%           if __current_filter.search is defined and __current_filter.search not in __empty_values %}
+        search: {{ discard_unwanted_fields(__current_filter.search, __excluded_fields, __empty_values, __reduce_to_name, __translate) }}
+{%           endif %}
+{%         endif %}
+{%       endfor %}
+{%     else %}
+    {{ __map_item.key }}: {{ discard_unwanted_fields(__map_item.value, __excluded_fields, __empty_values, __reduce_to_name, __translate) }}
+{%     endif %}
+{%   endfor %}
+{% endfor %}
+...

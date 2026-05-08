@@ -1,0 +1,22 @@
+---
+- name: "Search for all the generated files"
+  ansible.builtin.find:
+    paths: "{{ output_path }}"
+    recurse: true
+    patterns:
+      - "*.yaml"
+      - "*.yml"
+  register: _generated_files
+
+- name: Format the application config file
+  infra.satellite_configuration.format_yaml:
+    path: "{{ _current_file.path }}"
+    preserve_comments: false # Full round-trip dump for canonical block-style YAML (original behavior).
+    explicit_start: true # Forces ---
+    explicit_end: true # Forces ...
+    auto_block_scalars: true # If a string contains a newline, convert it to a PreservedScalarString (|).
+  loop: "{{ _generated_files.files }}"
+  loop_control:
+    loop_var: _current_file
+    label: "{{ _current_file.path }}"
+...

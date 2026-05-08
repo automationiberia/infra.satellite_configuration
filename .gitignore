@@ -1,3 +1,7 @@
+.cache/
+ansible.cfg
+collections
+satellite.yaml
 .ansible
 .github/workflow-config
 *artifact*.json
