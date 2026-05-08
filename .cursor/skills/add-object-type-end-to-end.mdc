@@ -1,0 +1,71 @@
+---
+description: Add a new Satellite object type consistently across filetree_create, filetree_read, and dispatch in one coordinated change.
+alwaysApply: false
+---
+
+# Add Object Type End-to-End
+
+Use this when introducing a brand-new `satellite_*` object family to the collection.
+
+## Hard Requirement
+One new element must be implemented in all existing roles in the same change set:
+- `roles/filetree_create`
+- `roles/filetree_read`
+- `roles/dispatch`
+
+Do not merge partial support for only one role.
+
+## Module/Role Selection Rule
+- In `dispatch`, prefer `ansible.builtin.import_role` with `redhat.satellite.<role>` when available for the object type.
+- If no role exists, use `redhat.satellite.<module>` directly.
+- Use raw API (`ansible.builtin.uri`) only in export/read flows or when no `redhat.satellite` role/module supports the operation.
+
+## Mandatory File Checklist
+1. Add `get_<domain>.yaml` in `roles/filetree_create/tasks/`.
+2. Add `satellite_<resource>.yaml.j2` in `roles/filetree_create/templates/`.
+3. Register include block in `roles/filetree_create/tasks/main.yaml` with matching tag.
+4. Add default list and filetree mapping entry in `roles/filetree_read/defaults/main.yml`.
+5. Ensure `roles/filetree_read/tasks/main.yml` loop consumes the new mapping entry.
+6. Add `satellite_<domain>.yaml` in `roles/dispatch/tasks/`.
+7. Register include entry in `roles/dispatch/tasks/main.yaml` with matching tag.
+
+## Naming Rules
+- Data list: `satellite_<resource_plural>`
+- Dispatch task file: `satellite_<domain>.yaml`
+- Export task file: `get_<domain>.yaml`
+- Export template: `satellite_<resource_plural>.yaml.j2`
+- Filetree directory: `satellite_<resource_plural>.d/`
+- References to related objects must use names, never IDs.
+
+## Template Consistency Requirements
+- Mirror the structure used by current templates in `roles/filetree_create/templates/`:
+  - begin with `---`
+  - emit `satellite_<resource_plural>:` as the top-level key
+  - end with `...` when the pattern already uses it
+- Use `roles/filetree_create/templates/satellite_content_view_filters.yaml.j2` as the canonical style reference for new templates.
+- Keep templates as simple as possible; avoid over-engineering and avoid adding object-specific branches unless strictly required by the data model.
+- Reuse cleanup helpers from `clean_fields.j2` when possible (`discard_unwanted_fields`) instead of ad-hoc formatting.
+- Always render template values through `discard_unwanted_fields`; do not output list/dict/scalar values directly from Jinja expressions.
+- Keep field filtering conventions aligned with existing templates:
+  - define `__excluded_fields`
+  - define `__empty_values`
+  - define `__reduce_to_name` and `__translate` (use empty lists when not needed)
+  - when enough API context exists, fill `__reduce_to_name` and `__translate` with real mappings instead of leaving them empty
+  - when `__translate` is populated, use it in the rendering logic to emit translated output keys (do not hardcode translated key names separately)
+  - do not hardcode source keys already represented in `__translate`; derive translated-key behavior from the mapping itself
+  - for list-of-dicts reductions (for example `operatingsystems` by `title`), derive the source item key from `__translate` with a generic fallback (usually `name`) instead of inline key-specific conditionals
+  - reduce related objects to names when needed (for example organization/product references).
+- Exclude ID-like fields from generated YAML (`id`, `*_id`, `*_ids`) and emit equivalent name-based fields whenever possible.
+- Preserve current naming/style conventions for template internals (`__`-prefixed helper variables, stable key naming, deterministic output order).
+- Follow nearby templates for quoting and multiline handling so output stays compatible with `infra.satellite_configuration.format_yaml`.
+- Keep Jinja/YAML indentation exactly in canonical style:
+  - Jinja control tags (`{% ... %}`) must be left-aligned (no leading spaces).
+  - List item start for `loop.index == 1` must be `  - key: value`.
+  - Subsequent keys must be `    key: value`.
+  - Nested list items must keep two extra spaces per YAML level, matching `satellite_content_view_filters.yaml.j2`.
+
+## Verification
+- Run export role and confirm new YAML object file is generated.
+- Run filetree_read + dispatch and confirm object is applied idempotently.
+- Verify tags are identical across `filetree_create`, `filetree_read`, and `dispatch`.
+- Verify the new template style matches existing `satellite_*.yaml.j2` templates.
