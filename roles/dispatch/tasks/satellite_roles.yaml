@@ -1,0 +1,18 @@
+---
+- name: Ensure roles are correct
+  redhat.satellite.role:
+    # Mandatory parameters
+    name: "{{ __current_role.name }}"
+    # Optional parameters
+    description: "{{ __current_role.description | default(omit) }}"
+    organizations: "{{ __current_role.organizations | default(omit) }}"
+    locations: "{{ __current_role.locations | default(omit) }}"
+    filters: "{{ __current_role.filters | default(omit) }}"
+    state: "{{ __current_role.state | default(omit) }}"
+  loop: "{{ satellite_roles }}"
+  loop_control:
+    loop_var: __current_role
+    label: "{{ __current_role.name }}"
+  when: satellite_roles is defined
+  delegate_to: localhost
+...

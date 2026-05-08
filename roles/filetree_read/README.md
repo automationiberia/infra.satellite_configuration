@@ -49,7 +49,7 @@ The role is designed to be used with tags, each tags correspond to an AWX or Aut
 $ ansible-playbook infra.satellite_configuration.run_filetree_create.yaml --list-tags
 
   play #1 (localhost): Export Satellite Configuration TAGS: []
-    TASK TAGS: [activation_keys, always, auth_sources_ldap, content_credentials, content_views, domains, host_collections, hostgroups, lifecycle_environments, locations, operatingsystems, organizations, products, repositories, repository_sets, settings, subnets, sync_plans, usergroups]
+    TASK TAGS: [activation_keys, always, auth_sources_ldap, content_credentials, content_view_filters, content_views, domains, host_collections, hostgroups, installation_mediums, lifecycle_environments, locations, operatingsystems, organizations, partition_tables, products, provisioning_templates, repositories, repository_sets, roles, settings, subnets, sync_plans, usergroups, users]
 ```
 
 ## Example Playbook
@@ -91,6 +91,6 @@ GPLv3+
 - [Ivan Aragonés][link_ivarmu]
 
 [link_satellite_output]: https://github.com/redhat-cop/infra.satellite_configuration/tree/devel/tests/satellite_output
-[link_defaults_line_27]: https://github.com/redhat-cop/infra.satellite_configuration/tree/devel/roles/filetree_read/defaults/main.yml#L29
+[link_defaults_line_27]: https://github.com/redhat-cop/infra.satellite_configuration/tree/devel/roles/filetree_read/defaults/main.yml#L29-L53
 [link_silvinux]: https://github.com/silvinux
 [link_ivarmu]: https://github.com/ivarmu

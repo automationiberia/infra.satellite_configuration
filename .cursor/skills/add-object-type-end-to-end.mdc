@@ -28,6 +28,11 @@ Do not merge partial support for only one role.
 5. Ensure `roles/filetree_read/tasks/main.yml` loop consumes the new mapping entry.
 6. Add `satellite_<domain>.yaml` in `roles/dispatch/tasks/`.
 7. Register include entry in `roles/dispatch/tasks/main.yaml` with matching tag.
+8. Update documentation for the new object type:
+   - `roles/filetree_create/README.md` (export behavior/notes when needed)
+   - `roles/filetree_read/README.md` (tags/examples when applicable)
+   - `roles/dispatch/README.md` links/examples if they reference supported objects
+   - `tests/README.md` role input variable tables (include new `satellite_<resource_plural>`)
 
 ## Naming Rules
 - Data list: `satellite_<resource_plural>`
@@ -69,3 +74,4 @@ Do not merge partial support for only one role.
 - Run filetree_read + dispatch and confirm object is applied idempotently.
 - Verify tags are identical across `filetree_create`, `filetree_read`, and `dispatch`.
 - Verify the new template style matches existing `satellite_*.yaml.j2` templates.
+- Verify documentation references and examples include the new object type where relevant.

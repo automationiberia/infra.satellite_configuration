@@ -1,54 +1,28 @@
 ---
+{% from 'clean_fields.j2' import discard_unwanted_fields %}
+{% set __excluded_fields = ['id', 'created_at', 'updated_at', 'last_login_on', 'last_login_at', 'auth_source_id', 'default_location_id', 'default_organization_id', 'effective_admin', 'otp_required_for_login', 'otp_enabled', 'personal', 'avatar_path', 'locale_name', 'mail_enabled', 'current_login_at', 'current_login_ip', 'login_count', 'password_hash'] %}
+{% set __empty_values = [None, 'None', '', {}, [], [{}]] %}
+{% set __reduce_to_name = ['default_organization', 'default_location', 'auth_source'] %}
+{% set __list_items_to_name = ['roles', 'organizations', 'locations'] %}
+{% set __translate = [{'login': 'name'}, {'roles': 'name'}, {'organizations': 'name'}, {'locations': 'name'}] %}
+{% set __login_output_key = (__translate | selectattr('login', 'defined') | list | first | default({'login': 'name'}))['login'] %}
 satellite_users: {{ [] if detailed_info.results | length == 0 }}
-{% for u in detailed_info.results %}
-  - name: "{{ u.json.login | trim }}"
-{% if u.json.firstname is defined and u.json.firstname is not none and u.json.firstname | trim | length > 0 %}
-    firstname: "{{ u.json.firstname | trim }}"
-{% endif %}
-{% if u.json.lastname is defined and u.json.lastname is not none and u.json.lastname | trim | length > 0 %}
-    lastname: "{{ u.json.lastname | trim }}"
-{% endif %}
-{% if u.json.mail is defined and u.json.mail is not none and u.json.mail | trim | length > 0 %}
-    mail: "{{ u.json.mail | trim }}"
-{% endif %}
-{% if u.json.description is defined and u.json.description is not none and u.json.description | trim | length > 0 %}
-    description: "{{ u.json.description | trim }}"
-{% endif %}
-{% if u.json.admin is defined %}
-    admin: {{ u.json.admin | bool | lower }}
-{% endif %}
-{% if u.json.default_organization is defined and u.json.default_organization is not none and u.json.default_organization.name is defined %}
-    default_organization: "{{ u.json.default_organization.name | trim }}"
-{% endif %}
-{% if u.json.default_location is defined and u.json.default_location is not none and u.json.default_location.name is defined %}
-    default_location: "{{ u.json.default_location.name | trim }}"
-{% endif %}
-{% if u.json.auth_source is defined and u.json.auth_source is not none and u.json.auth_source.name is defined %}
-    auth_source: "{{ u.json.auth_source.name | trim }}"
-{% endif %}
-{% if u.json.timezone is defined and u.json.timezone is not none and u.json.timezone | trim | length > 0 %}
-    timezone: "{{ u.json.timezone | trim }}"
-{% endif %}
-{% if u.json.locale is defined and u.json.locale is not none and u.json.locale | trim | length > 0 %}
-    locale: "{{ u.json.locale | trim }}"
-{% endif %}
-{% if u.json.roles is defined and u.json.roles | length > 0 %}
-    roles:
-{% for r in u.json.roles %}
-      - {{ r.name | trim }}
-{% endfor %}
-{% endif %}
-{% if u.json.organizations is defined and u.json.organizations | length > 0 %}
-    organizations:
-{% for org in u.json.organizations %}
-      - {{ org.name | trim }}
-{% endfor %}
-{% endif %}
-{% if u.json.locations is defined and u.json.locations | length > 0 %}
-    locations:
-{% for loc in u.json.locations %}
-      - {{ loc.name | trim }}
-{% endfor %}
-{% endif %}
+{% for user in detailed_info.results %}
+{%   if user.json.login is defined and user.json.login not in __empty_values %}
+  - {{ __login_output_key }}: {{ discard_unwanted_fields(user.json.login, __excluded_fields, __empty_values, __reduce_to_name, __translate) }}
+{%   for __map_item in (user.json | dict2items) if __map_item.key not in (__excluded_fields + ['login']) and __map_item.value not in __empty_values %}
+{%     if __map_item.key in __list_items_to_name %}
+    {{ __map_item.key }}:
+{%       set __item_key = (__translate | selectattr(__map_item.key, 'defined') | list | first | default({})).get(__map_item.key, 'name') %}
+{%       for __inner_item in __map_item.value %}
+      - {{ discard_unwanted_fields((__inner_item[__item_key] if (__inner_item is mapping and __item_key in __inner_item) else __inner_item), __excluded_fields, __empty_values, __reduce_to_name, __translate) }}
+{%       endfor %}
+{%     elif (__translate | selectattr(__map_item.key, 'defined') | list | length) > 0 %}
+    {{ (__translate | selectattr(__map_item.key, 'defined') | list | first)[__map_item.key] }}: {{ discard_unwanted_fields(__map_item.value, __excluded_fields, __empty_values, __reduce_to_name, __translate) }}
+{%     else %}
+    {{ __map_item.key }}: {{ discard_unwanted_fields(__map_item.value, __excluded_fields, __empty_values, __reduce_to_name, __translate) }}
+{%     endif %}
+{%   endfor %}
+{%   endif %}
 {% endfor %}
 ...

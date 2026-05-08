@@ -153,6 +153,11 @@ Following there's an example of how this collection can be used to export and im
       <td>List with the Satellite Repository Sets</td>
     </tr>
     <tr>
+      <td><code>satellite_roles</code></td>
+      <td><code>[]</code></td>
+      <td>List with the Satellite Roles</td>
+    </tr>
+    <tr>
       <td><code>satellite_settings</code></td>
       <td><code>[]</code></td>
       <td>List with the Satellite Settings</td>
@@ -173,8 +178,13 @@ Following there's an example of how this collection can be used to export and im
       <td>List with the Satellite User Groups</td>
     </tr>
     <tr>
+      <td><code>satellite_users</code></td>
+      <td><code>[]</code></td>
+      <td>List with the Satellite Users</td>
+    </tr>
+    <tr>
       <td><code>satellite_configuration_filetree_read_tasks</code></td>
-      <td><a href="https://github.com/redhat-cop/infra/satellite_configuration/blob/a3a7658d78a04fb15466461763c946c0c8c3a455/roles/filetree_read/defaults/main.yml#L29-L50">See defaults file</a></td>
+      <td><a href="https://github.com/redhat-cop/infra.satellite_configuration/blob/devel/roles/filetree_read/defaults/main.yml#L29-L53">See defaults file</a></td>
       <td>List to define how to read each object type. Each list item needs the following information:
         <ul>
           <li> <strong>name</strong>: Name of the Object Type,

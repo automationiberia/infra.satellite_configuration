@@ -56,4 +56,4 @@ ansible-playbook -i localhost, infra.satellite_configuration.run_filetree_read.y
 
 [GPLv3+](https://github.com/redhat-cop/infra.satellite_configuration/blob/devel/LICENSE)
 
-[link_filetree_read_defaults]: https://github.com/redhat-cop/infra.satellite_configuration/blob/151b53804957a44d3e3bce12d683d736ff5b5ab3/roles/filetree_read/defaults/main.yml#L6-L26
+[link_filetree_read_defaults]: https://github.com/redhat-cop/infra.satellite_configuration/blob/devel/roles/filetree_read/defaults/main.yml#L6-L53

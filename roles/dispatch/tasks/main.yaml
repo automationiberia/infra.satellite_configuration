@@ -21,6 +21,13 @@
       tags: usergroups
   tags: usergroups
 
+- name: Manage Roles
+  ansible.builtin.include_tasks: satellite_roles.yaml
+  args:
+    apply:
+      tags: roles
+  tags: roles
+
 - name: Create Organizations
   ansible.builtin.include_tasks: satellite_organizations.yaml
   args:
@@ -34,6 +41,13 @@
     apply:
       tags: locations
   tags: locations
+
+- name: Manage Users
+  ansible.builtin.include_tasks: satellite_users.yaml
+  args:
+    apply:
+      tags: users
+  tags: users
 
 - name: Manage Lifecycle Environments
   ansible.builtin.include_tasks: satellite_lifecycle_environments.yaml
