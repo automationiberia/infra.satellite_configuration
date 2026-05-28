@@ -305,7 +305,7 @@ def match_quoted_scalar_candidate(line_body):
 
 
 def decode_quoted_yaml_scalar(encoded_value):
-    yaml_fragment = 'value: "{0}"'.format(encoded_value)
+    yaml_fragment = f'value: "{encoded_value}"'
     try:
         decoded_value = yaml.safe_load(yaml_fragment)["value"]
     except Exception:
@@ -315,7 +315,7 @@ def decode_quoted_yaml_scalar(encoded_value):
 
 def build_literal_block_replacement(prefix, trailing_comment, repaired_value, is_sequence, line_break):
     effective_break = line_break or "\n"
-    block_header = "{0}|-{1}".format(prefix, trailing_comment)
+    block_header = f"{prefix}|-{trailing_comment}"
     if is_sequence:
         block_indent_size = len(prefix)
     else:
@@ -326,7 +326,7 @@ def build_literal_block_replacement(prefix, trailing_comment, repaired_value, is
     block_indent = " " * block_indent_size
     rebuilt = [block_header + effective_break]
     for block_line in repaired_value.split("\n"):
-        rebuilt.append("{0}{1}{2}".format(block_indent, block_line, effective_break))
+        rebuilt.append(f"{block_indent}{block_line}{effective_break}")
     return "".join(rebuilt)
 
 
@@ -370,7 +370,7 @@ def repair_single_line_pem_certificate(text):
     if "-----BEGIN" in text and "-----END" in text and "\n" not in text:
         match = re.search(r"(-----BEGIN.*?-----)\s+(.*?)\s+(-----END.*?-----)", text)
         if match:
-            return "{0}\n{1}\n{2}".format(match.group(1), match.group(2).replace(" ", "\n"), match.group(3))
+            return f"{match.group(1)}\n{match.group(2).replace(' ', '\n')}\n{match.group(3)}"
     return text
 
 
@@ -399,7 +399,7 @@ def represent_ansible_unsafe_string(dumper, data):
     return dumper.represent_scalar(UNSAFE_YAML_TAG, scalar)
 
 
-def represent_none_as_empty_yaml_scalar(dumper, data):
+def represent_none_as_empty_yaml_scalar(dumper, _data):
     # Empty scalar keeps YAML null semantics without the literal "null" token (Ansible-friendly).
     return dumper.represent_scalar(YAML_NULL_TAG, "")
 
@@ -444,6 +444,8 @@ def build_format_yaml_dumper_class():
     """SafeDumper subclass: block flow_style lists + custom representers."""
 
     class FormatYamlDumper(PySafeDumper):
+        """Custom dumper enforcing block sequence indentation."""
+
         def expect_block_sequence(self):
             self.increase_indent(flow=False, indentless=False)
             self.state = self.expect_first_block_sequence_item
@@ -535,7 +537,7 @@ def run_module():
     params = module.params
     path = params["path"]
     if not os.path.exists(path):
-        module.fail_json(msg="File not found: {0}".format(path))
+        module.fail_json(msg=f"File not found: {path}")
 
     try:
         with open(path, "r", encoding="utf-8") as file_handle:
@@ -558,9 +560,9 @@ def run_module():
         module.exit_json(changed=False, msg="No changes.")
 
     except yaml.YAMLError as exc:
-        module.fail_json(msg="YAML parse error: {0}".format(exc), exception=traceback.format_exc())
+        module.fail_json(msg=f"YAML parse error: {exc}", exception=traceback.format_exc())
     except Exception as exc:
-        module.fail_json(msg="Error: {0}".format(exc), exception=traceback.format_exc())
+        module.fail_json(msg=f"Error: {exc}", exception=traceback.format_exc())
 
 
 if __name__ == "__main__":

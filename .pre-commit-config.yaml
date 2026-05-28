@@ -47,7 +47,7 @@ repos:
         name: black
         entry: black
         args: [--config=.black.cfg, --check, --diff]
-        types: [python]
+        files: ^(plugins|tests/unit)/.*\.py$
   - repo: https://github.com/pycqa/flake8
     rev: 7.3.0
     hooks:
@@ -55,4 +55,16 @@ repos:
         name: flake8
         entry: flake8
         types: [python]
+  - repo: https://github.com/pycqa/pylint
+    rev: v3.3.9
+    hooks:
+      - id: pylint
+        name: pylint
+        entry: pylint
+        pass_filenames: false
+        always_run: true
+        args: [plugins, tests/unit]
+        additional_dependencies:
+          - ansible-core==2.20.0
+          - PyYAML
 ...
