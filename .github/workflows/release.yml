@@ -1,5 +1,5 @@
 ---
-name: Release - Automated
+name: Release - Automated (Old)
 
 on:
   schedule:
