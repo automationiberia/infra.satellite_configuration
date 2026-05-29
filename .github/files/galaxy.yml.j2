@@ -12,10 +12,14 @@ documentation: {{ collection_repo }}/
 homepage: {{ collection_repo }}/
 issues: {{ collection_repo }}/issues
 build_ignore:
+  - '*.tar.gz'
+  - .ansible
+  - .ansible_tmp
+  - .cursor
+  - .github
+  - .pytest_cache
   - galaxy.yml.j2
   - release.yml
-  - .github
-  - '*.tar.gz'
 license_file: 'LICENSE'
 tags:
   - infrastructure

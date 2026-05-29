@@ -88,4 +88,4 @@ When implementing or reviewing `satellite_users` / `redhat.satellite.user`:
 - Verify tags are identical across `filetree_create`, `filetree_read`, and `dispatch`.
 - Verify the new template style matches existing `satellite_*.yaml.j2` templates.
 - Verify documentation references and examples include the new object type where relevant.
-- Run **`ansible-lint`** on touched roles and fix **`jinja[spacing]`** (and other rules) until clean at the repo’s required profile.
+- Run **`ansible-lint`** on touched roles and fix **`jinja[spacing]`** (and other rules) until clean at the repo's required profile.
