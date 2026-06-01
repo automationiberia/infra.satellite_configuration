@@ -190,16 +190,20 @@ jobs:
     permissions:
       contents: write
     steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+        with:
+          ref: release/${{ needs.calculate_version.outputs.collection_version }}
+
       - name: Create draft GitHub Release
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TAG: ${{ needs.calculate_version.outputs.collection_version }}
         run: |
+          TARGET="release/${TAG}"
           if gh release view "$TAG" --repo "${{ github.repository }}" > /dev/null 2>&1; then
-            echo "::notice::Release $TAG already exists, updating it."
-            gh release edit "$TAG" --repo "${{ github.repository }}" --draft=false --latest
+            echo "::notice::Release $TAG already exists, leaving it unchanged until tarball upload."
           else
-            gh release create "$TAG" --repo "${{ github.repository }}" --generate-notes --draft
+            gh release create "$TAG" --repo "${{ github.repository }}" --target "$TARGET" --generate-notes --draft
           fi
 
   release_galaxy:
@@ -297,7 +301,12 @@ jobs:
             fi
             gh release upload "$TAG" "$tarball" --repo "${{ github.repository }}"
           done
-          gh release edit "$TAG" --repo "${{ github.repository }}" --draft=false --latest
+          IS_DRAFT=$(gh release view "$TAG" --repo "${{ github.repository }}" --json isDraft -q '.isDraft')
+          if [ "$IS_DRAFT" = "true" ]; then
+            gh release edit "$TAG" --repo "${{ github.repository }}" --draft=false --latest
+          else
+            echo "::notice::Release $TAG is already published (immutable); tarball uploaded only."
+          fi
 
   merge_release:
     name: Merge Release Branch

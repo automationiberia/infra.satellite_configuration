@@ -66,6 +66,24 @@ def _check_fstring_backslash_compat(path: Path, source: str, tree: ast.AST) -> l
     return errors
 
 
+def _is_plugin_module_path(path: Path) -> bool:
+    try:
+        rel = path.relative_to(REPO_ROOT)
+    except ValueError:
+        return False
+    return len(rel.parts) >= 3 and rel.parts[0] == "plugins" and rel.parts[1] == "modules"
+
+
+def _check_shebang(path: Path, source: str) -> list[str]:
+    """ansible-test shebang: only plugins/modules/*.py may start with #!/usr/bin/python."""
+    if not source.startswith("#!"):
+        return []
+    if _is_plugin_module_path(path):
+        return []
+    first_line = source.splitlines()[0]
+    return [f"{path}:1:1: unexpected non-module shebang: {first_line!r}"]
+
+
 def _check_python_files() -> list[str]:
     errors = []
     for path in _iter_python_files():
@@ -76,6 +94,7 @@ def _check_python_files() -> list[str]:
             errors.append(f"{path}:{exc.lineno}:{exc.offset}: syntax-error: {exc.msg}")
             continue
 
+        errors.extend(_check_shebang(path, source))
         errors.extend(_check_future_import_and_metaclass(path, source))
         errors.extend(_check_fstring_backslash_compat(path, source, tree))
     return errors
