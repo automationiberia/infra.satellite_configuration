@@ -36,7 +36,6 @@ jobs:
       collection_version: 1.1.0
       collection_repo: https://github.com/redhat-cop/infra.satellite_configuration.git
       base_branch: devel
-      collection_dependencies: redhat.satellite
     secrets:
       ansible_ah_token: ${{ secrets.CRC_PUBLISH_KEY }}
 
