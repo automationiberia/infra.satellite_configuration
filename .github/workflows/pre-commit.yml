@@ -30,6 +30,7 @@ jobs:
   pre-commit_and_sanity:
     needs: approve_run
     environment: requires-approval
+    runs-on: ubuntu-latest
     uses: "redhat-cop/ansible_collections_tooling/.github/workflows/pre_commit_workflow_crc.yml@main"
     with:
       collection_namespace: infra
@@ -37,6 +38,7 @@ jobs:
       collection_version: 1.1.0
       collection_repo: https://github.com/redhat-cop/infra.satellite_configuration.git
       base_branch: devel
+      collection_dependencies: redhat.satellite
     secrets:
       ansible_ah_token: ${{ secrets.CRC_PUBLISH_KEY }}
 
