@@ -41,21 +41,27 @@ jobs:
           GH_RELEASE=$(gh release view --json tagName -q '.tagName' 2>/dev/null || true)
           echo "Latest GitHub release: ${GH_RELEASE:-none}"
 
-          if [ -z "$GIT_TAG" ] && [ -z "$GH_RELEASE" ]; then
-            echo "::error::No existing version found from git tags or GitHub releases"
-            exit 1
-          fi
+          GALAXY_VERSION=$(grep '^version:' galaxy.yml | awk '{print $2}' | tr -d ' "')
+          echo "galaxy.yml version: ${GALAXY_VERSION:-none}"
 
           higher_version() {
             printf '%s\n%s' "$1" "$2" | sort -t. -k1,1n -k2,2n -k3,3n | tail -n1
           }
 
-          if [ -n "$GIT_TAG" ] && [ -n "$GH_RELEASE" ]; then
-            CURRENT=$(higher_version "$GIT_TAG" "$GH_RELEASE")
-          elif [ -n "$GIT_TAG" ]; then
-            CURRENT="$GIT_TAG"
-          else
-            CURRENT="$GH_RELEASE"
+          CURRENT=""
+          for VERSION in "$GIT_TAG" "$GH_RELEASE" "$GALAXY_VERSION"; do
+            if [ -n "$VERSION" ] && echo "$VERSION" | grep -qE '^[0-9]+\.[0-9]+\.[0-9]+$'; then
+              if [ -z "$CURRENT" ]; then
+                CURRENT="$VERSION"
+              else
+                CURRENT=$(higher_version "$CURRENT" "$VERSION")
+              fi
+            fi
+          done
+
+          if [ -z "$CURRENT" ]; then
+            echo "::error::No existing version found from git tags, GitHub releases, or galaxy.yml"
+            exit 1
           fi
 
           echo "Resolved current version: $CURRENT"
