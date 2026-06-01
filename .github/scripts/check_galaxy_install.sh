@@ -22,7 +22,7 @@ ansible-galaxy collection install "${repo_root}" --no-deps -p "${collections_pat
 
 if [[ -z "${ANSIBLE_GALAXY_SERVER_PUBLISHED_TOKEN:-}" && -z "${ANSIBLE_GALAXY_SERVER_VALIDATED_TOKEN:-}" ]]; then
   echo "Skipping dependency resolution check (Automation Hub token not set)."
-  echo "CI resolves redhat.satellite:5.8.0 from console.redhat.com using GALAXY_INFRA_KEY."
+  echo "CI resolves redhat.satellite:5.8.0 from console.redhat.com using CRC_PUBLISH_KEY."
   exit 0
 fi
 
