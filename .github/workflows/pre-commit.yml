@@ -49,18 +49,16 @@ jobs:
           python-version: '3.14'
       - name: Install Ansible
         run: pip install --upgrade "ansible-core>=2.20" pyyaml==6.0.1
-      - name: Install redhat.satellite dependency
-        run: ansible-galaxy collection install -r .github/collections/requirements.yml -vvv
+      - name: Install this collection from checkout
+        run: ansible-galaxy collection install . --no-deps -p ~/.ansible/collections
+      - name: Install redhat.satellite from Automation Hub
+        run: ansible-galaxy collection install -r .github/collections/requirements.yml -s certified -vvv
         env:
           ANSIBLE_GALAXY_SERVER_LIST: certified,galaxy
           ANSIBLE_GALAXY_SERVER_CERTIFIED_URL: https://console.redhat.com/api/automation-hub/content/published/
           ANSIBLE_GALAXY_SERVER_CERTIFIED_AUTH_URL: https://sso.redhat.com/auth/realms/redhat-external/protocol/openid-connect/token
           ANSIBLE_GALAXY_SERVER_CERTIFIED_TOKEN: ${{ secrets.CRC_PUBLISH_KEY }}
           ANSIBLE_GALAXY_SERVER_GALAXY_URL: https://galaxy.ansible.com/api/
-      - name: Link collection into ansible_collections path
-        run: |
-          mkdir -p ~/.ansible/collections/ansible_collections/infra/
-          ln -sfn "${GITHUB_WORKSPACE}" ~/.ansible/collections/ansible_collections/infra/satellite_configuration
       - uses: pre-commit/action@v3.0.1
         env:
           ANSIBLE_GALAXY_SERVER_LIST: certified,galaxy
