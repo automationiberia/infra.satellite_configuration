@@ -1,6 +1,6 @@
 ---
-# Pre-commit, changelog validation, build-import, and markdown link checks.
-# See .pre-commit-config.yaml for hook definitions.
+# This workflow action will run pre-commit, which will execute ansible and yaml linting
+# See .pre-commit-config.yaml for what hooks are executed
 name: pre-commit tests
 
 permissions:
@@ -20,87 +20,24 @@ on:
   schedule:
     - cron: "0 6 * * *"
 
-concurrency:
-  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
-  cancel-in-progress: true
-
 jobs:
   approve_run:
     environment: requires-approval
     runs-on: ubuntu-latest
     steps:
-      - run: echo "Approval granted. Proceeding to CI jobs."
+      - run: echo "Approval granted. Proceeding to reusable workflow."
 
-  changelog:
+  pre-commit_and_sanity:
     needs: approve_run
-    if: github.event_name == 'pull_request' || github.event_name == 'pull_request_target'
-    uses: ansible/ansible-content-actions/.github/workflows/changelog.yaml@main
+    uses: "redhat-cop/ansible_collections_tooling/.github/workflows/pre_commit_workflow_crc.yml@main"
+    with:
+      collection_namespace: infra
+      collection_name: satellite_configuration
+      collection_version: 1.0.0
+      collection_repo: https://github.com/redhat-cop/infra.satellite_configuration.git
+      base_branch: devel
+      # collection_dependencies: redhat.satellite
+    secrets:
+      ansible_ah_token: ${{ secrets.GALAXY_INFRA_KEY }}
 
-  pre-commit:
-    needs: approve_run
-    environment: requires-approval
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: ${{ github.event.pull_request.head.sha || github.sha }}
-      - uses: actions/setup-python@v6
-        with:
-          python-version: '3.14'
-      - name: Install Ansible
-        run: pip install --upgrade "ansible-core>=2.20" pyyaml==6.0.1
-      - name: Install this collection from checkout
-        run: ansible-galaxy collection install . --no-deps -p ~/.ansible/collections
-      - name: Install redhat.satellite from Automation Hub
-        run: ansible-galaxy collection install -r .github/collections/requirements.yml -s certified -vvv
-        env:
-          ANSIBLE_GALAXY_SERVER_LIST: certified,galaxy
-          ANSIBLE_GALAXY_SERVER_CERTIFIED_URL: https://console.redhat.com/api/automation-hub/content/published/
-          ANSIBLE_GALAXY_SERVER_CERTIFIED_AUTH_URL: https://sso.redhat.com/auth/realms/redhat-external/protocol/openid-connect/token
-          ANSIBLE_GALAXY_SERVER_CERTIFIED_TOKEN: ${{ secrets.CRC_PUBLISH_KEY }}
-          ANSIBLE_GALAXY_SERVER_GALAXY_URL: https://galaxy.ansible.com/api/
-      - uses: pre-commit/action@v3.0.1
-        env:
-          ANSIBLE_GALAXY_SERVER_LIST: certified,galaxy
-          ANSIBLE_GALAXY_SERVER_CERTIFIED_URL: https://console.redhat.com/api/automation-hub/content/published/
-          ANSIBLE_GALAXY_SERVER_CERTIFIED_AUTH_URL: https://sso.redhat.com/auth/realms/redhat-external/protocol/openid-connect/token
-          ANSIBLE_GALAXY_SERVER_CERTIFIED_TOKEN: ${{ secrets.CRC_PUBLISH_KEY }}
-          ANSIBLE_GALAXY_SERVER_GALAXY_URL: https://galaxy.ansible.com/api/
-
-  build-import:
-    needs: approve_run
-    uses: ansible/ansible-content-actions/.github/workflows/build_import.yaml@main
-
-  markdown-link-check:
-    needs: approve_run
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: ${{ github.event.pull_request.head.sha || github.sha }}
-      - uses: tcort/github-action-markdown-link-check@v1
-        with:
-          use-quiet-mode: 'yes'
-          use-verbose-mode: 'yes'
-          check-modified-files-only: 'yes'
-          config-file: '.mlc_config.json'
-          base-branch: devel
-
-  all_green:
-    if: ${{ always() }}
-    needs:
-      - pre-commit
-      - build-import
-      - markdown-link-check
-      - changelog
-    runs-on: ubuntu-latest
-    steps:
-      - run: >-
-          python -c "import sys; results = {
-            'pre-commit': '${{ needs.pre-commit.result }}',
-            'build-import': '${{ needs.build-import.result }}',
-            'markdown-link-check': '${{ needs.markdown-link-check.result }}',
-            'changelog': '${{ needs.changelog.result }}',
-          }; failed = [k for k, v in results.items() if v not in ('success', 'skipped')];
-          print(results);
-          sys.exit(1 if failed else 0)"
+...

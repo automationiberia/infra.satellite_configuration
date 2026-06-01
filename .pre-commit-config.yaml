@@ -49,12 +49,6 @@ repos:
           - PyYAML
         pass_filenames: false
         always_run: true
-      - id: galaxy-install-check
-        name: galaxy collection install check
-        entry: bash .github/scripts/check_galaxy_install.sh
-        language: system
-        pass_filenames: false
-        always_run: true
   - repo: https://github.com/ambv/black
     rev: 26.5.1
     hooks:
