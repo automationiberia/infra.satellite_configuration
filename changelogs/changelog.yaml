@@ -99,3 +99,11 @@ releases:
     - update_dispatch_and_read.yaml
     - update_readmes.yaml
     release_date: '2026-06-01'
+  1.1.1:
+    changes:
+      bugfixes:
+      - Re-publish collection as 1.1.1 after withdrawing the failed 1.1.0 GitHub release
+        and CRC import review.
+    fragments:
+    - release_1_1_1.yaml
+    release_date: '2026-06-01'

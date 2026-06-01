@@ -4,6 +4,14 @@ infra.satellite\_configuration Release Notes
 
 .. contents:: Topics
 
+v1.1.1
+======
+
+Bugfixes
+--------
+
+- Re-publish collection as 1.1.1 after withdrawing the failed 1.1.0 GitHub release and CRC import review.
+
 v1.1.0
 ======
 
