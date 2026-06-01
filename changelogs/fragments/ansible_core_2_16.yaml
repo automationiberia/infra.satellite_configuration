@@ -1,3 +1,0 @@
----
-minor_changes:
-  - Lower the minimum supported ``ansible-core`` version to 2.16 (``meta/runtime.yml``), aligned with ``redhat.satellite`` and Satellite 6.18 shipped stacks.

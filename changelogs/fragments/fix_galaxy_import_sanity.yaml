@@ -1,6 +1,0 @@
----
-minor_changes:
-  - format_yaml - fix PEM repair f-string for Python 3.7–3.11 compatibility (required by ansible-test sanity and galaxy-importer).
-  - Add a local collection Python sanity check in pre-commit to mirror galaxy-importer and ansible-test feedback before publishing.
-bugfixes:
-  - tests/unit - add Ansible module boilerplate to unit test modules so ansible-test sanity passes on published artifacts.

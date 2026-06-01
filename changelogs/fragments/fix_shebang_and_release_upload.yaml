@@ -1,4 +1,0 @@
----
-bugfixes:
-  - tests/unit - remove module shebang from unit test file (ansible-test shebang sanity on CRC import).
-  - release_auto workflow - create GitHub releases as draft on the release branch; publish only after tarball upload to avoid immutable-tag errors on re-run.
