@@ -370,7 +370,8 @@ def repair_single_line_pem_certificate(text):
     if "-----BEGIN" in text and "-----END" in text and "\n" not in text:
         match = re.search(r"(-----BEGIN.*?-----)\s+(.*?)\s+(-----END.*?-----)", text)
         if match:
-            return f"{match.group(1)}\n{match.group(2).replace(' ', '\n')}\n{match.group(3)}"
+            body = match.group(2).replace(" ", "\n")
+            return f"{match.group(1)}\n{body}\n{match.group(3)}"
     return text
 
 
