@@ -35,7 +35,7 @@ collections:
 
 The following are also requirements:
 
-- Ansible Core >= 2.14
+- Ansible Core >= 2.16
 - Python library `PyYAML` (used by the YAML formatter module)
 - Red Hat Satellite 6.17
 - Access to Satellite API
