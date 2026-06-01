@@ -1,3 +1,10 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
+from __future__ import absolute_import, division, print_function
+
+__metaclass__ = type
+
 """Unit tests for the format_yaml module helpers."""
 
 import importlib.util
@@ -13,7 +20,7 @@ SPEC.loader.exec_module(FORMAT_YAML)
 
 class TestCleanYamlTreeCryptoRepair(unittest.TestCase):
     def test_repairs_flattened_crypto_key_when_auto_block_false(self):
-        flattened_pem = "-----BEGIN CERTIFICATE-----\nLINEONE\nLINETWO\nLINETHREE\n-----END CERTIFICATE-----"
+        flattened_pem = "-----BEGIN CERTIFICATE----- LINEONE LINETWO LINETHREE -----END CERTIFICATE-----"
         tree = {"cert": flattened_pem}
 
         FORMAT_YAML.clean_yaml_tree(tree, auto_block=False)
@@ -24,7 +31,7 @@ class TestCleanYamlTreeCryptoRepair(unittest.TestCase):
         self.assertIn("\n-----END CERTIFICATE-----", repaired_value)
 
     def test_repairs_flattened_crypto_key_in_list_when_auto_block_false(self):
-        flattened_key = "-----BEGIN PRIVATE KEY-----\nAAAABBBB\nCCCC\n-----END PRIVATE KEY-----"
+        flattened_key = "-----BEGIN PRIVATE KEY----- AAAABBBB CCCC -----END PRIVATE KEY-----"
         tree = [flattened_key]
 
         FORMAT_YAML.clean_yaml_tree(tree, auto_block=False)

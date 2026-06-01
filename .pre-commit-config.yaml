@@ -40,6 +40,15 @@ repos:
           - PyYAML
         pass_filenames: false
         always_run: true
+      - id: collection-python-sanity
+        name: collection python sanity
+        entry: python .github/scripts/check_collection_python.py
+        language: python
+        additional_dependencies:
+          - ansible-core==2.20.0
+          - PyYAML
+        pass_filenames: false
+        always_run: true
   - repo: https://github.com/ambv/black
     rev: 26.5.1
     hooks:
