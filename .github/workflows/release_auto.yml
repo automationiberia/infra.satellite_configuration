@@ -351,34 +351,34 @@ jobs:
     secrets:
       quay_token: ${{ secrets.quay_token }}
 
-  send_message:
-    name: Send Matrix Notification
-    needs:
-      - release_check
-      - calculate_version
-    if: ${{ !cancelled() && needs.release_check.result == 'success' }}
-    runs-on: ubuntu-latest
-    steps:
-      - name: Send message to newsbot channel
-        uses: fadenb/matrix-chat-message@89baab2b9ea06ffdd5f5b1ca80e9f888c3d7c9d3 # v0.0.6
-        with:
-          homeserver: "matrix.org"
-          token: ${{ secrets.matrix_token }}
-          channel: "!pMZboYFCScZJfXmOtH:ansible.im"
-          messagetype: "m.text"
-          message: |
-            @newsbot ${{ env.COLLECTION_NAMESPACE }}.${{ env.COLLECTION_NAME }} ${{ needs.calculate_version.outputs.collection_version }} has been released.
-            This Ansible collection allows for easy interaction with an AWX or Ansible Controller server via Ansible roles using the AWX/Controller collection modules.
-            Visit ${{ env.COLLECTION_REPO }} For more information and updates.
+  # send_message:
+  #   name: Send Matrix Notification
+  #   needs:
+  #     - release_check
+  #     - calculate_version
+  #   if: ${{ !cancelled() && needs.release_check.result == 'success' }}
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Send message to newsbot channel
+  #       uses: fadenb/matrix-chat-message@89baab2b9ea06ffdd5f5b1ca80e9f888c3d7c9d3 # v0.0.6
+  #       with:
+  #         homeserver: "matrix.org"
+  #         token: ${{ secrets.matrix_token }}
+  #         channel: "!pMZboYFCScZJfXmOtH:ansible.im"
+  #         messagetype: "m.text"
+  #         message: |
+  #           @newsbot ${{ env.COLLECTION_NAMESPACE }}.${{ env.COLLECTION_NAME }} ${{ needs.calculate_version.outputs.collection_version }} has been released.
+  #           This Ansible collection allows for easy interaction with an AWX or Ansible Controller server via Ansible roles using the AWX/Controller collection modules.
+  #           Visit ${{ env.COLLECTION_REPO }} For more information and updates.
 
-      - name: Send message to team channel
-        uses: fadenb/matrix-chat-message@89baab2b9ea06ffdd5f5b1ca80e9f888c3d7c9d3 # v0.0.6
-        with:
-          homeserver: "matrix.org"
-          token: ${{ secrets.matrix_token }}
-          channel: "!ccrdinGkMeyakqWzIM:matrix.org"
-          messagetype: "m.text"
-          message: |
-            ${{ env.COLLECTION_NAMESPACE }}.${{ env.COLLECTION_NAME }} ${{ needs.calculate_version.outputs.collection_version }} has been released.
-            This Ansible collection allows for easy interaction with an AWX or Ansible Controller server via Ansible roles using the AWX/Controller collection modules.
-            Visit ${{ env.COLLECTION_REPO }} For more information and updates.
+  #     - name: Send message to team channel
+  #       uses: fadenb/matrix-chat-message@89baab2b9ea06ffdd5f5b1ca80e9f888c3d7c9d3 # v0.0.6
+  #       with:
+  #         homeserver: "matrix.org"
+  #         token: ${{ secrets.matrix_token }}
+  #         channel: "!ccrdinGkMeyakqWzIM:matrix.org"
+  #         messagetype: "m.text"
+  #         message: |
+  #           ${{ env.COLLECTION_NAMESPACE }}.${{ env.COLLECTION_NAME }} ${{ needs.calculate_version.outputs.collection_version }} has been released.
+  #           This Ansible collection allows for easy interaction with an AWX or Ansible Controller server via Ansible roles using the AWX/Controller collection modules.
+  #           Visit ${{ env.COLLECTION_REPO }} For more information and updates.
