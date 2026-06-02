@@ -20,16 +20,13 @@ profile: production
 # with verbosity set to 1, its dumping 'unknown file type messages'
 # verbosity: 1
 skip_list:
-  # Skipping fqcn[action] because this collection supports using either the awx.awx or ansible.controller collection
-  #   so a FQCN cannot be used in module names
-  - fqcn[action]
   - fqcn[keyword]
-  - meta-runtime # This collection with the appropriate awx.awx or ansible.controller still works with older ansible.
-  - role-name[path]
+  - meta-runtime # requires_ansible in meta/runtime.yml vs galaxy.yml dependencies
   - sanity[cannot-ignore] # We're only ignoring sanity rules when we have to
   - var-naming[no-role-prefix]
   - jinja[invalid]
 kinds:
+  - playbooks: "playbooks/*.{yml,yaml}"
   - playbooks: "**/examples/templates/*.{yml,yaml}"
   - playbooks: "**/examples/*.{yml,yaml}"
   - playbooks: "**/examples/automatetheautomation/*.{yml,yaml}"

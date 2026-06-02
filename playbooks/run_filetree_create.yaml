@@ -3,6 +3,8 @@
   hosts: localhost
   connection: local
   gather_facts: false
+  collections:
+    - infra.satellite_configuration
   tasks:
     - name: Ensure that the output_path exists
       ansible.builtin.file:
@@ -13,6 +15,5 @@
 
     - name: Get Satellite Objects
       ansible.builtin.import_role:
-        # Resolve sibling roles/ from this playbook (git checkout or installed collection layout).
-        name: "{{ [playbook_dir | dirname, 'roles', 'filetree_create'] | path_join }}"
+        name: infra.satellite_configuration.filetree_create
 ...

@@ -72,7 +72,7 @@ collections:
 
 ## Using this collection
 
-Examples of how to run the playbooks in the `playbooks` directory can be found at [`tests/README.md`](tests/README.md).
+Examples of how to run the playbooks in the `playbooks` directory can be found in the [`tests README`](https://github.com/redhat-cop/infra.satellite_configuration/blob/devel/tests/README.md).
 
 ### Scale at your needs
 
@@ -94,10 +94,14 @@ We plan to regularly release new minor or bugfix versions once new features or b
 
 Releasing the current major version happens from the `devel` branch.
 
+## Support
+
+This collection is [Ansible Validated Content](https://access.redhat.com/articles/3166901). It is reviewed and tested by Red Hat but is not supported under a Red Hat SLA. For reporting issues and requesting improvements, file an issue at the [Satellite Configuration repository](https://github.com/redhat-cop/infra.satellite_configuration/issues). Community help is also available on the [Ansible Forum](https://forum.ansible.com/tag/infra-config-as-code).
+
 ## Contributing to this collection
 
 We welcome community contributions to this collection. If you find problems, please open an issue or create a PR against the [Satellite Configuration repository](https://github.com/redhat-cop/infra.satellite_configuration).
-More information about contributing can be found in our [Contribution Guidelines.](https://github.com/redhat-cop/infra.satellite_configuration/blob/devel/.github/CONTRIBUTING.md)
+More information about contributing can be found in our [Contribution Guidelines](https://github.com/redhat-cop/infra.satellite_configuration/blob/devel/.github/CONTRIBUTING.md).
 
 ## Code of Conduct
 
