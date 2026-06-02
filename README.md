@@ -72,7 +72,7 @@ collections:
 
 ## Using this collection
 
-Examples of how to run the playbooks in the `playbooks` directory can be found in the [`tests README`](https://github.com/redhat-cop/infra.satellite_configuration/blob/devel/tests/README.md).
+Examples of how to run the playbooks in the `playbooks` directory can be found in the [`tests/README`](https://github.com/redhat-cop/infra.satellite_configuration/blob/devel/tests/README.md).
 
 ### Scale at your needs
 
@@ -96,7 +96,9 @@ Releasing the current major version happens from the `devel` branch.
 
 ## Support
 
-This collection is [Ansible Validated Content](https://access.redhat.com/articles/3166901). It is reviewed and tested by Red Hat but is not supported under a Red Hat SLA. For reporting issues and requesting improvements, file an issue at the [Satellite Configuration repository](https://github.com/redhat-cop/infra.satellite_configuration/issues). Community help is also available on the [Ansible Forum](https://forum.ansible.com/tag/infra-config-as-code).
+As Red Hat Ansible Validated Content, this collection is entitled to support through the Ansible Automation Platform (AAP) using the **Create issue** button on the top right corner of the collection page in Red Hat Ansible Automation Hub.
+
+If a support case cannot be opened with Red Hat and the collection has been obtained either from Galaxy or GitHub, community help may be available on the [Ansible Forum](https://forum.ansible.com/).
 
 ## Contributing to this collection
 
