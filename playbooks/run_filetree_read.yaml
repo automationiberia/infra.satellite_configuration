@@ -1,20 +1,23 @@
 ---
-- name: Playbook to test the roles 'infra.satellite_configuration'.'filetree_read' and 'dispatch'
+- name: Playbook to test filetree_read and dispatch roles
   hosts: localhost
   connection: local
   gather_facts: false
-  vars:
-    username: &username "{{ satellite.admin.username }}"
-    password: &password "{{ satellite.admin.password }}"
-    server_url: &server_url "{{ satellite.server_url }}"
-    validate_certs: &validate_certs "{{ satellite.validate_certs }}"
+  collections:
+    - infra.satellite_configuration
+    - redhat.satellite
   module_defaults:
     group/redhat.satellite.satellite:
-      username: *username
-      password: *password
-      server_url: *server_url
-      validate_certs: *validate_certs
-  roles:
-    - role: infra.satellite_configuration.filetree_read
-    - role: infra.satellite_configuration.dispatch
+      username: "{{ satellite.admin.username }}"
+      password: "{{ satellite.admin.password }}"
+      server_url: "{{ satellite.server_url }}"
+      validate_certs: "{{ satellite.validate_certs }}"
+  tasks:
+    - name: Load Satellite configuration from filetree
+      ansible.builtin.import_role:
+        name: infra.satellite_configuration.filetree_read
+
+    - name: Apply Satellite configuration
+      ansible.builtin.import_role:
+        name: infra.satellite_configuration.dispatch
 ...
