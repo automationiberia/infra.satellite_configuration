@@ -4,6 +4,16 @@ infra.satellite\_configuration Release Notes
 
 .. contents:: Topics
 
+v1.1.2
+======
+
+Bugfixes
+--------
+
+- README - use absolute URLs for Automation Hub rendering and add a Support section per certified collection template.
+- ansible-lint - remove evaluate-only rule suppressions for fqcn[action] and role-name[path].
+- playbooks - refactor example playbooks for ansible-lint syntax-check compatibility (remove YAML anchors, use collection FQCN roles).
+
 v1.1.1
 ======
 
