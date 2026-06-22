@@ -1,20 +1,21 @@
 ---
 minor_changes:
-  - Add role ``global_vars`` for shared static variables (built-in role skips, sensitive var lists, filetree path, Red Hat CDN filter).
-  - Unify export and import under ``satellite_configuration_filetree_path`` with ``satellite_<type>.d/`` fragments (no org/env path nesting).
-  - Add dispatch support for domains, subnets, and host groups via ``redhat.satellite.domains``, ``subnets``, and ``hostgroups``.
-  - Add optional subscription manifest upload (``redhat.satellite.manifest``) and pre-flight manifest validation before content tasks.
-  - Re-enable content view publish/promote dispatch with ``satellite_configuration_dispatch_content_view_publish_promote`` and ``satellite_content_view_versions``.
-  - Restructure ``configs/`` to the same ``*.d`` layout for greenfield CaC authoring.
-  - Add ``satellite_configuration_unwrap_raw_markers`` filter and ``raw_markers`` module utils for CaC round-trip.
+  - Add role 'global_vars' for shared static variables (built-in role skips, sensitive var lists, filetree path, Red Hat CDN filter).
+  - Unify export and import under 'satellite_configuration_filetree_path' with 'satellite_<type>.d/' fragments (no org/env path nesting).
+  - Add dispatch support for domains, subnets, and host groups via 'redhat.satellite.domains', 'subnets', and 'hostgroups'.
+  - Add optional subscription manifest upload ('redhat.satellite.manifest') and pre-flight manifest validation before content tasks.
+  - Re-enable content view publish/promote dispatch with 'satellite_configuration_dispatch_content_view_publish_promote' and 'satellite_content_view_versions'.
+  - Restructure 'configs/' to the same '*.d' layout for greenfield CaC authoring.
+  - Add 'satellite_configuration_unwrap_raw_markers' filter and 'raw_markers' module utils for CaC round-trip.
   - Document supported object types and known gaps (compute resources, global parameters, SCAP, job templates, webhooks, HTTP proxies, remote execution).
 
 bugfixes:
-  - ``format_yaml`` - preserve PEM/GPG multiline content, quote YAML-significant scalars, unwrap ``{% raw %}``/``{% endraw %}`` wrappers, and normalize legacy ``!unsafe`` tags.
-  - ``filetree_create`` export templates - fix users, products, content credentials, settings, and repository sets YAML formatting (colons, commas, SSH keys, raw fields).
-  - ``filetree_read`` - load provisioning templates with ``slurp``/``from_yaml`` to avoid Jinja2 parsing ERB bodies; unwrap raw markers on dispatch.
-  - ``filetree_create`` - skip readonly settings, locked/built-in roles, Red Hat CDN repositories, enabled-only repository sets, and host collection membership by default.
-  - ``filetree_create`` - enrich kickstart ``releasever`` from enabled repositories; strip ``use_netgroups`` for Active Directory LDAP sources on export.
-  - ``dispatch`` - apply RBAC in dependency order (organizations → locations → roles → users → usergroups); skip Red Hat CDN repos; opt-in host collection membership.
-  - ``dispatch`` - scope ``no_log`` to sensitive object types only; filter locked provisioning templates before loop evaluation.
-  - ``galaxy.yml`` - require ``redhat.satellite: \">=5.8.0\"`` instead of an exact pin.
+  - 'format_yaml' - preserve PEM/GPG multiline content, quote YAML-significant scalars, unwrap '{% raw %}'/'{% endraw %}' wrappers, and normalize legacy '!unsafe' tags.
+  - 'filetree_create' export templates - fix users, products, content credentials, settings, and repository sets YAML formatting (colons, commas, SSH keys, raw fields).
+  - 'filetree_read' - load provisioning templates with 'slurp'/'from_yaml' to avoid Jinja2 parsing ERB bodies; unwrap raw markers on dispatch.
+  - 'filetree_create' - skip readonly settings, locked/built-in roles, Red Hat CDN repositories, enabled-only repository sets, and host collection membership by default.
+  - 'filetree_create' - enrich kickstart 'releasever' from enabled repositories; strip 'use_netgroups' for Active Directory LDAP sources on export.
+  - 'dispatch' - apply RBAC in dependency order (organizations → locations → roles → users → usergroups); skip Red Hat CDN repos; opt-in host collection membership.
+  - 'dispatch' - scope 'no_log' to sensitive object types only; filter locked provisioning templates before loop evaluation.
+  - 'galaxy.yml' - require 'redhat.satellite: \">=5.8.0\"' instead of an exact pin.
+...
