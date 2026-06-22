@@ -10,12 +10,12 @@ minor_changes:
   - Document supported object types and known gaps (compute resources, global parameters, SCAP, job templates, webhooks, HTTP proxies, remote execution).
 
 bugfixes:
-  - 'format_yaml' - preserve PEM/GPG multiline content, quote YAML-significant scalars, unwrap '{% raw %}'/'{% endraw %}' wrappers, and normalize legacy '!unsafe' tags.
-  - 'filetree_create' export templates - fix users, products, content credentials, settings, and repository sets YAML formatting (colons, commas, SSH keys, raw fields).
-  - 'filetree_read' - load provisioning templates with 'slurp'/'from_yaml' to avoid Jinja2 parsing ERB bodies; unwrap raw markers on dispatch.
-  - 'filetree_create' - skip readonly settings, locked/built-in roles, Red Hat CDN repositories, enabled-only repository sets, and host collection membership by default.
-  - 'filetree_create' - enrich kickstart 'releasever' from enabled repositories; strip 'use_netgroups' for Active Directory LDAP sources on export.
-  - 'dispatch' - apply RBAC in dependency order (organizations → locations → roles → users → usergroups); skip Red Hat CDN repos; opt-in host collection membership.
-  - 'dispatch' - scope 'no_log' to sensitive object types only; filter locked provisioning templates before loop evaluation.
-  - 'galaxy.yml' - require 'redhat.satellite: \">=5.8.0\"' instead of an exact pin.
+  - "'format_yaml' - preserve PEM/GPG multiline content, quote YAML-significant scalars, unwrap '{% raw %}'/'{% endraw %}' wrappers, and normalize legacy '!unsafe' tags."
+  - "'filetree_create' export templates - fix users, products, content credentials, settings, and repository sets YAML formatting (colons, commas, SSH keys, raw fields)."
+  - "'filetree_read' - load provisioning templates with 'slurp'/'from_yaml' to avoid Jinja2 parsing ERB bodies; unwrap raw markers on dispatch."
+  - "'filetree_create' - skip readonly settings, locked/built-in roles, Red Hat CDN repositories, enabled-only repository sets, and host collection membership by default."
+  - "'filetree_create' - enrich kickstart 'releasever' from enabled repositories; strip 'use_netgroups' for Active Directory LDAP sources on export."
+  - "'dispatch' - apply RBAC in dependency order (organizations → locations → roles → users → usergroups); skip Red Hat CDN repos; opt-in host collection membership."
+  - "'dispatch' - scope 'no_log' to sensitive object types only; filter locked provisioning templates before loop evaluation."
+  - "'galaxy.yml' - require 'redhat.satellite: \">=5.8.0\"' instead of an exact pin.""
 ...
