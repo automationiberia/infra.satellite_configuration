@@ -10,12 +10,13 @@
     read_whole_file: true
     recurse: true
   register: __files_list
-  no_log: "{{ satellite_configuration_filetree_read_secure_logging }}"
+  no_log: "{{ satellite_configuration_filetree_read_secure_logging and (__task_filetree_read.var in satellite_configuration_sensitive_vars) }}"
 
 - name: "Block to read things when they exists"
   when: __files_list.files | length > 0
   block:
     - name: "Read definitions for {{ __task_filetree_read.name }}"
+      when: not (__task_filetree_read.var in satellite_configuration_filetree_read_raw_template_vars)
       ansible.builtin.include_vars:
         file: "{{ __read_definitions_item.path }}"
       loop: "{{ __files_list.files }}"
@@ -24,28 +25,59 @@
         label: "{{ __read_definitions_item.path }}"
       register: __contents_filetree_item
       failed_when: "'VARIABLE IS NOT DEFINED' in __contents_filetree_item"
-      no_log: "{{ satellite_configuration_filetree_read_secure_logging }}"
+      no_log: "{{ satellite_configuration_filetree_read_secure_logging and (__task_filetree_read.var in satellite_configuration_sensitive_vars) }}"
+
+    - name: "Read definitions without Jinja templating for {{ __task_filetree_read.name }}"
+      when: __task_filetree_read.var in satellite_configuration_filetree_read_raw_template_vars
+      ansible.builtin.slurp:
+        src: "{{ __read_definitions_item.path }}"
+      loop: "{{ __files_list.files }}"
+      loop_control:
+        loop_var: __read_definitions_item
+        label: "{{ __read_definitions_item.path }}"
+      register: __contents_filetree_item
+      no_log: "{{ satellite_configuration_filetree_read_secure_logging and (__task_filetree_read.var in satellite_configuration_sensitive_vars) }}"
 
     - name: "Populate list for {{ __task_filetree_read.name }}"
       ansible.builtin.set_fact:
         "__populate_{{ __task_filetree_read.var }}": "{{ (lookup('vars', '__populate_' + __task_filetree_read.var, default=[]) + __populate_list_item.ansible_facts[__task_filetree_read.var])
           }}"
-      # "__populate_{{ __task_filetree_read.var }}": "{{ (lookup('vars', '__populate_' + __task_filetree_read.var, default=[]) + __populate_list_item.ansible_facts[__task_filetree_read.var]) | unique(case_sensitive='true') }}"
       loop: "{{ __contents_filetree_item.results }}"
       loop_control:
         loop_var: __populate_list_item
-        label: "{{ __populate_list_item.ansible_included_var_files | join(', ') }}"
-      no_log: "{{ satellite_configuration_filetree_read_secure_logging }}"
+        label: "{{ __populate_list_item.ansible_included_var_files | default(__populate_list_item.source | default('')) | join(', ') }}"
+      no_log: "{{ satellite_configuration_filetree_read_secure_logging and (__task_filetree_read.var in satellite_configuration_sensitive_vars) }}"
       when:
+        - not (__task_filetree_read.var in satellite_configuration_filetree_read_raw_template_vars)
         - __contents_filetree_item is defined
         - __contents_filetree_item.results is defined
         - __contents_filetree_item.results | length > 0
         - __populate_list_item.ansible_facts[__task_filetree_read.var] is defined
 
+    - name: "Populate list from slurped YAML for {{ __task_filetree_read.name }}"
+      ansible.builtin.set_fact:
+        "__populate_{{ __task_filetree_read.var }}": >-
+          {{
+            lookup('vars', '__populate_' + __task_filetree_read.var, default=[])
+            + (__populate_slurp_item.content | b64decode | from_yaml)[__task_filetree_read.var]
+          }}
+      loop: "{{ __contents_filetree_item.results }}"
+      loop_control:
+        loop_var: __populate_slurp_item
+        label: "{{ __populate_slurp_item.source | default('') }}"
+      no_log: "{{ satellite_configuration_filetree_read_secure_logging and (__task_filetree_read.var in satellite_configuration_sensitive_vars) }}"
+      when:
+        - __task_filetree_read.var in satellite_configuration_filetree_read_raw_template_vars
+        - __contents_filetree_item is defined
+        - __contents_filetree_item.results is defined
+        - __contents_filetree_item.results | length > 0
+        - __populate_slurp_item.content is defined
+        - (__populate_slurp_item.content | b64decode | from_yaml)[__task_filetree_read.var] is defined
+
     - name: "Set Data Structure for {{ __task_filetree_read.name }}"
       ansible.builtin.set_fact:
         "{{ __task_filetree_read.var }}": "{{ lookup('vars', '__populate_' + __task_filetree_read.var) }}"
-      no_log: "{{ satellite_configuration_filetree_read_secure_logging }}"
+      no_log: "{{ satellite_configuration_filetree_read_secure_logging and (__task_filetree_read.var in satellite_configuration_sensitive_vars) }}"
       when: lookup('vars', '__populate_' + __task_filetree_read.var) is defined
 
     - name: "Show loaded information"

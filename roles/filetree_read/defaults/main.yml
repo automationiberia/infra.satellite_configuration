@@ -1,13 +1,14 @@
 ---
 # defaults file for filetree_read
 
-satellite_configuration_filetree_read_secure_logging: "{{ satellite_configuration_secure_logging | default(true) }}"
+satellite_configuration_filetree_read_secure_logging: true
 
 satellite_activation_keys: []
 satellite_auth_sources_ldap: []
 satellite_content_credentials: []
 satellite_content_view_filters: []
 satellite_content_views: []
+satellite_content_view_versions: []
 satellite_domains: []
 satellite_host_collections: []
 satellite_hostgroups: []
@@ -29,29 +30,29 @@ satellite_users: []
 satellite_usergroups: []
 # yamllint disable rule:commas
 satellite_configuration_filetree_read_tasks:
-  - {name: satellite_activation_keys,         var: satellite_activation_keys,         tags: activation_keys,         path: "{{ dir_orgs_vars }}/{{ orgs }}/env/common/satellite_activation_keys.d/"}
-  - {name: satellite_auth_sources_ldap,       var: satellite_auth_sources_ldap,       tags: auth_sources_ldap,       path: "{{ dir_orgs_vars }}/{{ orgs }}/env/common/satellite_auth_sources_ldap.d/"}
-  - {name: satellite_content_credentials,     var: satellite_content_credentials,     tags: content_credentials,     path: "{{ dir_orgs_vars }}/{{ orgs }}/env/common/satellite_content_credentials.d/"}
-  - {name: satellite_content_view_filters,    var: satellite_content_view_filters,    tags: content_view_filters,    path: "{{ dir_orgs_vars }}/{{ orgs }}/env/common/satellite_content_view_filters.d/"}
-  - {name: satellite_content_views,           var: satellite_content_views,           tags: content_views,           path: "{{ dir_orgs_vars }}/{{ orgs }}/env/common/satellite_content_views.d/"}
-  - {name: satellite_domains,                 var: satellite_domains,                 tags: domains,                 path: "{{ dir_orgs_vars }}/{{ orgs }}/env/common/satellite_domains.d/"}
-  - {name: satellite_host_collections,        var: satellite_host_collections,        tags: host_collections,        path: "{{ dir_orgs_vars }}/{{ orgs }}/env/common/satellite_host_collections.d/"}
-  - {name: satellite_hostgroups,              var: satellite_hostgroups,              tags: hostgroups,              path: "{{ dir_orgs_vars }}/{{ orgs }}/env/common/satellite_hostgroups.d/"}
-  - {name: satellite_installation_mediums,    var: satellite_installation_mediums,    tags: installation_mediums,    path: "{{ dir_orgs_vars }}/{{ orgs }}/env/common/satellite_installation_mediums.d/"}
-  - {name: satellite_lifecycle_environments,  var: satellite_lifecycle_environments,  tags: lifecycle_environments,  path: "{{ dir_orgs_vars }}/{{ orgs }}/env/common/satellite_lifecycle_environments.d/"}
-  - {name: satellite_locations,               var: satellite_locations,               tags: locations,               path: "{{ dir_orgs_vars }}/{{ orgs }}/env/common/satellite_locations.d/"}
-  - {name: satellite_operatingsystems,        var: satellite_operatingsystems,        tags: operatingsystems,        path: "{{ dir_orgs_vars }}/{{ orgs }}/env/common/satellite_operatingsystems.d/"}
-  - {name: satellite_organizations,           var: satellite_organizations,           tags: organizations,           path: "{{ dir_orgs_vars }}/{{ orgs }}/env/common/satellite_organizations.d/"}
-  - {name: satellite_partition_tables,        var: satellite_partition_tables,        tags: partition_tables,        path: "{{ dir_orgs_vars }}/{{ orgs }}/env/common/satellite_partition_tables.d/"}
-  - {name: satellite_products,                var: satellite_products,                tags: products,                path: "{{ dir_orgs_vars }}/{{ orgs }}/env/common/satellite_products.d/"}
-  - {name: satellite_provisioning_templates,  var: satellite_provisioning_templates,  tags: provisioning_templates,  path: "{{ dir_orgs_vars }}/{{ orgs }}/env/common/satellite_provisioning_templates.d/"}
-  - {name: satellite_repositories,            var: satellite_repositories,            tags: repositories,            path: "{{ dir_orgs_vars }}/{{ orgs }}/env/common/satellite_repositories.d/"}
-  - {name: satellite_repository_sets,         var: satellite_repository_sets,         tags: repository_sets,         path: "{{ dir_orgs_vars }}/{{ orgs }}/env/common/satellite_repository_sets.d/"}
-  - {name: satellite_roles,                   var: satellite_roles,                   tags: roles,                   path: "{{ dir_orgs_vars }}/{{ orgs }}/env/common/satellite_roles.d/"}
-  - {name: satellite_settings,                var: satellite_settings,                tags: settings,                path: "{{ dir_orgs_vars }}/{{ orgs }}/env/common/satellite_settings.d/"}
-  - {name: satellite_subnets,                 var: satellite_subnets,                 tags: subnets,                 path: "{{ dir_orgs_vars }}/{{ orgs }}/env/common/satellite_subnets.d/"}
-  - {name: satellite_sync_plans,              var: satellite_sync_plans,              tags: sync_plans,              path: "{{ dir_orgs_vars }}/{{ orgs }}/env/common/satellite_sync_plans.d/"}
-  - {name: satellite_users,                   var: satellite_users,                   tags: users,                   path: "{{ dir_orgs_vars }}/{{ orgs }}/env/common/satellite_users.d/"}
-  - {name: satellite_usergroups,              var: satellite_usergroups,              tags: usergroups,              path: "{{ dir_orgs_vars }}/{{ orgs }}/env/common/satellite_usergroups.d/"}
+  - {name: satellite_activation_keys,         var: satellite_activation_keys,         tags: activation_keys,         path: "{{ satellite_configuration_filetree_path }}/satellite_activation_keys.d/"}
+  - {name: satellite_auth_sources_ldap,       var: satellite_auth_sources_ldap,       tags: auth_sources_ldap,       path: "{{ satellite_configuration_filetree_path }}/satellite_auth_sources_ldap.d/"}
+  - {name: satellite_content_credentials,     var: satellite_content_credentials,     tags: content_credentials,     path: "{{ satellite_configuration_filetree_path }}/satellite_content_credentials.d/"}
+  - {name: satellite_content_view_filters,    var: satellite_content_view_filters,    tags: content_view_filters,    path: "{{ satellite_configuration_filetree_path }}/satellite_content_view_filters.d/"}
+  - {name: satellite_content_views,           var: satellite_content_views,           tags: content_views,           path: "{{ satellite_configuration_filetree_path }}/satellite_content_views.d/"}
+  - {name: satellite_domains,                 var: satellite_domains,                 tags: domains,                 path: "{{ satellite_configuration_filetree_path }}/satellite_domains.d/"}
+  - {name: satellite_host_collections,        var: satellite_host_collections,        tags: host_collections,        path: "{{ satellite_configuration_filetree_path }}/satellite_host_collections.d/"}
+  - {name: satellite_hostgroups,              var: satellite_hostgroups,              tags: hostgroups,              path: "{{ satellite_configuration_filetree_path }}/satellite_hostgroups.d/"}
+  - {name: satellite_installation_mediums,    var: satellite_installation_mediums,    tags: installation_mediums,    path: "{{ satellite_configuration_filetree_path }}/satellite_installation_mediums.d/"}
+  - {name: satellite_lifecycle_environments,  var: satellite_lifecycle_environments,  tags: lifecycle_environments,  path: "{{ satellite_configuration_filetree_path }}/satellite_lifecycle_environments.d/"}
+  - {name: satellite_locations,               var: satellite_locations,               tags: locations,               path: "{{ satellite_configuration_filetree_path }}/satellite_locations.d/"}
+  - {name: satellite_operatingsystems,        var: satellite_operatingsystems,        tags: operatingsystems,        path: "{{ satellite_configuration_filetree_path }}/satellite_operatingsystems.d/"}
+  - {name: satellite_organizations,           var: satellite_organizations,           tags: organizations,           path: "{{ satellite_configuration_filetree_path }}/satellite_organizations.d/"}
+  - {name: satellite_partition_tables,        var: satellite_partition_tables,        tags: partition_tables,        path: "{{ satellite_configuration_filetree_path }}/satellite_partition_tables.d/"}
+  - {name: satellite_products,                var: satellite_products,                tags: products,                path: "{{ satellite_configuration_filetree_path }}/satellite_products.d/"}
+  - {name: satellite_provisioning_templates,  var: satellite_provisioning_templates,  tags: provisioning_templates,  path: "{{ satellite_configuration_filetree_path }}/satellite_provisioning_templates.d/"}
+  - {name: satellite_repositories,            var: satellite_repositories,            tags: repositories,            path: "{{ satellite_configuration_filetree_path }}/satellite_repositories.d/"}
+  - {name: satellite_repository_sets,         var: satellite_repository_sets,         tags: repository_sets,         path: "{{ satellite_configuration_filetree_path }}/satellite_repository_sets.d/"}
+  - {name: satellite_roles,                   var: satellite_roles,                   tags: roles,                   path: "{{ satellite_configuration_filetree_path }}/satellite_roles.d/"}
+  - {name: satellite_settings,                var: satellite_settings,                tags: settings,                path: "{{ satellite_configuration_filetree_path }}/satellite_settings.d/"}
+  - {name: satellite_subnets,                 var: satellite_subnets,                 tags: subnets,                 path: "{{ satellite_configuration_filetree_path }}/satellite_subnets.d/"}
+  - {name: satellite_sync_plans,              var: satellite_sync_plans,              tags: sync_plans,              path: "{{ satellite_configuration_filetree_path }}/satellite_sync_plans.d/"}
+  - {name: satellite_users,                   var: satellite_users,                   tags: users,                   path: "{{ satellite_configuration_filetree_path }}/satellite_users.d/"}
+  - {name: satellite_usergroups,              var: satellite_usergroups,              tags: usergroups,              path: "{{ satellite_configuration_filetree_path }}/satellite_usergroups.d/"}
 # yamllint enable rule:commas
 ...

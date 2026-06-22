@@ -19,6 +19,11 @@ Use this when apply/reconcile support is needed for a new object type.
 - Keep the task idempotent and data-driven.
 - Do not use `theforeman.foreman.*` for new work.
 - Internal loop variables should use the `__` prefix.
+- End every `satellite_<domain>.yaml` task file with `...`.
+- Do not add `set_fact` tasks that only duplicate existing data; pass expressions inline or via `include_tasks` `vars`.
+- Prefer `ansible.builtin.import_role` with `redhat.satellite.<role>` when a matching role exists; use modules only when no role is available.
+- Apply `no_log: "{{ satellite_configuration_dispatch_secure_logging }}"` on dedicated dispatch task files for sensitive CaC types; never on non-sensitive types.
+- For `satellite_roles`, skip built-in/locked roles using `satellite_builtin_role_name_skips` from role `global_vars`, plus `builtin` / `locked` when present in CaC.
 
 ## Done Criteria
 - Running `infra.satellite_configuration.dispatch` applies the new object type from vars.

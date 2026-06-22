@@ -7,7 +7,7 @@ Following there's an example of how this collection can be used to export and im
 * Using `ansible-playbook`
 
   ```console
-  ansible-playbook infra.satellite_configuration.run_filetree_create.yaml -e@vars/satellite.yaml -e '{output_path: /tmp/satellite_output}'
+  ansible-playbook infra.satellite_configuration.run_filetree_create.yaml -e@vars/satellite.yaml -e '{satellite_configuration_filetree_path: /tmp/satellite_output}'
   ```
 
 * Using `ansible-navigator`
@@ -22,7 +22,7 @@ Following there's an example of how this collection can be used to export and im
     --eev ~/satellite-configuration:~/satellite-configuration \
     -- \
     -e@~/satellite-configuration/tests/vars/satellite.yaml \
-    -e '{output_path: ~/satellite-configuration/tests/satellite_output}'
+    -e '{satellite_configuration_filetree_path: ~/satellite-configuration/tests/satellite_output}'
   ```
 
 ## Import your configuration as code using the following commands
@@ -30,7 +30,7 @@ Following there's an example of how this collection can be used to export and im
 * Using `ansible-playbook`
 
   ```console
-  ansible-playbook -i localhost, infra.satellite_configuration.run_filetree_read.yaml -e@vars/satellite.yaml
+  ansible-playbook -i localhost, infra.satellite_configuration.run_filetree_read.yaml -e@vars/satellite.yaml -e '{satellite_configuration_filetree_path: configs}'
   ```
 
 ## Role Input Variables
@@ -39,17 +39,18 @@ Following there's an example of how this collection can be used to export and im
 
 | Variable Name | Default Value | Description |
 | --- | --- | --- |
-| `satellite_username` | `{{ lookup("env", "SATELLITE_SERVER_URL") }}` | The username to connect to the Satellite instance |
-| `satellite_password` | `{{ lookup("env", "SATELLITE_USERNAME") }}` | The password to connect to the Satellite instance |
-| `satellite_server_url` | `{{ lookup("env", "SATELLITE_PASSWORD") }}` | The Satellite instance's URL/IP |
-| `content_views_purge_count` | `6` | The number of content view versions to maintain into the Satellite instance after publishing new versions |
-| `satellite_configuration_dispatch_secure_logging` | `True` | Whether or not to include the sensitive information in the logs. Set this value to true if you will be providing your sensitive values from elsewhere. |
+| `satellite_username` | `{{ lookup("env", "SATELLITE_USERNAME") }}` | The username to connect to the Satellite instance |
+| `satellite_password` | `{{ lookup("env", "SATELLITE_PASSWORD") }}` | The password to connect to the Satellite instance |
+| `satellite_server_url` | `{{ lookup("env", "SATELLITE_SERVER_URL") }}` | The Satellite instance's URL/IP |
+| `content_views_purge_count` | `6` | Keep this many newest content view versions after publish (tag `cv_publish_promote`). |
+| `satellite_configuration_dispatch_content_view_publish_promote` | `true` | When `true`, publishes and promotes content views after creation. Set `false` to skip or on re-runs. |
+| `satellite_configuration_dispatch_secure_logging` | `true` | When `true`, sets `no_log` on dispatch tasks for sensitive object types (users, settings, content credentials, LDAP). Set `false` when debugging to surface API errors in the log. |
 
 ### Role: `filetree_create`
 
 | Variable Name | Default Value | Description |
 | --- | --- | --- |
-| `output_path` | `/tmp/satellite_filetree_config` | The path to the output directory where all the generated yaml files with the corresponding Objects as code will be written to |
+| `satellite_configuration_filetree_path` | `/tmp/satellite_filetree_config` | Base directory for `satellite_<type>.d/` fragments (export and import). `output_path` in `filetree_create` is an alias. |
 
 ### Role: `filetree_read`
 
@@ -65,7 +66,7 @@ Following there's an example of how this collection can be used to export and im
     <tr>
       <td><code>satellite_configuration_filetree_read_secure_logging</code></td>
       <td><code>true</code></td>
-      <td>Whether or not to include the sensitive information in the logs. Set this value to true if you will be providing your sensitive values from elsewhere.</td>
+      <td>When <code>true</code>, sets <code>no_log</code> only while loading variables listed in <code>satellite_configuration_sensitive_vars</code> (role <code>global_vars</code>). Set <code>false</code> when debugging.</td>
     </tr>
     <tr>
       <td><code>satellite_activation_keys</code></td>

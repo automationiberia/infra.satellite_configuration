@@ -18,7 +18,7 @@ description:
   - If flow-style collections are found (e.g. C([{a:1}])), the module canonicalizes them to block style to ensure
     readable YAML output.
   - With I(preserve_comments=false), performs a full load and dump (comments are lost). Enables I(auto_block_scalars),
-    PEM-in-one-line repair, Ansible C(!unsafe) round-trip (scalars keep the tag; multiline unsafe uses a literal block),
+    PEM-in-one-line repair, unwrap of export-template C({% raw %}/{% endraw %}) wrappers, normalization of legacy Ansible C(!unsafe) scalars to plain values,
     block-style lists,     C(null) emitted as an empty value (no C(null) keyword), optional normalization of Python boolean spellings to
     lowercase in plain scalars when preserving comments, and double-quoted scalars for slash-delimited regex strings that
     contain backslashes (in the file, C(\\.) before the dot encodes a single backslash plus a literal dot in the value).
@@ -97,6 +97,20 @@ import traceback
 from ansible.module_utils.basic import AnsibleModule
 
 try:
+    from ansible_collections.infra.satellite_configuration.plugins.module_utils.raw_markers import (
+        unwrap_jinja_raw_markers,
+    )
+except ModuleNotFoundError:
+    import importlib.util
+    from pathlib import Path
+
+    _RAW_MARKERS_PATH = Path(__file__).resolve().parent.parent / "module_utils" / "raw_markers.py"
+    _RAW_SPEC = importlib.util.spec_from_file_location("raw_markers", _RAW_MARKERS_PATH)
+    _RAW_MODULE = importlib.util.module_from_spec(_RAW_SPEC)
+    _RAW_SPEC.loader.exec_module(_RAW_MODULE)
+    unwrap_jinja_raw_markers = _RAW_MODULE.unwrap_jinja_raw_markers
+
+try:
     import yaml
     from yaml import SafeDumper as PySafeDumper
     from yaml.constructor import ConstructorError
@@ -117,7 +131,7 @@ YAML_STR_TAG = "tag:yaml.org,2002:str"
 
 
 class AnsibleUnsafeTaggedString(str):
-    """Scalar loaded from !unsafe; dumped with the same tag (multiline as literal |)."""
+    """Legacy CaC scalar loaded from !unsafe; normalized to plain str on dump."""
 
 
 class MultilineLiteralBlockString(str):
@@ -125,7 +139,7 @@ class MultilineLiteralBlockString(str):
 
 
 def construct_unsafe_tag(loader, node):
-    """Ansible CaC uses !unsafe for Jinja; scalars keep the tag on round-trip."""
+    """Legacy Ansible CaC !unsafe tag; values are normalized on format dump."""
     if isinstance(node, ScalarNode):
         return AnsibleUnsafeTaggedString(loader.construct_scalar(node))
     if isinstance(node, SequenceNode):
@@ -420,9 +434,10 @@ def prepare_tree_for_round_trip_dump(node, auto_block_scalars):
     if isinstance(node, list):
         return [prepare_tree_for_round_trip_dump(item, auto_block_scalars) for item in node]
     if isinstance(node, AnsibleUnsafeTaggedString):
-        return node
+        return prepare_tree_for_round_trip_dump(str(node), auto_block_scalars)
     if isinstance(node, str):
-        repaired = normalize_escaped_multiline_string(node)
+        repaired = unwrap_jinja_raw_markers(node, preserve_template_markers=True)
+        repaired = normalize_escaped_multiline_string(repaired)
         repaired = repair_single_line_pem_certificate(repaired)
         if auto_block_scalars and "\n" in repaired:
             return MultilineLiteralBlockString(normalize_for_literal_block(repaired))

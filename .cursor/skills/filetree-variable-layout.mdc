@@ -8,7 +8,7 @@ alwaysApply: false
 Use this pattern when adding data files that later feed `infra.satellite_configuration.filetree_read`.
 
 ## Steps
-1. Create YAML fragments under `satellite_<resource>.d/` for the target organization and environment.
+1. Create YAML fragments under `satellite_<resource>.d/` beneath `satellite_configuration_filetree_path`.
 2. Name the list variable `satellite_<resource_plural>` and keep each item as a dict.
 3. Keep one entity per file when possible to reduce merge conflicts.
 4. Ensure keys align with `redhat.satellite.*` module inputs.

@@ -6,6 +6,8 @@
 {% set __list_items_to_name = ['roles', 'organizations', 'locations'] %}
 {% set __translate = [{'login': 'name'}, {'roles': 'name'}, {'organizations': 'name'}, {'locations': 'name'}] %}
 {% set __login_output_key = (__translate | selectattr('login', 'defined') | list | first | default({'login': 'name'}))['login'] %}
+{% set __raw_fields = ['description'] %}
+{% set __raw_sub_fields = ['key'] %}
 satellite_users: {{ [] if detailed_info.results | length == 0 }}
 {% for user in detailed_info.results %}
 {%   if user.json.login is defined and user.json.login not in __empty_values %}
@@ -17,6 +19,26 @@ satellite_users: {{ [] if detailed_info.results | length == 0 }}
 {%       for __inner_item in __map_item.value %}
       - {{ discard_unwanted_fields((__inner_item[__item_key] if (__inner_item is mapping and __item_key in __inner_item) else __inner_item), __excluded_fields, __empty_values, __reduce_to_name, __translate) }}
 {%       endfor %}
+{%     elif __map_item.key == 'ssh_keys' %}
+    ssh_keys:
+{%       for __ssh_key in __map_item.value %}
+      - name: {{ discard_unwanted_fields(__ssh_key.name, __excluded_fields, __empty_values, __reduce_to_name, __translate) }}
+{%         for __ssh_key_item in (__ssh_key | dict2items) if __ssh_key_item.key not in ['name'] and __ssh_key_item.value not in __empty_values %}
+{%           if __ssh_key_item.key in __raw_sub_fields %}
+        {{ __ssh_key_item.key }}: |-
+          {{ '{%- raw -%}' }}
+          {{ discard_unwanted_fields(__ssh_key_item.value, __excluded_fields, __empty_values, __reduce_to_name, __translate) | trim("'") | indent(10) }}
+          {{ '{%- endraw -%}' }}
+{%           else %}
+        {{ __ssh_key_item.key }}: {{ discard_unwanted_fields(__ssh_key_item.value, __excluded_fields, __empty_values, __reduce_to_name, __translate) }}
+{%           endif %}
+{%         endfor %}
+{%       endfor %}
+{%     elif __map_item.key in __raw_fields %}
+    {{ __map_item.key }}: |-
+      {{ '{%- raw -%}' }}
+      {{ discard_unwanted_fields(__map_item.value, __excluded_fields, __empty_values, __reduce_to_name, __translate) | trim("'") | indent(6) }}
+      {{ '{%- endraw -%}' }}
 {%     elif (__translate | selectattr(__map_item.key, 'defined') | list | length) > 0 %}
     {{ (__translate | selectattr(__map_item.key, 'defined') | list | first)[__map_item.key] }}: {{ discard_unwanted_fields(__map_item.value, __excluded_fields, __empty_values, __reduce_to_name, __translate) }}
 {%     elif __map_item.key in __reduce_to_name %}

@@ -8,6 +8,7 @@ Project skills live in this folder and can be invoked explicitly in prompts.
 - Be specific about the object type and expected scope.
 - For new object types, prefer end-to-end skills that update all roles consistently.
 - Prefer `redhat.satellite` roles/modules when available; use `ansible.builtin.uri` only when no supported role/module exists.
+- Static variables shared across roles live in `roles/global_vars` and are loaded via `meta/main.yml` dependencies.
 
 ## Recommended Invocation Pattern
 

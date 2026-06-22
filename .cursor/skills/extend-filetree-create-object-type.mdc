@@ -15,11 +15,18 @@ Use this when the export pipeline must support a new Satellite object type.
 5. Add template file `roles/filetree_create/templates/satellite_<resource_plural>.yaml.j2`.
 6. Register the new include block/tag in `roles/filetree_create/tasks/main.yaml`.
 
+## Task Style Requirements
+- End every `get_<domain>.yaml` file with `...`.
+- Do not add intermediate `set_fact` tasks that only duplicate API list results (for example `all_results`); pass `result_api_response.json.results | sort(attribute='id')` directly to `detailed_api_call.yaml` `loop_var` and `when` conditions.
+- Avoid accumulator loops when a Jinja list comprehension can build the final list in one expression.
+- Pass data needed only for templating via `include_tasks: template_out.yaml` `vars` instead of an extra `set_fact` when possible.
+- Static variables shared with other roles belong in `roles/global_vars/defaults/main.yml`; ensure `meta/main.yml` lists `dependencies: [{ role: global_vars }]`.
+
 ## Template Consistency Requirements
 - Mirror the structure used by current templates in `roles/filetree_create/templates/`:
   - begin with `---`
   - emit `satellite_<resource_plural>:` as the top-level key
-  - end with `...` when the pattern already uses it
+  - end with `...`
 - Use `roles/filetree_create/templates/satellite_content_view_filters.yaml.j2` as the canonical style reference for new templates.
 - Keep templates as simple as possible; avoid over-engineering and avoid adding object-specific branches unless strictly required by the data model.
 - Reuse cleanup helpers from `clean_fields.j2` when possible (`discard_unwanted_fields`) instead of ad-hoc formatting.
@@ -37,9 +44,12 @@ Use this when the export pipeline must support a new Satellite object type.
 - Follow nearby templates for quoting and multiline handling so output stays compatible with `infra.satellite_configuration.format_yaml`.
 - Keep Jinja/YAML indentation exactly in canonical style:
   - Jinja control tags (`{% ... %}`) must be left-aligned (no leading spaces).
+  - Nest Jinja control structures with two extra spaces after `{%` per level (`{% for` → `{%   for` → `{%     if`); see `satellite_content_view_filters.yaml.j2`.
   - List item start for `loop.index == 1` must be `  - key: value`.
   - Subsequent keys must be `    key: value`.
   - Nested list items must keep two extra spaces per YAML level, matching `satellite_content_view_filters.yaml.j2`.
+- Wrap YAML-significant scalars with `__raw_fields` and literal `|-` blocks containing literal `{% raw %}` / `{% endraw %}` markers (see `satellite_provisioning_templates.yaml.j2`); `format_yaml` unwraps them after export.
+- Do not render entire lists via a single `discard_unwanted_fields(info_list, ...)` call when items contain commas, colons, PEM blocks, or nested dict lists.
 
 ## Constraints
 - Use `ansible.builtin.*` FQCNs.

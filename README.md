@@ -74,6 +74,49 @@ collections:
 
 Examples of how to run the playbooks in the `playbooks` directory can be found in the [`tests/README`](https://github.com/redhat-cop/infra.satellite_configuration/blob/devel/tests/README.md).
 
+### Configuration file layout
+
+Export and import share the same layout under `satellite_configuration_filetree_path` (default `/tmp/satellite_filetree_config`):
+
+```text
+satellite_configuration_filetree_path/
+├── satellite_organizations.d/
+│   └── satellite_organizations.yaml
+├── satellite_settings.d/
+│   └── satellite_settings.yaml
+└── …
+```
+
+Each object type uses a `satellite_<resource_plural>.d/` directory with one or more YAML fragments. There is no organization or environment path nesting — export output from `filetree_create` can be consumed directly by `filetree_read`.
+
+The [`configs/`](configs/) directory in this repository is an example **greenfield** tree: hand-authored desired state using the same `.d/` layout, without exporting from an existing Satellite.
+
+### Subscription manifest
+
+Content operations require a subscription manifest on the target organization. Before repository and product tasks, `dispatch` validates that a manifest is present (`satellite_configuration_dispatch_manifest_validate: true` by default). Upload a manifest with:
+
+```yaml
+satellite_configuration_dispatch_manifest_upload: true
+satellite_manifest_path: /path/to/manifest.zip
+satellite_configuration_dispatch_manifest_organization: "Default Organization"
+```
+
+Set `satellite_configuration_dispatch_manifest_validate: false` only when content tags are skipped.
+
+### Supported object types
+
+The three roles (`filetree_create`, `filetree_read`, `dispatch`) cover the object types listed in [`filetree_read` defaults](roles/filetree_read/defaults/main.yml).
+
+The following Satellite objects are **not yet** covered end-to-end (Issue #11); extend the collection using the skills under `.cursor/skills/` when needed:
+
+- Compute resources and compute profiles
+- Global parameters
+- SCAP content and policies
+- Job templates
+- Webhooks
+- HTTP proxies
+- Remote execution features
+
 ### Scale at your needs
 
 The input data can be organized in a very flexible way, letting the user use anything from a single file to an entire file tree to store the satellite objects definitions, which could be used as a logical segregation, as needed in real scenarios.

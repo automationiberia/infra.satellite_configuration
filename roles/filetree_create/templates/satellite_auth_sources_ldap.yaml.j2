@@ -5,7 +5,7 @@ satellite_auth_sources_ldap: {{ [] if info_list | length == 0 }}
 {% set __list_items = ['content_views'] %}
 {% set __empty_values = [None, 'None', '', {}, [], [{}]] %}
 {% for i in info_list %}
-{%   for __map_item in (i | dict2items) if __map_item.key not in __excluded_fields and __map_item.value not in __empty_values %}
+{%   for __map_item in (i | dict2items) if __map_item.key not in __excluded_fields and __map_item.value not in __empty_values and not (__map_item.key == 'use_netgroups' and i.server_type | default('') == 'active_directory') %}
 {%     set __var = namespace(map_item_value = []) %}
 {%     if __map_item.value | type_debug == 'dict' %}
 {%       set __var.map_item_value = dict(__map_item.value.items() | rejectattr('0', 'in', __excluded_subitems)) %}
@@ -24,6 +24,9 @@ satellite_auth_sources_ldap: {{ [] if info_list | length == 0 }}
 {%       for __inner_item in __map_item.value %}
 {%         set __var.map_item_value = __var.map_item_value + [__inner_item.name] %}
 {%       endfor %}
+{%     endif %}
+{%     if __map_item.key == 'account_password' %}
+{%       set __var.map_item_value = '"' + (__map_item.value | string | replace('\\', '\\\\') | replace('"', '\\"')) + '"' %}
 {%     endif %}
 {%     if loop.index == 1 %}
   - {{ __map_item.key }}: {{ __var.map_item_value if (__var.map_item_value | length > 0) else __map_item.value | default('""' if __map_item.key not in __list_items else []) | replace("\\'", "''") }}

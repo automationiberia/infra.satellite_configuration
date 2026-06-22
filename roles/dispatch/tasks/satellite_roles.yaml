@@ -13,6 +13,10 @@
   loop_control:
     loop_var: __current_role
     label: "{{ __current_role.name }}"
-  when: satellite_roles is defined
+  when:
+    - satellite_roles is defined
+    - __current_role.name not in (satellite_builtin_role_name_skips + satellite_builtin_role_name_skips_extra + (dispatch_roles_name_skips_extra | default([])))
+    - (__current_role.builtin | default(0) | int) == 0
+    - not (__current_role.locked | default(false) | bool)
   delegate_to: localhost
 ...

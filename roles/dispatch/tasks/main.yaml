@@ -14,20 +14,6 @@
       tags: auth_sources_ldap
   tags: auth_sources_ldap
 
-- name: Manage User Groups
-  ansible.builtin.include_tasks: satellite_usergroups.yaml
-  args:
-    apply:
-      tags: usergroups
-  tags: usergroups
-
-- name: Manage Roles
-  ansible.builtin.include_tasks: satellite_roles.yaml
-  args:
-    apply:
-      tags: roles
-  tags: roles
-
 - name: Create Organizations
   ansible.builtin.include_tasks: satellite_organizations.yaml
   args:
@@ -42,6 +28,27 @@
       tags: locations
   tags: locations
 
+- name: Manage Domains
+  ansible.builtin.include_tasks: satellite_domains.yaml
+  args:
+    apply:
+      tags: domains
+  tags: domains
+
+- name: Manage Subnets
+  ansible.builtin.include_tasks: satellite_subnets.yaml
+  args:
+    apply:
+      tags: subnets
+  tags: subnets
+
+- name: Manage Roles
+  ansible.builtin.include_tasks: satellite_roles.yaml
+  args:
+    apply:
+      tags: roles
+  tags: roles
+
 - name: Manage Users
   ansible.builtin.include_tasks: satellite_users.yaml
   args:
@@ -49,12 +56,35 @@
       tags: users
   tags: users
 
+- name: Manage User Groups
+  ansible.builtin.include_tasks: satellite_usergroups.yaml
+  args:
+    apply:
+      tags: usergroups
+  tags: usergroups
+
 - name: Manage Lifecycle Environments
   ansible.builtin.include_tasks: satellite_lifecycle_environments.yaml
   args:
     apply:
       tags: lifecycle_environments
   tags: lifecycle_environments
+
+- name: Upload Subscription Manifest
+  when: satellite_configuration_dispatch_manifest_upload | bool
+  ansible.builtin.include_tasks: satellite_manifest.yaml
+  args:
+    apply:
+      tags: manifest
+  tags: manifest
+
+- name: Validate Subscription Manifest
+  when: satellite_configuration_dispatch_manifest_validate | bool
+  ansible.builtin.include_tasks: satellite_manifest_validate.yaml
+  args:
+    apply:
+      tags: manifest_validate
+  tags: manifest_validate
 
 - name: Manage Repository Sets
   ansible.builtin.include_tasks: satellite_repository_sets.yaml
@@ -94,7 +124,7 @@
 # Don't treat this appart from Content Views by now
 
 - name: Publish and Promote Content Views
-  when: false
+  when: satellite_configuration_dispatch_content_view_publish_promote | bool
   ansible.builtin.include_tasks: satellite_cv_versions.yaml
   args:
     apply:
@@ -156,4 +186,11 @@
     apply:
       tags: operatingsystems
   tags: operatingsystems
+
+- name: Manage Host Groups
+  ansible.builtin.include_tasks: satellite_hostgroups.yaml
+  args:
+    apply:
+      tags: hostgroups
+  tags: hostgroups
 ...

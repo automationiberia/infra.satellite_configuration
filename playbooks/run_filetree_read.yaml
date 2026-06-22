@@ -6,6 +6,8 @@
   collections:
     - infra.satellite_configuration
     - redhat.satellite
+  vars:
+    satellite_configuration_filetree_path: configs
   module_defaults:
     group/redhat.satellite.satellite:
       username: "{{ satellite.admin.username }}"

@@ -26,6 +26,7 @@ When implementing or reviewing `satellite_users` / `redhat.satellite.user`:
 - Pass **`organizations`**, **`locations`**, and **`roles`** as **lists of strings** (if CaC has list-of-dicts from legacy exports, normalize with `map(attribute='name')` in `dispatch`).
 - **`auth_source` is required when creating a user**; Foreman often returns internal users with `auth_source_internal` instead of `auth_source`. Export must emit `auth_source` (e.g. from `auth_source_internal.name`), and `dispatch` should accept `auth_source`, `auth_source_name`, or `auth_source_internal` for backward compatibility.
 - **`redhat.satellite.user` has no `usergroups` parameter**; group membership belongs in `satellite_usergroups` / `redhat.satellite.usergroup`. Exclude `usergroups` from user export templates unless the collection adds a dedicated apply path.
+- **Dispatch order:** apply `satellite_users` before `satellite_usergroups`; direct group `users` only includes logins from `satellite_users` (LDAP via `external_usergroups`).
 - **Creating users on Internal auth** requires **`user_password`** (Foreman: `password_hash can't be blank`). Exports never include passwords; supply `user_password` per user in CaC (Vault) or set optional role default `satellite_users_default_password` in `dispatch` for bootstrap-only use.
 
 ## Mandatory File Checklist
@@ -42,6 +43,13 @@ When implementing or reviewing `satellite_users` / `redhat.satellite.user`:
    - `roles/dispatch/README.md` links/examples if they reference supported objects
    - `tests/README.md` role input variable tables (include new `satellite_<resource_plural>`)
 
+## Task Style Requirements
+- End every new task YAML file with `...`.
+- Do not copy API list results into intermediate facts (for example `all_results`); pass filtered expressions inline to `loop_var`, `when`, or `include_tasks` `vars`.
+- Prefer `include_tasks` `vars` over `set_fact` when transformed data is consumed only by the next included task.
+- Static variables shared across roles go in `roles/global_vars/defaults/main.yml`; consumer roles use `dependencies: [{ role: global_vars }]` in `meta/main.yml`.
+- Add new secret-bearing CaC lists to `satellite_configuration_sensitive_vars` in `global_vars` for dynamic `read_contents.yml` masking; dedicated dispatch/export tasks use `*_secure_logging` only.
+
 ## Naming Rules
 - Data list: `satellite_<resource_plural>`
 - Dispatch task file: `satellite_<domain>.yaml`
@@ -54,7 +62,7 @@ When implementing or reviewing `satellite_users` / `redhat.satellite.user`:
 - Mirror the structure used by current templates in `roles/filetree_create/templates/`:
   - begin with `---`
   - emit `satellite_<resource_plural>:` as the top-level key
-  - end with `...` when the pattern already uses it
+  - end with `...`
 - Use `roles/filetree_create/templates/satellite_content_view_filters.yaml.j2` as the canonical style reference for new templates.
 - Keep templates as simple as possible; avoid over-engineering and avoid adding object-specific branches unless strictly required by the data model.
 - Reuse cleanup helpers from `clean_fields.j2` when possible (`discard_unwanted_fields`) instead of ad-hoc formatting.
@@ -73,9 +81,14 @@ When implementing or reviewing `satellite_users` / `redhat.satellite.user`:
 - Follow nearby templates for quoting and multiline handling so output stays compatible with `infra.satellite_configuration.format_yaml`.
 - Keep Jinja/YAML indentation exactly in canonical style:
   - Jinja control tags (`{% ... %}`) must be left-aligned (no leading spaces).
+  - Nest Jinja control structures with two extra spaces after `{%` per level (`{% for` → `{%   for` → `{%     if`); see `satellite_content_view_filters.yaml.j2`.
   - List item start for `loop.index == 1` must be `  - key: value`.
   - Subsequent keys must be `    key: value`.
   - Nested list items must keep two extra spaces per YAML level, matching `satellite_content_view_filters.yaml.j2`.
+- Wrap YAML-significant scalars with `__raw_fields` and literal `|-` blocks containing literal `{% raw %}` / `{% endraw %}` markers; `format_yaml` unwraps them after export unless ERB/Jinja markers are present.
+- Prefer `{% raw %}` / `{% endraw %}` over `!unsafe` for ERB/Jinja-like template bodies.
+- Do not render entire lists via a single `discard_unwanted_fields(info_list, ...)` call when items contain commas, colons, PEM blocks, or nested dict lists.
+- Add vars with ERB/Jinja-like bodies to `satellite_configuration_filetree_read_raw_template_vars` in `global_vars` so `filetree_read` uses `slurp` + `from_yaml`.
 
 ## ansible-lint (Jinja in tasks)
 - Run **`ansible-lint`** (or repo pre-commit) on changed YAML before merge; profile **production** treats `jinja[spacing]` warnings as fatal.

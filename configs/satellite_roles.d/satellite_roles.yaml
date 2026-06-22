@@ -154,3 +154,5 @@ satellite_roles:
       - permissions:
           - "view_params"
         search: "name ~ IMG-%"
+
+...

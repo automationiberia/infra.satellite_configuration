@@ -1,0 +1,10 @@
+---
+- name: Dispatch | Apply Domains
+  ansible.builtin.import_role:
+    name: redhat.satellite.domains
+  vars:
+    satellite_username: "{{ satellite.admin.username }}"
+    satellite_password: "{{ satellite.admin.password }}"
+    satellite_server_url: "{{ satellite.server_url }}"
+    satellite_validate_certs: "{{ satellite.validate_certs }}"
+...

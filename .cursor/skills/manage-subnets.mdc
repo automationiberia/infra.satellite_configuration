@@ -1,0 +1,18 @@
+---
+description: Manage Satellite subnets with redhat.satellite.subnets via dispatch import_role.
+alwaysApply: false
+---
+
+# Manage Subnets
+
+Use this for `satellite_subnets`.
+
+## Steps
+1. Define subnet entries in `satellite_subnets` (CaC under `satellite_subnets.d/`).
+2. Route execution through `roles/dispatch/tasks/satellite_subnets.yaml`.
+3. Reuse `ansible.builtin.import_role` with `redhat.satellite.subnets`.
+
+## Checklist
+- Uses `ansible.builtin.import_role`.
+- Keeps FQCN usage explicit.
+- Task tags align to `subnets`.

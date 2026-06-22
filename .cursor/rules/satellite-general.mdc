@@ -11,7 +11,7 @@ Apply these conventions to all changes in this repository.
 - Use `satellite_<resource_plural>` for top-level data lists.
 - Use `satellite_<domain>.yaml` for dispatch task files.
 - Use `get_<domain>.yaml` for filetree export task files.
-- Use `satellite_<resource>.d/` for filetree fragment directories.
+- Use `satellite_<resource>.d/` for filetree fragment directories under `satellite_configuration_filetree_path` (no org/env nesting).
 - Use `__` prefix for temporary loop/internal variables (example: `__current_repository`).
 
 ## FQCN Rules
@@ -27,6 +27,12 @@ Apply these conventions to all changes in this repository.
 - Use `| default(omit)` for optional module parameters.
 - Delegate Satellite API operations to `localhost` when appropriate.
 - Keep changes idempotent and data-driven.
+- Do not add `set_fact` tasks that only copy API results into another variable (for example `all_results` from `result_api_response.json.results`); pass the filtered expression directly to `loop_var`, `when`, or `include_tasks` `vars`.
+- Avoid accumulator loops (`__merged: []` plus per-item `set_fact`) when a single Jinja list comprehension or filter expression can build the list in one expression.
+- Prefer passing transformed data via `include_tasks` `vars` over `set_fact` when the value is only needed by the next included task (for example template rendering).
+
+## YAML Style
+- All Ansible task, role, and playbook YAML files under this collection must end with `...` (ansible-lint `yaml document end`).
 
 ## Cross-Role Consistency Rule
 - When adding a new object type, update all three roles in the same change:
@@ -35,3 +41,21 @@ Apply these conventions to all changes in this repository.
   - `roles/dispatch` (apply)
 - Add matching tags and naming across the three roles for the same object type.
 - Do not add partial support for a new object type in only one role.
+
+## Shared Static Variables
+- Place static variables needed by multiple roles in `roles/global_vars/defaults/main.yml`.
+- Consumer roles must declare `dependencies: [{ role: global_vars }]` in `meta/main.yml` (same pattern as `infra.aap_configuration`).
+- Do not share static data via cross-role `include_vars`, sibling `role_path` paths, or duplicated lists in consumer role `vars/`.
+
+## Secure Logging (`no_log`)
+- Default `satellite_configuration_<role>_secure_logging: true` keeps `no_log: true` on tasks that handle secrets.
+- Set `satellite_configuration_<role>_secure_logging: false` only when debugging (shows task output and API errors).
+- `no_log` on dedicated dispatch/export task files for a sensitive object type: `no_log: "{{ satellite_configuration_<role>_secure_logging }}"` only.
+- `no_log` on dynamic loops that handle many CaC lists (for example `read_contents.yml`): `no_log: "{{ satellite_configuration_filetree_read_secure_logging and (__task_filetree_read.var in satellite_configuration_sensitive_vars) }}"`.
+- Do not test `'satellite_<resource_plural>' in satellite_configuration_sensitive_vars` inside a task file that already applies exclusively to that resource; the list is for dynamic scoping, not redundant self-checks.
+- Do not add per-role alias copies of `satellite_configuration_sensitive_vars` in consumer role defaults.
+- Do not apply `no_log` to non-sensitive object types (for example products, organizations, partition tables).
+- Red Hat CDN repositories are managed with `satellite_repository_sets`; export and dispatch skip them in `satellite_repositories` using `satellite_redhat_repository_url_substring` from `global_vars`.
+- Host collection export includes structure only; host membership dispatch is opt-in via `satellite_configuration_dispatch_host_collection_membership`.
+- Prefer `{% raw %}` / `{% endraw %}` in export templates over `!unsafe` for ERB/Jinja-like scalars; keep wrappers in CaC when `format_yaml` detects ERB/Jinja markers.
+- Lists in `satellite_configuration_filetree_read_raw_template_vars` are loaded with `slurp` + `from_yaml` in `filetree_read` (no Jinja templating on file contents).

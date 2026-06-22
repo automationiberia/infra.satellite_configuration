@@ -1,0 +1,58 @@
+---
+# defaults file for global_vars
+# Built-in / locked Foreman roles — shared by filetree_create (export) and dispatch (import).
+satellite_builtin_role_name_skips:
+  - Ansible Roles Manager
+  - Ansible Tower Inventory Reader
+  - Auditor
+  - Bookmarks manager
+  - Boot disk access
+  - Compliance manager
+  - Compliance viewer
+  - Content Exporter
+  - Content Importer
+  - Create ARF report
+  - Default role
+  - Discovery Manager
+  - Discovery Reader
+  - Edit hosts
+  - Edit partition tables
+  - ForemanRhCloud
+  - ForemanRhCloud Read Only
+  - Manager
+  - Organization admin
+  - Register hosts
+  - Remote Execution Manager
+  - Remote Execution User
+  - Site manager
+  - System admin
+  - Tasks Manager
+  - Tasks Reader
+  - Viewer
+  - View hosts
+  - Virt-who Manager
+  - Virt-who Reporter
+  - Virt-who Viewer
+  - Webhooks Manager
+  - Webhooks Reader
+
+satellite_builtin_role_name_skips_extra: []
+
+# CaC variable names that may contain secrets; used by read_contents.yml to scope no_log in the ingest loop.
+satellite_configuration_sensitive_vars:
+  - satellite_auth_sources_ldap
+  - satellite_content_credentials
+  - satellite_settings
+  - satellite_users
+
+# Red Hat CDN repositories are enabled via repository_sets, not the repository module.
+satellite_redhat_repository_url_substring: cdn.redhat.com
+
+# CaC lists loaded with slurp/from_yaml (no Jinja templating on file contents).
+satellite_configuration_filetree_read_raw_template_vars:
+  - satellite_provisioning_templates
+
+# Base directory for export (filetree_create) and import (filetree_read).
+# Each object type lives under satellite_<resource_plural>.d/ (no org/env nesting).
+satellite_configuration_filetree_path: "/tmp/satellite_filetree_config"
+...

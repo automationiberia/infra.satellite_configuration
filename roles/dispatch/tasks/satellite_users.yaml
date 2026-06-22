@@ -25,6 +25,7 @@
     label: "{{ __current_user.name }}"
   when: satellite_users is defined
   delegate_to: localhost
+  no_log: "{{ satellite_configuration_dispatch_secure_logging }}"
   vars:
     _sat_user_default_location: >-
       {{ omit if (__current_user.default_location is not defined) else (__current_user.default_location if not (__current_user.default_location is mapping) else (__current_user.default_location.name | default(__current_user.default_location.title) | default(omit))) }}

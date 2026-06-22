@@ -16,7 +16,6 @@
   loop_control:
     loop_var: __current_satellite_product
     label: "{{ __current_satellite_product.name }}"
-  no_log: "{{ satellite_configuration_dispatch_secure_logging }}"
   when: satellite_products is defined
   delegate_to: "localhost"
 ...

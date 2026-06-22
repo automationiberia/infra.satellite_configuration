@@ -21,7 +21,7 @@ Mark `- [x]` when the criterion is satisfied. Last audit: 2026-05-05.
 ## Content views
 
 - [ ] Content view filters: either enabled in dispatch with a defined tag and order, or removed with docs updated.
-- [ ] CV publish/promote: `when` is intentional; behavior documented or controlled by a variable.
+- [x] CV publish/promote: enabled via `satellite_configuration_dispatch_content_view_publish_promote`; auto-derived from `satellite_content_views` or explicit `satellite_content_view_versions`.
 - [ ] Composite content views: implemented end-to-end, or stub config removed and docs updated.
 
 ## Tests

@@ -9,11 +9,13 @@ Use this for `satellite_usergroups`.
 
 ## Steps
 1. Define usergroups and optional external mappings in `satellite_usergroups`.
-2. Apply group records with `redhat.satellite.usergroup`.
-3. Apply external mappings with `redhat.satellite.external_usergroup` when needed.
-4. Keep loop variables internal and `__`-prefixed.
+2. Ensure `satellite_users` is applied first (dispatch order: organizations → locations → roles → users → usergroups).
+3. Apply group records with `redhat.satellite.usergroup`.
+4. Apply external mappings with `redhat.satellite.external_usergroup` when needed.
+5. Keep loop variables internal and `__`-prefixed.
 
 ## Checklist
 - Uses `redhat.satellite.usergroup`.
 - Uses `redhat.satellite.external_usergroup` for external links.
+- Omits LDAP-only direct `users` entries not present in `satellite_users`; LDAP membership is via `external_usergroups`.
 - Uses `default(omit)` for optional keys.

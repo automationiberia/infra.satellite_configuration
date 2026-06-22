@@ -1,46 +1,18 @@
 # SPDX-License-Identifier: MIT-0
 ---
 # defaults file for filetree_create
-output_path: "/tmp/satellite_filetree_config"
+output_path: "{{ satellite_configuration_filetree_path }}"
 # Optional (set under satellite.template in your vars): set_ownership: true applies owner/group on
 # generated files. Default is false so exports work as a normal local user without chown to another UID.
 set_ownership: false
 
-# Foreman/Satellite built-in role names (index API is often "thin" and omits builtin; we exclude by name, then
-# filter again on GET /api/roles/:id). Override the whole list if needed, or append via filetree_create_roles_name_excludes_extra.
-filetree_create_roles_name_excludes:
-  - Ansible Roles Manager
-  - Ansible Tower Inventory Reader
-  - Auditor
-  - Bookmarks manager
-  - Boot disk access
-  - Compliance manager
-  - Compliance viewer
-  - Content Exporter
-  - Content Importer
-  - Create ARF report
-  - Default role
-  - Discovery Manager
-  - Discovery Reader
-  - Edit hosts
-  - Edit partition tables
-  - ForemanRhCloud
-  - Manager
-  - Organization admin
-  - Register hosts
-  - Remote Execution Manager
-  - Remote Execution User
-  - Site manager
-  - System admin
-  - Tasks Manager
-  - Tasks Reader
-  - Viewer
-  - View hosts
-  - Virt-who Manager
-  - Virt-who Reporter
-  - Virt-who Viewer
-  - Webhooks Manager
-  - Webhooks Reader
+# Foreman/Satellite built-in role names (see role global_vars).
+# Override the whole list if needed, or append via filetree_create_roles_name_excludes_extra.
+filetree_create_roles_name_excludes: "{{ satellite_builtin_role_name_skips }}"
+filetree_create_roles_name_excludes_extra: "{{ satellite_builtin_role_name_skips_extra }}"
 
-filetree_create_roles_name_excludes_extra: []
+# Foreman does not return account_password on GET; map LDAP source name -> bind password (e.g. from Vault).
+filetree_create_auth_sources_ldap_account_passwords: {}
+
+satellite_configuration_filetree_create_secure_logging: true
 ...

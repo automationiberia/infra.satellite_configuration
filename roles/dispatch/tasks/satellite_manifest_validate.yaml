@@ -1,0 +1,32 @@
+---
+- name: Dispatch | Resolve organization for manifest validation
+  redhat.satellite.organization_info:
+    username: "{{ satellite.admin.username }}"
+    password: "{{ satellite.admin.password }}"
+    server_url: "{{ satellite.server_url }}"
+    validate_certs: "{{ satellite.validate_certs }}"
+    name: "{{ satellite_configuration_dispatch_manifest_organization }}"
+  register: __dispatch_manifest_org_info
+
+- name: Dispatch | Query organization subscriptions
+  ansible.builtin.uri:
+    url: >-
+      {{ satellite.server_url }}/katello/api/organizations/{{ __dispatch_manifest_org_info.organization.id }}/subscriptions
+    user: "{{ satellite.admin.username }}"
+    password: "{{ satellite.admin.password }}"
+    force_basic_auth: true
+    validate_certs: "{{ satellite.validate_certs }}"
+    return_content: true
+  register: __dispatch_manifest_subscriptions
+  changed_when: false
+
+- name: Dispatch | Assert subscription manifest is present
+  ansible.builtin.assert:
+    that:
+      - __dispatch_manifest_subscriptions.json.results | default([]) | length > 0
+    fail_msg: >-
+      No subscription manifest found for organization '{{ satellite_configuration_dispatch_manifest_organization }}'.
+      Upload a manifest first (set satellite_configuration_dispatch_manifest_upload: true and satellite_manifest_path),
+      or disable this check with satellite_configuration_dispatch_manifest_validate: false.
+    quiet: true
+...

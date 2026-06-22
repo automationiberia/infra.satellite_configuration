@@ -3,7 +3,7 @@
   redhat.satellite.repository_set:
     # Mandatory params (required one of)
     label: "{{ __current_repository_set.label }}"
-    repositories: "{{ __current_repository_set.repositories }}"
+    repositories: "{{ _sat_repository_set_repositories | default(omit) }}"
     # all_repositories is mandatory only if repositories is not specified
     all_repositories: "{{ __current_repository_set.all_repositories | default(false) }}"
     # Optional params
@@ -11,11 +11,22 @@
     name: "{{ __current_repository_set.name | default(omit) }}"
     product: "{{ __current_repository_set.product | default(omit) }}"
     organization: "{{ __current_repository_set.organization }}"
-    state: "{{ 'enabled' if (__current_repository_set.state | default('false')) else 'disabled' | default('disabled') }}"
+    state: "{{ __current_repository_set.state | default('enabled') }}"
   loop: "{{ satellite_repository_sets }}"
   loop_control:
     loop_var: __current_repository_set
     label: "{{ __current_repository_set.name | default(__current_repository_set.label) }}"
-  when: satellite_repository_sets is defined
+  vars:
+    _sat_repository_set_repositories: >-
+      {{
+        __current_repository_set.repositories | default([])
+        | selectattr('releasever', 'defined')
+        | rejectattr('releasever', 'equalto', none)
+        | rejectattr('releasever', 'equalto', '')
+        | list
+      }}
+  when:
+    - satellite_repository_sets is defined
+    - _sat_repository_set_repositories | length > 0 or (__current_repository_set.all_repositories | default(false) | bool)
   delegate_to: localhost
 ...

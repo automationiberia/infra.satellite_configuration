@@ -7,8 +7,21 @@ satellite_server_url: '{{ lookup("env", "SATELLITE_SERVER_URL") }}'
 ## ContentViews:
 ###################
 content_views_purge_count: 6
+satellite_content_view_versions: []
+satellite_configuration_dispatch_content_view_publish_promote: true
+satellite_configuration_dispatch_host_collection_membership: false
 
 satellite_configuration_dispatch_secure_logging: true
+
+# Subscription manifest (Issue #10 / #18): upload optional; validate before content tasks by default.
+satellite_configuration_dispatch_manifest_upload: false
+satellite_configuration_dispatch_manifest_validate: true
+satellite_configuration_dispatch_manifest_organization: "{{ satellite_organizations[0].name | default('Default Organization') }}"
+satellite_manifest_path: ""
+satellite_manifest_download: false
+
+# Appended to satellite_builtin_role_name_skips (from role global_vars) when applying roles.
+dispatch_roles_name_skips_extra: []
 
 # Optional: used only when a `satellite_users` entry has no `user_password` (Foreman requires a password to create Internal-auth users). Prefer per-user `user_password` from Vault.
 # satellite_users_default_password: "{{ my_vault_new_user_password }}"

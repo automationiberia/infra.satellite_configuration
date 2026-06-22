@@ -7,4 +7,5 @@
     satellite_password: "{{ satellite.admin.password }}"
     satellite_server_url: "{{ satellite.server_url }}"
     satellite_validate_certs: "{{ satellite.validate_certs }}"
+  no_log: "{{ satellite_configuration_dispatch_secure_logging }}"
 ...

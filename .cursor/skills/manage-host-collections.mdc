@@ -10,10 +10,10 @@ Use this for `satellite_host_collections`.
 ## Steps
 1. Define host collections in `satellite_host_collections`.
 2. Apply with `redhat.satellite.host_collection`.
-3. If needed, include assignment tasks for attaching hosts to collections.
-4. Keep host list and organization references explicit.
+3. Opt in to host membership with `satellite_configuration_dispatch_host_collection_membership: true` when hosts already exist on the target.
 
 ## Checklist
 - Uses FQCN `redhat.satellite.host_collection`.
-- Uses include task for host assignment flow.
-- Preserves idempotent membership updates.
+- Export does not include host membership (`hosts`); structure only.
+- Host assignment runs only when `satellite_configuration_dispatch_host_collection_membership` is true.
+- Uses include task for host assignment flow when membership dispatch is enabled.
