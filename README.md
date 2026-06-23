@@ -84,10 +84,13 @@ satellite_configuration_filetree_path/
 │   └── satellite_organizations.yaml
 ├── satellite_settings.d/
 │   └── satellite_settings.yaml
+├── vault_template.yaml
 └── …
 ```
 
 Each object type uses a `satellite_<resource_plural>.d/` directory with one or more YAML fragments. There is no organization or environment path nesting — export output from `filetree_create` can be consumed directly by `filetree_read`.
+
+`filetree_create` also writes `vault_template.yaml` at the tree root with `CHANGEME` placeholders for LDAP bind passwords, Internal-user passwords, and encrypted settings. Populate and encrypt it before import, or merge the values into the matching `.d/` fragments manually.
 
 The [`configs/`](configs/) directory in this repository is an example **greenfield** tree: hand-authored desired state using the same `.d/` layout, without exporting from an existing Satellite.
 

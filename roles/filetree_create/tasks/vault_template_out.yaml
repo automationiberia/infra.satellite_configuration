@@ -1,0 +1,10 @@
+---
+- name: Vault template | Write vault_template.yaml
+  ansible.builtin.template:
+    src: vault_template.yaml.j2
+    dest: "{{ output_path }}/vault_template.yaml"
+    owner: "{{ satellite.template.owner if (satellite.template.set_ownership | default(false)) else omit }}"
+    group: "{{ satellite.template.group if (satellite.template.set_ownership | default(false)) else omit }}"
+    mode: "{{ satellite.template.mode }}"
+  no_log: "{{ satellite_configuration_filetree_create_secure_logging }}"
+...

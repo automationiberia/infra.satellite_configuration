@@ -17,6 +17,18 @@
         | sort(attribute='id')
       }}
 
+- name: Settings | Record encrypted settings for vault template
+  when: info_list is defined and info_list | length > 0
+  ansible.builtin.set_fact:
+    satellite_configuration_vault_template_encrypted_settings: >-
+      {{
+        info_list
+        | json_query("[?encrypted == `true` || encrypted == `1`]")
+        | map(attribute='name')
+        | list
+        | default([], true)
+      }}
+
 - name: Settings | Template Out Results
   when:
     - info_list is defined

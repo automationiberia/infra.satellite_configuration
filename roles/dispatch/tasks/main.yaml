@@ -86,6 +86,22 @@
       tags: manifest_validate
   tags: manifest_validate
 
+- name: Create Content Credentials
+  ansible.builtin.include_tasks: satellite_content_credentials.yaml
+  args:
+    apply:
+      tags: content_credentials
+  tags: content_credentials
+
+- name: Create Products (initial pass without sync plan)
+  ansible.builtin.include_tasks: satellite_products.yaml
+  vars:
+    __dispatch_products_phase: initial
+  args:
+    apply:
+      tags: products
+  tags: products
+
 - name: Manage Repository Sets
   ansible.builtin.include_tasks: satellite_repository_sets.yaml
   args:
@@ -107,6 +123,15 @@
       tags: sync_plans
   tags: sync_plans
 
+- name: Associate Products with Sync Plans
+  ansible.builtin.include_tasks: satellite_products.yaml
+  vars:
+    __dispatch_products_phase: sync_plan
+  args:
+    apply:
+      tags: products
+  tags: products
+
 - name: Manage Content Views
   ansible.builtin.include_tasks: satellite_content_views.yaml
   args:
@@ -114,14 +139,12 @@
       tags: content_views
   tags: content_views
 
-# Don't treat this appart from Content Views by now
-# - name: Manage Content Views Filters
-#   ansible.builtin.include_tasks: satellite_content_view_filters.yaml
-#   args:
-#     apply:
-#       tags: content_view_filters
-#   tags: content_view_filters
-# Don't treat this appart from Content Views by now
+- name: Manage Content View Filters
+  ansible.builtin.include_tasks: satellite_content_view_filters.yaml
+  args:
+    apply:
+      tags: content_view_filters
+  tags: content_view_filters
 
 - name: Publish and Promote Content Views
   when: satellite_configuration_dispatch_content_view_publish_promote | bool
@@ -145,20 +168,6 @@
       tags: host_collections
   tags: host_collections
 
-- name: Create Products
-  ansible.builtin.include_tasks: satellite_products.yaml
-  args:
-    apply:
-      tags: products
-  tags: products
-
-- name: Create Content Credentials
-  ansible.builtin.include_tasks: satellite_content_credentials.yaml
-  args:
-    apply:
-      tags: content_credentials
-  tags: content_credentials
-
 - name: Create Partition Tables
   ansible.builtin.include_tasks: satellite_partition_tables.yaml
   args:
@@ -173,19 +182,19 @@
       tags: provisioning_templates
   tags: provisioning_templates
 
-- name: Create Installation Mediums
-  ansible.builtin.include_tasks: satellite_installation_mediums.yaml
-  args:
-    apply:
-      tags: installation_mediums
-  tags: installation_mediums
-
 - name: Create OperatingSystems
   ansible.builtin.include_tasks: satellite_operatingsystems.yaml
   args:
     apply:
       tags: operatingsystems
   tags: operatingsystems
+
+- name: Create Installation Mediums
+  ansible.builtin.include_tasks: satellite_installation_mediums.yaml
+  args:
+    apply:
+      tags: installation_mediums
+  tags: installation_mediums
 
 - name: Manage Host Groups
   ansible.builtin.include_tasks: satellite_hostgroups.yaml

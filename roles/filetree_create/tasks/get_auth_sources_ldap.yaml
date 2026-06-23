@@ -50,6 +50,15 @@
       and (filetree_create_auth_sources_ldap_account_passwords | length > 0)
     }}
 
+- name: Auth Source LDAPs | Record LDAP names for vault template
+  when: info_list is defined and info_list | length > 0
+  ansible.builtin.set_fact:
+    satellite_configuration_vault_template_ldap_sources: >-
+      {{
+        (satellite_configuration_vault_template_ldap_sources | default([]))
+        + (info_list | map(attribute='name') | list)
+      }}
+
 - name: Auth Source LDAPs | Template Out Results
   when: info_list is defined and info_list | length > 0
   ansible.builtin.include_tasks: template_out.yaml

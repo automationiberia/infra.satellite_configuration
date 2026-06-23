@@ -144,6 +144,8 @@ One example of the generated files follows:
 
 `satellite_auth_sources_ldap.yaml` is built from **`GET /api/auth_source_ldaps/:id`** (includes **`account`**, **`base_dn`**, **`groups_base`**, etc.). **`account_password`** is write-only in the API and is included only when you set **`filetree_create_auth_sources_ldap_account_passwords`** keyed by LDAP source **`name`** (from Vault or another secret store).
 
+**`vault_template.yaml`** is written at the export root with **`CHANGEME`** placeholders for LDAP bind passwords, Internal-auth **`user_password`** entries, and encrypted **`satellite_settings`** values. **`satellite_installation_mediums`** **`path`** fields replace the source Satellite FQDN with **`REPLACE_WITH_TARGET_SATELLITE_FQDN`** for target-site editing.
+
 ## License
 
 GPLv3+

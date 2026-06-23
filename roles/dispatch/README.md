@@ -44,9 +44,15 @@ Exports do not include passwords. When **creating** a user with **`auth_source: 
 
 Dispatch skips built-in and locked roles from `satellite_roles` (by name via `satellite_builtin_role_name_skips` from role **`global_vars`**, and by `builtin` / `locked` when present in legacy CaC). Append site-specific names with **`dispatch_roles_name_skips_extra`**.
 
-### RBAC dispatch order
+### RBAC and dispatch order
 
-Dispatch applies RBAC objects in dependency order: `auth_sources_ldap` → `organizations` → `locations` → `roles` → `users` → `usergroups`. User groups only receive direct `users` memberships for logins defined in `satellite_users`; LDAP users are mapped through `external_usergroups`.
+Dispatch applies RBAC objects in dependency order: `auth_sources_ldap` → `organizations` → `locations` → `roles` → `users` → `usergroups`.
+
+Content and provisioning objects run in dependency order after lifecycle environments and optional manifest upload/validation:
+
+`content_credentials` → `products` (initial, without sync plan) → `repository_sets` → `repositories` → `sync_plans` → `products` (sync plan association) → `content_views` → `content_view_filters` → `cv_publish_promote` → `activation_keys` → `host_collections` → `partition_tables` → `provisioning_templates` → `operatingsystems` → `installation_mediums` → `hostgroups`.
+
+User groups only receive direct `users` memberships for logins defined in `satellite_users`; LDAP users are mapped through `external_usergroups`.
 
 ## Example Playbook
 

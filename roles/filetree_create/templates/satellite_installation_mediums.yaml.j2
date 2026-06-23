@@ -5,6 +5,7 @@
 {% set __empty_values = [None, 'None', '', {}, [], [{}]] %}
 {% set __reduce_to_name = [] %}
 {% set __translate = [{'operatingsystems': 'title'}] %}
+{% set __source_hostname = satellite.server_url | default('') | urlsplit('hostname') %}
 satellite_installation_mediums:
 {% for i in info_list %}
 {%   for __map_item in (i | dict2items) if __map_item.key not in __excluded_fields and __map_item.value not in __empty_values %}
@@ -14,6 +15,12 @@ satellite_installation_mediums:
 {%       for __inner_item in __map_item.value %}
       - {{ discard_unwanted_fields((dict(__inner_item.items() | selectattr('0', 'in', __item_key))[__item_key]), __excluded_fields, __empty_values, __reduce_to_name, __translate) }}
 {%       endfor %}
+{%     elif __map_item.key == 'path' %}
+{%       set __path_value = __map_item.value | string %}
+{%       if __source_hostname | length > 0 and __source_hostname in __path_value %}
+{%         set __path_value = __path_value | replace(__source_hostname, satellite_configuration_installation_medium_path_placeholder) %}
+{%       endif %}
+  {{ '-' if loop.index == 1 else ' ' }} path: "{{ __path_value }}"
 {%     else %}
   {{ '-' if loop.index == 1 else ' ' }} {{ __map_item.key }}: {{ discard_unwanted_fields(__map_item.value, __excluded_fields, __empty_values, __reduce_to_name, __translate) }}
 {%     endif %}

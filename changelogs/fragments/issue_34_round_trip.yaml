@@ -7,6 +7,7 @@ minor_changes:
   - Re-enable content view publish/promote dispatch with satellite_configuration_dispatch_content_view_publish_promote and satellite_content_view_versions.
   - Restructure configs to the same .d layout for greenfield CaC authoring.
   - Add satellite_configuration_unwrap_raw_markers filter and raw_markers module utils for CaC round-trip.
+  - filetree_create generates vault_template.yaml with placeholders for LDAP, user, and encrypted setting secrets.
   - Document supported object types and known gaps (compute resources, global parameters, SCAP, job templates, webhooks, HTTP proxies, remote execution).
 
 bugfixes:
@@ -18,6 +19,11 @@ bugfixes:
   - filetree_create export - use dir_mode for .d fragment directories; replace invalid Jinja list comprehensions in LDAP and roles tasks.
   - filetree_create export - fix repository CDN filtering, enabled repository set selection, and repository set organization lookup without re-exporting organizations.
   - filetree_create settings export - quote encrypted and YAML-alias masked values so format_yaml can parse satellite_settings output.
+  - filetree_create activation keys export - emit host_collections as name strings for dispatch module compatibility.
+  - filetree_create installation mediums export - replace source Satellite FQDN in path with REPLACE_WITH_TARGET_SATELLITE_FQDN placeholder.
   - dispatch - apply RBAC in dependency order (organizations, locations, roles, users, usergroups); skip Red Hat CDN repos; opt-in host collection membership.
+  - dispatch - reorder content and provisioning tasks per round-trip dependencies; enable content_view_filters dispatch.
+  - dispatch products - two-pass create (without sync_plan, then associate after sync_plans) to break products/sync_plans circular dependency.
+  - dispatch - remove unsupported provisioning_template description; fix content_view_version_cleanup include_role usage.
   - dispatch - scope no_log to sensitive object types only; filter locked provisioning templates before loop evaluation.
   - galaxy.yml - require redhat.satellite >=5.8.0 instead of an exact pin.

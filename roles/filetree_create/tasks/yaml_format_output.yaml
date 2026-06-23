@@ -15,7 +15,7 @@
     explicit_start: true # Forces ---
     explicit_end: true # Forces ...
     auto_block_scalars: true # If a string contains a newline, convert it to a PreservedScalarString (|).
-  loop: "{{ _generated_files.files }}"
+  loop: "{{ _generated_files.files | rejectattr('path', 'search', 'vault_template.yaml') | list }}"
   loop_control:
     loop_var: _current_file
     label: "{{ _current_file.path }}"

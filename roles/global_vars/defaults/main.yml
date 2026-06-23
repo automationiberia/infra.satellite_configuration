@@ -55,4 +55,10 @@ satellite_configuration_filetree_read_raw_template_vars:
 # Base directory for export (filetree_create) and import (filetree_read).
 # Each object type lives under satellite_<resource_plural>.d/ (no org/env nesting).
 satellite_configuration_filetree_path: "/tmp/satellite_filetree_config"
+
+# Installation medium paths: source Satellite FQDN is replaced with this placeholder on export.
+satellite_configuration_installation_medium_path_placeholder: "REPLACE_WITH_TARGET_SATELLITE_FQDN"
+
+# Placeholder scalar written into generated vault_template.yaml for operator-filled secrets.
+satellite_configuration_vault_placeholder: "CHANGEME"
 ...

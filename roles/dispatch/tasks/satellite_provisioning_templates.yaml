@@ -21,7 +21,6 @@
     kind: "{{ __current_provisioning_template.kind | default(omit) }}"
     operatingsystems: "{{ __current_provisioning_template.operatingsystems | default(omit) }}"
     updated_name: "{{ __current_provisioning_template.updated_name | default(omit) }}"
-    description: "{{ __current_provisioning_template.description | default(omit) | infra.satellite_configuration.satellite_configuration_unwrap_raw_markers }}"
     state: "{{ __current_provisioning_template.state | default('present') }}"
   loop: "{{ __dispatch_provisioning_templates | default([]) }}"
   loop_control:

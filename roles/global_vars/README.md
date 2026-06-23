@@ -18,6 +18,9 @@ dependencies:
 | `satellite_configuration_sensitive_vars` | see `defaults/main.yml` | CaC list names that may contain secrets; used by `read_contents.yml` to scope `no_log` per object type in the ingest loop |
 | `satellite_redhat_repository_url_substring` | `cdn.redhat.com` | URL substring used to exclude Red Hat CDN repositories from custom repository export/dispatch |
 | `satellite_configuration_filetree_read_raw_template_vars` | see `defaults/main.yml` | CaC list names loaded via `slurp` + `from_yaml` in `filetree_read` (no Jinja templating on fragment contents) |
+| `satellite_configuration_filetree_path` | `/tmp/satellite_filetree_config` | Base directory for export and import `.d/` fragments |
+| `satellite_configuration_installation_medium_path_placeholder` | `REPLACE_WITH_TARGET_SATELLITE_FQDN` | Substituted for the source Satellite hostname in exported installation medium `path` values |
+| `satellite_configuration_vault_placeholder` | `CHANGEME` | Scalar placeholder written into generated `vault_template.yaml` |
 
 ## License
 

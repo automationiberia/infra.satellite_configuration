@@ -1,5 +1,5 @@
 ---
-- name: Create/Update Products
+- name: Create/Update Products (initial pass without sync plan)
   redhat.satellite.product:
     # Mandatory prams
     name: "{{ __current_satellite_product.name }}"
@@ -9,13 +9,31 @@
     gpg_key: "{{ __current_satellite_product.gpg_key | default(omit) }}"
     ssl_ca_cert: "{{ __current_satellite_product.ssl_ca_cert | default(omit) }}"
     ssl_ca_key: "{{ __current_satellite_product.ssl_ca_key | default(omit) }}"
-    sync_plan: "{{ __current_satellite_product.sync_plan | default(omit) }}"
     description: "{{ __current_satellite_product.description | default(omit) }}"
     state: "{{ __current_satellite_product.state | default('present') }}"
   loop: "{{ satellite_products }}"
   loop_control:
     loop_var: __current_satellite_product
     label: "{{ __current_satellite_product.name }}"
-  when: satellite_products is defined
-  delegate_to: "localhost"
+  when:
+    - satellite_products is defined
+    - __dispatch_products_phase | default('initial') == 'initial'
+  delegate_to: localhost
+
+- name: Associate Products with Sync Plans
+  redhat.satellite.product:
+    name: "{{ __current_satellite_product.name }}"
+    organization: "{{ __current_satellite_product.organization }}"
+    sync_plan: "{{ __current_satellite_product.sync_plan }}"
+    state: "{{ __current_satellite_product.state | default('present') }}"
+  loop: "{{ satellite_products }}"
+  loop_control:
+    loop_var: __current_satellite_product
+    label: "{{ __current_satellite_product.name }}"
+  when:
+    - satellite_products is defined
+    - __dispatch_products_phase | default('initial') == 'sync_plan'
+    - __current_satellite_product.sync_plan is defined
+    - __current_satellite_product.sync_plan | string | length > 0
+  delegate_to: localhost
 ...

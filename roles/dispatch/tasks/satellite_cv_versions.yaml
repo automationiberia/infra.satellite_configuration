@@ -57,7 +57,7 @@
   delegate_to: localhost
 
 - name: Dispatch | Purge old content view versions
-  ansible.builtin.import_role:
+  ansible.builtin.include_role:
     name: redhat.satellite.content_view_version_cleanup
   vars:
     satellite_username: "{{ username }}"
@@ -74,5 +74,4 @@
     - content_views_purge_count is defined
     - satellite_content_views is defined
     - satellite_content_views | length > 0
-  delegate_to: localhost
 ...

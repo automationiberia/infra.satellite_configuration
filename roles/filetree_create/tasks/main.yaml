@@ -161,6 +161,14 @@
       ansible.builtin.include_tasks: get_provisioning_templates.yaml
 
 # In a separate file so Ansible does not resolve format_yaml at parse time when this block is skipped (e.g. --tags roles,users).
+- name: Vault Template Block
+  tags:
+    - vault_template
+    - always
+  block:
+    - name: Generate vault_template.yaml
+      ansible.builtin.include_tasks: vault_template_out.yaml
+
 - name: "Block to fix the output files' format"
   tags:
     - yaml_format
