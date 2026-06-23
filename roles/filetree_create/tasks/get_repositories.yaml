@@ -15,9 +15,8 @@
       {{
         result_api_response.json.results
         | sort(attribute='id')
-        | rejectattr('product.orphaned', '==', true)
-        | rejectattr('redhat', 'equalto', true)
         | rejectattr('url', 'search', satellite_redhat_repository_url_substring)
+        | rejectattr('product.orphaned', 'equalto', true)
         | list
       }}
 

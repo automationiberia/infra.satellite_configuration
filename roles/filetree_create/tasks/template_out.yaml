@@ -3,7 +3,7 @@
   ansible.builtin.file:
     path: "{{ output_path }}/{{ template_type }}.d"
     state: directory
-    mode: "{{ satellite.template.mode }}"
+    mode: "{{ satellite.template.dir_mode | default('0777') }}"
 
 - name: Create configuration file for {{ template_type }}
   ansible.builtin.template:

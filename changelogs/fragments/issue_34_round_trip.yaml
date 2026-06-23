@@ -15,6 +15,9 @@ bugfixes:
   - filetree_read - load provisioning templates with slurp/from_yaml to avoid Jinja2 parsing ERB bodies; unwrap raw markers on dispatch.
   - filetree_create - skip readonly settings, locked/built-in roles, Red Hat CDN repositories, enabled-only repository sets, and host collection membership by default.
   - filetree_create - enrich kickstart releasever from enabled repositories; strip use_netgroups for Active Directory LDAP sources on export.
+  - filetree_create export - use dir_mode for .d fragment directories; replace invalid Jinja list comprehensions in LDAP and roles tasks.
+  - filetree_create export - fix repository CDN filtering, enabled repository set selection, and repository set organization lookup without re-exporting organizations.
+  - filetree_create settings export - quote encrypted and YAML-alias masked values so format_yaml can parse satellite_settings output.
   - dispatch - apply RBAC in dependency order (organizations, locations, roles, users, usergroups); skip Red Hat CDN repos; opt-in host collection membership.
   - dispatch - scope no_log to sensitive object types only; filter locked provisioning templates before loop evaluation.
   - galaxy.yml - require redhat.satellite >=5.8.0 instead of an exact pin.

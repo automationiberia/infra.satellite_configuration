@@ -28,19 +28,30 @@
     detailed_info:
       results: []
 
-- name: Roles | Filter detail responses (custom, non-locked roles only)
+- name: Roles | Reset filtered role details
+  when: detailed_info.results is defined and detailed_info.results | length > 0
+  ansible.builtin.set_fact:
+    __filtered_role_results: []
+
+- name: Roles | Append custom non-locked role detail
+  ansible.builtin.set_fact:
+    __filtered_role_results: "{{ __filtered_role_results + [__role_detail] }}"
+  loop: "{{ detailed_info.results }}"
+  loop_control:
+    loop_var: __role_detail
+    label: "{{ __role_detail.json.name | default(__role_detail.item.name | default('unknown')) }}"
+  when:
+    - detailed_info.results is defined
+    - detailed_info.results | length > 0
+    - __role_detail.json is defined
+    - (__role_detail.json.builtin | default(0) | int) == 0
+    - not (__role_detail.json.locked | default(false) | bool)
+
+- name: Roles | Apply filtered role details
   when: detailed_info.results is defined and detailed_info.results | length > 0
   ansible.builtin.set_fact:
     detailed_info:
-      results: >-
-        {{
-          [
-            item for item in detailed_info.results
-            if item.json is defined
-            and (item.json.builtin | default(0) | int) == 0
-            and not (item.json.locked | default(false) | bool)
-          ]
-        }}
+      results: "{{ __filtered_role_results }}"
 
 - name: Roles | Expand embedded filter stubs (Foreman role show omits permissions/search)
   when: detailed_info.results is defined and detailed_info.results | length > 0

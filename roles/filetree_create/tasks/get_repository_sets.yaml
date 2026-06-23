@@ -4,7 +4,16 @@
     __rs_info_list: []
 
 - name: Repository Sets | Get Organizations
-  ansible.builtin.include_tasks: get_organizations.yaml
+  redhat.satellite.organization_info:
+    server_url: "{{ satellite.server_url }}"
+    username: "{{ satellite.admin.username }}"
+    password: "{{ satellite.admin.password }}"
+    validate_certs: "{{ satellite.validate_certs }}"
+  register: __result_organizations
+
+- name: Repository Sets | Set organization list
+  ansible.builtin.set_fact:
+    info_list: "{{ __result_organizations.organizations | sort(attribute='id') }}"
 
 - name: Repository Sets | Get Syn Plans Info
   ansible.builtin.include_tasks: get_repository_sets_do_work.yaml

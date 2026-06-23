@@ -24,6 +24,8 @@ satellite_settings: {{ [] if info_list | length == 0 }}
     value: "{{ discard_unwanted_fields(__setting.value, __excluded_fields, __empty_values, __reduce_to_name, __translate) | trim('"') | trim("'") }}"
 {%     elif __setting.name in __int_value_names %}
     value: {{ discard_unwanted_fields(__setting.value, __excluded_fields, __empty_values, __reduce_to_name, __translate) | default(0, true) }}
+{%     elif __setting.encrypted | default(false) | bool or (__setting.value is string and __setting.value is match('^[\*\&\@\!\%]')) %}
+    value: "{{ discard_unwanted_fields(__setting.value, __excluded_fields, __empty_values, __reduce_to_name, __translate) | string | trim('"') | trim("'") }}"
 {%     elif __setting.value in __empty_values %}
     value: ""
 {%     else %}

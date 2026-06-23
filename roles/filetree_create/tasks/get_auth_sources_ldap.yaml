@@ -23,23 +23,37 @@
     detailed_info:
       results: []
 
-- name: Auth Source LDAPs | Template Out Results
+- name: Auth Source LDAPs | Build export list
   when: detailed_info.results is defined and detailed_info.results | length > 0
-  ansible.builtin.include_tasks: template_out.yaml
+  ansible.builtin.set_fact:
+    info_list: []
+
+- name: Auth Source LDAPs | Append LDAP export item
+  when: detailed_info.results is defined and detailed_info.results | length > 0
+  ansible.builtin.set_fact:
+    info_list: "{{ info_list + [__ldap_export_item] }}"
+  loop: "{{ detailed_info.results | map(attribute='json') | list }}"
+  loop_control:
+    loop_var: __ldap_item
+    label: "{{ __ldap_item.name | default(__ldap_item.id) }}"
   vars:
-    template_type: satellite_auth_sources_ldap
-    info_list: >-
+    __ldap_export_item: >-
       {{
-        [
-          __ldap_item | combine({'account_password': filetree_create_auth_sources_ldap_account_passwords[__ldap_item.name]}, recursive=true)
-          if __ldap_item.name in filetree_create_auth_sources_ldap_account_passwords
-          else __ldap_item
-          for __ldap_item in (detailed_info.results | map(attribute='json') | list)
-        ]
+        __ldap_item
+        | combine({'account_password': filetree_create_auth_sources_ldap_account_passwords[__ldap_item.name]}, recursive=true)
+        if (__ldap_item.name in filetree_create_auth_sources_ldap_account_passwords)
+        else __ldap_item
       }}
   no_log: >-
     {{
       satellite_configuration_filetree_create_secure_logging
       and (filetree_create_auth_sources_ldap_account_passwords | length > 0)
     }}
+
+- name: Auth Source LDAPs | Template Out Results
+  when: info_list is defined and info_list | length > 0
+  ansible.builtin.include_tasks: template_out.yaml
+  vars:
+    template_type: satellite_auth_sources_ldap
+  no_log: "{{ satellite_configuration_filetree_create_secure_logging and (filetree_create_auth_sources_ldap_account_passwords | length > 0) }}"
 ...

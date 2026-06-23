@@ -7,7 +7,12 @@
 
 - name: Repository Sets (Do Work) | Retain enabled repository sets
   ansible.builtin.set_fact:
-    __repository_sets_enabled: "{{ result_api_response.json.results | selectattr('enabled', 'equalto', true) | list }}"
+    __repository_sets_enabled: >-
+      {{
+        result_api_response.json.results | default([])
+        | json_query('[?enabled == `true` || enabled == `1`]')
+        | default([], true)
+      }}
   when: result_api_response.json.results is defined
 
 - name: Repository Sets (Do Work) | Get organization repositories for releasever enrichment
