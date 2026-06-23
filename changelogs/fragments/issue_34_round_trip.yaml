@@ -25,5 +25,7 @@ bugfixes:
   - dispatch - reorder content and provisioning tasks per round-trip dependencies; enable content_view_filters dispatch.
   - dispatch products - two-pass create (without sync_plan, then associate after sync_plans) to break products/sync_plans circular dependency.
   - dispatch - remove unsupported provisioning_template description; fix content_view_version_cleanup include_role usage.
+  - dispatch provisioning templates - create snippets first with kind snippet; skip OS default assignment for snippets.
+  - filetree_create provisioning templates export - emit kind snippet instead of a bare snippet boolean flag.
   - dispatch - scope no_log to sensitive object types only; filter locked provisioning templates before loop evaluation.
   - galaxy.yml - require redhat.satellite >=5.8.0 instead of an exact pin.

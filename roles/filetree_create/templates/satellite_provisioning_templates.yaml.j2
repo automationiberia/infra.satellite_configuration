@@ -10,8 +10,12 @@
 satellite_provisioning_templates:
 {% for i in info_list %}
 {%   for __map_item in (i | dict2items) if __map_item.key not in __excluded_fields and __map_item.value not in __empty_values %}
-{%     if __map_item.key == 'template_kind_name' %}
+{%     if __map_item.key == 'template_kind_name' and not (__map_item.value in __empty_values) and not (i.snippet | default(false) | bool) %}
   {{ '-' if loop.index == 1 else ' ' }} kind: {{ discard_unwanted_fields(__map_item.value, __excluded_fields, __empty_values, __reduce_to_name, __translate) }}
+{%     elif __map_item.key == 'snippet' and __map_item.value | bool %}
+  {{ '-' if loop.index == 1 else ' ' }} kind: snippet
+{%     elif __map_item.key == 'snippet' %}
+{#     skip false snippet flag; non-snippet kind comes from template_kind_name #}
 {%     elif __map_item.key in __raw_fields %}
   {{ '-' if loop.index == 1 else ' ' }} {{ __map_item.key }}: |-
       {{ '{%- raw -%}' }}
