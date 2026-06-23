@@ -1,0 +1,25 @@
+---
+- name: Dispatch | Create/Update Products (batch)
+  redhat.satellite.product:
+    name: "{{ __current_satellite_product.name }}"
+    organization: "{{ __current_satellite_product.organization }}"
+    label: "{{ __current_satellite_product.label | default(omit) }}"
+    gpg_key: "{{ __current_satellite_product.gpg_key | default(omit) }}"
+    ssl_ca_cert: "{{ __current_satellite_product.ssl_ca_cert | default(omit) }}"
+    ssl_ca_key: "{{ __current_satellite_product.ssl_ca_key | default(omit) }}"
+    description: "{{ __current_satellite_product.description | default(omit) }}"
+    sync_plan: "{{ __current_satellite_product.sync_plan | default(omit) }}"
+    state: "{{ __current_satellite_product.state | default('present') }}"
+  loop: "{{ __dispatch_products_batch }}"
+  loop_control:
+    loop_var: __current_satellite_product
+    label: "{{ __current_satellite_product.name }}"
+  delegate_to: localhost
+
+- name: Dispatch | Pause between product batches
+  ansible.builtin.pause:
+    seconds: "{{ satellite_configuration_dispatch_products_batch_pause | default(30) | int }}"
+  when:
+    - not (__dispatch_is_last_batch | default(true) | bool)
+    - satellite_configuration_dispatch_products_batch_pause | default(30) | int > 0
+...

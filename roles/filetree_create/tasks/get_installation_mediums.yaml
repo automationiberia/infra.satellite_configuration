@@ -20,6 +20,16 @@
   loop_control:
     loop_var: __current_installation_medium
 
+- name: Installation Mediums | Flag vault FQDN when paths reference source hostnames
+  ansible.builtin.set_fact:
+    satellite_configuration_vault_template_installation_mediums_fqdn: true
+  loop: "{{ satellite_configuration_export_path_hostnames | default([]) }}"
+  loop_control:
+    loop_var: __export_hostname
+  when:
+    - __export_hostname | length > 0
+    - __rs_info_list | default([]) | map(attribute='path') | map('string') | select('search', __export_hostname) | list | length > 0
+
 - name: Installation Mediums | Template Out Results
   when:
     - __rs_info_list is defined

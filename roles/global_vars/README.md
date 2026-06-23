@@ -19,8 +19,9 @@ dependencies:
 | `satellite_redhat_repository_url_substring` | `cdn.redhat.com` | URL substring used to exclude Red Hat CDN repositories from custom repository export/dispatch |
 | `satellite_configuration_filetree_read_raw_template_vars` | see `defaults/main.yml` | CaC list names loaded via `slurp` + `from_yaml` in `filetree_read` (no Jinja templating on fragment contents) |
 | `satellite_configuration_filetree_path` | `/tmp/satellite_filetree_config` | Base directory for export and import `.d/` fragments |
-| `satellite_configuration_installation_medium_path_placeholder` | `REPLACE_WITH_TARGET_SATELLITE_FQDN` | Substituted for the source Satellite hostname in exported installation medium `path` values |
 | `satellite_configuration_vault_placeholder` | `CHANGEME` | Scalar placeholder written into generated `vault_template.yaml` |
+| `satellite_configuration_vault_template_vars` | see `defaults/main.yml` | Vault variable names generated in `vault_template.yaml` and referenced from CaC fragments |
+| `satellite_settings_host_specific_names` | see `defaults/main.yml` | Host-specific setting names exported with `vault_satellite_settings_host_specific` refs |
 
 ## License
 

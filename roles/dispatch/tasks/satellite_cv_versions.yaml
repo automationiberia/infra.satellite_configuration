@@ -51,6 +51,7 @@
   when:
     - satellite_content_view_versions | default([]) | length == 0
     - satellite_content_views is defined
+    - not (__current_content_view.default | default(false) | bool)
     - not (__current_content_view.import_only | default(false) | bool)
     - not (__current_content_view.composite | default(false) | bool)
     - _sat_cv_export_had_versions or (__current_content_view.needs_publish | default(false) | bool)

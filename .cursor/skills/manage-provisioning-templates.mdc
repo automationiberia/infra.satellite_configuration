@@ -11,9 +11,9 @@ Use this for `satellite_provisioning_templates`.
 1. Define templates in `satellite_provisioning_templates`.
 2. Export wraps `template` / `description` in literal blocks with `{% raw %}` / `{% endraw %}` markers (see `satellite_provisioning_templates.yaml.j2`).
 3. `filetree_read` loads this list via `slurp` + `from_yaml` (listed in `satellite_configuration_filetree_read_raw_template_vars` from `global_vars`) so ERB/Jinja-like content is not templated on ingest.
-4. Apply only unlocked entries from `__dispatch_provisioning_templates` (`rejectattr('locked')`); do not rely on task `when` alone.
+4. Apply snippets first with `kind: snippet`, then unlocked full templates from `__dispatch_provisioning_templates` (`rejectattr('locked')`); do not rely on task `when` alone.
 5. Unwrap raw markers with `infra.satellite_configuration.satellite_configuration_unwrap_raw_markers` before calling `redhat.satellite.provisioning_template`.
-6. Apply default OS mappings with `redhat.satellite.os_default_template` where needed.
+6. Apply default OS mappings with `redhat.satellite.os_default_template` for non-snippet templates only.
 
 ## Checklist
 - Uses FQCN `redhat.satellite.provisioning_template`.

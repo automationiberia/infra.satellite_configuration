@@ -51,4 +51,5 @@ Use this for `filetree_create` style extraction.
 - Uses API call helpers instead of one-off URI logic.
 - Removes noisy API fields before writing files.
 - Keeps generated artifacts deterministic.
-- Masks export output with `no_log` when `satellite_configuration_filetree_create_secure_logging` is true; for LDAP bind passwords, also require `filetree_create_auth_sources_ldap_account_passwords` to be non-empty.
+- Masks export output with `no_log` when `satellite_configuration_filetree_create_secure_logging` is true.
+- Sensitive CaC values reference `vault_*` variables from generated `vault_template.yaml` (`vault_ref.j2` macros); do not embed secrets or operator instructions in Ansible vars inside templates.

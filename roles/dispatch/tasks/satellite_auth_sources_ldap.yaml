@@ -16,14 +16,24 @@
   when: satellite_auth_sources_ldap | default([]) | length > 0
   no_log: "{{ satellite_configuration_dispatch_secure_logging }}"
 
+- name: Dispatch | Prepare LDAP list for role import
+  ansible.builtin.set_fact:
+    _satellite_auth_sources_ldap_dispatch_list: "{{ __satellite_auth_sources_ldap_for_role }}"
+  when:
+    - satellite_auth_sources_ldap | default([]) | length > 0
+    - __satellite_auth_sources_ldap_for_role is defined
+
 - name: Dispatch | Apply Auth Sources LDAP
-  ansible.builtin.import_role:
+  ansible.builtin.include_role:
     name: redhat.satellite.auth_sources_ldap
   vars:
-    satellite_username: "{{ username }}"
-    satellite_password: "{{ password }}"
-    satellite_server_url: "{{ server_url }}"
-    satellite_validate_certs: "{{ validate_certs }}"
-    satellite_auth_sources_ldap: "{{ __satellite_auth_sources_ldap_for_role | default(satellite_auth_sources_ldap | default([])) }}"
+    satellite_username: "{{ satellite.admin.username }}"
+    satellite_password: "{{ satellite.admin.password }}"
+    satellite_server_url: "{{ satellite.server_url }}"
+    satellite_validate_certs: "{{ satellite.validate_certs }}"
+    satellite_auth_sources_ldap: "{{ _satellite_auth_sources_ldap_dispatch_list }}"
+  when:
+    - _satellite_auth_sources_ldap_dispatch_list is defined
+    - _satellite_auth_sources_ldap_dispatch_list | length > 0
   no_log: "{{ satellite_configuration_dispatch_secure_logging }}"
 ...

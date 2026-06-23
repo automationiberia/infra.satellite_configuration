@@ -7,6 +7,7 @@
 {% set __raw_fields = ['name', 'description'] %}
 satellite_products: {{ [] if info_list | length == 0 }}
 {% for __product in info_list %}
+{% if not (satellite_configuration_filetree_export_skip_provider_products | default(true) and __product.provider_id is defined) %}
 {%   for __map_item in (__product | dict2items) if __map_item.key not in __excluded_fields and __map_item.value not in __empty_values %}
 {%     if __map_item.key in __raw_fields %}
   {{ '-' if loop.index == 1 else ' ' }} {{ __map_item.key }}: |-
@@ -19,5 +20,6 @@ satellite_products: {{ [] if info_list | length == 0 }}
   {{ '-' if loop.index == 1 else ' ' }} {{ __map_item.key }}: {{ discard_unwanted_fields(__map_item.value, __excluded_fields, __empty_values, __reduce_to_name, __translate) }}
 {%     endif %}
 {%   endfor %}
+{% endif %}
 {% endfor %}
 ...

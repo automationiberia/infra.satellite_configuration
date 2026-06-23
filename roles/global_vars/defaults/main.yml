@@ -51,14 +51,29 @@ satellite_redhat_repository_url_substring: cdn.redhat.com
 # CaC lists loaded with slurp/from_yaml (no Jinja templating on file contents).
 satellite_configuration_filetree_read_raw_template_vars:
   - satellite_provisioning_templates
+  - satellite_partition_tables
 
 # Base directory for export (filetree_create) and import (filetree_read).
 # Each object type lives under satellite_<resource_plural>.d/ (no org/env nesting).
 satellite_configuration_filetree_path: "/tmp/satellite_filetree_config"
 
-# Installation medium paths: source Satellite FQDN is replaced with this placeholder on export.
-satellite_configuration_installation_medium_path_placeholder: "REPLACE_WITH_TARGET_SATELLITE_FQDN"
-
+# Installation medium paths reference vault_satellite_installation_mediums_target_fqdn on export.
 # Placeholder scalar written into generated vault_template.yaml for operator-filled secrets.
 satellite_configuration_vault_placeholder: "CHANGEME"
+
+# Vault variable names generated in vault_template.yaml when referenced from CaC fragments.
+satellite_configuration_vault_template_vars:
+  - vault_satellite_auth_sources_ldap_account_passwords
+  - vault_satellite_users_passwords
+  - vault_satellite_users_default_password
+  - vault_satellite_settings
+  - vault_satellite_settings_host_specific
+  - vault_satellite_installation_mediums_target_fqdn  # only when export rewrites installation medium paths
+
+# Settings tied to the source Satellite host; exported with vault refs for the target site.
+satellite_settings_host_specific_names:
+  - instance_id
+  - rhc_instance_id
+  - unattended_url
+  - foreman_tasks_troubleshooting_url
 ...

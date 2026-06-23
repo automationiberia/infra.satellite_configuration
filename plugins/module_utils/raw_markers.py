@@ -12,6 +12,11 @@ _RAW_WRAPPER_PATTERN = re.compile(
     re.DOTALL,
 )
 
+_FOREMAN_TEMPLATE_METADATA_PATTERN = re.compile(
+    r"<%#(.*?)%>",
+    re.DOTALL,
+)
+
 
 def contains_template_marker_syntax(text):
     """True when scalar may be re-templated by Ansible or confuse Jinja (ERB, Jinja2)."""
@@ -31,3 +36,16 @@ def unwrap_jinja_raw_markers(text, preserve_template_markers=False):
     if preserve_template_markers and contains_template_marker_syntax(inner):
         return text
     return inner
+
+
+def sanitize_partition_table_layout(text):
+    """Prepare ptable layout for redhat.satellite.partition_table.
+
+    Foreman's parse_template() YAML-parses <%# ... %> blocks as import metadata.
+    Free-form ERB comments break import; dispatch passes name/os metadata separately.
+    """
+    if not isinstance(text, str):
+        return text
+
+    layout = unwrap_jinja_raw_markers(text, preserve_template_markers=False)
+    return _FOREMAN_TEMPLATE_METADATA_PATTERN.sub("", layout).strip("\n")

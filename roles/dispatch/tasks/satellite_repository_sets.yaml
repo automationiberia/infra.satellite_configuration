@@ -27,6 +27,8 @@
       }}
   when:
     - satellite_repository_sets is defined
+    - not (__current_repository_set.redhat | default(false) | bool)
+    - not ((__current_repository_set.contentUrl | default(__current_repository_set.content.content_url | default(''))) is search(satellite_redhat_repository_url_substring))
     - _sat_repository_set_repositories | length > 0 or (__current_repository_set.all_repositories | default(false) | bool)
   delegate_to: localhost
 ...

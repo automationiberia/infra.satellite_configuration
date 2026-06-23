@@ -1,5 +1,6 @@
 ---
 {% from 'clean_fields.j2' import discard_unwanted_fields %}
+{% from 'vault_ref.j2' import vault_dict_key %}
 {% set __excluded_fields = ['oauth_consumer_key', 'oauth_consumer_secret', 'oauth_map_users',
                             'category', 'category_name', 'config_file', 'default',
                             'description', 'encrypted', 'full_name', 'readonly',
@@ -24,8 +25,10 @@ satellite_settings: {{ [] if info_list | length == 0 }}
     value: "{{ discard_unwanted_fields(__setting.value, __excluded_fields, __empty_values, __reduce_to_name, __translate) | trim('"') | trim("'") }}"
 {%     elif __setting.name in __int_value_names %}
     value: {{ discard_unwanted_fields(__setting.value, __excluded_fields, __empty_values, __reduce_to_name, __translate) | default(0, true) }}
+{%     elif __setting.name in satellite_settings_host_specific_names %}
+    value: {{ vault_dict_key('vault_satellite_settings_host_specific', __setting.name) }}
 {%     elif __setting.encrypted | default(false) | bool or (__setting.value is string and __setting.value is match('^[\*\&\@\!\%]')) %}
-    value: "{{ discard_unwanted_fields(__setting.value, __excluded_fields, __empty_values, __reduce_to_name, __translate) | string | trim('"') | trim("'") }}"
+    value: {{ vault_dict_key('vault_satellite_settings', __setting.name) }}
 {%     elif __setting.value in __empty_values %}
     value: ""
 {%     else %}

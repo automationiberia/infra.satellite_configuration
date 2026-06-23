@@ -22,11 +22,43 @@
   ansible.builtin.set_fact:
     satellite_configuration_vault_template_encrypted_settings: >-
       {{
-        info_list
-        | json_query("[?encrypted == `true` || encrypted == `1`]")
-        | map(attribute='name')
+        (
+          info_list
+          | rejectattr('name', 'in', satellite_settings_host_specific_names)
+          | json_query("[?encrypted == `true` || encrypted == `1`]")
+          | map(attribute='name')
+          | list
+          | default([], true)
+        )
+        + (
+          info_list
+          | rejectattr('name', 'in', satellite_settings_host_specific_names)
+          | selectattr('value', 'string')
+          | selectattr('value', 'match', '^[\*\&\@\!\%]')
+          | map(attribute='name')
+          | list
+          | default([], true)
+        )
+        | unique
+      }}
+
+- name: Settings | Record source hostnames for installation medium path normalization
+  when: info_list is defined and info_list | length > 0
+  ansible.builtin.set_fact:
+    satellite_configuration_export_path_hostnames: >-
+      {{
+        (
+          info_list
+          | selectattr('name', 'in', satellite_settings_host_specific_names + ['foreman_url'])
+          | map(attribute='value')
+          | select('string')
+          | map('regex_replace', '^https?://([^/:]+).*$', '\\1')
+          | list
+        )
+        + [satellite.server_url | urlsplit('hostname')]
+        | unique
+        | reject('equalto', '')
         | list
-        | default([], true)
       }}
 
 - name: Settings | Template Out Results

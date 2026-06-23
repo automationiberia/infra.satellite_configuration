@@ -1,5 +1,6 @@
 ---
 {% from 'clean_fields.j2' import discard_unwanted_fields %}
+{% from 'vault_ref.j2' import vault_https_fqdn_path %}
 {% set __excluded_fields = ['id', 'created_at', 'updated_at', 'title'] %}
 {% set __list_items_to_name = ['locations', 'organizations', 'operatingsystems'] %}
 {% set __empty_values = [None, 'None', '', {}, [], [{}]] %}
@@ -17,10 +18,22 @@ satellite_installation_mediums:
 {%       endfor %}
 {%     elif __map_item.key == 'path' %}
 {%       set __path_value = __map_item.value | string %}
-{%       if __source_hostname | length > 0 and __source_hostname in __path_value %}
-{%         set __path_value = __path_value | replace(__source_hostname, satellite_configuration_installation_medium_path_placeholder) %}
+{%       set __use_vault_fqdn = false %}
+{%       for __export_hostname in satellite_configuration_export_path_hostnames | default([]) %}
+{%         if __export_hostname | length > 0 and __export_hostname in __path_value %}
+{%           set __use_vault_fqdn = true %}
+{%           set __path_value = __path_value | regex_replace('^https?://' ~ __export_hostname, '') %}
+{%         endif %}
+{%       endfor %}
+{%       if __source_hostname | length > 0 and __source_hostname in __map_item.value | string %}
+{%         set __use_vault_fqdn = true %}
+{%         set __path_value = (__map_item.value | string) | regex_replace('^https?://' ~ __source_hostname, '') %}
 {%       endif %}
-  {{ '-' if loop.index == 1 else ' ' }} path: "{{ __path_value }}"
+{%       if __use_vault_fqdn %}
+  {{ '-' if loop.index == 1 else ' ' }} path: {{ vault_https_fqdn_path(__path_value) }}
+{%       else %}
+  {{ '-' if loop.index == 1 else ' ' }} path: "{{ __map_item.value | string }}"
+{%       endif %}
 {%     else %}
   {{ '-' if loop.index == 1 else ' ' }} {{ __map_item.key }}: {{ discard_unwanted_fields(__map_item.value, __excluded_fields, __empty_values, __reduce_to_name, __translate) }}
 {%     endif %}

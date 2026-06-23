@@ -55,7 +55,6 @@ The following variables are required for that role to work properly:
 | `satellite.template.mode` | N/A | yes | str | Specifies the permissions the generated files will have. |
 | `filetree_create_roles_name_excludes` | see role `global_vars` | no | list | Exact role names skipped as built-in defaults before `GET /api/roles/:id`. |
 | `filetree_create_roles_name_excludes_extra` | `[]` | no | list | Additional role names to skip (e.g. site-specific clones of built-ins you do not want exported). |
-| `filetree_create_auth_sources_ldap_account_passwords` | `{}` | no | dict | Map of LDAP auth source **`name`** → **`account_password`**. The API does not return bind passwords; provide them here (e.g. from Vault) to include **`account_password`** in `satellite_auth_sources_ldap.yaml`. |
 | `output_path` | see `satellite_configuration_filetree_path` in role `global_vars` | no | str | Alias for `satellite_configuration_filetree_path`. Export writes `satellite_<type>.d/<type>.yaml` under this directory. |
 
 ## Output files format
@@ -140,11 +139,11 @@ One example of the generated files follows:
 
 `satellite_roles.yaml` includes **custom roles only**: the `/api/roles` index is often missing `builtin`, so known **built-in role names** are removed first (`satellite_builtin_role_name_skips` from role **`global_vars`**, exposed as `filetree_create_roles_name_excludes` plus optional `filetree_create_roles_name_excludes_extra`), then each **`GET /api/roles/:id`** payload is dropped unless **`builtin` is `0`** and **`locked`** is false (Foreman marks plugin and built-in roles such as `ForemanRhCloud Read Only` as locked). The same skip list is used by **`dispatch`** when importing legacy exports. **Filter rows** are filled by calling **`GET /api/filters/:id`** for each stub (Foreman embeds only `id` / `resource_type` on the role), so **permissions** and **search** export correctly.
 
-`satellite_users.yaml` emits fields compatible with `redhat.satellite.user`: **`auth_source`**, **`default_organization`**, and **`default_location`** as plain strings (not nested API objects), **`auth_source`** from **`auth_source_internal.name`** when the API omits `auth_source`, and **no `usergroups`** (assign users to groups via `satellite_usergroups` / `redhat.satellite.usergroup`). **Passwords are never exported**; when applying with `dispatch`, set **`user_password`** per user (Vault) or **`satellite_users_default_password`** for new Internal-auth users.
+`satellite_users.yaml` emits fields compatible with `redhat.satellite.user`: **`auth_source`**, **`default_organization`**, and **`default_location`** as plain strings (not nested API objects), **`auth_source`** from **`auth_source_internal.name`** when the API omits `auth_source`, and **no `usergroups`** (assign users to groups via `satellite_usergroups` / `redhat.satellite.usergroup`). Internal-auth users reference **`user_password`** via `{{ vault_satellite_users_passwords['login'] }}` (filled from `vault_template.yaml` on import).
 
-`satellite_auth_sources_ldap.yaml` is built from **`GET /api/auth_source_ldaps/:id`** (includes **`account`**, **`base_dn`**, **`groups_base`**, etc.). **`account_password`** is write-only in the API and is included only when you set **`filetree_create_auth_sources_ldap_account_passwords`** keyed by LDAP source **`name`** (from Vault or another secret store).
+`satellite_auth_sources_ldap.yaml` is built from **`GET /api/auth_source_ldaps/:id`**. **`account_password`** is write-only in the API; exports always emit `{{ vault_satellite_auth_sources_ldap_account_passwords['name'] }}` for each LDAP source.
 
-**`vault_template.yaml`** is written at the export root with **`CHANGEME`** placeholders for LDAP bind passwords, Internal-auth **`user_password`** entries, and encrypted **`satellite_settings`** values. **`satellite_installation_mediums`** **`path`** fields replace the source Satellite FQDN with **`REPLACE_WITH_TARGET_SATELLITE_FQDN`** for target-site editing.
+**`vault_template.yaml`** is written at the export root with predictable `vault_*` variables (`satellite_configuration_vault_template_vars` in role **`global_vars`**). CaC fragments reference those variables directly; replace placeholder values, optionally encrypt the file, and pass it on import with `-e@…/vault_template.yaml`. `vault_satellite_installation_mediums_target_fqdn` is included only when exported installation medium `path` values reference a source Satellite hostname.
 
 ## License
 

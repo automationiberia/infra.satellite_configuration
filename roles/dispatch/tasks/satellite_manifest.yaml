@@ -1,7 +1,7 @@
 ---
 - name: Dispatch | Upload Subscription Manifest
   when: satellite_manifest_path | default('') | length > 0
-  ansible.builtin.import_role:
+  ansible.builtin.include_role:
     name: redhat.satellite.manifest
   vars:
     satellite_username: "{{ satellite.admin.username }}"
@@ -10,8 +10,6 @@
     satellite_validate_certs: "{{ satellite.validate_certs }}"
     satellite_organization: "{{ satellite_configuration_dispatch_manifest_organization }}"
     satellite_manifest_path: "{{ satellite_manifest_path }}"
-    satellite_manifest_download: "{{ satellite_manifest_download | default(false) }}"
-    satellite_manifest_uuid: "{{ satellite_manifest_uuid | default(omit) }}"
     satellite_rhsm_username: "{{ satellite_rhsm_username | default(omit) }}"
     satellite_rhsm_password: "{{ satellite_rhsm_password | default(omit) }}"
 ...

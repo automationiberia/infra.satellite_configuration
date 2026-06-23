@@ -48,6 +48,13 @@
     - name: Get Host Groups
       ansible.builtin.include_tasks: get_hostgroups.yaml
 
+- name: Settings Block
+  tags:
+    - "settings"
+  block:
+    - name: Get Settings
+      ansible.builtin.include_tasks: get_settings.yaml
+
 - name: Operating Systems Block
   tags:
     - "operatingsystems"
@@ -82,13 +89,6 @@
   block:
     - name: Get Custom Products
       ansible.builtin.include_tasks: get_products.yaml
-
-- name: Settings Block
-  tags:
-    - "settings"
-  block:
-    - name: Get Settings
-      ansible.builtin.include_tasks: get_settings.yaml
 
 - name: Content Credentials Block
   tags:

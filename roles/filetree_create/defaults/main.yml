@@ -11,8 +11,8 @@ set_ownership: false
 filetree_create_roles_name_excludes: "{{ satellite_builtin_role_name_skips }}"
 filetree_create_roles_name_excludes_extra: "{{ satellite_builtin_role_name_skips_extra }}"
 
-# Foreman does not return account_password on GET; map LDAP source name -> bind password (e.g. from Vault).
-filetree_create_auth_sources_ldap_account_passwords: {}
-
 satellite_configuration_filetree_create_secure_logging: true
+
+# Omit subscription/provider-managed products from export (created by manifest on import).
+satellite_configuration_filetree_export_skip_provider_products: true
 ...

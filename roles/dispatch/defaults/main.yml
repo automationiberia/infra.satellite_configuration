@@ -20,6 +20,12 @@ satellite_configuration_dispatch_manifest_organization: "{{ satellite_organizati
 satellite_manifest_path: ""
 satellite_manifest_download: false
 
+# Products: skip Red Hat / provider-managed entries on initial pass (created by manifest).
+# Use batching + pause to reduce Satellite RAM spikes when many custom products exist.
+satellite_configuration_dispatch_products_skip_provider_managed: true
+satellite_configuration_dispatch_products_batch_size: 25
+satellite_configuration_dispatch_products_batch_pause: 30
+
 # Appended to satellite_builtin_role_name_skips (from role global_vars) when applying roles.
 dispatch_roles_name_skips_extra: []
 

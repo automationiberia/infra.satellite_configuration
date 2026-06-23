@@ -7,6 +7,7 @@ __metaclass__ = type
 
 try:
     from ansible_collections.infra.satellite_configuration.plugins.module_utils.raw_markers import (
+        sanitize_partition_table_layout,
         unwrap_jinja_raw_markers,
     )
 except ModuleNotFoundError:
@@ -17,6 +18,7 @@ except ModuleNotFoundError:
     _RAW_SPEC = importlib.util.spec_from_file_location("raw_markers", _RAW_MARKERS_PATH)
     _RAW_MODULE = importlib.util.module_from_spec(_RAW_SPEC)
     _RAW_SPEC.loader.exec_module(_RAW_MODULE)
+    sanitize_partition_table_layout = _RAW_MODULE.sanitize_partition_table_layout
     unwrap_jinja_raw_markers = _RAW_MODULE.unwrap_jinja_raw_markers
 
 
@@ -26,7 +28,11 @@ class FilterModule:
     def filters(self):
         return {
             "satellite_configuration_unwrap_raw_markers": self.satellite_configuration_unwrap_raw_markers,
+            "satellite_configuration_sanitize_partition_table_layout": self.satellite_configuration_sanitize_partition_table_layout,
         }
+
+    def satellite_configuration_sanitize_partition_table_layout(self, value):
+        return sanitize_partition_table_layout(value)
 
     def satellite_configuration_unwrap_raw_markers(self, value):
         if isinstance(value, str):

@@ -1,3 +1,8 @@
 ---
 # vars file for dispatch
+# Playbooks pass satellite.*; legacy import_role tasks still reference these aliases.
+username: "{{ satellite.admin.username }}"
+password: "{{ satellite.admin.password }}"
+server_url: "{{ satellite.server_url }}"
+validate_certs: "{{ satellite.validate_certs }}"
 ...

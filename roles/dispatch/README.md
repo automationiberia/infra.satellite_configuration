@@ -35,6 +35,9 @@ The following variables are required for that role to work properly:
 | `satellite_content_view_versions` | `[]` | no | list | Optional explicit publish/promote actions for `redhat.satellite.content_view_version`. When empty, actions are derived from `satellite_content_views` export metadata (`versions`, `needs_publish`, `latest_version_environments`). |
 | `satellite_configuration_dispatch_host_collection_membership` | `false` | no | bool | When `true`, assigns exported `hosts` to host collections. Default `false` for greenfield imports where hosts do not exist yet. |
 | `content_views_purge_count` | `6` | no | int | Keep this many newest versions per content view after publish; passed to `redhat.satellite.content_view_version_cleanup`. |
+| `satellite_configuration_dispatch_products_skip_provider_managed` | `true` | no | bool | On the initial products pass, skip entries with `provider_id` (Red Hat subscription products created by manifest). |
+| `satellite_configuration_dispatch_products_batch_size` | `25` | no | int | Process custom products in batches of this size. Set `0` to disable batching. |
+| `satellite_configuration_dispatch_products_batch_pause` | `30` | no | int | Seconds to pause between product batches (lets Satellite dynflow workers catch up). Set `0` to disable. |
 
 ### `satellite_users` and passwords
 
