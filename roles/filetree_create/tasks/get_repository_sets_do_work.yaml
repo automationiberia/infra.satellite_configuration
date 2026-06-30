@@ -10,7 +10,9 @@
     __repository_sets_enabled: >-
       {{
         result_api_response.json.results | default([])
-        | json_query('[?enabled == `true` || enabled == `1`]')
+        | selectattr('enabled', 'defined')
+        | selectattr('enabled')
+        | list
         | default([], true)
       }}
   when: result_api_response.json.results is defined

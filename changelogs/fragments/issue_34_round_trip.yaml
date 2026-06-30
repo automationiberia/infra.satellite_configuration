@@ -27,7 +27,7 @@ bugfixes:
   - dispatch products - skip Red Hat subscription products on initial pass; batch custom products with configurable pause to reduce Satellite RAM spikes.
   - dispatch partition tables - sanitize invalid <%# %> metadata blocks before import; load via slurp in filetree_read.
   - filetree_create products export - export custom Anonymous-provider products, resolve sync_plan names, and omit internal provider/sync_plan IDs.
-  - filetree_create export - document jmespath dependency; escape installation-medium hostname regex patterns.
+  - filetree_create export - escape installation-medium hostname regex patterns.
   - dispatch - order host_collections before activation_keys and operatingsystems before provisioning_templates.
   - dispatch - remove unsupported provisioning_template description; fix content_view_version_cleanup include_role usage.
   - dispatch provisioning templates - create snippets first with kind snippet; skip OS default assignment for snippets.

@@ -25,7 +25,8 @@
         (
           info_list
           | rejectattr('name', 'in', satellite_settings_host_specific_names)
-          | json_query("[?encrypted == `true` || encrypted == `1`]")
+          | selectattr('encrypted', 'defined')
+          | selectattr('encrypted')
           | map(attribute='name')
           | list
           | default([], true)

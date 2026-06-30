@@ -34,12 +34,24 @@
       {{
         (satellite_configuration_vault_template_internal_users | default([]))
         + (
-          detailed_info.results
-          | map(attribute='json')
-          | selectattr('login', 'defined')
-          | list
-          | json_query("[?(auth_source_internal != null) || (auth_source_name == 'Internal')].login")
-          | default([], true)
+          (
+            detailed_info.results
+            | map(attribute='json')
+            | selectattr('login', 'defined')
+            | selectattr('auth_source_internal', 'defined')
+            | rejectattr('auth_source_internal', 'equalto', none)
+            | map(attribute='login')
+            | list
+          )
+          + (
+            detailed_info.results
+            | map(attribute='json')
+            | selectattr('login', 'defined')
+            | selectattr('auth_source_name', 'equalto', 'Internal')
+            | map(attribute='login')
+            | list
+          )
+          | unique
         )
       }}
 
