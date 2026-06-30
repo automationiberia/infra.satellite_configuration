@@ -13,7 +13,9 @@
         if (__dispatch_products_phase | default('initial') == 'sync_plan')
         else (
           (satellite_products | default([]))
-          | rejectattr('provider_id', 'defined')
+          | rejectattr('redhat', 'equalto', true)
+          | rejectattr('redhat', 'equalto', True)
+          | rejectattr('redhat', 'equalto', 1)
           | list
           if (
             satellite_configuration_dispatch_products_skip_provider_managed | default(true) | bool

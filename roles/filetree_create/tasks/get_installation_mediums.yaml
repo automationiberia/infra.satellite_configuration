@@ -28,7 +28,7 @@
     loop_var: __export_hostname
   when:
     - __export_hostname | length > 0
-    - __rs_info_list | default([]) | map(attribute='path') | map('string') | select('search', __export_hostname) | list | length > 0
+    - __rs_info_list | default([]) | map(attribute='path') | map('string') | select('search', __export_hostname | regex_escape) | list | length > 0
 
 - name: Installation Mediums | Template Out Results
   when:

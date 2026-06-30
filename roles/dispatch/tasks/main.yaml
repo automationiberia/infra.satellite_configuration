@@ -154,19 +154,19 @@
       tags: cv_publish_promote
   tags: cv_publish_promote
 
-- name: Manage Activation Keys
-  ansible.builtin.include_tasks: satellite_activation_keys.yaml
-  args:
-    apply:
-      tags: activation_keys
-  tags: activation_keys
-
 - name: Manage Host Collections
   ansible.builtin.include_tasks: satellite_host_collections.yaml
   args:
     apply:
       tags: host_collections
   tags: host_collections
+
+- name: Manage Activation Keys
+  ansible.builtin.include_tasks: satellite_activation_keys.yaml
+  args:
+    apply:
+      tags: activation_keys
+  tags: activation_keys
 
 - name: Create Partition Tables
   ansible.builtin.include_tasks: satellite_partition_tables.yaml
@@ -175,12 +175,12 @@
       tags: partition_tables
   tags: partition_tables
 
-- name: Create Provisioning Templates
-  ansible.builtin.include_tasks: satellite_provisioning_templates.yaml
+- name: Create Installation Mediums
+  ansible.builtin.include_tasks: satellite_installation_mediums.yaml
   args:
     apply:
-      tags: provisioning_templates
-  tags: provisioning_templates
+      tags: installation_mediums
+  tags: installation_mediums
 
 - name: Create OperatingSystems
   ansible.builtin.include_tasks: satellite_operatingsystems.yaml
@@ -189,12 +189,12 @@
       tags: operatingsystems
   tags: operatingsystems
 
-- name: Create Installation Mediums
-  ansible.builtin.include_tasks: satellite_installation_mediums.yaml
+- name: Create Provisioning Templates
+  ansible.builtin.include_tasks: satellite_provisioning_templates.yaml
   args:
     apply:
-      tags: installation_mediums
-  tags: installation_mediums
+      tags: provisioning_templates
+  tags: provisioning_templates
 
 - name: Manage Host Groups
   ansible.builtin.include_tasks: satellite_hostgroups.yaml

@@ -24,9 +24,11 @@ bugfixes:
   - dispatch - apply RBAC in dependency order (organizations, locations, roles, users, usergroups); skip Red Hat CDN repos; opt-in host collection membership.
   - dispatch - reorder content and provisioning tasks per round-trip dependencies; enable content_view_filters dispatch.
   - dispatch products - two-pass create (without sync_plan, then associate after sync_plans) to break products/sync_plans circular dependency.
-  - dispatch products - skip provider-managed products on initial pass; batch custom products with configurable pause to reduce Satellite RAM spikes.
+  - dispatch products - skip Red Hat subscription products on initial pass; batch custom products with configurable pause to reduce Satellite RAM spikes.
   - dispatch partition tables - sanitize invalid <%# %> metadata blocks before import; load via slurp in filetree_read.
-  - filetree_create products export - omit provider-managed products by default (subscription manifest recreates them on import).
+  - filetree_create products export - export custom Anonymous-provider products, resolve sync_plan names, and omit internal provider/sync_plan IDs.
+  - filetree_create export - document jmespath dependency; escape installation-medium hostname regex patterns.
+  - dispatch - order host_collections before activation_keys and operatingsystems before provisioning_templates.
   - dispatch - remove unsupported provisioning_template description; fix content_view_version_cleanup include_role usage.
   - dispatch provisioning templates - create snippets first with kind snippet; skip OS default assignment for snippets.
   - filetree_create provisioning templates export - emit kind snippet instead of a bare snippet boolean flag.

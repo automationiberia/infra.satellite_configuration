@@ -37,6 +37,7 @@ The following are also requirements:
 
 - Ansible Core >= 2.16
 - Python library `PyYAML` (used by the YAML formatter module)
+- Python library `jmespath` (required by Ansible's `json_query` filter in export tasks)
 - Red Hat Satellite 6.17
 - Access to Satellite API
 - One of the following:

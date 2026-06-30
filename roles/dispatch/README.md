@@ -35,7 +35,7 @@ The following variables are required for that role to work properly:
 | `satellite_content_view_versions` | `[]` | no | list | Optional explicit publish/promote actions for `redhat.satellite.content_view_version`. When empty, actions are derived from `satellite_content_views` export metadata (`versions`, `needs_publish`, `latest_version_environments`). |
 | `satellite_configuration_dispatch_host_collection_membership` | `false` | no | bool | When `true`, assigns exported `hosts` to host collections. Default `false` for greenfield imports where hosts do not exist yet. |
 | `content_views_purge_count` | `6` | no | int | Keep this many newest versions per content view after publish; passed to `redhat.satellite.content_view_version_cleanup`. |
-| `satellite_configuration_dispatch_products_skip_provider_managed` | `true` | no | bool | On the initial products pass, skip entries with `provider_id` (Red Hat subscription products created by manifest). |
+| `satellite_configuration_dispatch_products_skip_provider_managed` | `true` | no | bool | On the initial products pass, skip Red Hat subscription products (`redhat: true`); custom products (e.g. Anonymous provider) are still dispatched. |
 | `satellite_configuration_dispatch_products_batch_size` | `25` | no | int | Process custom products in batches of this size. Set `0` to disable batching. |
 | `satellite_configuration_dispatch_products_batch_pause` | `30` | no | int | Seconds to pause between product batches (lets Satellite dynflow workers catch up). Set `0` to disable. |
 
@@ -53,7 +53,7 @@ Dispatch applies RBAC objects in dependency order: `auth_sources_ldap` → `orga
 
 Content and provisioning objects run in dependency order after lifecycle environments and optional manifest upload/validation:
 
-`content_credentials` → `products` (initial, without sync plan) → `repository_sets` → `repositories` → `sync_plans` → `products` (sync plan association) → `content_views` → `content_view_filters` → `cv_publish_promote` → `activation_keys` → `host_collections` → `partition_tables` → `provisioning_templates` → `operatingsystems` → `installation_mediums` → `hostgroups`.
+`content_credentials` → `products` (initial, without sync plan) → `repository_sets` → `repositories` → `sync_plans` → `products` (sync plan association) → `content_views` → `content_view_filters` → `cv_publish_promote` → `host_collections` → `activation_keys` → `partition_tables` → `installation_mediums` → `operatingsystems` → `provisioning_templates` → `hostgroups`.
 
 User groups only receive direct `users` memberships for logins defined in `satellite_users`; LDAP users are mapped through `external_usergroups`.
 

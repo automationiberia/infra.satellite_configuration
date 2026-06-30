@@ -12,7 +12,7 @@ Use this for `satellite_products`.
 2. Apply with `redhat.satellite.product`.
 3. Keep organization and sync-related attributes explicit.
 4. Use `state` for create/update/delete lifecycle.
-5. On initial pass, provider-managed products (`provider_id` set) are skipped by default; they are created by the subscription manifest. Only custom products are dispatched.
+5. On initial pass, Red Hat subscription products (`redhat: true`) are skipped by default; custom products (e.g. Anonymous provider) are still dispatched.
 6. For many custom products, tune `satellite_configuration_dispatch_products_batch_size` and `satellite_configuration_dispatch_products_batch_pause` to reduce Satellite RAM pressure.
 
 ## Checklist

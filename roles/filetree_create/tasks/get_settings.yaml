@@ -52,6 +52,7 @@
           | selectattr('name', 'in', satellite_settings_host_specific_names + ['foreman_url'])
           | map(attribute='value')
           | select('string')
+          | select('match', '^https?://')
           | map('regex_replace', '^https?://([^/:]+).*$', '\\1')
           | list
         )
