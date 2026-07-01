@@ -4,6 +4,8 @@ Following there's an example of how this collection can be used to export and im
 
 ## Export your configuration using the following commands
 
+Define `satellite` or `satellite_source` in your vars file. For round-trip workflows, prefer `satellite_source` (export) and `satellite_target` (import) in the same file — see the collection README.
+
 * Using `ansible-playbook`
 
   ```console

@@ -92,6 +92,30 @@ Each object type uses a `satellite_<resource_plural>.d/` directory with one or m
 
 `filetree_create` also writes `vault_template.yaml` at the tree root. CaC fragments reference its `vault_*` variables for LDAP bind passwords, Internal-user passwords, encrypted settings, host-specific settings, and installation-medium target FQDN. Replace placeholder values, optionally encrypt the file, and pass it on import with `-e@…/vault_template.yaml`.
 
+### Source and target Satellite connections
+
+For round-trip export → import, define separate endpoints so a single vars file never risks writing back into production:
+
+```yaml
+satellite_source:
+  server_url: "https://sat-01.corp.example.com"
+  validate_certs: true
+  admin:
+    username: admin
+    password: "{{ vault_source_admin_password }}"
+  template:
+    mode: "0666"
+
+satellite_target:
+  server_url: "https://sat.rh.corp.example.com"
+  validate_certs: true
+  admin:
+    username: admin
+    password: "{{ vault_target_admin_password }}"
+```
+
+`filetree_create` reads from `satellite_source`; `filetree_read` and `dispatch` write to `satellite_target`. When only one endpoint is involved, keep using the legacy `satellite` dict.
+
 The [`configs/`](configs/) directory in this repository is an example **greenfield** tree: hand-authored desired state using the same `.d/` layout, without exporting from an existing Satellite.
 
 ### Subscription manifest

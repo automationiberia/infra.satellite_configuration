@@ -42,7 +42,8 @@ The following variables are required for that role to work properly:
 
 | Variable Name | Default Value | Required | Type | Description |
 | :------------ | :-----------: | :------: | :------: | :---------- |
-| `satellite` | N/A | yes | dict | Contains all the information needed to connect to the Red Hat Satellite instance. Fields are described below. |
+| `satellite` | N/A | yes* | dict | Connection to the Red Hat Satellite instance. *Optional when `satellite_source` is set (export uses `satellite_source` and falls back to `satellite`). Fields are described below. |
+| `satellite_source` | — | no | dict | Source Satellite for export; same shape as `satellite`. Preferred for round-trip workflows together with `satellite_target`. |
 | `satellite.server_url` | N/A | yes | str | Red Hat Satellite Server URL (must include the protocol  to be used 'https://'). |
 | `satellite.validate_certs` | N/A | yes | str | Specifies whether to validate certificates or not when connecting to Red Hat Satellite server. |
 | `satellite.admin` | N/A | yes | dict | Contains all the information related to the user to use to connect to the Red Hat Satellite server. Fields are described below. |
@@ -56,6 +57,7 @@ The following variables are required for that role to work properly:
 | `filetree_create_roles_name_excludes` | see role `global_vars` | no | list | Exact role names skipped as built-in defaults before `GET /api/roles/:id`. |
 | `filetree_create_roles_name_excludes_extra` | `[]` | no | list | Additional role names to skip (e.g. site-specific clones of built-ins you do not want exported). |
 | `output_path` | see `satellite_configuration_filetree_path` in role `global_vars` | no | str | Alias for `satellite_configuration_filetree_path`. Export writes `satellite_<type>.d/<type>.yaml` under this directory. |
+| `satellite_configuration_export_source_aliases` | `[]` | no | list | Extra IPs, short names, or alternate FQDNs of the source Satellite to replace in installation-medium paths with `vault_satellite_installation_mediums_target_fqdn`. |
 
 ## Output files format
 

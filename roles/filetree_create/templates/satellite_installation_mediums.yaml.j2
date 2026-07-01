@@ -7,6 +7,7 @@
 {% set __reduce_to_name = [] %}
 {% set __translate = [{'operatingsystems': 'title'}] %}
 {% set __source_hostname = satellite.server_url | default('') | urlsplit('hostname') %}
+{% set __export_path_aliases = (satellite_configuration_export_path_hostnames | default([])) + (satellite_configuration_export_source_aliases | default([])) %}
 satellite_installation_mediums:
 {% for i in info_list %}
 {%   for __map_item in (i | dict2items) if __map_item.key not in __excluded_fields and __map_item.value not in __empty_values %}
@@ -19,15 +20,15 @@ satellite_installation_mediums:
 {%     elif __map_item.key == 'path' %}
 {%       set __path_value = __map_item.value | string %}
 {%       set __use_vault_fqdn = false %}
-{%       for __export_hostname in satellite_configuration_export_path_hostnames | default([]) %}
+{%       for __export_hostname in __export_path_aliases %}
 {%         if __export_hostname | length > 0 and __export_hostname in __path_value %}
 {%           set __use_vault_fqdn = true %}
-{%           set __path_value = __path_value | regex_replace('^https?://' ~ __export_hostname, '') %}
+{%           set __path_value = __path_value | regex_replace('^https?://' ~ (__export_hostname | regex_escape), '') %}
 {%         endif %}
 {%       endfor %}
-{%       if __source_hostname | length > 0 and __source_hostname in __map_item.value | string %}
+{%       if __source_hostname | length > 0 and __source_hostname in __path_value %}
 {%         set __use_vault_fqdn = true %}
-{%         set __path_value = (__map_item.value | string) | regex_replace('^https?://' ~ __source_hostname, '') %}
+{%         set __path_value = __path_value | regex_replace('^https?://' ~ (__source_hostname | regex_escape), '') %}
 {%       endif %}
 {%       if __use_vault_fqdn %}
   {{ '-' if loop.index == 1 else ' ' }} path: {{ vault_https_fqdn_path(__path_value) }}

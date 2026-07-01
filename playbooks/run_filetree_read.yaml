@@ -15,6 +15,11 @@
       server_url: "{{ satellite.server_url }}"
       validate_certs: "{{ satellite.validate_certs }}"
   tasks:
+    - name: Resolve target Satellite connection for import
+      ansible.builtin.set_fact:
+        satellite: "{{ satellite_target }}"
+      when: satellite_target is defined
+
     - name: Load Satellite configuration from filetree
       ansible.builtin.import_role:
         name: infra.satellite_configuration.filetree_read

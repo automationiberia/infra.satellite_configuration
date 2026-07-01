@@ -15,4 +15,7 @@ satellite_configuration_filetree_create_secure_logging: true
 
 # Omit subscription/provider-managed products from export (created by manifest on import).
 satellite_configuration_filetree_export_skip_provider_products: true
+
+# Optional IPs, short names, or alternate FQDNs for installation-medium path normalization.
+satellite_configuration_export_source_aliases: []
 ...

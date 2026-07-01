@@ -9,6 +9,7 @@ minor_changes:
   - Add satellite_configuration_unwrap_raw_markers filter and raw_markers module utils for CaC round-trip.
   - filetree_create generates vault_template.yaml with vault_* variables referenced directly from CaC fragments (LDAP, users, settings, installation mediums).
   - Document supported object types and known gaps (compute resources, global parameters, SCAP, job templates, webhooks, HTTP proxies, remote execution).
+  - Add satellite_source and satellite_target for round-trip export/import with separate endpoints in one vars file.
 
 bugfixes:
   - format_yaml - preserve PEM/GPG multiline content, quote YAML-significant scalars, unwrap raw/endraw export wrappers, and normalize legacy unsafe tags.
@@ -27,7 +28,8 @@ bugfixes:
   - dispatch products - skip Red Hat subscription products on initial pass; batch custom products with configurable pause to reduce Satellite RAM spikes.
   - dispatch partition tables - sanitize invalid <%# %> metadata blocks before import; load via slurp in filetree_read.
   - filetree_create products export - export custom Anonymous-provider products, resolve sync_plan names, and omit internal provider/sync_plan IDs.
-  - filetree_create export - escape installation-medium hostname regex patterns.
+  - filetree_create export - escape installation-medium hostname regex patterns; support source aliases for IP-based paths.
+  - filetree_create products export - resolve sync_plan names without Katello per_page=all on sync_plans API.
   - dispatch - order host_collections before activation_keys and operatingsystems before provisioning_templates.
   - dispatch - remove unsupported provisioning_template description; fix content_view_version_cleanup include_role usage.
   - dispatch provisioning templates - create snippets first with kind snippet; skip OS default assignment for snippets.

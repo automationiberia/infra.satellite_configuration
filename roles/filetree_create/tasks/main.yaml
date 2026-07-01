@@ -1,4 +1,9 @@
 ---
+- name: Resolve export Satellite API connection
+  ansible.builtin.include_role:
+    name: global_vars
+    tasks_from: resolve_satellite_source.yaml
+
 - name: Organizations Block
   tags:
     - "organizations"

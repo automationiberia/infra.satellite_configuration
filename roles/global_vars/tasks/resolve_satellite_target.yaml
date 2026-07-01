@@ -1,0 +1,6 @@
+---
+- name: Resolve import Satellite API connection from satellite_target
+  ansible.builtin.set_fact:
+    satellite: "{{ satellite_target }}"
+  when: satellite_target is defined
+...

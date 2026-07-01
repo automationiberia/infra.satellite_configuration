@@ -22,6 +22,32 @@ dependencies:
 | `satellite_configuration_vault_placeholder` | `CHANGEME` | Scalar placeholder written into generated `vault_template.yaml` |
 | `satellite_configuration_vault_template_vars` | see `defaults/main.yml` | Vault variable names generated in `vault_template.yaml` and referenced from CaC fragments |
 | `satellite_settings_host_specific_names` | see `defaults/main.yml` | Host-specific setting names exported with `vault_satellite_settings_host_specific` refs |
+| `satellite_source` | — | Optional dict with the same shape as `satellite`; used by `filetree_create` for export (falls back to `satellite` when omitted) |
+| `satellite_target` | — | Optional dict with the same shape as `satellite`; used by `filetree_read` and `dispatch` for import (falls back to `satellite` when omitted) |
+
+### Source and target Satellite connections
+
+Round-trip workflows can define **two** connections in one vars file so export and import never share the same endpoint by mistake:
+
+```yaml
+satellite_source:
+  server_url: "https://sat-01.corp.example.com"
+  validate_certs: true
+  admin:
+    username: admin
+    password: "{{ vault_source_admin_password }}"
+  template:
+    mode: "0666"
+
+satellite_target:
+  server_url: "https://sat.rh.corp.example.com"
+  validate_certs: true
+  admin:
+    username: admin
+    password: "{{ vault_target_admin_password }}"
+```
+
+`filetree_create` resolves `satellite` from `satellite_source` when set. `filetree_read` and `dispatch` resolve `satellite` from `satellite_target` when set. The legacy single `satellite` variable remains supported for export-only or import-only playbooks.
 
 ## License
 

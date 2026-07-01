@@ -10,7 +10,8 @@ The following variables are required for that role to work properly:
 
 | Variable Name | Default Value | Required | Type | Description |
 | :------------ | :-----------: | :------: | :------: | :---------- |
-| `satellite` | N/A | yes | dict | Contains all the information needed to connect to the Red Hat Satellite instance. Fields are described below. |
+| `satellite` | N/A | yes* | dict | Connection to the Red Hat Satellite instance. *Optional when `satellite_target` is set (import uses `satellite_target` and falls back to `satellite`). Fields are described below. |
+| `satellite_target` | — | no | dict | Target Satellite for import; same shape as `satellite`. Preferred for round-trip workflows together with `satellite_source`. |
 | `satellite.server_url` | N/A | yes | str | Red Hat Satellite Server URL (must include the protocol  to be used 'https://'). |
 | `satellite.validate_certs` | N/A | yes | str | Specifies whether to validate certificates or not when connecting to Red Hat Satellite server. |
 | `satellite.admin` | N/A | yes | dict | Contains all the information related to the user to use to connect to the Red Hat Satellite server. Fields are described below. |

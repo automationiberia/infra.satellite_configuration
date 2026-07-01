@@ -1,0 +1,6 @@
+---
+- name: Resolve export Satellite API connection from satellite_source
+  ansible.builtin.set_fact:
+    satellite: "{{ satellite_source }}"
+  when: satellite_source is defined
+...
