@@ -1,0 +1,21 @@
+---
+description: Build or update Satellite data using the satellite_* list variable layout and *.d filetree paths. Use when adding new entity files under org/env/common.
+alwaysApply: false
+globs: \"{roles/filetree_read,configs}/**/*.{yml,yaml}\"
+---
+
+# Filetree Variable Layout
+
+Use this pattern when adding data files that later feed `infra.satellite_configuration.filetree_read`.
+
+## Steps
+1. Create YAML fragments under `satellite_<resource>.d/` beneath `satellite_configuration_filetree_path`.
+2. Name the list variable `satellite_<resource_plural>` and keep each item as a dict.
+3. Keep one entity per file when possible to reduce merge conflicts.
+4. Ensure keys align with `redhat.satellite.*` module inputs.
+
+## Checklist
+- Variable name uses the `satellite_` prefix.
+- Directory ends with `.d/`.
+- Data is declarative (no task logic in vars).
+- Object keys should map to `redhat.satellite` role/module parameters where available.

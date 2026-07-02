@@ -39,6 +39,9 @@ The following variables are required for that role to work properly:
 | `satellite_configuration_dispatch_products_skip_provider_managed` | `true` | no | bool | On the initial products pass, skip Red Hat subscription products (`redhat: true`); custom products (e.g. Anonymous provider) are still dispatched. |
 | `satellite_configuration_dispatch_products_batch_size` | `25` | no | int | Process custom products in batches of this size. Set `0` to disable batching. |
 | `satellite_configuration_dispatch_products_batch_pause` | `30` | no | int | Seconds to pause between product batches (lets Satellite dynflow workers catch up). Set `0` to disable. |
+| `satellite_configuration_dispatch_content_views_batch_size` | `1` | no | int | Publish/promote content views from export metadata in batches of this size. Set `0` to disable batching. |
+| `satellite_configuration_dispatch_content_views_task_poll_interval` | `15` | no | int | Seconds between polls of `/foreman_tasks` for running content view publish/promote tasks between batches. Set `0` to skip waiting. |
+| `satellite_configuration_dispatch_content_views_task_wait_timeout` | `3600` | no | int | Maximum seconds to wait for running content view tasks to finish before failing the batch. |
 
 ### `satellite_users` and passwords
 

@@ -32,5 +32,5 @@ galaxy_info:
     #       Maximum 20 tags per role.
 
 dependencies:
-  - role: global_vars
+  - role: infra.satellite_configuration.global_vars
 ...

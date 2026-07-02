@@ -1,7 +1,7 @@
 ---
 - name: Resolve import Satellite API connection
   ansible.builtin.include_role:
-    name: global_vars
+    name: infra.satellite_configuration.global_vars
     tasks_from: resolve_satellite_target.yaml
 
 - name: "Include Tasks to read the given configuration as code files"

@@ -1,0 +1,36 @@
+---
+description: Discover and apply workflow skills from the repository skills/ directory (.mdc format with optional globs).
+alwaysApply: true
+---
+
+# Project Skills Directory
+
+Workflow skills for this Ansible collection live in **`skills/`** at the repository root.
+
+## Format
+
+Skills use **`.mdc`** (Markdown + YAML frontmatter), not plain `.md`. Frontmatter supports:
+
+- `description` — when to use the skill (shown in rule picker / agent discovery)
+- `alwaysApply` — usually `false`; workflow skills are read on demand
+- `globs` — optional file patterns that tie a skill to paths (for example `roles/dispatch/**`)
+
+## Before Every Change
+
+1. Follow `.cursor/rules/satellite-general.mdc` (always applied).
+2. Read **`skills/fqcn-standards.mdc`** when editing tasks, playbooks, templates, plugins, or role `meta/main.yml`.
+3. When the user names a skill or the task matches a skill `description`, read **`skills/<skill-name>.mdc`** and follow it.
+
+## Invocation Examples
+
+- `Use add-object-type-end-to-end to add satellite_compute_resources support.`
+- `Use extend-filetree-create-object-type for export of a new object type.`
+- `Use extend-dispatch-object-type to wire dispatch for satellite_subnets.`
+
+## Skill Catalog
+
+See `skills/README.md` for the full list grouped by role (export, ingest, dispatch, domain workflows).
+
+## Legacy Path
+
+Skills were moved from `.cursor/skills/` to `skills/` so they are editor-agnostic and shareable outside Cursor. Do not recreate skills under `.cursor/skills/`.

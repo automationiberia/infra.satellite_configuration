@@ -1,0 +1,20 @@
+---
+description: Manage content view filters with redhat.satellite.content_view_filter following the existing collection task style.
+alwaysApply: false
+globs: \"roles/dispatch/**/*.{yml,yaml}\"
+---
+
+# Manage Content View Filters
+
+Use this for `satellite_content_view_filters`.
+
+## Steps
+1. Define filter rules in `satellite_content_view_filters`.
+2. Apply with `redhat.satellite.content_view_filter`.
+3. Keep content view and repository references by name.
+4. Use include/exclude settings explicitly in each filter item.
+
+## Checklist
+- Uses FQCN `redhat.satellite.content_view_filter`.
+- Optional parameters use `default(omit)`.
+- Works with the content view workflow.

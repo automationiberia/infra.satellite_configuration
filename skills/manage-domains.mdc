@@ -1,0 +1,19 @@
+---
+description: Manage Satellite domains with redhat.satellite.domains via dispatch import_role.
+alwaysApply: false
+globs: \"roles/dispatch/**/*.{yml,yaml}\"
+---
+
+# Manage Domains
+
+Use this for `satellite_domains`.
+
+## Steps
+1. Define domain entries in `satellite_domains` (CaC under `satellite_domains.d/`).
+2. Route execution through `roles/dispatch/tasks/satellite_domains.yaml`.
+3. Reuse `ansible.builtin.import_role` with `redhat.satellite.domains`.
+
+## Checklist
+- Uses `ansible.builtin.import_role`.
+- Keeps FQCN usage explicit.
+- Task tags align to `domains`.

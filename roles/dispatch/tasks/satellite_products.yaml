@@ -12,11 +12,19 @@
         )
         if (__dispatch_products_phase | default('initial') == 'sync_plan')
         else (
-          (satellite_products | default([]))
-          | rejectattr('redhat', 'equalto', true)
-          | rejectattr('redhat', 'equalto', True)
-          | rejectattr('redhat', 'equalto', 1)
-          | list
+          (
+            (satellite_products | default([]))
+            | rejectattr('redhat', 'defined')
+            | list
+          )
+          + (
+            (satellite_products | default([]))
+            | selectattr('redhat', 'defined')
+            | rejectattr('redhat', 'equalto', true)
+            | rejectattr('redhat', 'equalto', True)
+            | rejectattr('redhat', 'equalto', 1)
+            | list
+          )
           if (
             satellite_configuration_dispatch_products_skip_provider_managed | default(true) | bool
           )
@@ -39,18 +47,18 @@
 
 - name: Dispatch | Create/Update Products in batches
   ansible.builtin.include_tasks: satellite_products_batch.yaml
-  loop: "{{ _satellite_products_dispatch | batch(batch_size) | list }}"
+  loop: "{{ _satellite_products_dispatch | batch(batch_size | int) | list }}"
   loop_control:
     loop_var: __dispatch_products_batch
     index_var: __dispatch_batch_index
     label: "batch {{ __dispatch_batch_index + 1 }} ({{ __dispatch_products_batch | length }} products)"
   vars:
     batch_size: "{{ satellite_configuration_dispatch_products_batch_size | default(0) | int }}"
-    __dispatch_is_last_batch: "{{ (__dispatch_batch_index | int + 1) >= (_satellite_products_dispatch | batch(batch_size) | list | length) }}"
+    __dispatch_is_last_batch: "{{ (__dispatch_batch_index | int + 1) >= (_satellite_products_dispatch | batch(batch_size | int) | list | length) }}"
   when:
     - satellite_products is defined
     - _satellite_products_dispatch | length > 0
-    - batch_size > 0
+    - (batch_size | int) > 0
 
 - name: Dispatch | Create/Update Products (single pass)
   redhat.satellite.product:

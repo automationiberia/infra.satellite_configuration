@@ -1,0 +1,20 @@
+---
+description: Create and maintain Satellite organizations using the dispatch role and redhat.satellite.organization module patterns.
+alwaysApply: false
+globs: \"roles/dispatch/**/*.{yml,yaml}\"
+---
+
+# Manage Organizations
+
+Use this for `satellite_organizations`.
+
+## Steps
+1. Add organization objects to `satellite_organizations`.
+2. Apply with `redhat.satellite.organization` in a loop.
+3. Pass optional fields with `| default(omit)`.
+4. Keep naming stable to avoid accidental renames.
+
+## Checklist
+- Uses FQCN `redhat.satellite.organization`.
+- Delegates to localhost for API calls.
+- Maintains idempotent `state` behavior.

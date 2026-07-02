@@ -116,6 +116,31 @@ satellite_target:
 
 `filetree_create` reads from `satellite_source`; `filetree_read` and `dispatch` write to `satellite_target`. When only one endpoint is involved, keep using the legacy `satellite` dict.
 
+The import playbook `run_filetree_read.yaml` uses two plays so `satellite_target` is resolved to `satellite` before `module_defaults` references `satellite.*` (ansible-core evaluates play-level `module_defaults` at parse time).
+
+### Environment overrides
+
+For cross-environment promotion (prod → DR, dev → staging), set `satellite_configuration_overrides_path` to a directory with the same `satellite_<type>.d/` layout as the base export. `filetree_read` merges override fragments on top of the base tree by object `name` (override wins on collision). Per-type `merge_key` can be set on entries in `satellite_configuration_filetree_read_tasks`.
+
+```text
+/tmp/satellite_filetree_config/          # base export
+overrides/                               # satellite_configuration_overrides_path
+├── satellite_settings.d/
+│   └── satellite_settings.yaml
+└── satellite_subnets.d/
+    └── satellite_subnets.yaml
+```
+
+```yaml
+# overrides/satellite_settings.d/satellite_settings.yaml
+---
+satellite_settings:
+  - name: unattended_url
+    value: "https://sat-prod.example.com"
+  - name: administrator
+    value: "admin@prod.example.com"
+```
+
 The [`configs/`](configs/) directory in this repository is an example **greenfield** tree: hand-authored desired state using the same `.d/` layout, without exporting from an existing Satellite.
 
 ### Subscription manifest
@@ -134,7 +159,7 @@ Set `satellite_configuration_dispatch_manifest_validate: false` only when conten
 
 The three roles (`filetree_create`, `filetree_read`, `dispatch`) cover the object types listed in [`filetree_read` defaults](roles/filetree_read/defaults/main.yml).
 
-The following Satellite objects are **not yet** covered end-to-end (Issue #11); extend the collection using the skills under `.cursor/skills/` when needed:
+The following Satellite objects are **not yet** covered end-to-end (Issue #11); extend the collection using the skills under [`skills/`](skills/README.md) when needed:
 
 - Compute resources and compute profiles
 - Global parameters

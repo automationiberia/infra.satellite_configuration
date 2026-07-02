@@ -26,6 +26,12 @@ satellite_configuration_dispatch_products_skip_provider_managed: true
 satellite_configuration_dispatch_products_batch_size: 25
 satellite_configuration_dispatch_products_batch_pause: 30
 
+# Content view publish/promote: one CV at a time; poll foreman_tasks between batches.
+# When needs_publish is false, dispatch promotes latest_version only (no new publish) for same-host re-imports.
+satellite_configuration_dispatch_content_views_batch_size: 1
+satellite_configuration_dispatch_content_views_task_poll_interval: 15
+satellite_configuration_dispatch_content_views_task_wait_timeout: 3600
+
 # Appended to satellite_builtin_role_name_skips (from role global_vars) when applying roles.
 dispatch_roles_name_skips_extra: []
 

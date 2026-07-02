@@ -24,6 +24,8 @@ dependencies:
 | `satellite_settings_host_specific_names` | see `defaults/main.yml` | Host-specific setting names exported with `vault_satellite_settings_host_specific` refs |
 | `satellite_source` | — | Optional dict with the same shape as `satellite`; used by `filetree_create` for export (falls back to `satellite` when omitted) |
 | `satellite_target` | — | Optional dict with the same shape as `satellite`; used by `filetree_read` and `dispatch` for import (falls back to `satellite` when omitted) |
+| `satellite_configuration_overrides_path` | — | Optional base directory for per-type `.d/` override fragments merged during `filetree_read` |
+| `satellite_configuration_filetree_read_merge_key` | `name` | Default object key for merging override fragments in `filetree_read` |
 
 ### Source and target Satellite connections
 

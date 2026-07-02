@@ -39,6 +39,6 @@ Mark `- [x]` when the criterion is satisfied. Last audit: 2026-05-05.
 - [ ] Satellite MCP server is configured and tool descriptors are known (server id, tool names, auth if any).
 - [ ] One or more **Cursor Agent Skills** (`SKILL.md` + optional `reference.md`) teach the agent when to use Satellite MCP vs Ansible/collection workflows.
 - [ ] Each skill documents **read tool schema first**, then `call_mcp_tool` with correct arguments (match MCP descriptor JSON).
-- [ ] Skills live in **project** `.cursor/skills/<skill-name>/` (repo-shared) or **personal** `~/.cursor/skills/` — choice documented in skill or README.
+- [ ] Skills live in **`skills/`** at the repository root (`.mdc` format); Cursor discovers them via `.cursor/rules/skills-discovery.mdc`.
 - [ ] Skill `description` frontmatter includes trigger terms (Satellite, MCP, content views, hosts, etc.) so invocation matches intent.
 - [ ] Do **not** place custom skills under `~/.cursor/skills-cursor/` (reserved for Cursor-built-in skills).

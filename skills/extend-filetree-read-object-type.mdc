@@ -1,0 +1,33 @@
+---
+description: Extend role filetree_read so a new Satellite object type is discovered from .d fragments and merged into satellite_* facts.
+alwaysApply: false
+globs: "roles/filetree_read/**/*.{yml,yaml}"
+---
+
+# Extend `filetree_read` For New Object Type
+
+Use this when onboarding a new object type into the vars ingestion pipeline.
+
+## Steps
+1. In `roles/filetree_read/defaults/main.yml`, add empty default list:
+   - `satellite_<resource_plural>: []`
+2. In `satellite_configuration_filetree_read_tasks`, add mapping entry with:
+   - `name`
+   - `var`
+   - `tags`
+   - `path: "{{ satellite_configuration_filetree_path }}/satellite_<resource_plural>.d/"`
+3. Confirm `roles/filetree_read/tasks/main.yml` loop already references `satellite_configuration_filetree_read_tasks`.
+4. Add fragment files in the expected `.d/` directory layout.
+5. Optional: support `satellite_configuration_overrides_path` merge (see `read_contents.yml`).
+
+## Constraints
+- Keep tags aligned with `filetree_create` and `dispatch`.
+- Keep var naming exactly `satellite_<resource_plural>`.
+- Keep per-file fragments list-compatible.
+- Ensure downstream apply uses `redhat.satellite` roles/modules when available.
+- Use `no_log` in `read_contents.yml` only when `satellite_configuration_filetree_read_secure_logging` is true and the var is in `satellite_configuration_sensitive_vars`.
+- For CaC lists whose fragments contain ERB/Jinja-like bodies, add the var to `satellite_configuration_filetree_read_raw_template_vars` in `global_vars` so `read_contents.yml` loads them with `slurp` + `from_yaml` instead of `include_vars`.
+
+## Done Criteria
+- `filetree_read` populates `satellite_<resource_plural>` from fragments.
+- Result can be consumed directly by `dispatch`.

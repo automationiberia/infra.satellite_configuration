@@ -1,0 +1,25 @@
+---
+description: Configure LDAP authentication sources in Satellite using the standard dispatch import-role pattern.
+alwaysApply: false
+globs: \"roles/dispatch/**/*.{yml,yaml}\"
+---
+
+# Manage LDAP Auth Sources
+
+Use this for `satellite_auth_sources_ldap`.
+
+## Steps
+1. Declare LDAP sources in `satellite_auth_sources_ldap`.
+2. Apply via `roles/dispatch/tasks/satellite_auth_sources_ldap.yaml`.
+3. Use `redhat.satellite.auth_sources_ldap` through `ansible.builtin.import_role`.
+4. Keep bind and server parameters sourced from vars.
+5. On export, `account_password` is emitted as `{{ vault_satellite_auth_sources_ldap_account_passwords['name'] }}`; fill keys in `vault_template.yaml`.
+
+## Checklist
+- Uses FQCN `redhat.satellite.auth_sources_ldap`.
+- Keeps data list name in `satellite_*` format.
+- Preserves idempotent state.
+- Export task passes API results directly to `detailed_api_call.yaml` without intermediate list facts.
+- Export task ends with `...`.
+- LDAP export: `no_log: "{{ satellite_configuration_filetree_create_secure_logging }}"` on template tasks.
+- Dispatch LDAP: `no_log: "{{ satellite_configuration_dispatch_secure_logging }}"` on `import_role` tasks.

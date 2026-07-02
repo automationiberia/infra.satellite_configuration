@@ -13,7 +13,7 @@ filetree_create_roles_name_excludes_extra: "{{ satellite_builtin_role_name_skips
 
 satellite_configuration_filetree_create_secure_logging: true
 
-# Omit subscription/provider-managed products from export (created by manifest on import).
+# Omit subscription/provider-managed products from export (redhat: true or non-Anonymous provider).
 satellite_configuration_filetree_export_skip_provider_products: true
 
 # Optional IPs, short names, or alternate FQDNs for installation-medium path normalization.

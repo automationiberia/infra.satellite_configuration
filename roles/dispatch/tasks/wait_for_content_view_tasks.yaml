@@ -1,0 +1,28 @@
+---
+- name: Dispatch | Wait until content view publish/promote tasks complete
+  redhat.satellite.resource_info:
+    username: "{{ username }}"
+    password: "{{ password }}"
+    server_url: "{{ server_url }}"
+    validate_certs: "{{ validate_certs }}"
+    resource: foreman_tasks
+    search: "(label ~ Actions::Katello::ContentView and state = running)"
+  register: __sat_cv_running_tasks
+  until: (__sat_cv_running_tasks.resources | default([]) | length) == 0
+  retries: >-
+    {{
+      (
+        satellite_configuration_dispatch_content_views_task_wait_timeout
+        | default(3600)
+        | int
+      )
+      // (
+        satellite_configuration_dispatch_content_views_task_poll_interval
+        | default(15)
+        | int
+      )
+    }}
+  delay: "{{ satellite_configuration_dispatch_content_views_task_poll_interval | default(15) | int }}"
+  changed_when: false
+  delegate_to: localhost
+...

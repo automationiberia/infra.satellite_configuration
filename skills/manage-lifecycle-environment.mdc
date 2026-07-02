@@ -1,0 +1,20 @@
+---
+description: Manage lifecycle environments with the collection's dispatch pattern and redhat.satellite lifecycle roles.
+alwaysApply: false
+globs: \"roles/dispatch/**/*.{yml,yaml}\"
+---
+
+# Manage Lifecycle Environment
+
+Use this skill for `satellite_lifecycle_environments`.
+
+## Steps
+1. Define environment hierarchy data in `satellite_lifecycle_environments`.
+2. Run through dispatch using `ansible.builtin.import_role`.
+3. Keep parent-child order explicit in the data model.
+4. Validate environment names before CV promotion changes.
+
+## Checklist
+- Uses `redhat.satellite.lifecycle_environments`.
+- Tag is `lifecycle_environments`.
+- Inputs are declarative and idempotent.

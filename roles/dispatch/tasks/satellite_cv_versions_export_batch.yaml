@@ -1,0 +1,37 @@
+---
+- name: Dispatch | Publish and promote content views from export metadata (batch)
+  redhat.satellite.content_view_version:
+    username: "{{ username }}"
+    password: "{{ password }}"
+    server_url: "{{ server_url }}"
+    validate_certs: "{{ validate_certs }}"
+    content_view: "{{ __current_content_view.name }}"
+    organization: "{{ __current_content_view.organization }}"
+    lifecycle_environments: "{{ omit if (_sat_cv_lifecycle_environments | length == 0) else _sat_cv_lifecycle_environments }}"
+    force_promote: "{{ __current_content_view.force_promote | default(omit) }}"
+    synchronous: "{{ __current_content_view.synchronous | default(omit) }}"
+    version: >-
+      {{
+        omit
+        if (__current_content_view.needs_publish | default(false) | bool)
+        else (__current_content_view.latest_version | default(omit))
+      }}
+  loop: "{{ __dispatch_cv_batch }}"
+  loop_control:
+    loop_var: __current_content_view
+    label: "{{ __current_content_view.organization }}/{{ __current_content_view.name }}"
+  vars:
+    _sat_cv_lifecycle_environments: >-
+      {{
+        __current_content_view.latest_version_environments | default([])
+        | map(attribute='name')
+        | list
+      }}
+  delegate_to: localhost
+
+- name: Dispatch | Wait for running content view tasks before next batch
+  ansible.builtin.include_tasks: wait_for_content_view_tasks.yaml
+  when:
+    - not (__dispatch_is_last_batch | default(true) | bool)
+    - satellite_configuration_dispatch_content_views_task_poll_interval | default(15) | int > 0
+...

@@ -1,0 +1,20 @@
+---
+description: Manage operating systems in Satellite through redhat.satellite.operatingsystems import-role workflow.
+alwaysApply: false
+globs: \"roles/dispatch/**/*.{yml,yaml}\"
+---
+
+# Manage Operating Systems
+
+Use this for `satellite_operatingsystems`.
+
+## Steps
+1. Define OS records in `satellite_operatingsystems`.
+2. Apply via `roles/dispatch/tasks/satellite_operatingsystems.yaml`.
+3. Use `ansible.builtin.import_role` with `redhat.satellite.operatingsystems`.
+4. Keep architecture and media relationships explicit.
+
+## Checklist
+- Uses FQCN `redhat.satellite.operatingsystems`.
+- Stays data-driven via `satellite_*` lists.
+- Keeps module defaults for connection/auth.

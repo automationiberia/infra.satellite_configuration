@@ -1,0 +1,23 @@
+---
+description: Guide multi-stage promotion of content view versions across lifecycle environments, including validation and cleanup.
+alwaysApply: false
+globs: \"roles/dispatch/**/*.{yml,yaml}\"
+---
+
+# Skill: Promote Satellite Content
+This skill guides the agent through the multi-stage promotion of content views.
+
+## Procedure
+1. **Identify:** Find the Content View and the target Lifecycle Environment.
+2. **Validate:** Ensure the Content View has been published in the previous environment.
+3. **Task:** Use `roles/dispatch/tasks/satellite_cv_versions.yaml` (`cv_publish_promote` tag) or add entries to `satellite_content_view_versions`.
+4. **Cleanup:** `content_views_purge_count` triggers `redhat.satellite.content_view_version_cleanup` per organization.
+
+## Dispatch defaults
+- `satellite_configuration_dispatch_content_view_publish_promote: true` — set `false` to skip publish/promote (for example on re-runs).
+- When `satellite_content_view_versions` is empty, publish/promote is derived from `satellite_content_views` (`versions`, `needs_publish`, `latest_version_environments`).
+- When `needs_publish` is `false`, dispatch passes `latest_version` to promote only (avoids a new publish on same-host re-imports). When `needs_publish` is `true`, a new version is published.
+- Tune `satellite_configuration_dispatch_content_views_batch_size`, `satellite_configuration_dispatch_content_views_task_poll_interval`, and `satellite_configuration_dispatch_content_views_task_wait_timeout` between batches. Dispatch polls `foreman_tasks` for running `Actions::Katello::ContentView::*` tasks and continues immediately when none are running.
+
+## Usage
+Trigger this by asking: "Agent, use the promote-content skill to move RHEL9-Standard to Production."

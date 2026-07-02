@@ -1,0 +1,69 @@
+---
+description: Extend role filetree_create to export a new Satellite object type with get task, API call flow, template rendering, and main include wiring.
+alwaysApply: false
+globs: "roles/filetree_create/**/*.{yml,yaml,j2}"
+---
+
+# Extend `filetree_create` For New Object Type
+
+Use this when the export pipeline must support a new Satellite object type.
+
+Apply **`skills/fqcn-standards.mdc`** (especially collection filters in `.j2` templates).
+
+## Steps
+1. Create `roles/filetree_create/tasks/get_<domain>.yaml`.
+2. Reuse `api_call.yaml` or `detailed_api_call.yaml` for API requests via `ansible.builtin.uri`.
+3. Normalize fields before rendering (reuse cleanup conventions from existing `get_*` tasks).
+4. Render through `template_out.yaml` with `template_type: satellite_<resource_plural>`.
+5. Add template file `roles/filetree_create/templates/satellite_<resource_plural>.yaml.j2`.
+6. Register the new include block/tag in `roles/filetree_create/tasks/main.yaml`.
+
+## Task Style Requirements
+- End every `get_<domain>.yaml` file with `...`.
+- Do not add intermediate `set_fact` tasks that only duplicate API list results (for example `all_results`); pass `result_api_response.json.results | sort(attribute='id')` directly to `detailed_api_call.yaml` `loop_var` and `when` conditions.
+- Avoid accumulator loops when a Jinja list comprehension can build the final list in one expression.
+- Pass data needed only for templating via `include_tasks: template_out.yaml` `vars` instead of an extra `set_fact` when possible.
+- Static variables shared with other roles belong in `roles/global_vars/defaults/main.yml`; ensure `meta/main.yml` lists `dependencies: [{ role: infra.satellite_configuration.global_vars }]`.
+
+## Template Consistency Requirements
+- Mirror the structure used by current templates in `roles/filetree_create/templates/`:
+  - begin with `---`
+  - emit `satellite_<resource_plural>:` as the top-level key
+  - end with `...`
+- Use `roles/filetree_create/templates/satellite_content_view_filters.yaml.j2` as the canonical style reference for new templates.
+- Keep templates as simple as possible; avoid over-engineering and avoid adding object-specific branches unless strictly required by the data model.
+- Reuse cleanup helpers from `clean_fields.j2` when possible (`discard_unwanted_fields`) instead of ad-hoc formatting.
+- Always render template values through `discard_unwanted_fields`; do not output list/dict/scalar values directly from Jinja expressions.
+- Keep field filtering conventions aligned with existing templates:
+  - define `__excluded_fields`
+  - define `__empty_values`
+  - define `__reduce_to_name` and `__translate` (use empty lists when not needed)
+  - when enough API context exists, fill `__reduce_to_name` and `__translate` with real mappings instead of leaving them empty
+  - when `__translate` is populated, use it in the rendering logic to emit translated output keys (do not hardcode translated key names separately)
+  - do not hardcode source keys already represented in `__translate`; derive translated-key behavior from the mapping itself
+  - for list-of-dicts reductions (for example `operatingsystems` by `title`), derive the source item key from `__translate` with a generic fallback (usually `name`) instead of inline key-specific conditionals
+  - reduce related objects to names when needed (for example organization/product references).
+- Preserve current naming/style conventions for template internals (`__`-prefixed helper variables, stable key naming, deterministic output order).
+- Follow nearby templates for quoting and multiline handling so output stays compatible with `infra.satellite_configuration.format_yaml`.
+- Keep Jinja/YAML indentation exactly in canonical style:
+  - Jinja control tags (`{% ... %}`) must be left-aligned (no leading spaces).
+  - Nest Jinja control structures with two extra spaces after `{%` per level (`{% for` → `{%   for` → `{%     if`); see `satellite_content_view_filters.yaml.j2`.
+  - List item start for `loop.index == 1` must be `  - key: value`.
+  - Subsequent keys must be `    key: value`.
+  - Nested list items must keep two extra spaces per YAML level, matching `satellite_content_view_filters.yaml.j2`.
+- Wrap YAML-significant scalars with `__raw_fields` and literal `|-` blocks containing literal `{% raw %}` / `{% endraw %}` markers (see `satellite_provisioning_templates.yaml.j2`); `format_yaml` unwraps them after export.
+- Do not render entire lists via a single `discard_unwanted_fields(info_list, ...)` call when items contain commas, colons, PEM blocks, or nested dict lists.
+
+## Constraints
+- Use `ansible.builtin.*` FQCNs.
+- For apply operations, prefer `redhat.satellite` roles/modules instead of extending URI usage.
+- Keep URI usage scoped to export-only flows when no `redhat.satellite` role/module exists for retrieval.
+- Keep tag naming aligned with domain name.
+- Keep output deterministic and compatible with `infra.satellite_configuration.format_yaml`.
+- References to related objects must use names, never IDs.
+- Exclude ID-like fields from generated YAML (`id`, `*_id`, `*_ids`) and emit equivalent name-based fields whenever possible.
+
+## Done Criteria
+- Export role generates `satellite_<resource_plural>.yaml`.
+- Generated schema matches the expected `satellite_<resource_plural>` list-of-dicts model.
+- New template style is consistent with existing `satellite_*.yaml.j2` templates in the collection.

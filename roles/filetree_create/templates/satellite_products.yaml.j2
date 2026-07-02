@@ -7,10 +7,14 @@
 {% set __raw_fields = ['name', 'description'] %}
 satellite_products: {{ [] if info_list | length == 0 }}
 {% for __product in info_list %}
-{% if not (satellite_configuration_filetree_export_skip_provider_products | default(true) and (__product.redhat | default(false) | bool)) %}
+{% set __is_provider_managed = (
+  (__product.redhat | default(false) | bool)
+  or (__product.provider_name | default('Anonymous') != 'Anonymous')
+) %}
+{% if not (satellite_configuration_filetree_export_skip_provider_products | default(true) and __is_provider_managed) %}
 {%   for __map_item in (__product | dict2items) if __map_item.key not in __excluded_fields and __map_item.value not in __empty_values %}
 {%     if __map_item.key in __raw_fields %}
-{%       if __map_item.value is string and (__map_item.value | satellite_configuration_contains_template_markers) %}
+{%       if __map_item.value is string and (__map_item.value | infra.satellite_configuration.satellite_configuration_contains_template_markers) %}
   {{ '-' if loop.index == 1 else ' ' }} {{ __map_item.key }}: |-
       {{ '{%- raw -%}' }}
       {{ discard_unwanted_fields(__map_item.value, __excluded_fields, __empty_values, __reduce_to_name, __translate) | trim("'") | indent(6) }}

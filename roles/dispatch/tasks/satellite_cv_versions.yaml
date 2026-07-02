@@ -21,7 +21,43 @@
   when: satellite_content_view_versions | default([]) | length > 0
   delegate_to: localhost
 
-- name: Dispatch | Publish and promote content views from export metadata
+- name: Dispatch | Resolve content views for publish/promote from export metadata
+  ansible.builtin.set_fact:
+    _satellite_cv_publish_promote_dispatch: "{{ _satellite_cv_publish_promote_dispatch | default([]) + [__current_content_view] }}"
+  loop: "{{ satellite_content_views | default([]) }}"
+  loop_control:
+    loop_var: __current_content_view
+    label: "{{ __current_content_view.organization | default('') }}/{{ __current_content_view.name | default('') }}"
+  when:
+    - satellite_content_view_versions | default([]) | length == 0
+    - satellite_content_views is defined
+    - not (__current_content_view.default | default(false) | bool)
+    - not (__current_content_view.import_only | default(false) | bool)
+    - not (__current_content_view.composite | default(false) | bool)
+    - (__current_content_view.versions | default([]) | length > 0)
+      or ((__current_content_view.version_count | default(0) | int) > 0)
+      or (__current_content_view.needs_publish | default(false) | bool)
+
+- name: Dispatch | Publish and promote content views from export metadata in batches
+  ansible.builtin.include_tasks: satellite_cv_versions_export_batch.yaml
+  loop: "{{ _satellite_cv_publish_promote_dispatch | default([]) | batch(batch_size | int) | list }}"
+  loop_control:
+    loop_var: __dispatch_cv_batch
+    index_var: __dispatch_batch_index
+    label: "batch {{ __dispatch_batch_index + 1 }} ({{ __dispatch_cv_batch | length }} content views)"
+  vars:
+    batch_size: "{{ satellite_configuration_dispatch_content_views_batch_size | default(0) | int }}"
+    __dispatch_is_last_batch: >-
+      {{
+        (__dispatch_batch_index | int + 1)
+        >= (_satellite_cv_publish_promote_dispatch | default([]) | batch(batch_size | int) | list | length)
+      }}
+  when:
+    - satellite_content_view_versions | default([]) | length == 0
+    - _satellite_cv_publish_promote_dispatch | default([]) | length > 0
+    - (batch_size | int) > 0
+
+- name: Dispatch | Publish and promote content views from export metadata (single pass)
   redhat.satellite.content_view_version:
     username: "{{ username }}"
     password: "{{ password }}"
@@ -32,16 +68,17 @@
     lifecycle_environments: "{{ omit if (_sat_cv_lifecycle_environments | length == 0) else _sat_cv_lifecycle_environments }}"
     force_promote: "{{ __current_content_view.force_promote | default(omit) }}"
     synchronous: "{{ __current_content_view.synchronous | default(omit) }}"
-  loop: "{{ satellite_content_views | default([]) }}"
+    version: >-
+      {{
+        omit
+        if (__current_content_view.needs_publish | default(false) | bool)
+        else (__current_content_view.latest_version | default(omit))
+      }}
+  loop: "{{ _satellite_cv_publish_promote_dispatch | default([]) }}"
   loop_control:
     loop_var: __current_content_view
     label: "{{ __current_content_view.organization }}/{{ __current_content_view.name }}"
   vars:
-    _sat_cv_export_had_versions: >-
-      {{
-        (__current_content_view.versions | default([]) | length > 0)
-        or ((__current_content_view.version_count | default(0) | int) > 0)
-      }}
     _sat_cv_lifecycle_environments: >-
       {{
         __current_content_view.latest_version_environments | default([])
@@ -50,11 +87,8 @@
       }}
   when:
     - satellite_content_view_versions | default([]) | length == 0
-    - satellite_content_views is defined
-    - not (__current_content_view.default | default(false) | bool)
-    - not (__current_content_view.import_only | default(false) | bool)
-    - not (__current_content_view.composite | default(false) | bool)
-    - _sat_cv_export_had_versions or (__current_content_view.needs_publish | default(false) | bool)
+    - _satellite_cv_publish_promote_dispatch | default([]) | length > 0
+    - satellite_configuration_dispatch_content_views_batch_size | default(0) | int == 0
   delegate_to: localhost
 
 - name: Dispatch | Purge old content view versions

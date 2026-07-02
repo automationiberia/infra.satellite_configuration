@@ -1,0 +1,20 @@
+---
+description: Create or maintain Satellite sync plans and align them with product repositories. Use for recurring repository synchronization workflows.
+alwaysApply: false
+globs: \"roles/dispatch/**/*.{yml,yaml}\"
+---
+
+# Manage Sync Plan
+
+Use this for `satellite_sync_plans` driven tasks.
+
+## Steps
+1. Define sync plans in `satellite_sync_plans`.
+2. Apply with `redhat.satellite.sync_plan` in a loop.
+3. Attach products as needed via module parameters.
+4. Keep names and intervals stable to avoid unnecessary churn.
+
+## Checklist
+- Task file follows `satellite_sync_plans.yaml` naming.
+- FQCN is `redhat.satellite.sync_plan`.
+- Optional attributes use `| default(omit)`.
