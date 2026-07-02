@@ -17,7 +17,7 @@ Apply **`skills/fqcn-standards.mdc`** for tasks and Jinja templates (collection 
 4. Write output under the expected `satellite_<resource>.yaml` naming.
 
 ## Task Style Requirements
-- End every task YAML file with `...`.
+- End every task YAML file with `...` (ansible-lint `yaml[document-end]`); includes `get_*.yaml`, shared includes, and `main.yaml`.
 - Do not copy API list results into intermediate facts (for example `all_results`); use the filtered expression inline in `loop_var`, `when`, or `include_tasks` `vars`.
 - Prefer `include_tasks` `vars` over `set_fact` when transformed data is consumed only by the next included task.
 - Static variables shared with other roles belong in `roles/global_vars/defaults/main.yml`; declare `dependencies: [{ role: infra.satellite_configuration.global_vars }]` in `meta/main.yml`.

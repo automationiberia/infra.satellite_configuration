@@ -15,6 +15,7 @@ Use this for `satellite_sync_plans` driven tasks.
 4. Keep names and intervals stable to avoid unnecessary churn.
 
 ## Checklist
+- Task/playbook YAML files end with `...` on its own final line (ansible-lint `yaml[document-end]`).
 - Task file follows `satellite_sync_plans.yaml` naming.
 - FQCN is `redhat.satellite.sync_plan`.
 - Optional attributes use `| default(omit)`.

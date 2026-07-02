@@ -15,6 +15,7 @@ Use this for `satellite_hostgroups`.
 4. Apply after operating systems, installation mediums, and partition tables when those fields are referenced.
 
 ## Checklist
+- Task/playbook YAML files end with `...` on its own final line (ansible-lint `yaml[document-end]`).
 - Uses `ansible.builtin.import_role`.
 - Keeps FQCN usage explicit.
 - Task tags align to `hostgroups`.

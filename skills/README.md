@@ -18,6 +18,10 @@ See **`fqcn-standards.mdc`** for full rules. Summary:
 - `infra.satellite_configuration.*` for this collection (roles, modules, **filters in `.j2` templates**)
 - Role `meta/main.yml` dependencies and `include_role` names must use collection FQCN
 
+## YAML document end (mandatory)
+
+Every Ansible task/playbook YAML file under `roles/` and `playbooks/` must end with `...` (ansible-lint `yaml[document-end]`). This includes helper includes (`*_batch.yaml`, `wait_for_*.yaml`, etc.), not only `satellite_<domain>.yaml`. See **`fqcn-standards.mdc`**.
+
 ## End-to-End and Role Extension
 
 | Skill | Purpose |

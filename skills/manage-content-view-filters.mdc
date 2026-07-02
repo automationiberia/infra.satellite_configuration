@@ -15,6 +15,7 @@ Use this for `satellite_content_view_filters`.
 4. Use include/exclude settings explicitly in each filter item.
 
 ## Checklist
+- Task/playbook YAML files end with `...` on its own final line (ansible-lint `yaml[document-end]`).
 - Uses FQCN `redhat.satellite.content_view_filter`.
 - Optional parameters use `default(omit)`.
 - Works with the content view workflow.

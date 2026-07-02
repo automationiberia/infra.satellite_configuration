@@ -24,6 +24,7 @@ Use this when onboarding a new object type into the vars ingestion pipeline.
 - Keep tags aligned with `filetree_create` and `dispatch`.
 - Keep var naming exactly `satellite_<resource_plural>`.
 - Keep per-file fragments list-compatible.
+- End **every** YAML file under `roles/filetree_read/tasks/` with `...` on its own final line (ansible-lint `yaml[document-end]`), including `read_contents.yml` and shared includes.
 - Ensure downstream apply uses `redhat.satellite` roles/modules when available.
 - Use `no_log` in `read_contents.yml` only when `satellite_configuration_filetree_read_secure_logging` is true and the var is in `satellite_configuration_sensitive_vars`.
 - For CaC lists whose fragments contain ERB/Jinja-like bodies, add the var to `satellite_configuration_filetree_read_raw_template_vars` in `global_vars` so `read_contents.yml` loads them with `slurp` + `from_yaml` instead of `include_vars`.

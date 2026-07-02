@@ -17,6 +17,7 @@ Use this for `satellite_provisioning_templates`.
 6. Apply default OS mappings with `redhat.satellite.os_default_template` for non-snippet templates only.
 
 ## Checklist
+- Task/playbook YAML files end with `...` on its own final line (ansible-lint `yaml[document-end]`).
 - Uses FQCN `redhat.satellite.provisioning_template`.
 - Uses FQCN `redhat.satellite.os_default_template` for defaults.
 - Prefers `{% raw %}` / `{% endraw %}` over `!unsafe` for ERB/Jinja-like template bodies.

@@ -35,7 +35,8 @@ Apply these conventions to all changes in this repository.
 - Prefer passing transformed data via `include_tasks` `vars` over `set_fact` when the value is only needed by the next included task (for example template rendering).
 
 ## YAML Style
-- All Ansible task, role, and playbook YAML files under this collection must end with `...` (ansible-lint `yaml document end`).
+- All Ansible task, role, and playbook YAML files under this collection must end with `...` on its own final line (ansible-lint `yaml[document-end]`, `.yamllint` `document-end: present`).
+- Includes helper `include_tasks` files (`*_batch.yaml`, `wait_for_*.yaml`, `api_call.yaml`, `read_contents.yml`, etc.), not only `satellite_<domain>.yaml` / `get_<domain>.yaml`.
 
 ## Cross-Role Consistency Rule
 - When adding a new object type, update all three roles in the same change:

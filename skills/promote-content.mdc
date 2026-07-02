@@ -19,5 +19,8 @@ This skill guides the agent through the multi-stage promotion of content views.
 - When `needs_publish` is `false`, dispatch passes `latest_version` to promote only (avoids a new publish on same-host re-imports). When `needs_publish` is `true`, a new version is published.
 - Tune `satellite_configuration_dispatch_content_views_batch_size`, `satellite_configuration_dispatch_content_views_task_poll_interval`, and `satellite_configuration_dispatch_content_views_task_wait_timeout` between batches. Dispatch polls `foreman_tasks` for running `Actions::Katello::ContentView::*` tasks and continues immediately when none are running.
 
+## Checklist
+- Helper task files (`satellite_cv_versions_export_batch.yaml`, `wait_for_content_view_tasks.yaml`, etc.) end with `...` (ansible-lint `yaml[document-end]`).
+
 ## Usage
 Trigger this by asking: "Agent, use the promote-content skill to move RHEL9-Standard to Production."

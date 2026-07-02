@@ -15,6 +15,7 @@ Use this for `satellite_locations`.
 4. Keep organization associations explicit when present.
 
 ## Checklist
+- Task/playbook YAML files end with `...` on its own final line (ansible-lint `yaml[document-end]`).
 - Uses FQCN `redhat.satellite.location`.
 - Optional attributes use `default(omit)`.
 - Task tags align to `locations`.

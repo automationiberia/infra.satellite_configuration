@@ -54,6 +54,22 @@ Short filter names fail at template render time with "Could not load filter".
 - Use `ansible.builtin.import_role` with `name: infra.satellite_configuration.<role>`.
 - When `module_defaults` references `satellite.*`, resolve `satellite_target` → `satellite` in a **prior play** (see `playbooks/run_filetree_read.yaml`).
 
+## YAML document end (mandatory)
+
+ansible-lint rule **`yaml[document-end]`** (and `.yamllint` `document-end: present`) require a document-end marker on Ansible YAML files.
+
+- End **every** task, handler, playbook, and role YAML file under `roles/` and `playbooks/` with `...` on its own final line.
+- Applies to primary files (`satellite_<domain>.yaml`, `get_<domain>.yaml`, `main.yaml`) **and** helper includes (`*_batch.yaml`, `wait_for_*.yaml`, `api_call.yaml`, `read_contents.yml`, etc.).
+- When creating or editing any of these files, verify the last non-empty line is `...` before committing (pre-commit ansible-lint will fail otherwise).
+- Jinja export templates (`.j2`) that emit full CaC documents also end with `...` after the `satellite_<resource_plural>:` block.
+
+```yaml
+- name: Example task
+  ansible.builtin.debug:
+    msg: done
+...
+```
+
 ## Forbidden for new work
 
 - `theforeman.foreman.*`

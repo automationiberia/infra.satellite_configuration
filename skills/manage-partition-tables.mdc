@@ -15,6 +15,7 @@ Use this for `satellite_partition_tables`.
 4. Associate to organizations/locations when required.
 
 ## Checklist
+- Task/playbook YAML files end with `...` on its own final line (ansible-lint `yaml[document-end]`).
 - Uses FQCN `redhat.satellite.partition_table`.
 - Uses loop variables with `__` prefix.
 - Uses `default(omit)` for optional keys.

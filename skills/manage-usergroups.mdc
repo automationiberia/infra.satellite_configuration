@@ -16,6 +16,7 @@ Use this for `satellite_usergroups`.
 5. Keep loop variables internal and `__`-prefixed.
 
 ## Checklist
+- Task/playbook YAML files end with `...` on its own final line (ansible-lint `yaml[document-end]`).
 - Uses `redhat.satellite.usergroup`.
 - Uses `redhat.satellite.external_usergroup` for external links.
 - Omits LDAP-only direct `users` entries not present in `satellite_users`; LDAP membership is via `external_usergroups`.

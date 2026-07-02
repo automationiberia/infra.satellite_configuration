@@ -14,6 +14,7 @@ Use this for `satellite_host_collections`.
 3. Opt in to host membership with `satellite_configuration_dispatch_host_collection_membership: true` when hosts already exist on the target.
 
 ## Checklist
+- Task/playbook YAML files end with `...` on its own final line (ansible-lint `yaml[document-end]`).
 - Uses FQCN `redhat.satellite.host_collection`.
 - Export does not include host membership (`hosts`); structure only.
 - Host assignment runs only when `satellite_configuration_dispatch_host_collection_membership` is true.

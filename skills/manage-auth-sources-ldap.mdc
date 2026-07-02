@@ -20,6 +20,6 @@ Use this for `satellite_auth_sources_ldap`.
 - Keeps data list name in `satellite_*` format.
 - Preserves idempotent state.
 - Export task passes API results directly to `detailed_api_call.yaml` without intermediate list facts.
-- Export task ends with `...`.
+- Task/playbook YAML files end with `...` on its own final line (ansible-lint `yaml[document-end]`); includes export and dispatch task files.
 - LDAP export: `no_log: "{{ satellite_configuration_filetree_create_secure_logging }}"` on template tasks.
 - Dispatch LDAP: `no_log: "{{ satellite_configuration_dispatch_secure_logging }}"` on `import_role` tasks.

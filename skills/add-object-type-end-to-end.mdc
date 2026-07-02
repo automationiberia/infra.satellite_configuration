@@ -47,7 +47,7 @@ When implementing or reviewing `satellite_users` / `redhat.satellite.user`:
    - `tests/README.md` role input variable tables (include new `satellite_<resource_plural>`)
 
 ## Task Style Requirements
-- End every new task YAML file with `...`.
+- End **every** Ansible YAML file under `roles/*/tasks/` with `...` on its own final line (ansible-lint `yaml[document-end]`): primary task files, batch helpers, wait/poll includes, and shared snippets (`api_call.yaml`, `read_contents.yml`, etc.).
 - Do not copy API list results into intermediate facts (for example `all_results`); pass filtered expressions inline to `loop_var`, `when`, or `include_tasks` `vars`.
 - Prefer `include_tasks` `vars` over `set_fact` when transformed data is consumed only by the next included task.
 - Static variables shared across roles go in `roles/global_vars/defaults/main.yml`; consumer roles use `dependencies: [{ role: infra.satellite_configuration.global_vars }]` in `meta/main.yml`.

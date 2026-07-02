@@ -19,7 +19,8 @@ Apply **`skills/fqcn-standards.mdc`** (especially collection filters in `.j2` te
 6. Register the new include block/tag in `roles/filetree_create/tasks/main.yaml`.
 
 ## Task Style Requirements
-- End every `get_<domain>.yaml` file with `...`.
+## Constraints
+- End **every** YAML file under `roles/filetree_create/tasks/` with `...` (ansible-lint `yaml[document-end]`): `get_<domain>.yaml`, shared includes, and `main.yaml`.
 - Do not add intermediate `set_fact` tasks that only duplicate API list results (for example `all_results`); pass `result_api_response.json.results | sort(attribute='id')` directly to `detailed_api_call.yaml` `loop_var` and `when` conditions.
 - Avoid accumulator loops when a Jinja list comprehension can build the final list in one expression.
 - Pass data needed only for templating via `include_tasks: template_out.yaml` `vars` instead of an extra `set_fact` when possible.

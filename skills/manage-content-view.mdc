@@ -15,6 +15,7 @@ Use this pattern for `satellite_content_views`.
 4. Keep filter and repository references by name for readability.
 
 ## Checklist
+- Task/playbook YAML files end with `...` on its own final line (ansible-lint `yaml[document-end]`).
 - Uses `ansible.builtin.import_role`.
 - Keeps variable names in the `satellite_*` convention.
 - Avoids legacy `theforeman.foreman.*` modules.

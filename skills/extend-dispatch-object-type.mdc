@@ -22,7 +22,7 @@ Apply **`skills/fqcn-standards.mdc`** for `ansible.builtin.import_role`, `redhat
 - Keep the task idempotent and data-driven.
 - Do not use `theforeman.foreman.*` for new work.
 - Internal loop variables should use the `__` prefix.
-- End every `satellite_<domain>.yaml` task file with `...`.
+- End **every** YAML file under `roles/dispatch/tasks/` with `...` on its own final line (ansible-lint `yaml[document-end]`): `satellite_<domain>.yaml`, batch helpers (`*_batch.yaml`), wait/poll includes (`wait_for_*.yaml`), and any other `include_tasks` target.
 - Do not add `set_fact` tasks that only duplicate existing data; pass expressions inline or via `include_tasks` `vars`.
 - Prefer `ansible.builtin.import_role` with `redhat.satellite.<role>` when a matching role exists; use modules only when no role is available.
 - Apply `no_log: "{{ satellite_configuration_dispatch_secure_logging }}"` on dedicated dispatch task files for sensitive CaC types; never on non-sensitive types.

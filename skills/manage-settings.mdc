@@ -15,6 +15,7 @@ Use this for `satellite_settings` updates.
 4. Keep settings declarative and organization-safe.
 
 ## Checklist
+- Task/playbook YAML files end with `...` on its own final line (ansible-lint `yaml[document-end]`).
 - Uses `ansible.builtin.import_role`.
 - Keeps FQCN usage explicit.
 - Avoids hardcoded credentials inside tasks.

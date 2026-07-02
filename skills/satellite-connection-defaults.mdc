@@ -18,3 +18,4 @@ Use this when creating playbooks that call Satellite modules.
 - Uses `group/redhat.satellite.satellite`.
 - Avoids repeating credentials in every task.
 - Keeps `validate_certs` explicit.
+- Playbook and role task YAML files end with `...` (ansible-lint `yaml[document-end]`).

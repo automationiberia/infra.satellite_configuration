@@ -15,6 +15,7 @@ Use this for `satellite_operatingsystems`.
 4. Keep architecture and media relationships explicit.
 
 ## Checklist
+- Task/playbook YAML files end with `...` on its own final line (ansible-lint `yaml[document-end]`).
 - Uses FQCN `redhat.satellite.operatingsystems`.
 - Stays data-driven via `satellite_*` lists.
 - Keeps module defaults for connection/auth.

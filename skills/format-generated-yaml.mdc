@@ -15,6 +15,10 @@ Use this after `filetree_create` writes YAML outputs.
 4. Preserve multiline blocks for certificates, keys, templates, and descriptions.
 5. Keep output stable for review and version control.
 
+## Ansible task YAML (not CaC output)
+
+When editing **role/playbook task files** (not exported CaC under `configs/`), end each file with `...` (ansible-lint `yaml[document-end]`). See `skills/fqcn-standards.mdc`.
+
 ## Checklist
 - Uses module FQCN `infra.satellite_configuration.format_yaml`.
 - Runs as a post-export normalization step (`yaml_format` tag).

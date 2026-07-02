@@ -18,7 +18,7 @@ Skills use **`.mdc`** (Markdown + YAML frontmatter), not plain `.md`. Frontmatte
 ## Before Every Change
 
 1. Follow `.cursor/rules/satellite-general.mdc` (always applied).
-2. Read **`skills/fqcn-standards.mdc`** when editing tasks, playbooks, templates, plugins, or role `meta/main.yml`.
+2. Read **`skills/fqcn-standards.mdc`** when editing tasks, playbooks, templates, plugins, or role `meta/main.yml` — includes mandatory **`...` document end** on Ansible YAML files (`yaml[document-end]`).
 3. When the user names a skill or the task matches a skill `description`, read **`skills/<skill-name>.mdc`** and follow it.
 
 ## Invocation Examples

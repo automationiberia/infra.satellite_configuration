@@ -14,6 +14,7 @@ Use this for `satellite_subnets`.
 3. Reuse `ansible.builtin.import_role` with `redhat.satellite.subnets`.
 
 ## Checklist
+- Task/playbook YAML files end with `...` on its own final line (ansible-lint `yaml[document-end]`).
 - Uses `ansible.builtin.import_role`.
 - Keeps FQCN usage explicit.
 - Task tags align to `subnets`.

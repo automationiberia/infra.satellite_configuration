@@ -15,6 +15,7 @@ Use for `satellite_activation_keys` updates.
 4. Use `| default(omit)` for optional values.
 
 ## Checklist
+- Task/playbook YAML files end with `...` on its own final line (ansible-lint `yaml[document-end]`).
 - FQCN usage is explicit.
 - Task loop uses a `__current_*` variable.
 - State handling is idempotent.

@@ -15,6 +15,7 @@ Use this for `satellite_domains`, `satellite_subnets`, and `satellite_hostgroups
 4. Feed generated files into filetree read/dispatch workflows.
 
 ## Checklist
+- Task/playbook YAML files end with `...` on its own final line (ansible-lint `yaml[document-end]`).
 - Prefer `redhat.satellite` roles/modules for apply paths; keep this skill focused on export generation.
 - Uses `ansible.builtin.include_tasks` for each `get_*` flow.
 - Uses `template_out.yaml` rendering pattern.
