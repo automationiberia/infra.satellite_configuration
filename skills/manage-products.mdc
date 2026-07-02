@@ -14,6 +14,7 @@ Use this for `satellite_products`.
 3. Keep organization and sync-related attributes explicit.
 4. Use `state` for create/update/delete lifecycle.
 5. On initial pass, Red Hat subscription products (`redhat: true`) are skipped by default; custom products (e.g. Anonymous provider) are still dispatched.
+6. On export, `satellite_configuration_filetree_export_skip_provider_products` (default `true`) uses Katello search `redhat=false` because the products index API omits `redhat`/`provider_name`.
 6. For many custom products, tune `satellite_configuration_dispatch_products_batch_size` and `satellite_configuration_dispatch_products_batch_pause` to reduce Satellite RAM pressure.
 
 ## Checklist

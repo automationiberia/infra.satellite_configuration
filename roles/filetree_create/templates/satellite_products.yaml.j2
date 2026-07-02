@@ -7,9 +7,10 @@
 {% set __raw_fields = ['name', 'description'] %}
 satellite_products: {{ [] if info_list | length == 0 }}
 {% for __product in info_list %}
+{% set __provider_name = __product.provider.name | default(__product.provider_name | default('Anonymous')) %}
 {% set __is_provider_managed = (
   (__product.redhat | default(false) | bool)
-  or (__product.provider_name | default('Anonymous') != 'Anonymous')
+  or (__provider_name != 'Anonymous')
 ) %}
 {% if not (satellite_configuration_filetree_export_skip_provider_products | default(true) and __is_provider_managed) %}
 {%   for __map_item in (__product | dict2items) if __map_item.key not in __excluded_fields and __map_item.value not in __empty_values %}
