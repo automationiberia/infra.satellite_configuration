@@ -12,10 +12,46 @@
     ignore_global_proxy: "{{ __current_repository.ignore_global_proxy | default(omit) }}"
     http_proxy_policy: "{{ __current_repository.http_proxy_policy | default(omit) }}"
     http_proxy: "{{ __current_repository.http_proxy | default(omit) }}"
-    gpg_key: "{{ __current_repository.gpg_key | default(omit) }}"
-    ssl_ca_cert: "{{ __current_repository.ssl_ca_cert | default(omit) }}"
-    ssl_client_cert: "{{ __current_repository.ssl_client_cert | default(omit) }}"
-    ssl_client_key: "{{ __current_repository.ssl_client_key | default(omit) }}"
+    gpg_key: >-
+      {{
+        omit
+        if (__current_repository['gpg_key'] is not defined)
+        else (
+          __current_repository['gpg_key']['name']
+          if (__current_repository['gpg_key'] is mapping)
+          else __current_repository['gpg_key']
+        )
+      }}
+    ssl_ca_cert: >-
+      {{
+        omit
+        if (__current_repository['ssl_ca_cert'] is not defined)
+        else (
+          __current_repository['ssl_ca_cert']['name']
+          if (__current_repository['ssl_ca_cert'] is mapping)
+          else __current_repository['ssl_ca_cert']
+        )
+      }}
+    ssl_client_cert: >-
+      {{
+        omit
+        if (__current_repository['ssl_client_cert'] is not defined)
+        else (
+          __current_repository['ssl_client_cert']['name']
+          if (__current_repository['ssl_client_cert'] is mapping)
+          else __current_repository['ssl_client_cert']
+        )
+      }}
+    ssl_client_key: >-
+      {{
+        omit
+        if (__current_repository['ssl_client_key'] is not defined)
+        else (
+          __current_repository['ssl_client_key']['name']
+          if (__current_repository['ssl_client_key'] is mapping)
+          else __current_repository['ssl_client_key']
+        )
+      }}
     download_concurrency: "{{ __current_repository.download_concurrency | default(omit) }}"
     download_policy: "{{ __current_repository.download_policy | default(omit) }}"
     mirror_on_sync: "{{ __current_repository.mirror_on_sync | default(omit) }}"
@@ -53,5 +89,5 @@
     - not ((__current_repository.redhat | default(false) | bool) or ((__current_repository.url | default('')) is search(satellite_redhat_repository_url_substring)))
   delegate_to: "localhost"
   notify:
-    - sync all repositories
+    - Sync all repositories
 ...

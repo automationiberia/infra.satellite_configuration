@@ -1,0 +1,26 @@
+---
+- name: Build unlocked provisioning templates for OS default assignment
+  ansible.builtin.set_fact:
+    __dispatch_provisioning_templates: >-
+      {{
+        satellite_provisioning_templates | default([])
+        | rejectattr('locked', 'equalto', true)
+        | list
+      }}
+  when: satellite_provisioning_templates is defined
+
+- name: Assign default Provisioning Templates to Operating Systems
+  redhat.satellite.os_default_template:
+    operatingsystem: "{{ __current_provisioning_template[1] }}"
+    template_kind: "{{ __current_provisioning_template[0].kind }}"
+    provisioning_template: "{{ __current_provisioning_template[0].name | default(omit) }}"
+    state: "{{ __current_provisioning_template[0].state | default('present') }}"
+  loop: "{{ __dispatch_provisioning_templates | default([]) | subelements('operatingsystems', skip_missing=true) }}"
+  loop_control:
+    loop_var: __current_provisioning_template
+    label: "{{ __current_provisioning_template[0].name }}"
+  when:
+    - satellite_provisioning_templates is defined
+    - not (__current_provisioning_template[0].snippet | default(false) | bool)
+  delegate_to: localhost
+...

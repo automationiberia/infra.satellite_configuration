@@ -121,8 +121,10 @@
       tags: repositories
   tags: repositories
 
-- name: Manage Sync Plans
+- name: Manage Sync Plans (initial pass without products)
   ansible.builtin.include_tasks: satellite_sync_plans.yaml
+  vars:
+    __dispatch_sync_plans_phase: initial
   args:
     apply:
       tags: sync_plans
@@ -136,6 +138,15 @@
     apply:
       tags: products
   tags: products
+
+- name: Associate Sync Plans with Products
+  ansible.builtin.include_tasks: satellite_sync_plans.yaml
+  vars:
+    __dispatch_sync_plans_phase: products
+  args:
+    apply:
+      tags: sync_plans
+  tags: sync_plans
 
 - name: Manage Content Views
   ansible.builtin.include_tasks: satellite_content_views.yaml
@@ -187,6 +198,15 @@
       tags: installation_mediums
   tags: installation_mediums
 
+- name: Create Provisioning Templates (initial pass without OS associations)
+  ansible.builtin.include_tasks: satellite_provisioning_templates.yaml
+  vars:
+    __dispatch_provisioning_templates_phase: create
+  args:
+    apply:
+      tags: provisioning_templates
+  tags: provisioning_templates
+
 - name: Create OperatingSystems
   ansible.builtin.include_tasks: satellite_operatingsystems.yaml
   args:
@@ -194,8 +214,8 @@
       tags: operatingsystems
   tags: operatingsystems
 
-- name: Create Provisioning Templates
-  ansible.builtin.include_tasks: satellite_provisioning_templates.yaml
+- name: Assign Provisioning Template defaults to Operating Systems
+  ansible.builtin.include_tasks: satellite_provisioning_template_os_defaults.yaml
   args:
     apply:
       tags: provisioning_templates

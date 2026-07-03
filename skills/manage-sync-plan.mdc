@@ -10,8 +10,8 @@ Use this for `satellite_sync_plans` driven tasks.
 
 ## Steps
 1. Define sync plans in `satellite_sync_plans`.
-2. Apply with `redhat.satellite.sync_plan` in a loop.
-3. Attach products as needed via module parameters.
+2. Apply with `redhat.satellite.sync_plan` in a loop (initial pass omits `products`).
+3. After products exist, run a second pass with `products` associations.
 4. Keep names and intervals stable to avoid unnecessary churn.
 
 ## Checklist

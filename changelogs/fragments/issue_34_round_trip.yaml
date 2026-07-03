@@ -16,7 +16,7 @@ minor_changes:
 bugfixes:
   - format_yaml - preserve PEM/GPG multiline content, quote YAML-significant scalars, unwrap raw/endraw export wrappers, and normalize legacy unsafe tags.
   - filetree_create export templates - fix users, products, content credentials, settings, and repository sets YAML formatting (colons, commas, SSH keys, raw fields).
-  - filetree_read - load provisioning templates with slurp/from_yaml to avoid Jinja2 parsing ERB bodies; unwrap raw markers on dispatch.
+  - filetree_read - load settings, LDAP, and users with include_vars (no_log disabled on load) so vault refs resolve; keep slurp for ERB-heavy templates.
   - filetree_create - skip readonly settings, locked/built-in roles, Red Hat CDN repositories, enabled-only repository sets, host collection membership, and host-specific settings by default.
   - filetree_create - enrich kickstart releasever from enabled repositories; strip use_netgroups for Active Directory LDAP sources on export.
   - filetree_create export - use dir_mode for .d fragment directories; replace invalid Jinja list comprehensions in LDAP and roles tasks.
@@ -34,7 +34,11 @@ bugfixes:
   - filetree_create export - escape installation-medium hostname regex patterns; support source aliases for IP-based paths.
   - filetree_create products export - resolve sync_plan names without Katello per_page=all on sync_plans API.
   - filetree_create products export - omit subscription products via Katello search redhat=false when skip flag is enabled (index API omits redhat/provider_name).
-  - dispatch - order host_collections before activation_keys and operatingsystems before provisioning_templates.
+  - dispatch - order host_collections before activation_keys; provisioning templates before operatingsystems with phased OS default assignment.
+  - dispatch sync_plans - two-pass create (without products, then associate after products) to break products/sync_plans circular dependency.
+  - filetree_read - tolerate empty or missing .d/ directories when setting loaded CaC variables.
+  - filetree_create repositories export - emit gpg_key and SSL credential references as flat name strings.
+  - dispatch repositories - flatten nested gpg_key/SSL credential dicts from legacy exports; fix repository sync handler notify casing.
   - dispatch - remove unsupported provisioning_template description; fix content_view_version_cleanup include_role usage.
   - dispatch provisioning templates - create snippets first with kind snippet; skip OS default assignment for snippets.
   - filetree_create provisioning templates export - emit kind snippet instead of a bare snippet boolean flag.

@@ -1,16 +1,19 @@
 ---
 - name: Create Sync Plans
   redhat.satellite.sync_plan:
-    # Mandatory params
     name: "{{ __current_sync_plan.name }}"
     interval: "{{ __current_sync_plan.interval }}"
     enabled: "{{ __current_sync_plan.enabled }}"
     sync_date: "{{ __current_sync_plan.sync_date }}"
     organization: "{{ __current_sync_plan.organization }}"
-    # Optional params
     description: "{{ __current_sync_plan.description | default(omit) }}"
     cron_expression: "{{ __current_sync_plan.cron_expression | default(omit) }}"
-    products: "{{ __current_sync_plan.products | default(omit) }}"
+    products: >-
+      {{
+        omit
+        if (__dispatch_sync_plans_phase | default('initial') == 'initial')
+        else (__current_sync_plan.products | default(omit))
+      }}
   loop: "{{ satellite_sync_plans }}"
   loop_control:
     loop_var: __current_sync_plan
