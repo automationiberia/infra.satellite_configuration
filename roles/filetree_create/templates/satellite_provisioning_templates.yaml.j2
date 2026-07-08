@@ -31,6 +31,6 @@ satellite_provisioning_templates:
 {%     else %}
   {{ '-' if loop.index == 1 else ' ' }} {{ __map_item.key }}: {{ discard_unwanted_fields(__map_item.value, __excluded_fields, __empty_values, __reduce_to_name, __translate) }}
 {%     endif %}
-{%-  endfor %}
+{%-   endfor %}
 {% endfor %}
 ...

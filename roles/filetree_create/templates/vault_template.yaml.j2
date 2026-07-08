@@ -9,9 +9,9 @@
 # REQUIRED — LDAP bind passwords (one entry per exported auth source name)
 vault_satellite_auth_sources_ldap_account_passwords:
 {% if satellite_configuration_vault_template_ldap_sources | default([]) | length > 0 %}
-{% for __ldap_name in satellite_configuration_vault_template_ldap_sources | default([]) | unique | sort %}
+{%   for __ldap_name in satellite_configuration_vault_template_ldap_sources | default([]) | unique | sort %}
   {{ __ldap_name | to_json }}: {{ satellite_configuration_vault_placeholder }}  # password
-{% endfor %}
+{%   endfor %}
 {% else %}
   {}
 {% endif %}
@@ -19,9 +19,9 @@ vault_satellite_auth_sources_ldap_account_passwords:
 # REQUIRED — Internal-auth Satellite user passwords (login -> password)
 vault_satellite_users_passwords:
 {% if satellite_configuration_vault_template_internal_users | default([]) | length > 0 %}
-{% for __user_login in satellite_configuration_vault_template_internal_users | default([]) | unique | sort %}
+{%   for __user_login in satellite_configuration_vault_template_internal_users | default([]) | unique | sort %}
   {{ __user_login | to_json }}: {{ satellite_configuration_vault_placeholder }}  # password
-{% endfor %}
+{%   endfor %}
 {% else %}
   {}
 {% endif %}
@@ -32,9 +32,9 @@ vault_satellite_users_default_password: {{ satellite_configuration_vault_placeho
 # Encrypted Foreman settings — replace placeholders; empty string is valid where noted in Satellite UI
 vault_satellite_settings:
 {% if satellite_configuration_vault_template_encrypted_settings | default([]) | length > 0 %}
-{% for __setting_name in satellite_configuration_vault_template_encrypted_settings | default([]) | unique | sort %}
+{%   for __setting_name in satellite_configuration_vault_template_encrypted_settings | default([]) | unique | sort %}
   {{ __setting_name | to_json }}: {{ satellite_configuration_vault_placeholder }}
-{% endfor %}
+{%   endfor %}
 {% else %}
   {}
 {% endif %}

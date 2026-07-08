@@ -31,7 +31,7 @@ satellite_auth_sources_ldap: {{ [] if info_list | length == 0 }}
 {%     else %}
     {{ __map_item.key }}: {{ __var.map_item_value if (__var.map_item_value | length > 0) else __map_item.value | default('""' if __map_item.key not in __list_items else []) | replace("\\'", "''") }}
 {%     endif %}
-{%-  endfor %}
+{%-   endfor %}
     account_password: {{ vault_dict_key('vault_satellite_auth_sources_ldap_account_passwords', i.name) }}
 {% endfor %}
 ...

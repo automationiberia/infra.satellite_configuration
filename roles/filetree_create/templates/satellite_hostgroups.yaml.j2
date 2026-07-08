@@ -3,12 +3,12 @@
 satellite_hostgroups: {{ [] if detailed_info.results | length == 0 }}
 {% for hostgroup in detailed_info.results %}
   - name: "{{ hostgroup.json.name | trim }}"
-{% if hostgroup.json.description != None and hostgroup.json.description != ""  %}
+{%   if hostgroup.json.description != None and hostgroup.json.description != ""  %}
     description: "{{ hostgroup.json.description }}"
-{% endif %}
-{% if hostgroup.json.parent_name != None %}
+{%   endif %}
+{%   if hostgroup.json.parent_name != None %}
     parent: "{{ hostgroup.json.parent_name }}"
-{% endif %}
+{%   endif %}
 {{ export_parameters_block(hostgroup.json.parameters, 'vault_satellite_hostgroup_parameters', hostgroup.json.name | trim) }}
 {% endfor %}
 ...

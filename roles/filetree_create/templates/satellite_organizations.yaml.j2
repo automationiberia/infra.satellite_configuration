@@ -15,7 +15,7 @@ satellite_organizations: {{ [] if info_list | length == 0 }}
 {%     else %}
     {{ __map_item.key }}: {{ __map_item_value if (__map_item.value | type_debug == 'dict') else __map_item.value | default('""' if __map_item.key not in __list_items else [], true) | replace("\\'", "''") }}
 {%     endif %}
-{%-  endfor %}
+{%-   endfor %}
 {{ export_parameters_block(i.parameters | default([]), 'vault_satellite_organization_parameters', i.name) }}
 {% endfor %}
 ...

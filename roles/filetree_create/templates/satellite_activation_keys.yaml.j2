@@ -62,6 +62,6 @@ satellite_activation_keys: {{ [] if info_list | length == 0 }}
              __map_item.value | default('""' if __map_item.key not in __list_items else [], true) | replace("\\'", "''")
         }}
 {%     endif %}
-{%-  endfor %}
+{%-   endfor %}
 {% endfor %}
 ...

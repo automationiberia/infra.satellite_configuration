@@ -7,7 +7,6 @@ satellite_content_view_filters: {{ [] if detailed_info.results | length == 0 }}
 {% set __translate = [{'type': 'filter_type'}] %}
 {% for content_view in detailed_info.results %}
 {%   for __map_item in (content_view.json | dict2items) if __map_item.key not in __excluded_fields and __map_item.value not in __empty_values %}
-A - {{ __map_item.value }}
 {%     if loop.index == 1 %}
   - {{ __map_item.key }}: {{ discard_unwanted_fields(__map_item.value, __excluded_fields, __empty_values, __reduce_to_name) }}
 {%     else %}
@@ -21,7 +20,7 @@ A - {{ __map_item.value }}
 {%           else %}
       {{ __map_item.key }}: {{ discard_unwanted_fields(__map_item.value, __excluded_fields, __empty_values, __reduce_to_name) }}
 {%           endif %}
-{%         endfor %%}
+{%         endfor %}
 {%       elif __map_item.key == 'rules' %}
     {{ __map_item.key }}:
 {%         for __rule in __map_item.value %}

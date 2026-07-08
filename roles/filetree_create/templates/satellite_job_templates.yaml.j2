@@ -3,39 +3,39 @@
 satellite_job_templates:
 {% for jt in info_list %}
   - name: "{{ jt.name | trim }}"
-{% if jt.description_format is defined and jt.description_format is not none and jt.description_format != '' %}
+{%   if jt.description_format is defined and jt.description_format is not none and jt.description_format != '' %}
     description_format: "{{ jt.description_format }}"
-{% endif %}
-{% if jt.job_category is defined and jt.job_category is not none and jt.job_category != '' %}
+{%   endif %}
+{%   if jt.job_category is defined and jt.job_category is not none and jt.job_category != '' %}
     job_category: "{{ jt.job_category }}"
-{% endif %}
-{% if jt.provider_type is defined and jt.provider_type is not none and jt.provider_type != '' %}
+{%   endif %}
+{%   if jt.provider_type is defined and jt.provider_type is not none and jt.provider_type != '' %}
     provider_type: "{{ jt.provider_type }}"
-{% endif %}
-{% if jt.locked | default(false) | bool %}
+{%   endif %}
+{%   if jt.locked | default(false) | bool %}
     locked: true
-{% endif %}
-{% if jt.snippet | default(false) | bool %}
+{%   endif %}
+{%   if jt.snippet | default(false) | bool %}
     snippet: true
-{% endif %}
-{% if jt.template is defined and jt.template is not none and jt.template != '' %}
+{%   endif %}
+{%   if jt.template is defined and jt.template is not none and jt.template != '' %}
     template: |-
       {{ '{%- raw -%}' }}
       {{ jt.template | indent(6) }}
       {{ '{%- endraw -%}' }}
-{% endif %}
-{% if jt.organizations | default([]) | length > 0 %}
+{%   endif %}
+{%   if jt.organizations | default([]) | length > 0 %}
     organizations:
-{% for org in jt.organizations %}
+{%     for org in jt.organizations %}
       - {{ org.name }}
-{% endfor %}
-{% endif %}
-{% if jt.locations | default([]) | length > 0 %}
+{%     endfor %}
+{%   endif %}
+{%   if jt.locations | default([]) | length > 0 %}
     locations:
-{% for loc in jt.locations %}
+{%     for loc in jt.locations %}
       - {{ loc.name }}
-{% endfor %}
-{% endif %}
+{%     endfor %}
+{%   endif %}
 {{ export_template_inputs_block(jt.template_inputs | default([]), 'vault_satellite_job_template_inputs', jt.name | trim) }}
 {% endfor %}
 ...

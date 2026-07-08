@@ -46,12 +46,19 @@ Apply **`skills/fqcn-standards.mdc`** (especially collection filters in `.j2` te
   - reduce related objects to names when needed (for example organization/product references).
 - Preserve current naming/style conventions for template internals (`__`-prefixed helper variables, stable key naming, deterministic output order).
 - Follow nearby templates for quoting and multiline handling so output stays compatible with `infra.satellite_configuration.format_yaml`.
-- Keep Jinja/YAML indentation exactly in canonical style:
-  - Jinja control tags (`{% ... %}`) must be left-aligned (no leading spaces).
-  - Nest Jinja control structures with two extra spaces after `{%` per level (`{% for` → `{%   for` → `{%     if`); see `satellite_content_view_filters.yaml.j2`.
+- Keep Jinja/YAML indentation exactly in canonical style (reference: `satellite_content_view_filters.yaml.j2`):
+  - Jinja control tags (`{% ... %}`) must be left-aligned at column 0 (no leading spaces before `{`).
+  - Nest control structures with **two extra spaces after `{%-` per depth** before the keyword:
+    - depth 0: `{% for` / `{% if` (1 space after `{%-`)
+    - depth 1: `{%   for` / `{%   if` (3 spaces)
+    - depth 2: `{%     for` / `{%     if` (5 spaces)
+    - depth 3: `{%       elif` / `{%       endif` (7 spaces)
+  - `{% elif %}`, `{% else %}`, `{% endif %}`, and `{% endfor %}` use the **same depth** as their matching opener.
+  - Macro bodies (`{% macro ... %}`) start at depth 1; content inside a macro uses `{%   if` / `{%   for` at minimum.
+  - Shared macro partials (for example `parameter_export.j2`) must follow the same nesting rules when emitted into parent templates.
   - List item start for `loop.index == 1` must be `  - key: value`.
   - Subsequent keys must be `    key: value`.
-  - Nested list items must keep two extra spaces per YAML level, matching `satellite_content_view_filters.yaml.j2`.
+  - Nested list items must keep two extra spaces per YAML level.
 - Wrap YAML-significant scalars with `__raw_fields` and literal `|-` blocks containing literal `{% raw %}` / `{% endraw %}` markers (see `satellite_provisioning_templates.yaml.j2`); `format_yaml` unwraps them after export.
 - Do not render entire lists via a single `discard_unwanted_fields(info_list, ...)` call when items contain commas, colons, PEM blocks, or nested dict lists.
 

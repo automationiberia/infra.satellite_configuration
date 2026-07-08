@@ -9,66 +9,66 @@
 {%- endmacro %}
 
 {% macro export_parameter_value(parameter, vault_dict_var, entity_key) -%}
-{% if is_hidden_parameter(parameter) %}{{ vault_nested_dict_keys(vault_dict_var, entity_key, parameter.name) }}{% else %}"{{ parameter.value }}"{% endif %}
+{%   if is_hidden_parameter(parameter) %}{{ vault_nested_dict_keys(vault_dict_var, entity_key, parameter.name) }}{%   else %}"{{ parameter.value }}"{%   endif %}
 {%- endmacro %}
 
 {% macro export_parameters_block(parameters, vault_dict_var, entity_key) -%}
-{% if parameters is not none and parameters | length > 0 %}
+{%   if parameters is not none and parameters | length > 0 %}
     parameters:
-{% for parameter in parameters %}
+{%     for parameter in parameters %}
       - name: "{{ parameter.name }}"
         parameter_type: "{{ parameter.parameter_type | default('string') }}"
         value: {{ export_parameter_value(parameter, vault_dict_var, entity_key) }}
-{% endfor %}
-{% endif %}
+{%     endfor %}
+{%   endif %}
 {%- endmacro %}
 
 {% macro export_template_input_default(template_input, vault_dict_var, entity_key) -%}
-{% if is_hidden_item(template_input, 'default') %}{{ vault_nested_dict_keys(vault_dict_var, entity_key, template_input.name) }}{% else %}"{{ template_input.default }}"{% endif %}
+{%   if is_hidden_item(template_input, 'default') %}{{ vault_nested_dict_keys(vault_dict_var, entity_key, template_input.name) }}{%   else %}"{{ template_input.default }}"{%   endif %}
 {%- endmacro %}
 
 {% macro export_template_inputs_block(template_inputs, vault_dict_var, entity_key) -%}
-{% if template_inputs is not none and template_inputs | length > 0 %}
+{%   if template_inputs is not none and template_inputs | length > 0 %}
     template_inputs:
-{% for template_input in template_inputs %}
+{%     for template_input in template_inputs %}
       - name: "{{ template_input.name }}"
         input_type: "{{ template_input.input_type }}"
-{% if template_input.description is defined and template_input.description is not none and template_input.description != '' %}
+{%       if template_input.description is defined and template_input.description is not none and template_input.description != '' %}
         description: "{{ template_input.description }}"
-{% endif %}
-{% if template_input.required is defined %}
+{%       endif %}
+{%       if template_input.required is defined %}
         required: {{ template_input.required | bool | lower }}
-{% endif %}
-{% if template_input.advanced is defined %}
+{%       endif %}
+{%       if template_input.advanced is defined %}
         advanced: {{ template_input.advanced | bool | lower }}
-{% endif %}
-{% if template_input.fact_name is defined and template_input.fact_name is not none %}
+{%       endif %}
+{%       if template_input.fact_name is defined and template_input.fact_name is not none %}
         fact_name: "{{ template_input.fact_name }}"
-{% endif %}
-{% if template_input.variable_name is defined and template_input.variable_name is not none %}
+{%       endif %}
+{%       if template_input.variable_name is defined and template_input.variable_name is not none %}
         variable_name: "{{ template_input.variable_name }}"
-{% endif %}
-{% if template_input.puppet_class_name is defined and template_input.puppet_class_name is not none %}
+{%       endif %}
+{%       if template_input.puppet_class_name is defined and template_input.puppet_class_name is not none %}
         puppet_class_name: "{{ template_input.puppet_class_name }}"
-{% endif %}
-{% if template_input.puppet_parameter_name is defined and template_input.puppet_parameter_name is not none %}
+{%       endif %}
+{%       if template_input.puppet_parameter_name is defined and template_input.puppet_parameter_name is not none %}
         puppet_parameter_name: "{{ template_input.puppet_parameter_name }}"
-{% endif %}
-{% if template_input.options is defined and template_input.options is not none and template_input.options | length > 0 %}
+{%       endif %}
+{%       if template_input.options is defined and template_input.options is not none and template_input.options | length > 0 %}
         options: {{ template_input.options | to_json }}
-{% endif %}
-{% if template_input.value_type is defined and template_input.value_type is not none %}
+{%       endif %}
+{%       if template_input.value_type is defined and template_input.value_type is not none %}
         value_type: "{{ template_input.value_type }}"
-{% endif %}
-{% if template_input.resource_type is defined and template_input.resource_type is not none %}
+{%       endif %}
+{%       if template_input.resource_type is defined and template_input.resource_type is not none %}
         resource_type: "{{ template_input.resource_type }}"
-{% endif %}
-{% if template_input.hidden_value is defined or template_input['hidden_value?'] is defined %}
+{%       endif %}
+{%       if template_input.hidden_value is defined or template_input['hidden_value?'] is defined %}
         hidden_value: {{ (template_input['hidden_value?'] | default(template_input.hidden_value | default(false))) | bool | lower }}
-{% endif %}
-{% if template_input.default is defined or is_hidden_item(template_input, 'default') %}
+{%       endif %}
+{%       if template_input.default is defined or is_hidden_item(template_input, 'default') %}
         default: {{ export_template_input_default(template_input, vault_dict_var, entity_key) }}
-{% endif %}
-{% endfor %}
-{% endif %}
+{%       endif %}
+{%     endfor %}
+{%   endif %}
 {%- endmacro %}

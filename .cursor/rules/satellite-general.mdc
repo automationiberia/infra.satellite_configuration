@@ -63,3 +63,10 @@ Apply these conventions to all changes in this repository.
 - Host collection export includes structure only; host membership dispatch is opt-in via `satellite_configuration_dispatch_host_collection_membership`.
 - Prefer `{% raw %}` / `{% endraw %}` in export templates over `!unsafe` for ERB/Jinja-like scalars; keep wrappers in CaC when `format_yaml` detects ERB/Jinja markers.
 - Lists in `satellite_configuration_filetree_read_raw_template_vars` are loaded with `slurp` + `from_yaml` in `filetree_read` (no Jinja templating on file contents).
+
+## Jinja export template indentation
+- Canonical reference: `roles/filetree_create/templates/satellite_content_view_filters.yaml.j2`.
+- Control tags start at column 0; nest with two extra spaces after `{%-` per depth before the keyword (`{% for` → `{%   for` → `{%     if` → `{%       elif`).
+- `{% endif %}`, `{% endfor %}`, `{% else %}`, and `{% elif %}` align with their matching opener.
+- Macro bodies and shared partials (`parameter_export.j2`, `vault_entity_parameters.j2`) follow the same nesting rules.
+- YAML list items: first key in a loop item is `  - key: value`; sibling keys are `    key: value`.

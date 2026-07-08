@@ -14,50 +14,50 @@ satellite_users: {{ [] if detailed_info.results | length == 0 }}
 {%   if user.json.login is defined and user.json.login not in __empty_values %}
 {%     set __user_is_internal = (user.json.auth_source_internal is defined and user.json.auth_source_internal not in __empty_values) or (user.json.auth_source_name | default('') == 'Internal') %}
   - {{ __login_output_key }}: {{ discard_unwanted_fields(user.json.login, __excluded_fields, __empty_values, __reduce_to_name, __translate) }}
-{%   for __map_item in (user.json | dict2items) if __map_item.key not in (__excluded_fields + ['login']) and __map_item.value not in __empty_values %}
-{%     if __map_item.key in __list_items_to_name %}
+{%     for __map_item in (user.json | dict2items) if __map_item.key not in (__excluded_fields + ['login']) and __map_item.value not in __empty_values %}
+{%       if __map_item.key in __list_items_to_name %}
     {{ __map_item.key }}:
 {%       set __item_key = (__translate | selectattr(__map_item.key, 'defined') | list | first | default({})).get(__map_item.key, 'name') %}
-{%       for __inner_item in __map_item.value %}
+{%         for __inner_item in __map_item.value %}
       - {{ discard_unwanted_fields((__inner_item[__item_key] if (__inner_item is mapping and __item_key in __inner_item) else __inner_item), __excluded_fields, __empty_values, __reduce_to_name, __translate) }}
-{%       endfor %}
-{%     elif __map_item.key == 'ssh_keys' %}
+{%         endfor %}
+{%       elif __map_item.key == 'ssh_keys' %}
     ssh_keys:
-{%       for __ssh_key in __map_item.value %}
+{%         for __ssh_key in __map_item.value %}
       - name: {{ discard_unwanted_fields(__ssh_key.name, __excluded_fields, __empty_values, __reduce_to_name, __translate) }}
-{%         for __ssh_key_item in (__ssh_key | dict2items) if __ssh_key_item.key not in ['name'] and __ssh_key_item.value not in __empty_values %}
-{%           if __ssh_key_item.key in __raw_sub_fields %}
+{%           for __ssh_key_item in (__ssh_key | dict2items) if __ssh_key_item.key not in ['name'] and __ssh_key_item.value not in __empty_values %}
+{%             if __ssh_key_item.key in __raw_sub_fields %}
         {{ __ssh_key_item.key }}: |-
           {{ '{%- raw -%}' }}
           {{ discard_unwanted_fields(__ssh_key_item.value, __excluded_fields, __empty_values, __reduce_to_name, __translate) | trim("'") | indent(10) }}
           {{ '{%- endraw -%}' }}
-{%           else %}
+{%             else %}
         {{ __ssh_key_item.key }}: {{ discard_unwanted_fields(__ssh_key_item.value, __excluded_fields, __empty_values, __reduce_to_name, __translate) }}
-{%           endif %}
+{%             endif %}
+{%           endfor %}
 {%         endfor %}
-{%       endfor %}
-{%     elif __map_item.key in __raw_fields %}
+{%       elif __map_item.key in __raw_fields %}
     {{ __map_item.key }}: |-
       {{ '{%- raw -%}' }}
       {{ discard_unwanted_fields(__map_item.value, __excluded_fields, __empty_values, __reduce_to_name, __translate) | trim("'") | indent(6) }}
       {{ '{%- endraw -%}' }}
-{%     elif (__translate | selectattr(__map_item.key, 'defined') | list | length) > 0 %}
+{%       elif (__translate | selectattr(__map_item.key, 'defined') | list | length) > 0 %}
     {{ (__translate | selectattr(__map_item.key, 'defined') | list | first)[__map_item.key] }}: {{ discard_unwanted_fields(__map_item.value, __excluded_fields, __empty_values, __reduce_to_name, __translate) }}
-{%     elif __map_item.key in __reduce_to_name %}
+{%       elif __map_item.key in __reduce_to_name %}
     {{ __map_item.key }}: {{ discard_unwanted_fields((__map_item.value.name if (__map_item.value is mapping and __map_item.value.name is defined and __map_item.value.name not in __empty_values) else (__map_item.value.title if (__map_item.value is mapping and __map_item.value.title is defined and __map_item.value.title not in __empty_values) else __map_item.value)), __excluded_fields, __empty_values, __reduce_to_name, __translate) }}
-{%     else %}
+{%       else %}
     {{ __map_item.key }}: {{ discard_unwanted_fields(__map_item.value, __excluded_fields, __empty_values, __reduce_to_name, __translate) }}
-{%     endif %}
-{%   endfor %}
-{%   if (user.json.auth_source is not defined or user.json.auth_source in __empty_values) and ((user.json.auth_source_internal is defined and user.json.auth_source_internal not in __empty_values) or (user.json.auth_source_name is defined and user.json.auth_source_name not in __empty_values)) %}
+{%       endif %}
+{%     endfor %}
+{%     if (user.json.auth_source is not defined or user.json.auth_source in __empty_values) and ((user.json.auth_source_internal is defined and user.json.auth_source_internal not in __empty_values) or (user.json.auth_source_name is defined and user.json.auth_source_name not in __empty_values)) %}
     auth_source: {{ discard_unwanted_fields((user.json.auth_source_internal.name if (user.json.auth_source_internal is mapping and user.json.auth_source_internal.name is defined) else user.json.auth_source_name), __excluded_fields, __empty_values, __reduce_to_name, __translate) }}
-{%   endif %}
+{%     endif %}
 {%     if __user_is_internal %}
     user_password: {{ vault_dict_key('vault_satellite_users_passwords', user.json.login) }}
 {%     endif %}
 {%     if __user_is_internal and (user.json.mail is not defined or user.json.mail in __empty_values) %}
     mail: "{{ user.json.login }}@{{ satellite_configuration_users_default_mail_domain }}"
-{%   endif %}
+{%     endif %}
 {%   endif %}
 {% endfor %}
 ...
