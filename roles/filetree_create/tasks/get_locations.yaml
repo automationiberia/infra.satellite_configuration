@@ -20,6 +20,9 @@
     __parameter_info_list_var: info_list
     __parameter_entity_label: locations
 
+- name: Locations | Enrich with associated organizations
+  ansible.builtin.include_tasks: enrich_info_list_location_organizations.yaml
+
 - name: Locations | Record hidden parameters for vault template
   ansible.builtin.include_tasks: record_hidden_parameters_for_vault.yaml
   vars:

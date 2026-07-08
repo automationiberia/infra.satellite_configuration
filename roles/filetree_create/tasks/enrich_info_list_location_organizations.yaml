@@ -1,0 +1,46 @@
+---
+- name: Locations | Reset organization enriched accumulator
+  ansible.builtin.set_fact:
+    __locations_with_organizations: []
+
+- name: Locations | Fetch associated organizations
+  when: info_list | default([]) | length > 0
+  ansible.builtin.uri:
+    url: "{{ satellite.server_url }}/api/locations/{{ __location_organizations_item.id }}/organizations?per_page=all"
+    user: "{{ satellite.admin.username }}"
+    password: "{{ satellite.admin.password }}"
+    validate_certs: "{{ satellite.validate_certs }}"
+    force_basic_auth: true
+    return_content: true
+  loop: "{{ info_list }}"
+  loop_control:
+    loop_var: __location_organizations_item
+    label: "{{ __location_organizations_item.name | default(__location_organizations_item.id) }}"
+  register: __location_organizations_fetch
+
+- name: Locations | Merge organizations into info list
+  when: __location_organizations_fetch is defined
+  ansible.builtin.set_fact:
+    __locations_with_organizations: >-
+      {{
+        (__locations_with_organizations | default([]))
+        + [
+            __location_org_merge_pair.0
+            | combine({
+                'organizations': (__location_org_merge_pair.1.json.results | default([]))
+              }, recursive=True)
+            if (__location_org_merge_pair.1.json.results | default([]) | length > 0)
+            else __location_org_merge_pair.0
+          ]
+      }}
+  loop: "{{ info_list | zip(__location_organizations_fetch.results) | list }}"
+  loop_control:
+    loop_var: __location_org_merge_pair
+    label: "{{ __location_org_merge_pair.0.name | default('') }}"
+
+- name: Locations | Replace info list with organization-enriched list
+  when: __locations_with_organizations is defined
+  ansible.builtin.set_fact:
+    info_list: "{{ __locations_with_organizations }}"
+
+...

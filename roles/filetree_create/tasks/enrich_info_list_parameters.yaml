@@ -1,4 +1,8 @@
 ---
+- name: "Reset parameter enriched accumulator for {{ __parameter_entity_label }}"
+  ansible.builtin.set_fact:
+    __parameter_enriched_list: []
+
 - name: "Fetch parameters for each {{ __parameter_entity_label }}"
   when: lookup('vars', __parameter_info_list_var) | default([]) | length > 0
   ansible.builtin.uri:
