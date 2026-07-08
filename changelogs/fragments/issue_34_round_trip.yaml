@@ -4,6 +4,7 @@ minor_changes:
   - Unify export and import under satellite_configuration_filetree_path with satellite type .d fragments (no org/env path nesting).
   - Add dispatch support for domains, subnets, and host groups via redhat.satellite.domains, subnets, and hostgroups.
   - Add optional subscription manifest upload (redhat.satellite.manifest) and pre-flight manifest validation before content tasks.
+  - dispatch - support satellite_manifests list for per-organization manifest upload and validation.
   - Re-enable content view publish/promote dispatch with satellite_configuration_dispatch_content_view_publish_promote and satellite_content_view_versions.
   - Restructure configs to the same .d layout for greenfield CaC authoring.
   - Add satellite_configuration_unwrap_raw_markers filter and raw_markers module utils for CaC round-trip.

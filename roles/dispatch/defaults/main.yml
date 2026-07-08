@@ -17,6 +17,7 @@ satellite_configuration_dispatch_secure_logging: true
 satellite_configuration_dispatch_manifest_upload: false
 satellite_configuration_dispatch_manifest_validate: true
 satellite_configuration_dispatch_manifest_organization: "{{ satellite_organizations[0].name | default('Default Organization') }}"
+satellite_manifests: []
 satellite_manifest_path: ""
 satellite_manifest_download: false
 

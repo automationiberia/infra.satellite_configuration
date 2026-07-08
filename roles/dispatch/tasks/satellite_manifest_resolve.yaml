@@ -1,0 +1,33 @@
+---
+- name: Dispatch | Build subscription manifest upload and validation lists
+  ansible.builtin.set_fact:
+    __dispatch_manifest_items: >-
+      {%- set __manifest_items = [] -%}
+      {%- if satellite_manifests | default([]) | length > 0 -%}
+      {%-   for __manifest in satellite_manifests -%}
+      {%-     set __organization = __manifest.organization | default(__manifest.name, true) -%}
+      {%-     if __organization is defined and __manifest.path | default('') | length > 0 -%}
+      {%-       set _ = __manifest_items.append(__manifest | combine({'organization': __organization}, recursive=True)) -%}
+      {%-     endif -%}
+      {%-   endfor -%}
+      {%- elif satellite_manifest_path | default('') | length > 0 -%}
+      {%-   set _ = __manifest_items.append({
+            'organization': satellite_configuration_dispatch_manifest_organization,
+            'path': satellite_manifest_path
+          }) -%}
+      {%- endif -%}
+      {{ __manifest_items }}
+    __dispatch_manifest_validate_organizations: >-
+      {%- set __validate_orgs = [] -%}
+      {%- if satellite_manifests | default([]) | length > 0 -%}
+      {%-   for __manifest in satellite_manifests -%}
+      {%-     set __organization = __manifest.organization | default(__manifest.name, true) -%}
+      {%-     if __organization is defined -%}
+      {%-       set _ = __validate_orgs.append(__organization) -%}
+      {%-     endif -%}
+      {%-   endfor -%}
+      {%- else -%}
+      {%-   set _ = __validate_orgs.append(satellite_configuration_dispatch_manifest_organization) -%}
+      {%- endif -%}
+      {{ __validate_orgs | unique | list }}
+...

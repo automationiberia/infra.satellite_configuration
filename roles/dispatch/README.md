@@ -23,10 +23,11 @@ The following variables are required for that role to work properly:
 | `satellite.template.mode` | N/A | yes | str | Specifies the permissions the generated files will have. |
 | `output_path` | see `satellite_configuration_filetree_path` in role `global_vars` | no | str | Alias used by `filetree_create`; same base path as import. |
 | `satellite_configuration_filetree_path` | `/tmp/satellite_filetree_config` | no | str | Base directory for `satellite_<type>.d/` CaC fragments (export and import). |
-| `satellite_configuration_dispatch_manifest_upload` | `false` | no | bool | When `true`, uploads `satellite_manifest_path` via `redhat.satellite.manifest` before content tasks. |
-| `satellite_configuration_dispatch_manifest_validate` | `true` | no | bool | When `true`, fails early if the target organization has no subscription manifest. |
-| `satellite_configuration_dispatch_manifest_organization` | first `satellite_organizations` name or `Default Organization` | no | str | Organization for manifest upload and validation. |
-| `satellite_manifest_path` | `""` | when upload enabled | str | Path to manifest zip on the control node. |
+| `satellite_configuration_dispatch_manifest_upload` | `false` | no | bool | When `true`, uploads manifests via `redhat.satellite.manifest` before content tasks. |
+| `satellite_configuration_dispatch_manifest_validate` | `true` | no | bool | When `true`, fails early if a target organization has no subscription manifest. |
+| `satellite_configuration_dispatch_manifest_organization` | first `satellite_organizations` name or `Default Organization` | no | str | Organization for legacy single-manifest upload and validation when `satellite_manifests` is empty. |
+| `satellite_manifests` | `[]` | no | list | Per-organization manifest upload/validation list. Each item requires `organization` (or `name`) and `path` for upload; optional `manifest_download`, `manifest_uuid`, `rhsm_username`, `rhsm_password`. |
+| `satellite_manifest_path` | `""` | when upload enabled | str | Legacy single manifest path on the control node (used when `satellite_manifests` is empty). |
 | `satellite_manifest_download` | `false` | no | bool | Download manifest from Red Hat Customer Portal before upload (requires RHSM credentials). |
 | `satellite_<object_type_variable>` | N/A | yes | list | The input configuration to be applied. Each object type is defined in a dedicated variable. The list of valid input variables can be found at the [`infra.satellite_configuration.filetree_read` defaults' file][link_filetree_read_defaults] |
 | `satellite_users_default_password` | unset | no | str | Optional fallback for `redhat.satellite.user` **`user_password`** when a `satellite_users` item omits it. Foreman requires a password to **create** Internal-auth users; prefer **`user_password`** per user from Vault. |
@@ -60,6 +61,25 @@ Content and provisioning objects run in dependency order after lifecycle environ
 `content_credentials` → `products` (initial, without sync plan) → `repository_sets` → `repositories` → `sync_plans` (initial, without products) → `products` (sync plan association) → `sync_plans` (custom product association) → `content_views` → `content_view_filters` → `cv_publish_promote` → `host_collections` → `activation_keys` → `partition_tables` → `installation_mediums` (without OS associations) → `provisioning_templates` (without OS associations) → `operatingsystems` (without installation media) → `installation_mediums` (OS association) → `operatingsystems` (media association) → `provisioning_templates` (OS default assignment) → `hostgroups`.
 
 User groups only receive direct `users` memberships for logins defined in `satellite_users`; LDAP users are mapped through `external_usergroups`.
+
+### Subscription manifests (multiple organizations)
+
+When several organizations each need their own manifest, set `satellite_manifests` and enable upload:
+
+```yaml
+satellite_configuration_dispatch_manifest_upload: true
+satellite_manifests:
+  - organization: datacenter
+    path: /path/to/datacenter-manifest.zip
+  - organization: red_ribbon
+    path: /path/to/red_ribbon-manifest.zip
+  - organization: Umbrella
+    path: /path/to/umbrella-manifest.zip
+```
+
+Validation runs for every organization listed in `satellite_manifests`. Optional per-item fields: `manifest_download`, `manifest_uuid`, `rhsm_username`, `rhsm_password` (fall back to play-level `satellite_manifest_download`, `satellite_rhsm_username`, `satellite_rhsm_password`).
+
+Legacy single-manifest variables (`satellite_manifest_path` + `satellite_configuration_dispatch_manifest_organization`) still work when `satellite_manifests` is empty.
 
 ## Example Playbook
 

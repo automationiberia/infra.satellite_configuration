@@ -75,6 +75,18 @@
       tags: lifecycle_environments
   tags: lifecycle_environments
 
+- name: Resolve subscription manifest lists
+  ansible.builtin.include_tasks: satellite_manifest_resolve.yaml
+  when: satellite_configuration_dispatch_manifest_upload | bool or satellite_configuration_dispatch_manifest_validate | bool
+  args:
+    apply:
+      tags:
+        - manifest
+        - manifest_validate
+  tags:
+    - manifest
+    - manifest_validate
+
 - name: Upload Subscription Manifest
   when: satellite_configuration_dispatch_manifest_upload | bool
   ansible.builtin.include_tasks: satellite_manifest.yaml

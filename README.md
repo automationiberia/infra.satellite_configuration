@@ -145,12 +145,27 @@ The [`configs/`](configs/) directory in this repository is an example **greenfie
 
 ### Subscription manifest
 
-Content operations require a subscription manifest on the target organization. Before repository and product tasks, `dispatch` validates that a manifest is present (`satellite_configuration_dispatch_manifest_validate: true` by default). Upload a manifest with:
+Content operations require a subscription manifest on each organization that owns Red Hat content. Before repository and product tasks, `dispatch` validates manifests (`satellite_configuration_dispatch_manifest_validate: true` by default).
+
+**Single organization (legacy):**
 
 ```yaml
 satellite_configuration_dispatch_manifest_upload: true
 satellite_manifest_path: /path/to/manifest.zip
 satellite_configuration_dispatch_manifest_organization: "Default Organization"
+```
+
+**Multiple organizations:**
+
+```yaml
+satellite_configuration_dispatch_manifest_upload: true
+satellite_manifests:
+  - organization: datacenter
+    path: /path/to/datacenter-manifest.zip
+  - organization: red_ribbon
+    path: /path/to/red_ribbon-manifest.zip
+  - organization: Umbrella
+    path: /path/to/umbrella-manifest.zip
 ```
 
 Set `satellite_configuration_dispatch_manifest_validate: false` only when content tags are skipped.
