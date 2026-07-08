@@ -8,7 +8,8 @@ minor_changes:
   - Restructure configs to the same .d layout for greenfield CaC authoring.
   - Add satellite_configuration_unwrap_raw_markers filter and raw_markers module utils for CaC round-trip.
   - filetree_create generates vault_template.yaml with vault_* variables referenced directly from CaC fragments (LDAP, users, settings, installation mediums).
-  - Document supported object types and known gaps (compute resources, global parameters, SCAP, job templates, webhooks, HTTP proxies, remote execution).
+  - Document supported object types and known gaps (compute resources, global parameters, SCAP, webhooks, HTTP proxies, remote execution).
+  - Add job template export, ingest, and dispatch (redhat.satellite.job_template) with vault-backed hidden template input defaults.
   - Add satellite_source and satellite_target for round-trip export/import with separate endpoints in one vars file.
   - Add satellite_configuration_overrides_path for environment-specific CaC override fragments merged during filetree_read.
   - Add satellite_configuration_merge_by_key filter for override merge by object name (or per-type merge_key).
@@ -39,6 +40,15 @@ bugfixes:
   - filetree_read - tolerate empty or missing .d/ directories when setting loaded CaC variables.
   - filetree_create repositories export - emit gpg_key and SSL credential references as flat name strings.
   - dispatch repositories - flatten nested gpg_key/SSL credential dicts from legacy exports; fix repository sync handler notify casing.
+  - filetree_read - fail clearly when vault variables are undefined during include_vars (avoid ansible-core TypeError on failed_when).
+  - filetree_create vault_template.yaml - document required vault variables with placeholder comments for two-host import.
+  - filetree_create users export - emit default mail for Internal users without email (required on create).
+  - filetree_create export - emit operating system references as name/major/minor; resolve target titles on dispatch.
+  - filetree_create repositories export - omit gpg_key_id numeric field from export.
+  - dispatch products - omit sync_plan on initial pass so sync plans can be created first.
+  - dispatch sync_plans - associate only custom (non-subscription) products on the products pass.
+  - filetree_create export - vault-ref hidden entity parameters (hostgroups, operatingsystems, domains, subnets, organizations, locations).
+  - filetree_create export - vault-ref hidden job template input defaults via /api/templates/:id/template_inputs.
   - dispatch - remove unsupported provisioning_template description; fix content_view_version_cleanup include_role usage.
   - dispatch provisioning templates - create snippets first with kind snippet; skip OS default assignment for snippets.
   - filetree_create provisioning templates export - emit kind snippet instead of a bare snippet boolean flag.

@@ -57,7 +57,7 @@ Dispatch applies RBAC objects in dependency order: `auth_sources_ldap` → `orga
 
 Content and provisioning objects run in dependency order after lifecycle environments and optional manifest upload/validation:
 
-`content_credentials` → `products` (initial, without sync plan) → `repository_sets` → `repositories` → `sync_plans` (initial, without products) → `products` (sync plan association) → `sync_plans` (product association) → `content_views` → `content_view_filters` → `cv_publish_promote` → `host_collections` → `activation_keys` → `partition_tables` → `installation_mediums` → `provisioning_templates` (without OS associations) → `operatingsystems` → `provisioning_templates` (OS default assignment) → `hostgroups`.
+`content_credentials` → `products` (initial, without sync plan) → `repository_sets` → `repositories` → `sync_plans` (initial, without products) → `products` (sync plan association) → `sync_plans` (custom product association) → `content_views` → `content_view_filters` → `cv_publish_promote` → `host_collections` → `activation_keys` → `partition_tables` → `installation_mediums` (without OS associations) → `provisioning_templates` (without OS associations) → `operatingsystems` (without installation media) → `installation_mediums` (OS association) → `operatingsystems` (media association) → `provisioning_templates` (OS default assignment) → `hostgroups`.
 
 User groups only receive direct `users` memberships for logins defined in `satellite_users`; LDAP users are mapped through `external_usergroups`.
 

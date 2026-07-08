@@ -1,0 +1,40 @@
+---
+- name: Job Templates | Reset the results variable
+  ansible.builtin.set_fact:
+    result_api_response: {}
+    __rs_info_list: []
+
+- name: Job Templates | Get Job Templates
+  ansible.builtin.include_tasks: api_call.yaml
+  vars:
+    call_type: Job Templates
+    api_link: "/api/job_templates?per_page=all"
+
+- name: Job Templates | Retain the Job Templates' info
+  ansible.builtin.set_fact:
+    __job_templates_list: "{{ result_api_response.json.results }}"
+
+- name: Job Templates | Get detailed Job Template info
+  ansible.builtin.include_tasks: get_job_templates_do_work.yaml
+  loop: "{{ __job_templates_list }}"
+  loop_control:
+    loop_var: __current_job_template
+
+- name: Job Templates | Record hidden template inputs for vault template
+  ansible.builtin.include_tasks: record_hidden_parameters_for_vault.yaml
+  vars:
+    __record_hidden_results: "{{ __rs_info_list | default([]) }}"
+    __record_hidden_vault_fact: satellite_configuration_vault_template_job_template_inputs
+    __record_hidden_entity_label: job template
+    __record_hidden_items_field: template_inputs
+    __record_hidden_value_field: default
+
+- name: Job Templates | Template Out Results
+  when:
+    - __rs_info_list is defined
+    - __rs_info_list | length > 0
+  ansible.builtin.include_tasks: template_out.yaml
+  vars:
+    template_type: satellite_job_templates
+    info_list: "{{ __rs_info_list | default([]) }}"
+...

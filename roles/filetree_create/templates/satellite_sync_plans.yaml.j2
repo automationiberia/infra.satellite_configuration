@@ -1,6 +1,6 @@
 ---
 satellite_sync_plans: {{ [] if info_list | length == 0 }}
-{% set __excluded_fields = ['id', 'organization_id', 'created_at', 'updated_at'] %}
+{% set __excluded_fields = ['id', 'organization_id', 'created_at', 'updated_at', 'next_sync', 'foreman_tasks_recurring_logic_id', 'permissions'] %}
 {% set __excluded_subitems = ['id', 'cp_id', 'label', 'description', 'sync_state', 'last_sync', 'last_sync_words', 'repository_count'] %}
 {% set __list_items = ['products'] %}
 {% set __empty_values = [None, 'None', '', {}, [], [{}]] %}

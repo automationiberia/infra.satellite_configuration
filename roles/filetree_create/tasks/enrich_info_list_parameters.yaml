@@ -1,0 +1,41 @@
+---
+- name: "Fetch parameters for each {{ __parameter_entity_label }}"
+  when: lookup('vars', __parameter_info_list_var) | default([]) | length > 0
+  ansible.builtin.uri:
+    url: "{{ satellite.server_url }}/api/{{ __parameter_entity_api_path }}/{{ __parameter_fetch_item.id }}?show_hidden_parameters=true"
+    user: "{{ satellite.admin.username }}"
+    password: "{{ satellite.admin.password }}"
+    validate_certs: "{{ satellite.validate_certs }}"
+    force_basic_auth: true
+    return_content: true
+  loop: "{{ lookup('vars', __parameter_info_list_var) }}"
+  loop_control:
+    loop_var: __parameter_fetch_item
+    label: "{{ __parameter_fetch_item.name | default(__parameter_fetch_item.id) }}"
+  register: __parameter_fetch_details
+
+- name: "Merge parameters into {{ __parameter_info_list_var }}"
+  ansible.builtin.set_fact:
+    __parameter_enriched_list: >-
+      {{
+        (__parameter_enriched_list | default([]))
+        + [
+            __parameter_merge_pair.0
+            | combine({
+                'parameters': (
+                  __parameter_merge_pair.1.content | from_json
+                ).parameters | default([])
+              }, recursive=True)
+            if ((__parameter_merge_pair.1.content | from_json).parameters | default([]) | length > 0)
+            else __parameter_merge_pair.0
+          ]
+      }}
+  loop: "{{ lookup('vars', __parameter_info_list_var) | zip(__parameter_fetch_details.results) | list }}"
+  loop_control:
+    loop_var: __parameter_merge_pair
+    label: "{{ __parameter_merge_pair.0.name | default('') }}"
+
+- name: "Replace info list with parameter-enriched list ({{ __parameter_info_list_var }})"
+  ansible.builtin.set_fact:
+    "{{ __parameter_info_list_var }}": "{{ __parameter_enriched_list | default(lookup('vars', __parameter_info_list_var)) }}"
+...

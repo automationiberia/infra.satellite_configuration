@@ -13,6 +13,7 @@ satellite_domains: []
 satellite_host_collections: []
 satellite_hostgroups: []
 satellite_installation_mediums: []
+satellite_job_templates: []
 satellite_lifecycle_environments: []
 satellite_locations: []
 satellite_operatingsystems: []
@@ -39,6 +40,7 @@ satellite_configuration_filetree_read_tasks:
   - {name: satellite_host_collections,        var: satellite_host_collections,        tags: host_collections,        path: "{{ satellite_configuration_filetree_path }}/satellite_host_collections.d/"}
   - {name: satellite_hostgroups,              var: satellite_hostgroups,              tags: hostgroups,              path: "{{ satellite_configuration_filetree_path }}/satellite_hostgroups.d/"}
   - {name: satellite_installation_mediums,    var: satellite_installation_mediums,    tags: installation_mediums,    path: "{{ satellite_configuration_filetree_path }}/satellite_installation_mediums.d/"}
+  - {name: satellite_job_templates,           var: satellite_job_templates,           tags: job_templates,           path: "{{ satellite_configuration_filetree_path }}/satellite_job_templates.d/"}
   - {name: satellite_lifecycle_environments,  var: satellite_lifecycle_environments,  tags: lifecycle_environments,  path: "{{ satellite_configuration_filetree_path }}/satellite_lifecycle_environments.d/"}
   - {name: satellite_locations,               var: satellite_locations,               tags: locations,               path: "{{ satellite_configuration_filetree_path }}/satellite_locations.d/"}
   - {name: satellite_operatingsystems,        var: satellite_operatingsystems,        tags: operatingsystems,        path: "{{ satellite_configuration_filetree_path }}/satellite_operatingsystems.d/"}

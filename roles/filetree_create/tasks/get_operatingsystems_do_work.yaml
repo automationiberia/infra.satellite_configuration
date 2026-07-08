@@ -7,7 +7,7 @@
   ansible.builtin.include_tasks: api_call.yaml
   vars:
     call_type: Operating System (Do Work)
-    api_link: "/api/operatingsystems/{{ __current_operatingsystem.id }}/"
+    api_link: "/api/operatingsystems/{{ __current_operatingsystem.id }}/?show_hidden_parameters=true"
 
 - name: Operating System (Do Work) | Block to do the job when there's a job to do
   when:

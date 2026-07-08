@@ -1,0 +1,60 @@
+---
+- name: "Record hidden parameters for vault template ({{ __record_hidden_entity_label }})"
+  ansible.builtin.set_fact:
+    "{{ __record_hidden_vault_fact }}": >-
+      {{
+        lookup('vars', __record_hidden_vault_fact, default={})
+        | combine({
+            (__record_hidden_entity_key): (
+              (
+                (__record_hidden_item_parameters | selectattr('hidden_value?', 'defined') | selectattr('hidden_value?', 'equalto', true) | map(attribute='name') | list)
+                + (__record_hidden_item_parameters | selectattr('hidden_value', 'defined') | selectattr('hidden_value', 'equalto', true) | map(attribute='name') | list)
+                + (
+                  __record_hidden_item_parameters
+                  | rejectattr(__record_hidden_value_field | default('value'), 'undefined')
+                  | selectattr(__record_hidden_value_field | default('value'), 'match', '^\*+$')
+                  | map(attribute='name')
+                  | list
+                )
+              ) | unique
+            )
+          })
+      }}
+  vars:
+    __record_hidden_item_parameters: >-
+      {{
+        __record_hidden_item.json[__record_hidden_items_field | default('parameters')]
+        | default(__record_hidden_item[__record_hidden_items_field | default('parameters')] | default([]))
+      }}
+    __record_hidden_entity_key: >-
+      {{
+        __record_hidden_item.json.title | default(
+          __record_hidden_item.json.name ~ ' ' ~ __record_hidden_item.json.major ~ '.' ~ __record_hidden_item.json.minor
+        ) | trim
+        if (__record_hidden_entity_key_format | default('') == 'operatingsystem')
+        else (
+          __record_hidden_item.title | default(
+            __record_hidden_item.name ~ ' ' ~ __record_hidden_item.major ~ '.' ~ __record_hidden_item.minor
+          ) | trim
+          if (__record_hidden_entity_key_format | default('') == 'operatingsystem_flat')
+          else (__record_hidden_item.json[__record_hidden_entity_key_attr | default('name')] | default(__record_hidden_item[__record_hidden_entity_key_attr | default('name')]) | string | trim)
+        )
+      }}
+  loop: "{{ __record_hidden_results }}"
+  loop_control:
+    loop_var: __record_hidden_item
+    label: "{{ __record_hidden_entity_key | default('') }}"
+  when:
+    - >
+      (
+        (__record_hidden_item_parameters | selectattr('hidden_value?', 'defined') | selectattr('hidden_value?', 'equalto', true) | list | length)
+        + (__record_hidden_item_parameters | selectattr('hidden_value', 'defined') | selectattr('hidden_value', 'equalto', true) | list | length)
+        + (
+          __record_hidden_item_parameters
+          | rejectattr(__record_hidden_value_field | default('value'), 'undefined')
+          | selectattr(__record_hidden_value_field | default('value'), 'match', '^\*+$')
+          | list
+          | length
+        )
+      ) > 0
+...

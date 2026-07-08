@@ -165,6 +165,13 @@
     - name: Get Provisioning Templates
       ansible.builtin.include_tasks: get_provisioning_templates.yaml
 
+- name: Job Templates Block
+  tags:
+    - "job_templates"
+  block:
+    - name: Get Job Templates
+      ansible.builtin.include_tasks: get_job_templates.yaml
+
 # In a separate file so Ansible does not resolve format_yaml at parse time when this block is skipped (e.g. --tags roles,users).
 - name: Vault Template Block
   tags:

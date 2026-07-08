@@ -9,9 +9,33 @@
       }}
   when: satellite_provisioning_templates is defined
 
+- name: Resolve operating system titles on target Satellite
+  ansible.builtin.include_tasks: satellite_operatingsystem_title_lookup.yaml
+  when: satellite_provisioning_templates is defined
+
 - name: Assign default Provisioning Templates to Operating Systems
   redhat.satellite.os_default_template:
-    operatingsystem: "{{ __current_provisioning_template[1] }}"
+    operatingsystem: >-
+      {{
+        __dispatch_operatingsystem_titles[
+          __current_provisioning_template[1].name ~ '|'
+          ~ __current_provisioning_template[1].major ~ '|'
+          ~ __current_provisioning_template[1].minor
+        ]
+        if (
+          __current_provisioning_template[1] is mapping
+          and __current_provisioning_template[1].name is defined
+          and __current_provisioning_template[1].major is defined
+          and __current_provisioning_template[1].minor is defined
+          and (
+            (__current_provisioning_template[1].name ~ '|'
+             ~ __current_provisioning_template[1].major ~ '|'
+             ~ __current_provisioning_template[1].minor)
+            in (__dispatch_operatingsystem_titles | default({}))
+          )
+        )
+        else __current_provisioning_template[1]
+      }}
     template_kind: "{{ __current_provisioning_template[0].kind }}"
     provisioning_template: "{{ __current_provisioning_template[0].name | default(omit) }}"
     state: "{{ __current_provisioning_template[0].state | default('present') }}"

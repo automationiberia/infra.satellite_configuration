@@ -1,4 +1,33 @@
 ---
+- name: Dispatch | Resolve custom product names for sync plan associations
+  ansible.builtin.set_fact:
+    __dispatch_sync_plan_product_names: >-
+      {{
+        (
+          (satellite_products | default([]))
+          | rejectattr('redhat', 'defined')
+          | list
+          + (
+            (satellite_products | default([]))
+            | selectattr('redhat', 'defined')
+            | rejectattr('redhat', 'equalto', true)
+            | rejectattr('redhat', 'equalto', True)
+            | rejectattr('redhat', 'equalto', 1)
+            | list
+          )
+          if (
+            satellite_configuration_dispatch_products_skip_provider_managed | default(true) | bool
+          )
+          else (satellite_products | default([]))
+        )
+        | map(attribute='name')
+        | list
+        | unique
+      }}
+  when:
+    - satellite_sync_plans is defined
+    - __dispatch_sync_plans_phase | default('initial') == 'products'
+
 - name: Create Sync Plans
   redhat.satellite.sync_plan:
     name: "{{ __current_sync_plan.name }}"
@@ -12,8 +41,21 @@
       {{
         omit
         if (__dispatch_sync_plans_phase | default('initial') == 'initial')
-        else (__current_sync_plan.products | default(omit))
+        else (
+          (
+            __current_sync_plan.products | default([])
+            | intersect(__dispatch_sync_plan_product_names | default([]))
+            | list
+          )
+          if (
+            (__current_sync_plan.products | default([])
+            | intersect(__dispatch_sync_plan_product_names | default([]))
+            | list | length) > 0
+          )
+          else omit
+        )
       }}
+    state: present
   loop: "{{ satellite_sync_plans }}"
   loop_control:
     loop_var: __current_sync_plan

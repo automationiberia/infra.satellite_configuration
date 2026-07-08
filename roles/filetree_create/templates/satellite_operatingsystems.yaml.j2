@@ -1,6 +1,7 @@
 ---
 {% from 'clean_fields.j2' import discard_unwanted_fields %}
-{% set __excluded_fields = ['id', 'created_at', 'updated_at', 'hidden_value?', 'os_default_templates', 'associated_type', 'priority'] %}
+{% from 'parameter_export.j2' import export_parameters_block %}
+{% set __excluded_fields = ['id', 'created_at', 'updated_at', 'hidden_value?', 'os_default_templates', 'associated_type', 'priority', 'parameters'] %}
 {% set __list_items_to_name = ['architectures', 'ptables', 'provisioning_templates', 'locations', 'organizations', 'operatingsystems', 'media'] %}
 {% set __empty_values = [None, 'None', '', {}, [], [{}]] %}
 {% set __reduce_to_name = [] %}
@@ -25,5 +26,6 @@ satellite_operatingsystems:
   {{ '-' if loop.index == 1 else ' ' }} {{ __map_item.key }}: {{ discard_unwanted_fields(__map_item.value, __excluded_fields, __empty_values, __reduce_to_name, __translate) }}
 {%     endif %}
 {%-  endfor %}
+{{ export_parameters_block(i.parameters | default([]), 'vault_satellite_operatingsystem_parameters', i.title | default(i.name ~ ' ' ~ i.major ~ '.' ~ i.minor) | trim) }}
 {% endfor %}
 ...

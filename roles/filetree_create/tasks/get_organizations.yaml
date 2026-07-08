@@ -11,6 +11,20 @@
   ansible.builtin.set_fact:
     info_list: "{{ __organization_result_api_response.organizations | sort(attribute='id') }}" # removed filter | rejectattr('name','==', 'Default Organization')
 
+- name: Organizations | Enrich with host parameters
+  ansible.builtin.include_tasks: enrich_info_list_parameters.yaml
+  vars:
+    __parameter_entity_api_path: organizations
+    __parameter_info_list_var: info_list
+    __parameter_entity_label: organizations
+
+- name: Organizations | Record hidden parameters for vault template
+  ansible.builtin.include_tasks: record_hidden_parameters_for_vault.yaml
+  vars:
+    __record_hidden_results: "{{ info_list | default([]) }}"
+    __record_hidden_vault_fact: satellite_configuration_vault_template_organization_parameters
+    __record_hidden_entity_label: organization
+
 - name: Organizations | Template Out Results
   when:
     - info_list is defined

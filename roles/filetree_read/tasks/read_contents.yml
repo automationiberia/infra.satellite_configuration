@@ -29,13 +29,28 @@
         loop_var: __read_definitions_item
         label: "{{ __read_definitions_item.path }}"
       register: __contents_filetree_item_vars
-      failed_when: "'VARIABLE IS NOT DEFINED' in __contents_filetree_item_vars"
+      ignore_errors: true
       no_log: >-
         {{
           satellite_configuration_filetree_read_secure_logging
           and (__task_filetree_read.var in satellite_configuration_sensitive_vars)
           and (__task_filetree_read.var not in satellite_configuration_filetree_read_include_vars_no_log_false)
         }}
+
+    - name: "Fail when definitions cannot be loaded ({{ __task_filetree_read.name }})"
+      ansible.builtin.fail:
+        msg: >-
+          Failed to load {{ __failed_filetree_read_item.item.path }} for {{ __task_filetree_read.var }}.
+          Ensure every vault_* reference in exported YAML is defined (fill vault_template.yaml from export).
+          {{ __failed_filetree_read_item.msg | default(__failed_filetree_read_item) }}
+      loop: "{{ __contents_filetree_item_vars.results | default([]) | selectattr('failed', 'equalto', true) | list }}"
+      loop_control:
+        loop_var: __failed_filetree_read_item
+        label: "{{ __failed_filetree_read_item.item.path | default('') }}"
+      when:
+        - not (__task_filetree_read.var in satellite_configuration_filetree_read_raw_template_vars)
+        - __contents_filetree_item_vars is defined
+        - __contents_filetree_item_vars.results | default([]) | selectattr('failed', 'equalto', true) | list | length > 0
 
     - name: "Read definitions without Jinja templating for {{ __task_filetree_read.name }}"
       when: __task_filetree_read.var in satellite_configuration_filetree_read_raw_template_vars
@@ -129,12 +144,28 @@
         loop_var: __override_read_item
         label: "{{ __override_read_item.path }}"
       register: __override_contents_vars
+      ignore_errors: true
       no_log: >-
         {{
           satellite_configuration_filetree_read_secure_logging
           and (__task_filetree_read.var in satellite_configuration_sensitive_vars)
           and (__task_filetree_read.var not in satellite_configuration_filetree_read_include_vars_no_log_false)
         }}
+
+    - name: "Fail when override definitions cannot be loaded ({{ __task_filetree_read.name }})"
+      ansible.builtin.fail:
+        msg: >-
+          Failed to load override {{ __failed_override_read_item.item.path }} for {{ __task_filetree_read.var }}.
+          Ensure every vault_* reference is defined.
+          {{ __failed_override_read_item.msg | default(__failed_override_read_item) }}
+      loop: "{{ __override_contents_vars.results | default([]) | selectattr('failed', 'equalto', true) | list }}"
+      loop_control:
+        loop_var: __failed_override_read_item
+        label: "{{ __failed_override_read_item.item.path | default('') }}"
+      when:
+        - not (__task_filetree_read.var in satellite_configuration_filetree_read_raw_template_vars)
+        - __override_contents_vars is defined
+        - __override_contents_vars.results | default([]) | selectattr('failed', 'equalto', true) | list | length > 0
 
     - name: "Read override definitions without Jinja templating for {{ __task_filetree_read.name }}"
       when: __task_filetree_read.var in satellite_configuration_filetree_read_raw_template_vars

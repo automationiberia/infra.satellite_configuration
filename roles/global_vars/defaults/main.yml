@@ -52,6 +52,7 @@ satellite_redhat_repository_url_substring: cdn.redhat.com
 satellite_configuration_filetree_read_raw_template_vars:
   - satellite_provisioning_templates
   - satellite_partition_tables
+  - satellite_job_templates
 
 # Sensitive types that must use include_vars (vault refs) but disable no_log on load
 # to avoid ansible-core 2.16 include_vars crashes on mixed bool/string YAML.
@@ -70,6 +71,9 @@ satellite_configuration_filetree_path: "/tmp/satellite_filetree_config"
 # Default object key used when merging override fragments in filetree_read.
 satellite_configuration_filetree_read_merge_key: name
 
+# Default mail domain for Internal users exported without an email address (required on create).
+satellite_configuration_users_default_mail_domain: example.com
+
 # Installation medium paths reference vault_satellite_installation_mediums_target_fqdn on export.
 # Placeholder scalar written into generated vault_template.yaml for operator-filled secrets.
 satellite_configuration_vault_placeholder: "CHANGEME"
@@ -81,6 +85,13 @@ satellite_configuration_vault_template_vars:
   - vault_satellite_users_default_password
   - vault_satellite_settings
   - vault_satellite_settings_host_specific
+  - vault_satellite_hostgroup_parameters
+  - vault_satellite_operatingsystem_parameters
+  - vault_satellite_domain_parameters
+  - vault_satellite_subnet_parameters
+  - vault_satellite_organization_parameters
+  - vault_satellite_location_parameters
+  - vault_satellite_job_template_inputs
   - vault_satellite_installation_mediums_target_fqdn  # only when export rewrites installation medium paths
 
 # Settings tied to the source Satellite host; exported with vault refs for the target site.

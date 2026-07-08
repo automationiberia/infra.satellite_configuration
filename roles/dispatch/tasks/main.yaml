@@ -191,8 +191,10 @@
       tags: partition_tables
   tags: partition_tables
 
-- name: Create Installation Mediums
+- name: Create Installation Mediums (initial pass without OS associations)
   ansible.builtin.include_tasks: satellite_installation_mediums.yaml
+  vars:
+    __dispatch_installation_mediums_phase: create
   args:
     apply:
       tags: installation_mediums
@@ -207,8 +209,24 @@
       tags: provisioning_templates
   tags: provisioning_templates
 
-- name: Create OperatingSystems
+- name: Create OperatingSystems (initial pass without installation media)
   ansible.builtin.include_tasks: satellite_operatingsystems.yaml
+  vars:
+    __dispatch_operatingsystems_phase: create
+  args:
+    apply:
+      tags: operatingsystems
+  tags: operatingsystems
+
+- name: Associate Installation Mediums with Operating Systems
+  ansible.builtin.include_tasks: satellite_installation_medium_associations.yaml
+  args:
+    apply:
+      tags: installation_mediums
+  tags: installation_mediums
+
+- name: Associate Operating Systems with Installation Media
+  ansible.builtin.include_tasks: satellite_operatingsystem_media.yaml
   args:
     apply:
       tags: operatingsystems
@@ -220,6 +238,13 @@
     apply:
       tags: provisioning_templates
   tags: provisioning_templates
+
+- name: Manage Job Templates
+  ansible.builtin.include_tasks: satellite_job_templates.yaml
+  args:
+    apply:
+      tags: job_templates
+  tags: job_templates
 
 - name: Manage Host Groups
   ansible.builtin.include_tasks: satellite_hostgroups.yaml

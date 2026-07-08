@@ -55,6 +55,9 @@ satellite_users: {{ [] if detailed_info.results | length == 0 }}
 {%     if __user_is_internal %}
     user_password: {{ vault_dict_key('vault_satellite_users_passwords', user.json.login) }}
 {%     endif %}
+{%     if __user_is_internal and (user.json.mail is not defined or user.json.mail in __empty_values) %}
+    mail: "{{ user.json.login }}@{{ satellite_configuration_users_default_mail_domain }}"
+{%   endif %}
 {%   endif %}
 {% endfor %}
 ...

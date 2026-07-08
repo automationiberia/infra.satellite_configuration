@@ -7,6 +7,10 @@
 '{{ '{{ ' ~ dict_var ~ '[' ~ (key | to_json) ~ ']' ~ ' }}' }}'
 {%- endmacro %}
 
+{% macro vault_nested_dict_keys(dict_var, key1, key2) -%}
+'{{ '{{ ' ~ dict_var ~ '[' ~ (key1 | to_json) ~ '][' ~ (key2 | to_json) ~ ']' ~ ' }}' }}'
+{%- endmacro %}
+
 {% macro vault_https_fqdn_path(path_suffix) -%}
 "https://{{ '{{ vault_satellite_installation_mediums_target_fqdn }}' }}{{ path_suffix }}"
 {%- endmacro %}

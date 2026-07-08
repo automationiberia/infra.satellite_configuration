@@ -1,6 +1,7 @@
 ---
+{% from 'parameter_export.j2' import export_parameters_block %}
 satellite_locations: {{ [] if info_list | length == 0 }}
-{% set __excluded_fields = ['created_at', 'updated_at', 'id', 'title' ] %}
+{% set __excluded_fields = ['created_at', 'updated_at', 'id', 'title', 'parameters'] %}
 {% set __excluded_subitems = ['id'] %}
 {% set __list_items = [] %}
 {% set __empty_values = [None, 'None', '', {}, [], [{}]] %}
@@ -24,5 +25,6 @@ satellite_locations: {{ [] if info_list | length == 0 }}
       - {{ __current_organization.name }}
 {%     endfor %}
 {%   endif %}
+{{ export_parameters_block(i.parameters | default([]), 'vault_satellite_location_parameters', i.name) }}
 {% endfor %}
 ...

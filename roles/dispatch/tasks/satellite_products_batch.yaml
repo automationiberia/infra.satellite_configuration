@@ -8,7 +8,12 @@
     ssl_ca_cert: "{{ __current_satellite_product.ssl_ca_cert | default(omit) }}"
     ssl_ca_key: "{{ __current_satellite_product.ssl_ca_key | default(omit) }}"
     description: "{{ __current_satellite_product.description | default(omit) }}"
-    sync_plan: "{{ __current_satellite_product.sync_plan | default(omit) }}"
+    sync_plan: >-
+      {{
+        omit
+        if (__dispatch_products_phase | default('initial') == 'initial')
+        else (__current_satellite_product.sync_plan | default(omit))
+      }}
     state: "{{ __current_satellite_product.state | default('present') }}"
   loop: "{{ __dispatch_products_batch }}"
   loop_control:
