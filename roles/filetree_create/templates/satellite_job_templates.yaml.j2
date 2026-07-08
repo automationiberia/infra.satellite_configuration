@@ -2,15 +2,15 @@
 ---
 satellite_job_templates:
 {% for jt in info_list %}
-  - name: "{{ jt.name | trim }}"
+  - name: {{ jt.name | trim | to_json }}
 {%   if jt.description_format is defined and jt.description_format is not none and jt.description_format != '' %}
-    description_format: "{{ jt.description_format }}"
+    description_format: {{ jt.description_format | to_json }}
 {%   endif %}
 {%   if jt.job_category is defined and jt.job_category is not none and jt.job_category != '' %}
-    job_category: "{{ jt.job_category }}"
+    job_category: {{ jt.job_category | to_json }}
 {%   endif %}
 {%   if jt.provider_type is defined and jt.provider_type is not none and jt.provider_type != '' %}
-    provider_type: "{{ jt.provider_type }}"
+    provider_type: {{ jt.provider_type | to_json }}
 {%   endif %}
 {%   if jt.locked | default(false) | bool %}
     locked: true

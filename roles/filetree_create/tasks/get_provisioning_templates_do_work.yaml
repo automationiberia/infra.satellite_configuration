@@ -14,7 +14,27 @@
     - result_api_response.content is defined
     - result_api_response.content | length > 0
   block:
+    - name: Provisioning Template (Do Work) | Retain provisioning template detail
+      ansible.builtin.set_fact:
+        __provisioning_template_detail: "{{ result_api_response.content | from_json }}"
+
+    - name: Provisioning Template (Do Work) | Enrich operatingsystem refs
+      ansible.builtin.include_tasks: enrich_operatingsystem_refs.yaml
+      vars:
+        __enrich_os_refs_source: "{{ __provisioning_template_detail.operatingsystems | default([]) }}"
+      when: __provisioning_template_detail.operatingsystems | default([]) | length > 0
+
     - name: Provisioning Template (Do Work) | Set Info List (can take a while...)
       ansible.builtin.set_fact:
-        __rs_info_list: "{{ __rs_info_list + [result_api_response.content | from_json] }}"
+        __rs_info_list: >-
+          {{
+            __rs_info_list
+            + [
+                __provisioning_template_detail
+                | combine({'operatingsystems': __enrich_os_refs_result | default([])}, recursive=True)
+                if (__provisioning_template_detail.operatingsystems | default([]) | length > 0)
+                else __provisioning_template_detail
+              ]
+          }}
+
 ...

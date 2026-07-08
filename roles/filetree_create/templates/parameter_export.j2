@@ -24,7 +24,7 @@
 {%- endmacro %}
 
 {% macro export_template_input_default(template_input, vault_dict_var, entity_key) -%}
-{%   if is_hidden_item(template_input, 'default') %}{{ vault_nested_dict_keys(vault_dict_var, entity_key, template_input.name) }}{%   else %}"{{ template_input.default }}"{%   endif %}
+{%   if is_hidden_item(template_input, 'default') %}{{ vault_nested_dict_keys(vault_dict_var, entity_key, template_input.name) }}{%   else %}{{ template_input.default | to_json }}{%   endif %}
 {%- endmacro %}
 
 {% macro export_template_inputs_block(template_inputs, vault_dict_var, entity_key) -%}
@@ -34,7 +34,7 @@
       - name: "{{ template_input.name }}"
         input_type: "{{ template_input.input_type }}"
 {%       if template_input.description is defined and template_input.description is not none and template_input.description != '' %}
-        description: "{{ template_input.description }}"
+        description: {{ template_input.description | to_json }}
 {%       endif %}
 {%       if template_input.required is defined %}
         required: {{ template_input.required | bool | lower }}

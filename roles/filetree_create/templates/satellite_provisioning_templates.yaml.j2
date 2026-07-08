@@ -21,12 +21,17 @@ satellite_provisioning_templates:
       {{ '{%- raw -%}' }}
       {{ discard_unwanted_fields(__map_item.value, __excluded_fields, __empty_values, __reduce_to_name, __translate) | trim("'") | indent(6) }}
       {{ '{%- endraw -%}' }}
-{%     elif __map_item.key in __list_items_to_name %}
-  {{ '-' if loop.index == 1 else ' ' }} {{ __map_item.key }}:
+{%     elif __map_item.key == 'operatingsystems' %}
+  {{ '-' if loop.index == 1 else ' ' }} operatingsystems:
 {%       for __inner_item in __map_item.value %}
       - name: {{ __inner_item.name }}
         major: {{ __inner_item.major }}
         minor: {{ __inner_item.minor }}
+{%       endfor %}
+{%     elif __map_item.key in __list_items_to_name %}
+  {{ '-' if loop.index == 1 else ' ' }} {{ __map_item.key }}:
+{%       for __inner_item in __map_item.value %}
+      - {{ __inner_item.name }}
 {%       endfor %}
 {%     else %}
   {{ '-' if loop.index == 1 else ' ' }} {{ __map_item.key }}: {{ discard_unwanted_fields(__map_item.value, __excluded_fields, __empty_values, __reduce_to_name, __translate) }}
