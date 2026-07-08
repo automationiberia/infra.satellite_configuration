@@ -64,9 +64,18 @@ Apply these conventions to all changes in this repository.
 - Prefer `{% raw %}` / `{% endraw %}` in export templates over `!unsafe` for ERB/Jinja-like scalars; keep wrappers in CaC when `format_yaml` detects ERB/Jinja markers.
 - Lists in `satellite_configuration_filetree_read_raw_template_vars` are loaded with `slurp` + `from_yaml` in `filetree_read` (no Jinja templating on file contents).
 
-## Jinja export template indentation
-- Canonical reference: `roles/filetree_create/templates/satellite_content_view_filters.yaml.j2`.
-- Control tags start at column 0; nest with two extra spaces after `{%-` per depth before the keyword (`{% for` → `{%   for` → `{%     if` → `{%       elif`).
-- `{% endif %}`, `{% endfor %}`, `{% else %}`, and `{% elif %}` align with their matching opener.
+## Jinja indentation
+- Canonical references:
+  - Export templates: `roles/filetree_create/templates/satellite_content_view_filters.yaml.j2`
+  - Multi-line task blocks (`>-` / `vars`): `roles/filetree_create/tasks/get_repository_sets_do_work.yaml` (`__resolved_repository_releasevers`)
+- Nesting rules apply **identically** to `{%` and `{%-` openers (and matching `%}` / `-%}` closers).
+- Nest control structures with **two extra spaces after the opener (`{%` or `{%-`) per depth** before the keyword:
+  - depth 0: `{% for` / `{%- for` / `{% if` / `{%- if` (one space after the opener)
+  - depth 1: `{%   if` / `{%-   if` / `{%   else` / `{%-   else` (three spaces)
+  - depth 2: `{%     set` / `{%-     set` (five spaces)
+- `{% endif %}`, `{%- endif -%}`, `{% endfor %}`, `{%- endfor -%}`, `{% else %}`, and `{% elif %}` align with their matching opener at the same depth (same opener style as the block they close).
+- In `.j2` export templates, control tags start at YAML column 0 (no leading spaces before `{`).
+- In task YAML folded scalars (`>-`), keep the YAML base indent on every line; apply the same **per-depth spacing after `{%` or `{%-`** on nested tags inside the block.
+- Do **not** emit flat blocks where every inner `{% if` / `{%- if` / `{% set` / `{%- set` inside a `{% for` / `{%- for` uses depth 0 — nested bodies must increase depth.
 - Macro bodies and shared partials (`parameter_export.j2`, `vault_entity_parameters.j2`) follow the same nesting rules.
-- YAML list items: first key in a loop item is `  - key: value`; sibling keys are `    key: value`.
+- YAML list items in export templates: first key in a loop item is `  - key: value`; sibling keys are `    key: value`.

@@ -82,19 +82,18 @@ When implementing or reviewing `satellite_users` / `redhat.satellite.user`:
 - Exclude ID-like fields from generated YAML (`id`, `*_id`, `*_ids`) and emit equivalent name-based fields whenever possible.
 - Preserve current naming/style conventions for template internals (`__`-prefixed helper variables, stable key naming, deterministic output order).
 - Follow nearby templates for quoting and multiline handling so output stays compatible with `infra.satellite_configuration.format_yaml`.
-- Keep Jinja/YAML indentation exactly in canonical style (reference: `satellite_content_view_filters.yaml.j2`):
-  - Jinja control tags (`{% ... %}`) must be left-aligned at column 0 (no leading spaces before `{`).
-  - Nest control structures with **two extra spaces after `{%-` per depth** before the keyword:
-    - depth 0: `{% for` / `{% if` (1 space after `{%-`)
-    - depth 1: `{%   for` / `{%   if` (3 spaces)
-    - depth 2: `{%     for` / `{%     if` (5 spaces)
-    - depth 3: `{%       elif` / `{%       endif` (7 spaces)
-  - `{% elif %}`, `{% else %}`, `{% endif %}`, and `{% endfor %}` use the **same depth** as their matching opener.
-  - Macro bodies (`{% macro ... %}`) start at depth 1; content inside a macro uses `{%   if` / `{%   for` at minimum.
-  - Shared macro partials (for example `parameter_export.j2`) must follow the same nesting rules when emitted into parent templates.
-  - List item start for `loop.index == 1` must be `  - key: value`.
-  - Subsequent keys must be `    key: value`.
-  - Nested list items must keep two extra spaces per YAML level.
+- Keep Jinja/YAML indentation exactly in canonical style (see **`.cursor/rules/satellite-general.mdc`**, section **Jinja indentation**):
+  - Export templates: reference `roles/filetree_create/templates/satellite_content_view_filters.yaml.j2`.
+  - Dispatch / filetree_create task blocks (`>-`, `vars`): reference `roles/filetree_create/tasks/get_repository_sets_do_work.yaml` (`__resolved_repository_releasevers`).
+  - Nesting rules apply **identically** to `{%` and `{%-` openers.
+  - Nest control structures with **two extra spaces after the opener (`{%` or `{%-`) per depth** before the keyword:
+    - depth 0: `{% for` / `{%- for` / `{% if` / `{%- if` (1 space after the opener)
+    - depth 1: `{%   for` / `{%-   for` / `{%   if` / `{%-   if` (3 spaces)
+    - depth 2: `{%     for` / `{%-     for` / `{%     if` / `{%-     if` (5 spaces)
+    - depth 3: `{%       elif` / `{%-       elif` / `{%       endif` / `{%-       endif` (7 spaces)
+  - `{% elif %}`, `{% else %}`, `{% endif %}`, `{% endfor %}`, and their `{%- ... -%}` forms use the **same depth** as their matching opener.
+  - In `.j2` templates, control tags are left-aligned at column 0; in task YAML folded scalars, keep YAML base indent and apply the same per-depth spacing after `{%` or `{%-`.
+  - Do **not** emit flat nested blocks (every inner `{% if` / `{%- if` at depth 0 inside a `{% for` / `{%- for`).
 - Wrap YAML-significant scalars with `__raw_fields` and literal `|-` blocks containing literal `{% raw %}` / `{% endraw %}` markers; guard with `infra.satellite_configuration.satellite_configuration_contains_template_markers` when conditional raw is needed.
 - Prefer `{% raw %}` / `{% endraw %}` over `!unsafe` for ERB/Jinja-like template bodies.
 - Do not render entire lists via a single `discard_unwanted_fields(info_list, ...)` call when items contain commas, colons, PEM blocks, or nested dict lists.

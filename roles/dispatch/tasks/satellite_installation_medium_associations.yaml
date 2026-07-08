@@ -12,12 +12,12 @@
     __resolved_installation_medium_operatingsystems: >-
       {%- set titles = [] -%}
       {%- for __os_ref in __current_installation_medium.operatingsystems | default([]) -%}
-      {%- if __os_ref is mapping and __os_ref.name is defined and __os_ref.major is defined and __os_ref.minor is defined -%}
-      {%- set __os_key = __os_ref.name ~ '|' ~ __os_ref.major ~ '|' ~ __os_ref.minor -%}
-      {%- set _ = titles.append(__dispatch_operatingsystem_titles[__os_key] | default(__os_ref.name ~ ' ' ~ __os_ref.major ~ '.' ~ __os_ref.minor)) -%}
-      {%- else -%}
-      {%- set _ = titles.append(__os_ref) -%}
-      {%- endif -%}
+      {%-   if __os_ref is mapping and __os_ref.name is defined and __os_ref.major is defined and __os_ref.minor is defined -%}
+      {%-     set __os_key = __os_ref.name ~ '|' ~ __os_ref.major ~ '|' ~ __os_ref.minor -%}
+      {%-     set _ = titles.append(__dispatch_operatingsystem_titles[__os_key] | default(__os_ref.name ~ ' ' ~ __os_ref.major ~ '.' ~ __os_ref.minor)) -%}
+      {%-   else -%}
+      {%-     set _ = titles.append(__os_ref) -%}
+      {%-   endif -%}
       {%- endfor -%}
       {{ titles }}
   loop: "{{ satellite_installation_mediums | default([]) }}"

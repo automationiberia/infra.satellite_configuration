@@ -35,14 +35,15 @@ Apply **`skills/fqcn-standards.mdc`** for tasks and Jinja templates (collection 
 - Do not hardcode source keys already represented in `__translate`; derive translated-key behavior from the mapping itself.
 - Prefer `discard_unwanted_fields` from `clean_fields.j2` for value rendering unless object-specific logic is required.
 - Always render template values through `discard_unwanted_fields`; do not output list/dict/scalar values directly from Jinja expressions.
-- Keep Jinja/YAML indentation exactly in canonical style (reference: `satellite_content_view_filters.yaml.j2`):
-  - Jinja control tags (`{% ... %}`) must be left-aligned at column 0 (no leading spaces before `{`).
-  - Nest control structures with **two extra spaces after `{%-` per depth** before the keyword:
-    - depth 0: `{% for` / `{% if` (1 space after `{%-`)
-    - depth 1: `{%   for` / `{%   if` (3 spaces)
-    - depth 2: `{%     for` / `{%     if` (5 spaces)
-    - depth 3: `{%       elif` / `{%       endif` (7 spaces)
-  - `{% elif %}`, `{% else %}`, `{% endif %}`, and `{% endfor %}` use the **same depth** as their matching opener.
+- Keep Jinja/YAML indentation exactly in canonical style (see **`.cursor/rules/satellite-general.mdc`**, section **Jinja indentation**; reference: `satellite_content_view_filters.yaml.j2`):
+  - Jinja control tags (`{% ... %}`) in `.j2` templates must be left-aligned at column 0 (no leading spaces before `{`).
+  - Nesting rules apply **identically** to `{%` and `{%-` openers.
+  - Nest control structures with **two extra spaces after the opener (`{%` or `{%-`) per depth** before the keyword:
+    - depth 0: `{% for` / `{%- for` / `{% if` / `{%- if` (1 space after the opener)
+    - depth 1: `{%   for` / `{%-   for` / `{%   if` / `{%-   if` (3 spaces)
+    - depth 2: `{%     for` / `{%-     for` / `{%     if` / `{%-     if` (5 spaces)
+    - depth 3: `{%       elif` / `{%-       elif` / `{%       endif` / `{%-       endif` (7 spaces)
+  - `{% elif %}`, `{% else %}`, `{% endif %}`, `{% endfor %}`, and their `{%- ... -%}` forms use the **same depth** as their matching opener.
   - Macro bodies (`{% macro ... %}`) start at depth 1; content inside a macro uses `{%   if` / `{%   for` at minimum.
   - Shared macro partials (for example `parameter_export.j2`) must follow the same nesting rules when emitted into parent templates.
   - First list key emitted in loop is `  - key: value`.

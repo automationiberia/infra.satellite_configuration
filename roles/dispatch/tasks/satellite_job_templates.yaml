@@ -2,11 +2,13 @@
 - name: Build unlocked job templates for dispatch
   ansible.builtin.set_fact:
     __dispatch_job_templates: >-
-      {{
-        satellite_job_templates | default([])
-        | rejectattr('locked', 'equalto', true)
-        | list
-      }}
+      {%- set __unlocked_job_templates = [] -%}
+      {%- for __jt in satellite_job_templates | default([]) -%}
+      {%-   if not (__jt.locked | default(false) | bool) -%}
+      {%-     set _ = __unlocked_job_templates.append(__jt) -%}
+      {%-   endif -%}
+      {%- endfor -%}
+      {{ __unlocked_job_templates }}
   when: satellite_job_templates is defined
 
 - name: Create/Update Job Templates

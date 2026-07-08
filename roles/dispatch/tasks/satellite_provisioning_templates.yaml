@@ -2,11 +2,13 @@
 - name: Build unlocked provisioning templates for dispatch
   ansible.builtin.set_fact:
     __dispatch_provisioning_templates: >-
-      {{
-        satellite_provisioning_templates | default([])
-        | rejectattr('locked', 'equalto', true)
-        | list
-      }}
+      {%- set __unlocked_provisioning_templates = [] -%}
+      {%- for __pt in satellite_provisioning_templates | default([]) -%}
+      {%-   if not (__pt.locked | default(false) | bool) -%}
+      {%-     set _ = __unlocked_provisioning_templates.append(__pt) -%}
+      {%-   endif -%}
+      {%- endfor -%}
+      {{ __unlocked_provisioning_templates }}
   when: satellite_provisioning_templates is defined
 
 - name: Create/Update Provisioning Template Snippets
