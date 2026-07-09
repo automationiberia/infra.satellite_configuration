@@ -1,8 +1,14 @@
 ---
+- name: Create configuration directory for {{ template_type }}
+  ansible.builtin.file:
+    path: "{{ output_path }}/{{ template_type }}.d"
+    state: directory
+    mode: "{{ satellite.template.dir_mode | default('0777') }}"
+
 - name: Create configuration file for {{ template_type }}
   ansible.builtin.template:
     src: "{{ template_type }}.yaml.j2"
-    dest: "{{ output_path }}/{{ template_type }}.yaml"
+    dest: "{{ output_path }}/{{ template_type }}.d/{{ template_type }}.yaml"
     owner: "{{ satellite.template.owner if (satellite.template.set_ownership | default(false)) else omit }}"
     group: "{{ satellite.template.group if (satellite.template.set_ownership | default(false)) else omit }}"
     mode: "{{ satellite.template.mode }}"

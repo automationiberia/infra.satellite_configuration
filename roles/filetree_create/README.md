@@ -42,7 +42,8 @@ The following variables are required for that role to work properly:
 
 | Variable Name | Default Value | Required | Type | Description |
 | :------------ | :-----------: | :------: | :------: | :---------- |
-| `satellite` | N/A | yes | dict | Contains all the information needed to connect to the Red Hat Satellite instance. Fields are described below. |
+| `satellite` | N/A | yes* | dict | Connection to the Red Hat Satellite instance. *Optional when `satellite_source` is set (export uses `satellite_source` and falls back to `satellite`). Fields are described below. |
+| `satellite_source` | — | no | dict | Source Satellite for export; same shape as `satellite`. Preferred for round-trip workflows together with `satellite_target`. |
 | `satellite.server_url` | N/A | yes | str | Red Hat Satellite Server URL (must include the protocol  to be used 'https://'). |
 | `satellite.validate_certs` | N/A | yes | str | Specifies whether to validate certificates or not when connecting to Red Hat Satellite server. |
 | `satellite.admin` | N/A | yes | dict | Contains all the information related to the user to use to connect to the Red Hat Satellite server. Fields are described below. |
@@ -53,13 +54,16 @@ The following variables are required for that role to work properly:
 | `satellite.template.owner` | N/A | if `set_ownership` | str | User name or UID for generated files when `set_ownership` is `true`. |
 | `satellite.template.group` | N/A | if `set_ownership` | str | Group name or GID for generated files when `set_ownership` is `true`. |
 | `satellite.template.mode` | N/A | yes | str | Specifies the permissions the generated files will have. |
-| `filetree_create_roles_name_excludes` | see `defaults/main.yml` | no | list | Exact role names skipped as built-in defaults before `GET /api/roles/:id`. |
+| `filetree_create_roles_name_excludes` | see role `global_vars` | no | list | Exact role names skipped as built-in defaults before `GET /api/roles/:id`. |
 | `filetree_create_roles_name_excludes_extra` | `[]` | no | list | Additional role names to skip (e.g. site-specific clones of built-ins you do not want exported). |
-| `output_path` | `/tmp/satellite_filetree_config` | no | str | The path to the output directory where all the generated `yaml` files with the corresponding objects as code will be written to. |
+| `output_path` | see `satellite_configuration_filetree_path` in role `global_vars` | no | str | Alias for `satellite_configuration_filetree_path`. Export writes `satellite_<type>.d/<type>.yaml` under this directory. |
+| `satellite_configuration_export_source_aliases` | `[]` | no | list | Extra IPs, short names, or alternate FQDNs of the source Satellite to replace in installation-medium paths with `vault_satellite_installation_mediums_target_fqdn`. |
 
 ## Output files format
 
-By default, `infra.aap_configuration_extended.filetree` role formats generated YAML files with `infra.satellite_configuration.format_yaml` (backed by `PyYAML`) to enhance readability. This can be skipped thanks to the tag `yaml_format`, that can be used in the `--skip-tags yaml_format` ansible-playbook parameter.
+By default, the `filetree_create` role formats generated YAML files with `infra.satellite_configuration.format_yaml` (tag `yaml_format`, backed by `PyYAML`). Skip it with `--skip-tags yaml_format` when debugging raw template output.
+
+Export templates wrap problematic values (PEM/GPG keys, descriptions with `:`, product names with `,`, SSH keys) in literal blocks protected by `{% raw %}` / `{% endraw %}` markers; `format_yaml` unwraps those markers and emits canonical block-style YAML.
 
 ## Example Playbook
 
@@ -77,50 +81,18 @@ By default, `infra.aap_configuration_extended.filetree` role formats generated Y
         state: directory
       tags: always
 
-    - name: Get Organizations
+    - name: Export Satellite configuration
       ansible.builtin.import_role:
         name: infra.satellite_configuration.filetree_create
-
-    - name: "Block to fix the output files' format"
-      tags: always
-      block:
-        - name: "Search for all the generated files"
-          ansible.builtin.find:
-            paths: "{{ output_path }}"
-            recurse: true
-            patterns:
-              - '*.yaml'
-              - '*.yml'
-          register: _generated_files
-
-        - name: "Re-write all the generated files to make them more readable (Content Credentials special case)"
-          ansible.builtin.shell: |
-            yq -i '(.satellite_content_credentials[].content) |= (trim + "\n") | (.satellite_content_credentials[].content) style="literal"' '{{ _current_file.path }}'; yq -i -P '{{ _current_file.path }}'
-          when: "'content_credentials' in _current_file.path"
-          changed_when: true
-          loop: "{{ _generated_files.files }}"
-          loop_control:
-            loop_var: _current_file
-            label: "{{ _current_file.path }}"
-          # noqa: risky-shell-pipe
-          # ^ The shell command above does't use any pipe (only in the yq search)
-
-        - name: "Re-write all the generated files to make them more readable"
-          ansible.builtin.shell: "/usr/bin/env yq -i -P '{{ _current_file.path }}' && echo '...' >> '{{ _current_file.path }}'"
-          changed_when: true
-          loop: "{{ _generated_files.files }}"
-          loop_control:
-            loop_var: _current_file
-            label: "{{ _current_file.path }}"
 ...
 ```
 
-The output files are all located in the same directory. Each file contains a YAML list with all the objects belonging to the same object type. This output format allows to load all the objects both from the standard Ansible `group_vars` and from the `infra.satellite_configuration.filetree_read` role.
+The output files are written under `satellite_<object_type>.d/` directories beneath `satellite_configuration_filetree_path`. Each directory contains a YAML file with the list for that object type. This layout matches `filetree_read` import paths, so export output can be applied without manual restructuring.
 
 The exportation can be triggered with the following command:
 
 ```console
-ansible-playbook infra.satellite_configuration.run_filetree_create.yaml -e@vars/satellite.yaml -e '{output_path: /tmp/satellite_output}'
+ansible-playbook infra.satellite_configuration.run_filetree_create.yaml -e@vars/satellite.yaml -e '{satellite_configuration_filetree_path: /tmp/satellite_output}'
 ```
 
 Where the `vars/satellite.yaml` file is defined as follows:
@@ -167,9 +139,13 @@ One example of the generated files follows:
 └── satellite_users.yaml
 ```
 
-`satellite_roles.yaml` includes **custom roles only**: the `/api/roles` index is often missing `builtin`, so known **built-in role names** are removed first (`filetree_create_roles_name_excludes` plus optional `filetree_create_roles_name_excludes_extra`), then each **`GET /api/roles/:id`** payload is dropped when `builtin` or `locked` still indicates a system role. **Filter rows** are filled by calling **`GET /api/filters/:id`** for each stub (Foreman embeds only `id` / `resource_type` on the role), so **permissions** and **search** export correctly.
+`satellite_roles.yaml` includes **custom roles only**: the `/api/roles` index is often missing `builtin`, so known **built-in role names** are removed first (`satellite_builtin_role_name_skips` from role **`global_vars`**, exposed as `filetree_create_roles_name_excludes` plus optional `filetree_create_roles_name_excludes_extra`), then each **`GET /api/roles/:id`** payload is dropped unless **`builtin` is `0`** and **`locked`** is false (Foreman marks plugin and built-in roles such as `ForemanRhCloud Read Only` as locked). The same skip list is used by **`dispatch`** when importing legacy exports. **Filter rows** are filled by calling **`GET /api/filters/:id`** for each stub (Foreman embeds only `id` / `resource_type` on the role), so **permissions** and **search** export correctly.
 
-`satellite_users.yaml` emits fields compatible with `redhat.satellite.user`: **`auth_source`**, **`default_organization`**, and **`default_location`** as plain strings (not nested API objects), **`auth_source`** from **`auth_source_internal.name`** when the API omits `auth_source`, and **no `usergroups`** (assign users to groups via `satellite_usergroups` / `redhat.satellite.usergroup`). **Passwords are never exported**; when applying with `dispatch`, set **`user_password`** per user (Vault) or **`satellite_users_default_password`** for new Internal-auth users.
+`satellite_users.yaml` emits fields compatible with `redhat.satellite.user`: **`auth_source`**, **`default_organization`**, and **`default_location`** as plain strings (not nested API objects), **`auth_source`** from **`auth_source_internal.name`** when the API omits `auth_source`, and **no `usergroups`** (assign users to groups via `satellite_usergroups` / `redhat.satellite.usergroup`). Internal-auth users reference **`user_password`** via `{{ vault_satellite_users_passwords['login'] }}` (filled from `vault_template.yaml` on import).
+
+`satellite_auth_sources_ldap.yaml` is built from **`GET /api/auth_source_ldaps/:id`**. **`account_password`** is write-only in the API; exports always emit `{{ vault_satellite_auth_sources_ldap_account_passwords['name'] }}` for each LDAP source.
+
+**`vault_template.yaml`** is written at the export root with predictable `vault_*` variables (`satellite_configuration_vault_template_vars` in role **`global_vars`**). CaC fragments reference those variables directly; replace placeholder values, optionally encrypt the file, and pass it on import with `-e@…/vault_template.yaml`. `vault_satellite_installation_mediums_target_fqdn` is included only when exported installation medium `path` values reference a source Satellite hostname.
 
 ## License
 

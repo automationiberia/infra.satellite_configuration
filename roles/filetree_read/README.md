@@ -12,6 +12,9 @@ The following Variables set the organization where should be applied the configu
 
 |Variable Name|Type|Default Value|Required|Description|
 |:---:|:---:|:---:|:---:|:---:|
+|`satellite_target`|Dict|—|no|Target Satellite for import; same shape as `satellite`. Resolved before `dispatch` when set (see role `global_vars`).|
+|`satellite_configuration_overrides_path`|String|—|no|Optional directory with `satellite_<type>.d/` override fragments merged on top of the base export during ingest.|
+|`satellite_configuration_filetree_read_merge_key`|String|`name`|no|Default key used to match and replace objects when merging overrides (override per task via `merge_key` in `satellite_configuration_filetree_read_tasks`).|
 |`satellite_configuration_filetree_read_tasks`|List(Dict)|See the [defaults file][link_defaults_line_27]|yes|This variable defines all the object types to be read, with the information shown in the `items` Dict below.|
 |`items.name`|String|See the [defaults file][link_defaults_line_27]|yes|Name of the object type to be read|
 |`items.var`|String|See the [defaults file][link_defaults_line_27]|yes|Name of the variable where to store the objects in memory|

@@ -15,7 +15,7 @@
     locations: "{{ _sat_user_locations | default(omit, true) }}"
     roles: "{{ _sat_user_roles | default(omit, true) }}"
     # Required by Foreman when creating users on Internal auth (not returned on export); omit on update unless set.
-    user_password: "{{ __current_user.user_password | default(satellite_users_default_password | default(omit), true) }}"
+    user_password: "{{ __current_user.user_password | default(satellite_users_default_password | default(vault_satellite_users_default_password | default(omit), true), true) }}"
     timezone: "{{ __current_user.timezone | default(omit) }}"
     locale: "{{ __current_user.locale | default(omit) }}"
     state: "{{ __current_user.state | default(omit) }}"
@@ -25,6 +25,7 @@
     label: "{{ __current_user.name }}"
   when: satellite_users is defined
   delegate_to: localhost
+  no_log: "{{ satellite_configuration_dispatch_secure_logging }}"
   vars:
     _sat_user_default_location: >-
       {{ omit if (__current_user.default_location is not defined) else (__current_user.default_location if not (__current_user.default_location is mapping) else (__current_user.default_location.name | default(__current_user.default_location.title) | default(omit))) }}

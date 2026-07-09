@@ -11,7 +11,14 @@
 
 - name: Repositories | Create a List
   ansible.builtin.set_fact:
-    all_results: "{{ result_api_response.json.results | sort(attribute='id') | rejectattr('product.orphaned', '==', true) }}"
+    all_results: >-
+      {{
+        result_api_response.json.results
+        | sort(attribute='id')
+        | rejectattr('url', 'search', satellite_redhat_repository_url_substring)
+        | rejectattr('product.orphaned', 'equalto', true)
+        | list
+      }}
 
 - name: Repositories | Get Detailed Info
   ansible.builtin.include_tasks: detailed_api_call.yaml

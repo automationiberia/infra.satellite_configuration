@@ -1,22 +1,48 @@
 ---
 {% from 'clean_fields.j2' import discard_unwanted_fields %}
+{% from 'vault_ref.j2' import vault_https_fqdn_path %}
 {% set __excluded_fields = ['id', 'created_at', 'updated_at', 'title'] %}
 {% set __list_items_to_name = ['locations', 'organizations', 'operatingsystems'] %}
 {% set __empty_values = [None, 'None', '', {}, [], [{}]] %}
 {% set __reduce_to_name = [] %}
-{% set __translate = [{'operatingsystems': 'title'}] %}
+{% set __translate = [] %}
+{% set __source_hostname = satellite.server_url | default('') | urlsplit('hostname') %}
+{% set __export_path_aliases = (satellite_configuration_export_path_hostnames | default([])) + (satellite_configuration_export_source_aliases | default([])) %}
 satellite_installation_mediums:
 {% for i in info_list %}
 {%   for __map_item in (i | dict2items) if __map_item.key not in __excluded_fields and __map_item.value not in __empty_values %}
-{%     if __map_item.key in __list_items_to_name %}
-  {{ '-' if loop.index == 1 else ' ' }} {{ __map_item.key }}:
-{%       set __item_key = (__translate | selectattr(__map_item.key, 'defined') | list | first | default({})).get(__map_item.key, 'name') %}
+{%     if __map_item.key == 'operatingsystems' %}
+  {{ '-' if loop.index == 1 else ' ' }} operatingsystems:
 {%       for __inner_item in __map_item.value %}
-      - {{ discard_unwanted_fields((dict(__inner_item.items() | selectattr('0', 'in', __item_key))[__item_key]), __excluded_fields, __empty_values, __reduce_to_name, __translate) }}
+      - name: {{ __inner_item.name }}
+        major: {{ __inner_item.major }}
+        minor: {{ __inner_item.minor }}
 {%       endfor %}
+{%     elif __map_item.key in __list_items_to_name %}
+  {{ '-' if loop.index == 1 else ' ' }} {{ __map_item.key }}:
+{%       for __inner_item in __map_item.value %}
+      - {{ __inner_item.name }}
+{%       endfor %}
+{%     elif __map_item.key == 'path' %}
+{%       set ns = namespace(path_value=__map_item.value | string, use_vault_fqdn=false) %}
+{%       for __export_hostname in __export_path_aliases %}
+{%         if __export_hostname | length > 0 and __export_hostname in ns.path_value %}
+{%           set ns.use_vault_fqdn = true %}
+{%           set ns.path_value = ns.path_value | regex_replace('^https?://' ~ (__export_hostname | regex_escape), '') %}
+{%         endif %}
+{%       endfor %}
+{%       if __source_hostname | length > 0 and __source_hostname in ns.path_value %}
+{%         set ns.use_vault_fqdn = true %}
+{%         set ns.path_value = ns.path_value | regex_replace('^https?://' ~ (__source_hostname | regex_escape), '') %}
+{%       endif %}
+{%       if ns.use_vault_fqdn %}
+  {{ '-' if loop.index == 1 else ' ' }} path: {{ vault_https_fqdn_path(ns.path_value) }}
+{%       else %}
+  {{ '-' if loop.index == 1 else ' ' }} path: "{{ __map_item.value | string }}"
+{%       endif %}
 {%     else %}
   {{ '-' if loop.index == 1 else ' ' }} {{ __map_item.key }}: {{ discard_unwanted_fields(__map_item.value, __excluded_fields, __empty_values, __reduce_to_name, __translate) }}
 {%     endif %}
-{%-  endfor %}
+{%-   endfor %}
 {% endfor %}
 ...

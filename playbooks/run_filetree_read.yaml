@@ -1,11 +1,33 @@
 ---
-- name: Playbook to test filetree_read and dispatch roles
+- name: Resolve Satellite connection for import
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Resolve satellite from satellite_target
+      ansible.builtin.set_fact:
+        satellite: "{{ satellite_target }}"
+      when: satellite_target is defined
+
+    - name: Ensure satellite connection is defined
+      ansible.builtin.assert:
+        that:
+          - satellite is defined
+          - satellite.server_url is defined
+          - satellite.admin is defined
+        fail_msg: >-
+          Define satellite_target (preferred for round-trip) or satellite before
+          running the import playbook.
+
+- name: Import Satellite configuration from filetree
   hosts: localhost
   connection: local
   gather_facts: false
   collections:
     - infra.satellite_configuration
     - redhat.satellite
+  vars:
+    satellite_configuration_filetree_path: configs
   module_defaults:
     group/redhat.satellite.satellite:
       username: "{{ satellite.admin.username }}"

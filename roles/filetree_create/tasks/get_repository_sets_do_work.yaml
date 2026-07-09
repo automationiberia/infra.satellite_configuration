@@ -5,14 +5,83 @@
     call_type: Repository Sets
     api_link: "/katello/api/repository_sets?organization_id={{ __current_org.id }}&full_result=true"
 
-- name: Repository Sets (Do Work) | Block to do the job when there's a job to do
-  when:
-    - result_api_response.json.results is defined
-    - result_api_response.json.results | length > 0
-  block:
-    - name: Repository Sets (Do Work) | Set Info List (can take a while...)
-      ansible.builtin.set_fact:
-        __rs_info_list:
-          organization: "{{ __current_org.name }}"
-          info_list: "{{ result_api_response.json.results }}"
+- name: Repository Sets (Do Work) | Retain enabled repository sets
+  ansible.builtin.set_fact:
+    __repository_sets_enabled: >-
+      {{
+        result_api_response.json.results | default([])
+        | selectattr('enabled', 'defined')
+        | selectattr('enabled')
+        | list
+        | default([], true)
+      }}
+  when: result_api_response.json.results is defined
+
+- name: Repository Sets (Do Work) | Get organization repositories for releasever enrichment
+  ansible.builtin.include_tasks: api_call.yaml
+  vars:
+    call_type: Repositories
+    api_link: "/katello/api/repositories?organization_id={{ __current_org.id }}&full_result=true"
+  when: __repository_sets_enabled | default([]) | length > 0
+
+- name: Repository Sets (Do Work) | Retain organization repositories
+  ansible.builtin.set_fact:
+    __org_repositories: "{{ result_api_response.json.results | default([]) }}"
+  when: __repository_sets_enabled | default([]) | length > 0
+
+- name: Repository Sets (Do Work) | Initialize enriched repository sets
+  ansible.builtin.set_fact:
+    __enriched_repository_sets: []
+  when: __repository_sets_enabled | default([]) | length > 0
+
+- name: Repository Sets (Do Work) | Enrich repository set releasevers
+  ansible.builtin.set_fact:
+    __enriched_repository_sets: "{{ __enriched_repository_sets + [__enriched_repository_set] }}"
+  loop: "{{ __repository_sets_enabled | default([]) }}"
+  loop_control:
+    loop_var: __current_repository_set
+    label: "{{ __current_repository_set.label | default(__current_repository_set.name) }}"
+  vars:
+    __matched_repositories: >-
+      {{
+        __org_repositories | default([])
+        | selectattr('content_label', 'defined')
+        | selectattr('content_label', 'equalto', __current_repository_set.label)
+        | list
+      }}
+    __releasever_from_repository: >-
+      {{
+        omit if (__matched_repositories | length == 0) else (
+          __matched_repositories[0].distribution_version
+          | default(
+              (__matched_repositories[0].major | string) ~ '.'
+              ~ (__matched_repositories[0].minor | string)
+              if __matched_repositories[0].minor is defined
+              else (__matched_repositories[0].major | string),
+              true
+            )
+        )
+      }}
+    __resolved_repository_releasevers: >-
+      {%- set __releasevers = [] -%}
+      {%- for __repository_version in __current_repository_set.repositories | default([]) -%}
+      {%-   set __releasever = __repository_version.releasever | default('', true) | string -%}
+      {%-   if __releasever == '' or ('kickstart' in __current_repository_set.label and '.' not in __releasever) -%}
+      {%-     set __releasever = __releasever_from_repository | default('', true) | string -%}
+      {%-   endif -%}
+      {%-   if __releasever != '' -%}
+      {%-     set __releasevers = __releasevers + [{'releasever': __releasever}] -%}
+      {%-   endif -%}
+      {%- endfor -%}
+      {%- if __releasevers | length == 0 and __releasever_from_repository is defined and __releasever_from_repository != omit -%}
+      {%-   set __releasevers = [{'releasever': __releasever_from_repository | string}] -%}
+      {%- endif -%}
+      {{ __releasevers }}
+    __enriched_repository_set: "{{ __current_repository_set | combine({'repositories': __resolved_repository_releasevers}, recursive=True) }}"
+  when: __repository_sets_enabled | default([]) | length > 0
+
+- name: Repository Sets (Do Work) | Append organization repository sets
+  ansible.builtin.set_fact:
+    __rs_info_list: "{{ __rs_info_list | default([]) + [{'organization': __current_org.name, 'info_list': __enriched_repository_sets}] }}"
+  when: __enriched_repository_sets | default([]) | length > 0
 ...

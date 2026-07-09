@@ -1,0 +1,22 @@
+---
+description: Add or update a Satellite repository using redhat.satellite.repository with loop vars and default(omit) for optional fields.
+alwaysApply: false
+globs: \"roles/dispatch/**/*.{yml,yaml}\"
+---
+
+# Add Repository
+
+Follow the repository pattern used in `roles/dispatch/tasks/satellite_repositories.yaml`.
+
+## Steps
+1. Add repository items to `satellite_repositories` (custom repositories only).
+2. Use required keys: `name`, `product`, and `content_type`.
+3. Pass optional repository settings with `| default(omit)` to avoid null payloads.
+4. Delegate execution to localhost and notify the sync handler.
+
+## Checklist
+- Task/playbook YAML files end with `...` on its own final line (ansible-lint `yaml[document-end]`).
+- Uses FQCN `redhat.satellite.repository`.
+- Export and dispatch skip Red Hat CDN repositories (`satellite_redhat_repository_url_substring` from `global_vars`); enable those via `satellite_repository_sets`.
+- Loop variable uses `__` prefix.
+- Handler notification triggers repository sync.

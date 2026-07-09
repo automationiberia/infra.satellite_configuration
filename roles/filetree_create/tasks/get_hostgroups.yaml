@@ -18,7 +18,15 @@
   vars:
     call_type: Host Groups
     api_link: /api/hostgroups/
+    api_query: "?show_hidden_parameters=true"
     loop_var: "{{ all_results }}"
+
+- name: Host Groups | Record hidden parameters for vault template
+  ansible.builtin.include_tasks: record_hidden_parameters_for_vault.yaml
+  vars:
+    __record_hidden_results: "{{ detailed_info.results | default([]) }}"
+    __record_hidden_vault_fact: satellite_configuration_vault_template_hostgroup_parameters
+    __record_hidden_entity_label: host group
 
 - name: Host Groups | Template Out Results
   when:

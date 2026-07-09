@@ -1,0 +1,21 @@
+---
+- name: Dispatch | Upload Subscription Manifest
+  ansible.builtin.include_role:
+    name: redhat.satellite.manifest
+  vars:
+    satellite_username: "{{ satellite.admin.username }}"
+    satellite_password: "{{ satellite.admin.password }}"
+    satellite_server_url: "{{ satellite.server_url }}"
+    satellite_validate_certs: "{{ satellite.validate_certs }}"
+    satellite_organization: "{{ __current_manifest.organization | default(__current_manifest.name) }}"
+    satellite_manifest_path: "{{ __current_manifest.path }}"
+    satellite_manifest_download: "{{ __current_manifest.manifest_download | default(satellite_manifest_download) | default(false) }}"
+    satellite_manifest_uuid: "{{ __current_manifest.manifest_uuid | default(omit) }}"
+    satellite_rhsm_username: "{{ __current_manifest.rhsm_username | default(satellite_rhsm_username) | default(omit) }}"
+    satellite_rhsm_password: "{{ __current_manifest.rhsm_password | default(satellite_rhsm_password) | default(omit) }}"
+  loop: "{{ __dispatch_manifest_items | default([]) }}"
+  loop_control:
+    loop_var: __current_manifest
+    label: "{{ __current_manifest.organization | default(__current_manifest.name) }}"
+  when: __dispatch_manifest_items | default([]) | length > 0
+...

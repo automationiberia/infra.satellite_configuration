@@ -10,46 +10,251 @@
     read_whole_file: true
     recurse: true
   register: __files_list
-  no_log: "{{ satellite_configuration_filetree_read_secure_logging }}"
+  no_log: >-
+    {{
+      satellite_configuration_filetree_read_secure_logging
+      and (__task_filetree_read.var in satellite_configuration_sensitive_vars)
+      and (__task_filetree_read.var not in satellite_configuration_filetree_read_include_vars_no_log_false)
+    }}
 
 - name: "Block to read things when they exists"
   when: __files_list.files | length > 0
   block:
     - name: "Read definitions for {{ __task_filetree_read.name }}"
+      when: not (__task_filetree_read.var in satellite_configuration_filetree_read_raw_template_vars)
       ansible.builtin.include_vars:
         file: "{{ __read_definitions_item.path }}"
       loop: "{{ __files_list.files }}"
       loop_control:
         loop_var: __read_definitions_item
         label: "{{ __read_definitions_item.path }}"
-      register: __contents_filetree_item
-      failed_when: "'VARIABLE IS NOT DEFINED' in __contents_filetree_item"
-      no_log: "{{ satellite_configuration_filetree_read_secure_logging }}"
+      register: __contents_filetree_item_vars
+      ignore_errors: true
+      no_log: >-
+        {{
+          satellite_configuration_filetree_read_secure_logging
+          and (__task_filetree_read.var in satellite_configuration_sensitive_vars)
+          and (__task_filetree_read.var not in satellite_configuration_filetree_read_include_vars_no_log_false)
+        }}
+
+    - name: "Fail when definitions cannot be loaded ({{ __task_filetree_read.name }})"
+      ansible.builtin.fail:
+        msg: >-
+          Failed to load {{ __failed_filetree_read_item.item.path }} for {{ __task_filetree_read.var }}.
+          Ensure every vault_* reference in exported YAML is defined (fill vault_template.yaml from export).
+          {{ __failed_filetree_read_item.msg | default(__failed_filetree_read_item) }}
+      loop: "{{ __contents_filetree_item_vars.results | default([]) | selectattr('failed', 'equalto', true) | list }}"
+      loop_control:
+        loop_var: __failed_filetree_read_item
+        label: "{{ __failed_filetree_read_item.item.path | default('') }}"
+      when:
+        - not (__task_filetree_read.var in satellite_configuration_filetree_read_raw_template_vars)
+        - __contents_filetree_item_vars is defined
+        - __contents_filetree_item_vars.results | default([]) | selectattr('failed', 'equalto', true) | list | length > 0
+
+    - name: "Read definitions without Jinja templating for {{ __task_filetree_read.name }}"
+      when: __task_filetree_read.var in satellite_configuration_filetree_read_raw_template_vars
+      ansible.builtin.slurp:
+        src: "{{ __read_definitions_item.path }}"
+      loop: "{{ __files_list.files }}"
+      loop_control:
+        loop_var: __read_definitions_item
+        label: "{{ __read_definitions_item.path }}"
+      register: __contents_filetree_item_slurp
+      no_log: >-
+        {{
+          satellite_configuration_filetree_read_secure_logging
+          and (__task_filetree_read.var in satellite_configuration_sensitive_vars)
+          and (__task_filetree_read.var not in satellite_configuration_filetree_read_include_vars_no_log_false)
+        }}
 
     - name: "Populate list for {{ __task_filetree_read.name }}"
       ansible.builtin.set_fact:
         "__populate_{{ __task_filetree_read.var }}": "{{ (lookup('vars', '__populate_' + __task_filetree_read.var, default=[]) + __populate_list_item.ansible_facts[__task_filetree_read.var])
           }}"
-      # "__populate_{{ __task_filetree_read.var }}": "{{ (lookup('vars', '__populate_' + __task_filetree_read.var, default=[]) + __populate_list_item.ansible_facts[__task_filetree_read.var]) | unique(case_sensitive='true') }}"
-      loop: "{{ __contents_filetree_item.results }}"
+      loop: "{{ __contents_filetree_item_vars.results }}"
       loop_control:
         loop_var: __populate_list_item
-        label: "{{ __populate_list_item.ansible_included_var_files | join(', ') }}"
-      no_log: "{{ satellite_configuration_filetree_read_secure_logging }}"
+        label: "{{ __populate_list_item.ansible_included_var_files | default(__populate_list_item.source | default('')) | join(', ') }}"
+      no_log: >-
+        {{
+          satellite_configuration_filetree_read_secure_logging
+          and (__task_filetree_read.var in satellite_configuration_sensitive_vars)
+          and (__task_filetree_read.var not in satellite_configuration_filetree_read_include_vars_no_log_false)
+        }}
       when:
-        - __contents_filetree_item is defined
-        - __contents_filetree_item.results is defined
-        - __contents_filetree_item.results | length > 0
+        - not (__task_filetree_read.var in satellite_configuration_filetree_read_raw_template_vars)
+        - __contents_filetree_item_vars is defined
+        - __contents_filetree_item_vars.results is defined
+        - __contents_filetree_item_vars.results | length > 0
         - __populate_list_item.ansible_facts[__task_filetree_read.var] is defined
 
-    - name: "Set Data Structure for {{ __task_filetree_read.name }}"
+    - name: "Populate list from slurped YAML for {{ __task_filetree_read.name }}"
       ansible.builtin.set_fact:
-        "{{ __task_filetree_read.var }}": "{{ lookup('vars', '__populate_' + __task_filetree_read.var) }}"
-      no_log: "{{ satellite_configuration_filetree_read_secure_logging }}"
-      when: lookup('vars', '__populate_' + __task_filetree_read.var) is defined
+        "__populate_{{ __task_filetree_read.var }}": >-
+          {{
+            lookup('vars', '__populate_' + __task_filetree_read.var, default=[])
+            + (__populate_slurp_item.content | b64decode | from_yaml)[__task_filetree_read.var]
+          }}
+      loop: "{{ __contents_filetree_item_slurp.results }}"
+      loop_control:
+        loop_var: __populate_slurp_item
+        label: "{{ __populate_slurp_item.source | default('') }}"
+      no_log: >-
+        {{
+          satellite_configuration_filetree_read_secure_logging
+          and (__task_filetree_read.var in satellite_configuration_sensitive_vars)
+          and (__task_filetree_read.var not in satellite_configuration_filetree_read_include_vars_no_log_false)
+        }}
+      when:
+        - __task_filetree_read.var in satellite_configuration_filetree_read_raw_template_vars
+        - __contents_filetree_item_slurp is defined
+        - __contents_filetree_item_slurp.results is defined
+        - __contents_filetree_item_slurp.results | length > 0
+        - __populate_slurp_item.content is defined
+        - (__populate_slurp_item.content | b64decode | from_yaml)[__task_filetree_read.var] is defined
 
-    - name: "Show loaded information"
-      ansible.builtin.debug:
-        var: "{{ __task_filetree_read.var }}"
-        verbosity: 1
+- name: "Find override files for {{ __task_filetree_read.name }}"
+  ansible.builtin.find:
+    paths: "{{ satellite_configuration_overrides_path }}/{{ __task_filetree_read.name }}.d/"
+    file_type: file
+    contains: "{{ __task_filetree_read.var }}:"
+    read_whole_file: true
+    recurse: true
+  register: __override_files_list
+  when: satellite_configuration_overrides_path is defined
+  no_log: >-
+    {{
+      satellite_configuration_filetree_read_secure_logging
+      and (__task_filetree_read.var in satellite_configuration_sensitive_vars)
+      and (__task_filetree_read.var not in satellite_configuration_filetree_read_include_vars_no_log_false)
+    }}
+
+- name: "Block to merge environment overrides for {{ __task_filetree_read.name }}"
+  when:
+    - satellite_configuration_overrides_path is defined
+    - __override_files_list.files | default([]) | length > 0
+  block:
+    - name: "Read override definitions for {{ __task_filetree_read.name }}"
+      when: not (__task_filetree_read.var in satellite_configuration_filetree_read_raw_template_vars)
+      ansible.builtin.include_vars:
+        file: "{{ __override_read_item.path }}"
+      loop: "{{ __override_files_list.files }}"
+      loop_control:
+        loop_var: __override_read_item
+        label: "{{ __override_read_item.path }}"
+      register: __override_contents_vars
+      ignore_errors: true
+      no_log: >-
+        {{
+          satellite_configuration_filetree_read_secure_logging
+          and (__task_filetree_read.var in satellite_configuration_sensitive_vars)
+          and (__task_filetree_read.var not in satellite_configuration_filetree_read_include_vars_no_log_false)
+        }}
+
+    - name: "Fail when override definitions cannot be loaded ({{ __task_filetree_read.name }})"
+      ansible.builtin.fail:
+        msg: >-
+          Failed to load override {{ __failed_override_read_item.item.path }} for {{ __task_filetree_read.var }}.
+          Ensure every vault_* reference is defined.
+          {{ __failed_override_read_item.msg | default(__failed_override_read_item) }}
+      loop: "{{ __override_contents_vars.results | default([]) | selectattr('failed', 'equalto', true) | list }}"
+      loop_control:
+        loop_var: __failed_override_read_item
+        label: "{{ __failed_override_read_item.item.path | default('') }}"
+      when:
+        - not (__task_filetree_read.var in satellite_configuration_filetree_read_raw_template_vars)
+        - __override_contents_vars is defined
+        - __override_contents_vars.results | default([]) | selectattr('failed', 'equalto', true) | list | length > 0
+
+    - name: "Read override definitions without Jinja templating for {{ __task_filetree_read.name }}"
+      when: __task_filetree_read.var in satellite_configuration_filetree_read_raw_template_vars
+      ansible.builtin.slurp:
+        src: "{{ __override_read_item.path }}"
+      loop: "{{ __override_files_list.files }}"
+      loop_control:
+        loop_var: __override_read_item
+        label: "{{ __override_read_item.path }}"
+      register: __override_contents_slurp
+      no_log: >-
+        {{
+          satellite_configuration_filetree_read_secure_logging
+          and (__task_filetree_read.var in satellite_configuration_sensitive_vars)
+          and (__task_filetree_read.var not in satellite_configuration_filetree_read_include_vars_no_log_false)
+        }}
+
+    - name: "Collect override items for {{ __task_filetree_read.name }}"
+      ansible.builtin.set_fact:
+        __override_items: "{{ (__override_items | default([])) + __override_collect_item.ansible_facts[__task_filetree_read.var] }}"
+      loop: "{{ __override_contents_vars.results | default([]) }}"
+      loop_control:
+        loop_var: __override_collect_item
+        label: "{{ __override_collect_item.ansible_included_var_files | default([]) | join(', ') }}"
+      when:
+        - not (__task_filetree_read.var in satellite_configuration_filetree_read_raw_template_vars)
+        - __override_contents_vars is defined
+        - __override_collect_item.ansible_facts[__task_filetree_read.var] is defined
+      no_log: >-
+        {{
+          satellite_configuration_filetree_read_secure_logging
+          and (__task_filetree_read.var in satellite_configuration_sensitive_vars)
+          and (__task_filetree_read.var not in satellite_configuration_filetree_read_include_vars_no_log_false)
+        }}
+
+    - name: "Collect override items from slurped YAML for {{ __task_filetree_read.name }}"
+      ansible.builtin.set_fact:
+        __override_items: >-
+          {{
+            (__override_items | default([]))
+            + (__override_slurp_collect_item.content | b64decode | from_yaml)[__task_filetree_read.var]
+          }}
+      loop: "{{ __override_contents_slurp.results | default([]) }}"
+      loop_control:
+        loop_var: __override_slurp_collect_item
+        label: "{{ __override_slurp_collect_item.source | default('') }}"
+      when:
+        - __task_filetree_read.var in satellite_configuration_filetree_read_raw_template_vars
+        - __override_contents_slurp is defined
+        - __override_slurp_collect_item.content is defined
+        - (__override_slurp_collect_item.content | b64decode | from_yaml)[__task_filetree_read.var] is defined
+      no_log: >-
+        {{
+          satellite_configuration_filetree_read_secure_logging
+          and (__task_filetree_read.var in satellite_configuration_sensitive_vars)
+          and (__task_filetree_read.var not in satellite_configuration_filetree_read_include_vars_no_log_false)
+        }}
+
+    - name: "Merge overrides into {{ __task_filetree_read.name }}"
+      ansible.builtin.set_fact:
+        "__populate_{{ __task_filetree_read.var }}": >-
+          {{
+            lookup('vars', '__populate_' + __task_filetree_read.var, default=[])
+            | infra.satellite_configuration.satellite_configuration_merge_by_key(
+                __override_items | default([]),
+                __task_filetree_read.merge_key
+                | default(satellite_configuration_filetree_read_merge_key | default('name'))
+              )
+          }}
+      no_log: >-
+        {{
+          satellite_configuration_filetree_read_secure_logging
+          and (__task_filetree_read.var in satellite_configuration_sensitive_vars)
+          and (__task_filetree_read.var not in satellite_configuration_filetree_read_include_vars_no_log_false)
+        }}
+
+- name: "Set Data Structure for {{ __task_filetree_read.name }}"
+  ansible.builtin.set_fact:
+    "{{ __task_filetree_read.var }}": "{{ lookup('vars', '__populate_' + __task_filetree_read.var, default=[]) }}"
+  no_log: >-
+    {{
+      satellite_configuration_filetree_read_secure_logging
+      and (__task_filetree_read.var in satellite_configuration_sensitive_vars)
+      and (__task_filetree_read.var not in satellite_configuration_filetree_read_include_vars_no_log_false)
+    }}
+  when: lookup('vars', '__populate_' + __task_filetree_read.var, default=[]) | length > 0
+
+- name: "Show loaded information"
+  ansible.builtin.debug:
+    var: "{{ __task_filetree_read.var }}"
+    verbosity: 1
 ...

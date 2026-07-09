@@ -1,0 +1,12 @@
+---
+galaxy_info:
+  author: ivarmu @ivarmu
+  description: Global variables consumed by other roles in infra.satellite_configuration
+  company: Community
+  license: GPL-2.0-or-later
+  min_ansible_version: "2.16"
+
+  galaxy_tags: []
+
+dependencies: []
+...

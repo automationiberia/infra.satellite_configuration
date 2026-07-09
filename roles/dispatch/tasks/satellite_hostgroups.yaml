@@ -1,0 +1,10 @@
+---
+- name: Dispatch | Apply Host Groups
+  ansible.builtin.import_role:
+    name: redhat.satellite.hostgroups
+  vars:
+    satellite_username: "{{ satellite.admin.username }}"
+    satellite_password: "{{ satellite.admin.password }}"
+    satellite_server_url: "{{ satellite.server_url }}"
+    satellite_validate_certs: "{{ satellite.validate_certs }}"
+...

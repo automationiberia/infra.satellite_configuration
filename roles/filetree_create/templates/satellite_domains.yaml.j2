@@ -1,6 +1,7 @@
 ---
+{% from 'parameter_export.j2' import export_parameters_block %}
 satellite_domains: {{ [] if info_list | length == 0 }}
-{% set __excluded_fields = ['created_at', 'updated_at', 'id', 'dns_id' ] %}
+{% set __excluded_fields = ['created_at', 'updated_at', 'id', 'dns_id', 'parameters'] %}
 {% set __excluded_subitems = ['id'] %}
 {% set __list_items = [] %}
 {% set __empty_values = [None, 'None', '', {}, [], [{}]] %}
@@ -14,6 +15,7 @@ satellite_domains: {{ [] if info_list | length == 0 }}
 {%     else %}
     {{ __map_item.key }}: {{ __map_item_value if (__map_item.value | type_debug == 'dict') else __map_item.value | default('""' if __map_item.key not in __list_items else [], true) | replace("\\'", "''") }}
 {%     endif %}
-{%-  endfor %}
+{%-   endfor %}
+{{ export_parameters_block(i.parameters | default([]), 'vault_satellite_domain_parameters', i.name) }}
 {% endfor %}
 ...

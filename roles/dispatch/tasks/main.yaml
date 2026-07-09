@@ -1,5 +1,10 @@
 ---
 # defaults file for dispatch
+- name: Resolve import Satellite API connection
+  ansible.builtin.include_role:
+    name: infra.satellite_configuration.global_vars
+    tasks_from: resolve_satellite_target.yaml
+
 - name: Manage Satellite Settings
   ansible.builtin.include_tasks: satellite_settings.yaml
   args:
@@ -13,20 +18,6 @@
     apply:
       tags: auth_sources_ldap
   tags: auth_sources_ldap
-
-- name: Manage User Groups
-  ansible.builtin.include_tasks: satellite_usergroups.yaml
-  args:
-    apply:
-      tags: usergroups
-  tags: usergroups
-
-- name: Manage Roles
-  ansible.builtin.include_tasks: satellite_roles.yaml
-  args:
-    apply:
-      tags: roles
-  tags: roles
 
 - name: Create Organizations
   ansible.builtin.include_tasks: satellite_organizations.yaml
@@ -42,6 +33,27 @@
       tags: locations
   tags: locations
 
+- name: Manage Domains
+  ansible.builtin.include_tasks: satellite_domains.yaml
+  args:
+    apply:
+      tags: domains
+  tags: domains
+
+- name: Manage Subnets
+  ansible.builtin.include_tasks: satellite_subnets.yaml
+  args:
+    apply:
+      tags: subnets
+  tags: subnets
+
+- name: Manage Roles
+  ansible.builtin.include_tasks: satellite_roles.yaml
+  args:
+    apply:
+      tags: roles
+  tags: roles
+
 - name: Manage Users
   ansible.builtin.include_tasks: satellite_users.yaml
   args:
@@ -49,12 +61,63 @@
       tags: users
   tags: users
 
+- name: Manage User Groups
+  ansible.builtin.include_tasks: satellite_usergroups.yaml
+  args:
+    apply:
+      tags: usergroups
+  tags: usergroups
+
 - name: Manage Lifecycle Environments
   ansible.builtin.include_tasks: satellite_lifecycle_environments.yaml
   args:
     apply:
       tags: lifecycle_environments
   tags: lifecycle_environments
+
+- name: Resolve subscription manifest lists
+  ansible.builtin.include_tasks: satellite_manifest_resolve.yaml
+  when: satellite_configuration_dispatch_manifest_upload | bool or satellite_configuration_dispatch_manifest_validate | bool
+  args:
+    apply:
+      tags:
+        - manifest
+        - manifest_validate
+  tags:
+    - manifest
+    - manifest_validate
+
+- name: Upload Subscription Manifest
+  when: satellite_configuration_dispatch_manifest_upload | bool
+  ansible.builtin.include_tasks: satellite_manifest.yaml
+  args:
+    apply:
+      tags: manifest
+  tags: manifest
+
+- name: Validate Subscription Manifest
+  when: satellite_configuration_dispatch_manifest_validate | bool
+  ansible.builtin.include_tasks: satellite_manifest_validate.yaml
+  args:
+    apply:
+      tags: manifest_validate
+  tags: manifest_validate
+
+- name: Create Content Credentials
+  ansible.builtin.include_tasks: satellite_content_credentials.yaml
+  args:
+    apply:
+      tags: content_credentials
+  tags: content_credentials
+
+- name: Create Products (initial pass without sync plan)
+  ansible.builtin.include_tasks: satellite_products.yaml
+  vars:
+    __dispatch_products_phase: initial
+  args:
+    apply:
+      tags: products
+  tags: products
 
 - name: Manage Repository Sets
   ansible.builtin.include_tasks: satellite_repository_sets.yaml
@@ -70,8 +133,28 @@
       tags: repositories
   tags: repositories
 
-- name: Manage Sync Plans
+- name: Manage Sync Plans (initial pass without products)
   ansible.builtin.include_tasks: satellite_sync_plans.yaml
+  vars:
+    __dispatch_sync_plans_phase: initial
+  args:
+    apply:
+      tags: sync_plans
+  tags: sync_plans
+
+- name: Associate Products with Sync Plans
+  ansible.builtin.include_tasks: satellite_products.yaml
+  vars:
+    __dispatch_products_phase: sync_plan
+  args:
+    apply:
+      tags: products
+  tags: products
+
+- name: Associate Sync Plans with Products
+  ansible.builtin.include_tasks: satellite_sync_plans.yaml
+  vars:
+    __dispatch_sync_plans_phase: products
   args:
     apply:
       tags: sync_plans
@@ -84,29 +167,20 @@
       tags: content_views
   tags: content_views
 
-# Don't treat this appart from Content Views by now
-# - name: Manage Content Views Filters
-#   ansible.builtin.include_tasks: satellite_content_view_filters.yaml
-#   args:
-#     apply:
-#       tags: content_view_filters
-#   tags: content_view_filters
-# Don't treat this appart from Content Views by now
+- name: Manage Content View Filters
+  ansible.builtin.include_tasks: satellite_content_view_filters.yaml
+  args:
+    apply:
+      tags: content_view_filters
+  tags: content_view_filters
 
 - name: Publish and Promote Content Views
-  when: false
+  when: satellite_configuration_dispatch_content_view_publish_promote | bool
   ansible.builtin.include_tasks: satellite_cv_versions.yaml
   args:
     apply:
       tags: cv_publish_promote
   tags: cv_publish_promote
-
-- name: Manage Activation Keys
-  ansible.builtin.include_tasks: satellite_activation_keys.yaml
-  args:
-    apply:
-      tags: activation_keys
-  tags: activation_keys
 
 - name: Manage Host Collections
   ansible.builtin.include_tasks: satellite_host_collections.yaml
@@ -115,19 +189,12 @@
       tags: host_collections
   tags: host_collections
 
-- name: Create Products
-  ansible.builtin.include_tasks: satellite_products.yaml
+- name: Manage Activation Keys
+  ansible.builtin.include_tasks: satellite_activation_keys.yaml
   args:
     apply:
-      tags: products
-  tags: products
-
-- name: Create Content Credentials
-  ansible.builtin.include_tasks: satellite_content_credentials.yaml
-  args:
-    apply:
-      tags: content_credentials
-  tags: content_credentials
+      tags: activation_keys
+  tags: activation_keys
 
 - name: Create Partition Tables
   ansible.builtin.include_tasks: satellite_partition_tables.yaml
@@ -136,24 +203,65 @@
       tags: partition_tables
   tags: partition_tables
 
-- name: Create Provisioning Templates
-  ansible.builtin.include_tasks: satellite_provisioning_templates.yaml
-  args:
-    apply:
-      tags: provisioning_templates
-  tags: provisioning_templates
-
-- name: Create Installation Mediums
+- name: Create Installation Mediums (initial pass without OS associations)
   ansible.builtin.include_tasks: satellite_installation_mediums.yaml
+  vars:
+    __dispatch_installation_mediums_phase: create
   args:
     apply:
       tags: installation_mediums
   tags: installation_mediums
 
-- name: Create OperatingSystems
+- name: Create Provisioning Templates (initial pass without OS associations)
+  ansible.builtin.include_tasks: satellite_provisioning_templates.yaml
+  vars:
+    __dispatch_provisioning_templates_phase: create
+  args:
+    apply:
+      tags: provisioning_templates
+  tags: provisioning_templates
+
+- name: Create OperatingSystems (initial pass without installation media)
   ansible.builtin.include_tasks: satellite_operatingsystems.yaml
+  vars:
+    __dispatch_operatingsystems_phase: create
   args:
     apply:
       tags: operatingsystems
   tags: operatingsystems
+
+- name: Associate Installation Mediums with Operating Systems
+  ansible.builtin.include_tasks: satellite_installation_medium_associations.yaml
+  args:
+    apply:
+      tags: installation_mediums
+  tags: installation_mediums
+
+- name: Associate Operating Systems with Installation Media
+  ansible.builtin.include_tasks: satellite_operatingsystem_media.yaml
+  args:
+    apply:
+      tags: operatingsystems
+  tags: operatingsystems
+
+- name: Assign Provisioning Template defaults to Operating Systems
+  ansible.builtin.include_tasks: satellite_provisioning_template_os_defaults.yaml
+  args:
+    apply:
+      tags: provisioning_templates
+  tags: provisioning_templates
+
+- name: Manage Job Templates
+  ansible.builtin.include_tasks: satellite_job_templates.yaml
+  args:
+    apply:
+      tags: job_templates
+  tags: job_templates
+
+- name: Manage Host Groups
+  ansible.builtin.include_tasks: satellite_hostgroups.yaml
+  args:
+    apply:
+      tags: hostgroups
+  tags: hostgroups
 ...

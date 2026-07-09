@@ -1,0 +1,77 @@
+---
+description: Mandatory FQCN usage for Ansible tasks, roles, modules, filters, and Jinja templates in this collection. Apply on every change.
+alwaysApply: false
+globs: "{roles,playbooks,plugins}/**/*.{yml,yaml,j2,py}"
+---
+
+# FQCN Standards
+
+Apply these rules on **every** task, role, playbook, plugin, and export template change.
+
+## Ansible builtins and includes
+
+- Tasks and includes: `ansible.builtin.*` (for example `ansible.builtin.import_role`, `ansible.builtin.include_tasks`, `ansible.builtin.set_fact`, `ansible.builtin.uri`, `ansible.builtin.template`).
+- Never use bare module names (`import_role`, `uri`, `set_fact`) or legacy `include` without `ansible.builtin`.
+
+## Red Hat Satellite collection
+
+- Modules and roles: `redhat.satellite.<module_or_role>` (for example `redhat.satellite.product`, `redhat.satellite.content_views`).
+- Prefer `ansible.builtin.import_role` with `name: redhat.satellite.<role>` when a matching role exists.
+
+## This collection
+
+- Roles: `infra.satellite_configuration.<role>` (for example `infra.satellite_configuration.filetree_read`, `infra.satellite_configuration.global_vars`).
+- Modules: `infra.satellite_configuration.<module>` (for example `infra.satellite_configuration.format_yaml`).
+- **Role meta dependencies** must use FQCN:
+  ```yaml
+  dependencies:
+    - role: infra.satellite_configuration.global_vars
+  ```
+- **`include_role` / `import_role` name** must use FQCN when referencing collection roles:
+  ```yaml
+  ansible.builtin.include_role:
+    name: infra.satellite_configuration.global_vars
+    tasks_from: resolve_satellite_target.yaml
+  ```
+
+## Collection filters (critical in Jinja templates)
+
+`ansible.builtin.template` does **not** inherit the play `collections:` context for filter resolution on ansible-core 2.16+.
+
+Always use the collection FQCN prefix for custom filters inside `.j2` templates:
+
+```jinja2
+{{ value | infra.satellite_configuration.satellite_configuration_contains_template_markers }}
+{{ base | infra.satellite_configuration.satellite_configuration_merge_by_key(overrides, 'name') }}
+{{ layout | infra.satellite_configuration.satellite_configuration_sanitize_partition_table_layout }}
+```
+
+Short filter names fail at template render time with "Could not load filter".
+
+## Playbooks
+
+- Declare `collections:` including `infra.satellite_configuration` and `redhat.satellite`.
+- Use `ansible.builtin.import_role` with `name: infra.satellite_configuration.<role>`.
+- When `module_defaults` references `satellite.*`, resolve `satellite_target` → `satellite` in a **prior play** (see `playbooks/run_filetree_read.yaml`).
+
+## YAML document end (mandatory)
+
+ansible-lint rule **`yaml[document-end]`** (and `.yamllint` `document-end: present`) require a document-end marker on Ansible YAML files.
+
+- End **every** task, handler, playbook, and role YAML file under `roles/` and `playbooks/` with `...` on its own final line.
+- Applies to primary files (`satellite_<domain>.yaml`, `get_<domain>.yaml`, `main.yaml`) **and** helper includes (`*_batch.yaml`, `wait_for_*.yaml`, `api_call.yaml`, `read_contents.yml`, etc.).
+- When creating or editing any of these files, verify the last non-empty line is `...` before committing (pre-commit ansible-lint will fail otherwise).
+- Jinja export templates (`.j2`) that emit full CaC documents also end with `...` after the `satellite_<resource_plural>:` block.
+
+```yaml
+- name: Example task
+  ansible.builtin.debug:
+    msg: done
+...
+```
+
+## Forbidden for new work
+
+- `theforeman.foreman.*`
+- Short role names in `meta/main.yml` (for example `role: global_vars`)
+- Short filter names in export templates

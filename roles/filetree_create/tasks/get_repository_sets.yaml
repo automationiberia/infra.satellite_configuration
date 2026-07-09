@@ -1,10 +1,19 @@
 ---
-- name: Repository Sets | Reset the results variable
+- name: Repository Sets | Reset accumulated results
   ansible.builtin.set_fact:
-    result_api_response: {}
+    __rs_info_list: []
 
 - name: Repository Sets | Get Organizations
-  ansible.builtin.include_tasks: get_organizations.yaml
+  redhat.satellite.organization_info:
+    server_url: "{{ satellite.server_url }}"
+    username: "{{ satellite.admin.username }}"
+    password: "{{ satellite.admin.password }}"
+    validate_certs: "{{ satellite.validate_certs }}"
+  register: __result_organizations
+
+- name: Repository Sets | Set organization list
+  ansible.builtin.set_fact:
+    info_list: "{{ __result_organizations.organizations | sort(attribute='id') }}"
 
 - name: Repository Sets | Get Syn Plans Info
   ansible.builtin.include_tasks: get_repository_sets_do_work.yaml
@@ -19,5 +28,5 @@
   ansible.builtin.include_tasks: template_out.yaml
   vars:
     template_type: satellite_repository_sets
-    info_list: "{{ __rs_info_list | default({}) }}"
+    info_list: "{{ __rs_info_list | default([]) }}"
 ...

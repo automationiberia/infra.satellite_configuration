@@ -10,7 +10,8 @@ The following variables are required for that role to work properly:
 
 | Variable Name | Default Value | Required | Type | Description |
 | :------------ | :-----------: | :------: | :------: | :---------- |
-| `satellite` | N/A | yes | dict | Contains all the information needed to connect to the Red Hat Satellite instance. Fields are described below. |
+| `satellite` | N/A | yes* | dict | Connection to the Red Hat Satellite instance. *Optional when `satellite_target` is set (import uses `satellite_target` and falls back to `satellite`). Fields are described below. |
+| `satellite_target` | — | no | dict | Target Satellite for import; same shape as `satellite`. Preferred for round-trip workflows together with `satellite_source`. |
 | `satellite.server_url` | N/A | yes | str | Red Hat Satellite Server URL (must include the protocol  to be used 'https://'). |
 | `satellite.validate_certs` | N/A | yes | str | Specifies whether to validate certificates or not when connecting to Red Hat Satellite server. |
 | `satellite.admin` | N/A | yes | dict | Contains all the information related to the user to use to connect to the Red Hat Satellite server. Fields are described below. |
@@ -20,13 +21,65 @@ The following variables are required for that role to work properly:
 | `satellite.template.owner` | N/A | yes | str | Specifies the user name/UID who the generated files will belong to. |
 | `satellite.template.group` | N/A | yes | str | Specifies the group name/GID who the generated files will belong to. |
 | `satellite.template.mode` | N/A | yes | str | Specifies the permissions the generated files will have. |
-| `output_path` | `/tmp/satellite_filetree_config` | no | str | The path to the output directory where all the generated `yaml` files with the corresponding objects as code will be written to. |
+| `output_path` | see `satellite_configuration_filetree_path` in role `global_vars` | no | str | Alias used by `filetree_create`; same base path as import. |
+| `satellite_configuration_filetree_path` | `/tmp/satellite_filetree_config` | no | str | Base directory for `satellite_<type>.d/` CaC fragments (export and import). |
+| `satellite_configuration_dispatch_manifest_upload` | `false` | no | bool | When `true`, uploads manifests via `redhat.satellite.manifest` before content tasks. |
+| `satellite_configuration_dispatch_manifest_validate` | `true` | no | bool | When `true`, fails early if a target organization has no subscription manifest. |
+| `satellite_configuration_dispatch_manifest_organization` | first `satellite_organizations` name or `Default Organization` | no | str | Organization for legacy single-manifest upload and validation when `satellite_manifests` is empty. |
+| `satellite_manifests` | `[]` | no | list | Per-organization manifest upload/validation list. Each item requires `organization` (or `name`) and `path` for upload; optional `manifest_download`, `manifest_uuid`, `rhsm_username`, `rhsm_password`. |
+| `satellite_manifest_path` | `""` | when upload enabled | str | Legacy single manifest path on the control node (used when `satellite_manifests` is empty). |
+| `satellite_manifest_download` | `false` | no | bool | Download manifest from Red Hat Customer Portal before upload (requires RHSM credentials). |
 | `satellite_<object_type_variable>` | N/A | yes | list | The input configuration to be applied. Each object type is defined in a dedicated variable. The list of valid input variables can be found at the [`infra.satellite_configuration.filetree_read` defaults' file][link_filetree_read_defaults] |
 | `satellite_users_default_password` | unset | no | str | Optional fallback for `redhat.satellite.user` **`user_password`** when a `satellite_users` item omits it. Foreman requires a password to **create** Internal-auth users; prefer **`user_password`** per user from Vault. |
+| `dispatch_roles_name_skips_extra` | `[]` | no | list | Additional role names skipped on import (appended to `satellite_builtin_role_name_skips` from role `global_vars`). |
+| `satellite_configuration_dispatch_secure_logging` | `true` | no | bool | When `true`, sets `no_log` on dispatch tasks for sensitive object types (users, settings, content credentials, LDAP). Set `false` when debugging. |
+| `satellite_configuration_dispatch_content_view_publish_promote` | `true` | no | bool | When `true`, publishes and promotes content views after `content_views` dispatch (tag `cv_publish_promote`). Set `false` to skip or on re-runs when versions already exist. |
+| `satellite_content_view_versions` | `[]` | no | list | Optional explicit publish/promote actions for `redhat.satellite.content_view_version`. When empty, actions are derived from `satellite_content_views` export metadata (`versions`, `needs_publish`, `latest_version_environments`). |
+| `satellite_configuration_dispatch_host_collection_membership` | `false` | no | bool | When `true`, assigns exported `hosts` to host collections. Default `false` for greenfield imports where hosts do not exist yet. |
+| `content_views_purge_count` | `6` | no | int | Keep this many newest versions per content view after publish; passed to `redhat.satellite.content_view_version_cleanup`. |
+| `satellite_configuration_dispatch_products_skip_provider_managed` | `true` | no | bool | On the initial products pass, skip Red Hat subscription products (`redhat: true`); custom products (e.g. Anonymous provider) are still dispatched. |
+| `satellite_configuration_dispatch_products_batch_size` | `25` | no | int | Process custom products in batches of this size. Set `0` to disable batching. |
+| `satellite_configuration_dispatch_products_batch_pause` | `30` | no | int | Seconds to pause between product batches (lets Satellite dynflow workers catch up). Set `0` to disable. |
+| `satellite_configuration_dispatch_content_views_batch_size` | `1` | no | int | Publish/promote content views from export metadata in batches of this size. Set `0` to disable batching. |
+| `satellite_configuration_dispatch_content_views_task_poll_interval` | `15` | no | int | Seconds between polls of `/foreman_tasks` for running content view publish/promote tasks between batches. Set `0` to skip waiting. |
+| `satellite_configuration_dispatch_content_views_task_wait_timeout` | `3600` | no | int | Maximum seconds to wait for running content view tasks to finish before failing the batch. |
 
 ### `satellite_users` and passwords
 
 Exports do not include passwords. When **creating** a user with **`auth_source: Internal`** (or default Internal), set **`user_password`** on that list entry (from Vault), or define **`satellite_users_default_password`** for bootstrap environments only. Omit `user_password` on existing users you only update.
+
+### `satellite_roles` and built-in roles
+
+Dispatch skips built-in and locked roles from `satellite_roles` (by name via `satellite_builtin_role_name_skips` from role **`global_vars`**, and by `builtin` / `locked` when present in legacy CaC). Append site-specific names with **`dispatch_roles_name_skips_extra`**.
+
+### RBAC and dispatch order
+
+Dispatch applies RBAC objects in dependency order: `auth_sources_ldap` → `organizations` → `locations` → `roles` → `users` → `usergroups`.
+
+Content and provisioning objects run in dependency order after lifecycle environments and optional manifest upload/validation:
+
+`content_credentials` → `products` (initial, without sync plan) → `repository_sets` → `repositories` → `sync_plans` (initial, without products) → `products` (sync plan association) → `sync_plans` (custom product association) → `content_views` → `content_view_filters` → `cv_publish_promote` → `host_collections` → `activation_keys` → `partition_tables` → `installation_mediums` (without OS associations) → `provisioning_templates` (without OS associations) → `operatingsystems` (without installation media) → `installation_mediums` (OS association) → `operatingsystems` (media association) → `provisioning_templates` (OS default assignment) → `hostgroups`.
+
+User groups only receive direct `users` memberships for logins defined in `satellite_users`; LDAP users are mapped through `external_usergroups`.
+
+### Subscription manifests (multiple organizations)
+
+When several organizations each need their own manifest, set `satellite_manifests` and enable upload:
+
+```yaml
+satellite_configuration_dispatch_manifest_upload: true
+satellite_manifests:
+  - organization: datacenter
+    path: /path/to/datacenter-manifest.zip
+  - organization: red_ribbon
+    path: /path/to/red_ribbon-manifest.zip
+  - organization: Umbrella
+    path: /path/to/umbrella-manifest.zip
+```
+
+Validation runs for every organization listed in `satellite_manifests`. Optional per-item fields: `manifest_download`, `manifest_uuid`, `rhsm_username`, `rhsm_password` (fall back to play-level `satellite_manifest_download`, `satellite_rhsm_username`, `satellite_rhsm_password`).
+
+Legacy single-manifest variables (`satellite_manifest_path` + `satellite_configuration_dispatch_manifest_organization`) still work when `satellite_manifests` is empty.
 
 ## Example Playbook
 

@@ -1,0 +1,103 @@
+---
+# defaults file for global_vars
+# Built-in / locked Foreman roles — shared by filetree_create (export) and dispatch (import).
+satellite_builtin_role_name_skips:
+  - Ansible Roles Manager
+  - Ansible Tower Inventory Reader
+  - Auditor
+  - Bookmarks manager
+  - Boot disk access
+  - Compliance manager
+  - Compliance viewer
+  - Content Exporter
+  - Content Importer
+  - Create ARF report
+  - Default role
+  - Discovery Manager
+  - Discovery Reader
+  - Edit hosts
+  - Edit partition tables
+  - ForemanRhCloud
+  - ForemanRhCloud Read Only
+  - Manager
+  - Organization admin
+  - Register hosts
+  - Remote Execution Manager
+  - Remote Execution User
+  - Site manager
+  - System admin
+  - Tasks Manager
+  - Tasks Reader
+  - Viewer
+  - View hosts
+  - Virt-who Manager
+  - Virt-who Reporter
+  - Virt-who Viewer
+  - Webhooks Manager
+  - Webhooks Reader
+
+satellite_builtin_role_name_skips_extra: []
+
+# CaC variable names that may contain secrets; used by read_contents.yml to scope no_log in the ingest loop.
+satellite_configuration_sensitive_vars:
+  - satellite_auth_sources_ldap
+  - satellite_content_credentials
+  - satellite_settings
+  - satellite_users
+
+# Red Hat CDN repositories are enabled via repository_sets, not the repository module.
+satellite_redhat_repository_url_substring: cdn.redhat.com
+
+# CaC lists loaded with slurp/from_yaml (no Jinja templating on file contents).
+satellite_configuration_filetree_read_raw_template_vars:
+  - satellite_provisioning_templates
+  - satellite_partition_tables
+  - satellite_job_templates
+
+# Sensitive types that must use include_vars (vault refs) but disable no_log on load
+# to avoid ansible-core 2.16 include_vars crashes on mixed bool/string YAML.
+satellite_configuration_filetree_read_include_vars_no_log_false:
+  - satellite_auth_sources_ldap
+  - satellite_settings
+  - satellite_users
+
+# Base directory for export (filetree_create) and import (filetree_read).
+# Each object type lives under satellite_<resource_plural>.d/ (no org/env nesting).
+satellite_configuration_filetree_path: "/tmp/satellite_filetree_config"
+
+# Optional directory with per-type .d/ override fragments merged on import (see filetree_read).
+# satellite_configuration_overrides_path: /path/to/overrides
+
+# Default object key used when merging override fragments in filetree_read.
+satellite_configuration_filetree_read_merge_key: name
+
+# Default mail domain for Internal users exported without an email address (required on create).
+satellite_configuration_users_default_mail_domain: example.com
+
+# Installation medium paths reference vault_satellite_installation_mediums_target_fqdn on export.
+# Placeholder scalar written into generated vault_template.yaml for operator-filled secrets.
+satellite_configuration_vault_placeholder: "CHANGEME"
+
+# Vault variable names generated in vault_template.yaml when referenced from CaC fragments.
+satellite_configuration_vault_template_vars:
+  - vault_satellite_auth_sources_ldap_account_passwords
+  - vault_satellite_users_passwords
+  - vault_satellite_users_default_password
+  - vault_satellite_settings
+  - vault_satellite_settings_host_specific
+  - vault_satellite_hostgroup_parameters
+  - vault_satellite_operatingsystem_parameters
+  - vault_satellite_domain_parameters
+  - vault_satellite_subnet_parameters
+  - vault_satellite_organization_parameters
+  - vault_satellite_location_parameters
+  - vault_satellite_job_template_inputs
+  - vault_satellite_installation_mediums_target_fqdn  # only when export rewrites installation medium paths
+
+# Settings tied to the source Satellite host; exported with vault refs for the target site.
+satellite_settings_host_specific_names:
+  - instance_id
+  - rhc_instance_id
+  - unattended_url
+  - foreman_tasks_troubleshooting_url
+...

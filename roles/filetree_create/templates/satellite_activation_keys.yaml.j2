@@ -34,6 +34,9 @@ satellite_activation_keys: {{ [] if info_list | length == 0 }}
 {%     if __map_item.key in ['organization', 'content_view'] %}
 {%       set __map_item_value = __map_item.value.name %}
 {%     endif %}
+{%     if __map_item.key == 'host_collections' and __map_item.value | type_debug == 'list' %}
+{%       set __map_item_value = __map_item.value | map(attribute='name') | list %}
+{%     endif %}
 {%     if loop.index == 1 %}
   - {{   (__translate | selectattr(__map_item.key, 'defined'))[0][__map_item.key]
        if
@@ -59,6 +62,6 @@ satellite_activation_keys: {{ [] if info_list | length == 0 }}
              __map_item.value | default('""' if __map_item.key not in __list_items else [], true) | replace("\\'", "''")
         }}
 {%     endif %}
-{%-  endfor %}
+{%-   endfor %}
 {% endfor %}
 ...

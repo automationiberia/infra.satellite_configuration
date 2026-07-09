@@ -1,10 +1,26 @@
 ---
+# redhat.satellite.setting accepts value as raw; playbook module_defaults supply API connection.
 - name: Dispatch | Apply Settings
-  ansible.builtin.import_role:
-    name: redhat.satellite.settings
-  vars:
-    satellite_username: "{{ satellite.admin.username }}"
-    satellite_password: "{{ satellite.admin.password }}"
-    satellite_server_url: "{{ satellite.server_url }}"
-    satellite_validate_certs: "{{ satellite.validate_certs }}"
+  redhat.satellite.setting:
+    name: "{{ __current_setting.name }}"
+    value: >-
+      {{
+        __current_setting.value | from_json
+        if (
+          __current_setting.value is string
+          and (__current_setting.value | trim) is match('^(\[\]|\{\})$')
+        )
+        else __current_setting.value
+      }}
+  loop: "{{ satellite_settings | default([]) }}"
+  loop_control:
+    loop_var: __current_setting
+    label: "{{ __current_setting.name }}"
+  when:
+    - satellite_settings is defined
+    - __current_setting.name is defined
+    - __current_setting.value is defined
+    - (__current_setting.value | default('') | string | length > 0) or (__current_setting.value is sameas false) or (__current_setting.value is sameas true) or (__current_setting.value is integer) or (__current_setting.value is float)
+  delegate_to: localhost
+  no_log: "{{ satellite_configuration_dispatch_secure_logging }}"
 ...

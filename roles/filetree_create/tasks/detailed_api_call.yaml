@@ -2,7 +2,7 @@
 - name: "{{ call_type }} | API call - {{ api_link }}"
   ansible.builtin.uri:
     method: GET
-    url: "{{ satellite.server_url }}{{ api_link }}{{ item.id }}"
+    url: "{{ satellite.server_url }}{{ api_link }}{{ item.id }}{{ api_query | default('') }}"
     user: "{{ satellite.admin.username }}"
     password: "{{ satellite.admin.password }}"
     validate_certs: "{{ satellite.validate_certs }}"

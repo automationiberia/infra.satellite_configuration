@@ -27,6 +27,34 @@
     detailed_info:
       results: []
 
+- name: Users | Record Internal-auth users for vault template
+  when: detailed_info.results is defined and detailed_info.results | length > 0
+  ansible.builtin.set_fact:
+    satellite_configuration_vault_template_internal_users: >-
+      {{
+        (satellite_configuration_vault_template_internal_users | default([]))
+        + (
+          (
+            detailed_info.results
+            | map(attribute='json')
+            | selectattr('login', 'defined')
+            | selectattr('auth_source_internal', 'defined')
+            | rejectattr('auth_source_internal', 'equalto', none)
+            | map(attribute='login')
+            | list
+          )
+          + (
+            detailed_info.results
+            | map(attribute='json')
+            | selectattr('login', 'defined')
+            | selectattr('auth_source_name', 'equalto', 'Internal')
+            | map(attribute='login')
+            | list
+          )
+          | unique
+        )
+      }}
+
 - name: Users | Template Out Results
   when:
     - detailed_info is defined

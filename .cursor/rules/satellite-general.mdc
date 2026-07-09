@@ -11,7 +11,7 @@ Apply these conventions to all changes in this repository.
 - Use `satellite_<resource_plural>` for top-level data lists.
 - Use `satellite_<domain>.yaml` for dispatch task files.
 - Use `get_<domain>.yaml` for filetree export task files.
-- Use `satellite_<resource>.d/` for filetree fragment directories.
+- Use `satellite_<resource>.d/` for filetree fragment directories under `satellite_configuration_filetree_path` (no org/env nesting).
 - Use `__` prefix for temporary loop/internal variables (example: `__current_repository`).
 
 ## FQCN Rules
@@ -19,14 +19,24 @@ Apply these conventions to all changes in this repository.
 - Always use `redhat.satellite.*` for Satellite resources and helper modules.
 - Prefer `redhat.satellite` roles via `ansible.builtin.import_role` when available; otherwise use `redhat.satellite.*` modules.
 - Use `ansible.builtin.uri` only when no `redhat.satellite` role/module is available for that operation.
-- Use `infra.satellite_configuration.*` for this collection's roles/modules.
+- Use `infra.satellite_configuration.*` for this collection's roles, modules, and **filters**.
+- Role `meta/main.yml` dependencies and `include_role` / `import_role` `name:` must use collection FQCN (for example `infra.satellite_configuration.global_vars`, not `global_vars`).
+- In Jinja **export templates** (`.j2`), custom filters must use the collection FQCN prefix (`infra.satellite_configuration.<filter>`); `ansible.builtin.template` does not inherit play `collections:` on ansible-core 2.16+.
 - Do not introduce new `theforeman.foreman.*` tasks.
+- Full FQCN reference: `skills/fqcn-standards.mdc`.
 
 ## Task Style
 - Prefer loops over `satellite_*` lists, not duplicated one-off tasks.
 - Use `| default(omit)` for optional module parameters.
 - Delegate Satellite API operations to `localhost` when appropriate.
 - Keep changes idempotent and data-driven.
+- Do not add `set_fact` tasks that only copy API results into another variable (for example `all_results` from `result_api_response.json.results`); pass the filtered expression directly to `loop_var`, `when`, or `include_tasks` `vars`.
+- Avoid accumulator loops (`__merged: []` plus per-item `set_fact`) when a single Jinja list comprehension or filter expression can build the list in one expression.
+- Prefer passing transformed data via `include_tasks` `vars` over `set_fact` when the value is only needed by the next included task (for example template rendering).
+
+## YAML Style
+- All Ansible task, role, and playbook YAML files under this collection must end with `...` on its own final line (ansible-lint `yaml[document-end]`, `.yamllint` `document-end: present`).
+- Includes helper `include_tasks` files (`*_batch.yaml`, `wait_for_*.yaml`, `api_call.yaml`, `read_contents.yml`, etc.), not only `satellite_<domain>.yaml` / `get_<domain>.yaml`.
 
 ## Cross-Role Consistency Rule
 - When adding a new object type, update all three roles in the same change:
@@ -35,3 +45,37 @@ Apply these conventions to all changes in this repository.
   - `roles/dispatch` (apply)
 - Add matching tags and naming across the three roles for the same object type.
 - Do not add partial support for a new object type in only one role.
+
+## Shared Static Variables
+- Place static variables needed by multiple roles in `roles/global_vars/defaults/main.yml`.
+- Consumer roles must declare `dependencies: [{ role: infra.satellite_configuration.global_vars }]` in `meta/main.yml`.
+- Do not share static data via cross-role `include_vars`, sibling `role_path` paths, or duplicated lists in consumer role `vars/`.
+
+## Secure Logging (`no_log`)
+- Default `satellite_configuration_<role>_secure_logging: true` keeps `no_log: true` on tasks that handle secrets.
+- Set `satellite_configuration_<role>_secure_logging: false` only when debugging (shows task output and API errors).
+- `no_log` on dedicated dispatch/export task files for a sensitive object type: `no_log: "{{ satellite_configuration_<role>_secure_logging }}"` only.
+- `no_log` on dynamic loops that handle many CaC lists (for example `read_contents.yml`): `no_log: "{{ satellite_configuration_filetree_read_secure_logging and (__task_filetree_read.var in satellite_configuration_sensitive_vars) }}"`.
+- Do not test `'satellite_<resource_plural>' in satellite_configuration_sensitive_vars` inside a task file that already applies exclusively to that resource; the list is for dynamic scoping, not redundant self-checks.
+- Do not add per-role alias copies of `satellite_configuration_sensitive_vars` in consumer role defaults.
+- Do not apply `no_log` to non-sensitive object types (for example products, organizations, partition tables).
+- Red Hat CDN repositories are managed with `satellite_repository_sets`; export and dispatch skip them in `satellite_repositories` using `satellite_redhat_repository_url_substring` from `global_vars`.
+- Host collection export includes structure only; host membership dispatch is opt-in via `satellite_configuration_dispatch_host_collection_membership`.
+- Prefer `{% raw %}` / `{% endraw %}` in export templates over `!unsafe` for ERB/Jinja-like scalars; keep wrappers in CaC when `format_yaml` detects ERB/Jinja markers.
+- Lists in `satellite_configuration_filetree_read_raw_template_vars` are loaded with `slurp` + `from_yaml` in `filetree_read` (no Jinja templating on file contents).
+
+## Jinja indentation
+- Canonical references:
+  - Export templates: `roles/filetree_create/templates/satellite_content_view_filters.yaml.j2`
+  - Multi-line task blocks (`>-` / `vars`): `roles/filetree_create/tasks/get_repository_sets_do_work.yaml` (`__resolved_repository_releasevers`)
+- Nesting rules apply **identically** to `{%` and `{%-` openers (and matching `%}` / `-%}` closers).
+- Nest control structures with **two extra spaces after the opener (`{%` or `{%-`) per depth** before the keyword:
+  - depth 0: `{% for` / `{%- for` / `{% if` / `{%- if` (one space after the opener)
+  - depth 1: `{%   if` / `{%-   if` / `{%   else` / `{%-   else` (three spaces)
+  - depth 2: `{%     set` / `{%-     set` (five spaces)
+- `{% endif %}`, `{%- endif -%}`, `{% endfor %}`, `{%- endfor -%}`, `{% else %}`, and `{% elif %}` align with their matching opener at the same depth (same opener style as the block they close).
+- In `.j2` export templates, control tags start at YAML column 0 (no leading spaces before `{`).
+- In task YAML folded scalars (`>-`), keep the YAML base indent on every line; apply the same **per-depth spacing after `{%` or `{%-`** on nested tags inside the block.
+- Do **not** emit flat blocks where every inner `{% if` / `{%- if` / `{% set` / `{%- set` inside a `{% for` / `{%- for` uses depth 0 — nested bodies must increase depth.
+- Macro bodies and shared partials (`parameter_export.j2`, `vault_entity_parameters.j2`) follow the same nesting rules.
+- YAML list items in export templates: first key in a loop item is `  - key: value`; sibling keys are `    key: value`.

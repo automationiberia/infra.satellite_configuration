@@ -1,0 +1,7 @@
+---
+# Example override fragment — copy under satellite_configuration_overrides_path.
+satellite_settings:
+  - name: unattended_url
+    value: "https://sat-target.example.com"
+  - name: administrator
+    value: "admin@target.example.com"

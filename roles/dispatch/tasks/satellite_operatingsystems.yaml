@@ -1,8 +1,21 @@
 ---
+- name: Dispatch | Resolve operating systems for current phase
+  ansible.builtin.set_fact:
+    _satellite_operatingsystems_dispatch: >-
+      {{
+        (satellite_operatingsystems | default([]))
+        | map('combine', {'media': omit}, recursive=True)
+        | list
+        if (__dispatch_operatingsystems_phase | default('create') == 'create')
+        else (satellite_operatingsystems | default([]))
+      }}
+  when: satellite_operatingsystems is defined
+
 - name: Create OperatingSystems
   ansible.builtin.import_role:
     name: redhat.satellite.operatingsystems
   vars:
+    satellite_operatingsystems: "{{ _satellite_operatingsystems_dispatch | default(satellite_operatingsystems) }}"
     satellite_username: "{{ username }}"
     satellite_password: "{{ password }}"
     satellite_server_url: "{{ server_url }}"

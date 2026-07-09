@@ -1,0 +1,32 @@
+---
+- name: Build unlocked job templates for dispatch
+  ansible.builtin.set_fact:
+    __dispatch_job_templates: >-
+      {%- set __unlocked_job_templates = [] -%}
+      {%- for __jt in satellite_job_templates | default([]) -%}
+      {%-   if not (__jt.locked | default(false) | bool) -%}
+      {%-     set _ = __unlocked_job_templates.append(__jt) -%}
+      {%-   endif -%}
+      {%- endfor -%}
+      {{ __unlocked_job_templates }}
+  when: satellite_job_templates is defined
+
+- name: Create/Update Job Templates
+  redhat.satellite.job_template:
+    name: "{{ __current_job_template.name }}"
+    template: "{{ __current_job_template.template | infra.satellite_configuration.satellite_configuration_unwrap_raw_markers }}"
+    description_format: "{{ __current_job_template.description_format | default(omit) }}"
+    job_category: "{{ __current_job_template.job_category | default(omit) }}"
+    provider_type: "{{ __current_job_template.provider_type | default(omit) }}"
+    snippet: "{{ __current_job_template.snippet | default(omit) }}"
+    organizations: "{{ __current_job_template.organizations | default(omit) }}"
+    locations: "{{ __current_job_template.locations | default(omit) }}"
+    template_inputs: "{{ __current_job_template.template_inputs | default(omit) }}"
+    state: "{{ __current_job_template.state | default('present') }}"
+  loop: "{{ __dispatch_job_templates | default([]) }}"
+  loop_control:
+    loop_var: __current_job_template
+    label: "{{ __current_job_template.name }}"
+  when: satellite_job_templates is defined
+  delegate_to: localhost
+...

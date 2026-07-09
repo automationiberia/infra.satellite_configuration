@@ -1,0 +1,13 @@
+{% macro render_vault_entity_parameters_section(vault_var, fact_value, comment, placeholder) %}
+{%   if fact_value | default({}) | length > 0 %}
+# {{ comment }}
+{{ vault_var }}:
+{%     for __entity_name, __param_names in fact_value | dictsort %}
+  {{ __entity_name | to_json }}:
+{%       for __param_name in __param_names | sort %}
+    {{ __param_name | to_json }}: {{ placeholder }}  # hidden parameter
+{%       endfor %}
+{%     endfor %}
+
+{%   endif %}
+{%- endmacro %}

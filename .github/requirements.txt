@@ -1,7 +1,6 @@
 ansible
 docker
 docker-compose
-jmespath
 PyYAML
 requests
 requests-oauthlib

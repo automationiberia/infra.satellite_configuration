@@ -10,21 +10,32 @@
 satellite_provisioning_templates:
 {% for i in info_list %}
 {%   for __map_item in (i | dict2items) if __map_item.key not in __excluded_fields and __map_item.value not in __empty_values %}
-{%     if __map_item.key == 'template_kind_name' %}
+{%     if __map_item.key == 'template_kind_name' and not (__map_item.value in __empty_values) and not (i.snippet | default(false) | bool) %}
   {{ '-' if loop.index == 1 else ' ' }} kind: {{ discard_unwanted_fields(__map_item.value, __excluded_fields, __empty_values, __reduce_to_name, __translate) }}
+{%     elif __map_item.key == 'snippet' and __map_item.value | bool %}
+  {{ '-' if loop.index == 1 else ' ' }} kind: snippet
+{%     elif __map_item.key == 'snippet' %}
+{#     skip false snippet flag; non-snippet kind comes from template_kind_name #}
 {%     elif __map_item.key in __raw_fields %}
   {{ '-' if loop.index == 1 else ' ' }} {{ __map_item.key }}: |-
       {{ '{%- raw -%}' }}
       {{ discard_unwanted_fields(__map_item.value, __excluded_fields, __empty_values, __reduce_to_name, __translate) | trim("'") | indent(6) }}
       {{ '{%- endraw -%}' }}
+{%     elif __map_item.key == 'operatingsystems' %}
+  {{ '-' if loop.index == 1 else ' ' }} operatingsystems:
+{%       for __inner_item in __map_item.value %}
+      - name: {{ __inner_item.name }}
+        major: {{ __inner_item.major }}
+        minor: {{ __inner_item.minor }}
+{%       endfor %}
 {%     elif __map_item.key in __list_items_to_name %}
   {{ '-' if loop.index == 1 else ' ' }} {{ __map_item.key }}:
 {%       for __inner_item in __map_item.value %}
-      - {{ (dict(__inner_item.items() | selectattr('0', 'in', 'title' if __map_item.key == 'operatingsystems' else 'name'))['title' if __map_item.key == 'operatingsystems' else 'name']) }}
+      - {{ __inner_item.name }}
 {%       endfor %}
 {%     else %}
   {{ '-' if loop.index == 1 else ' ' }} {{ __map_item.key }}: {{ discard_unwanted_fields(__map_item.value, __excluded_fields, __empty_values, __reduce_to_name, __translate) }}
 {%     endif %}
-{%-  endfor %}
+{%-   endfor %}
 {% endfor %}
 ...

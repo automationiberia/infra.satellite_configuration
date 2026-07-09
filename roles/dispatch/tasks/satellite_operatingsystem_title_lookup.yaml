@@ -1,0 +1,31 @@
+---
+- name: Build operating system title lookup from target Satellite
+  ansible.builtin.uri:
+    url: "{{ server_url }}/api/operatingsystems"
+    user: "{{ username }}"
+    password: "{{ password }}"
+    validate_certs: "{{ validate_certs }}"
+    force_basic_auth: true
+    return_content: true
+  register: __dispatch_operatingsystem_info
+  delegate_to: localhost
+
+- name: Index operating system titles by name, major, and minor
+  ansible.builtin.set_fact:
+    __dispatch_operatingsystem_titles: >-
+      {{
+        (__dispatch_operatingsystem_titles | default({}))
+        | combine({
+            (__os_title_item.name ~ '|' ~ __os_title_item.major ~ '|' ~ __os_title_item.minor): __os_title_item.title
+          })
+      }}
+  loop: "{{ __dispatch_operatingsystem_info.json.results | default([]) }}"
+  loop_control:
+    loop_var: __os_title_item
+    label: "{{ __os_title_item.title | default(__os_title_item.name) }}"
+  when:
+    - __os_title_item.name is defined
+    - __os_title_item.major is defined
+    - __os_title_item.minor is defined
+    - __os_title_item.title is defined
+...

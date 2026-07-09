@@ -1,4 +1,5 @@
 ---
+# Direct user membership is limited to logins present in satellite_users; LDAP users are mapped via external_usergroups.
 - name: Ensure usergroup are correct
   redhat.satellite.usergroup:
     # Mandatory parameters
@@ -7,15 +8,29 @@
     updated_name: "{{ __current_usergroup.updated_name | default(omit) }}"
     admin: "{{ __current_usergroup.admin | default(omit) }}"
     roles: "{{ __current_usergroup.roles | default(omit) }}"
-    users: "{{ __current_usergroup.users | default(omit) }}"
+    users: "{{ omit if (_sat_usergroup_users | length == 0) else _sat_usergroup_users }}"
     usergroups: "{{ __current_usergroup.usergroups | default(omit) }}"
     state: "{{ __current_usergroup.state | default(omit) }}"
   loop: "{{ satellite_usergroups }}"
   loop_control:
     loop_var: __current_usergroup
     label: "{{ __current_usergroup.name }}"
+  vars:
+    _sat_dispatch_user_logins: "{{ satellite_users | default([]) | map(attribute='name') | list }}"
+    _sat_usergroup_user_logins: >-
+      {{
+        __current_usergroup.users | default([])
+        if ((__current_usergroup.users | default([]) | length == 0) or not (__current_usergroup.users[0] is mapping))
+        else (__current_usergroup.users | map(attribute='login') | list)
+      }}
+    _sat_usergroup_users: >-
+      {{
+        _sat_usergroup_user_logins
+        | select('in', _sat_dispatch_user_logins)
+        | list
+      }}
   when: satellite_usergroups is defined
-  delegate_to: "localhost"
+  delegate_to: localhost
 
 - name: Ensure external usergroups are correct
   redhat.satellite.external_usergroup:
@@ -30,5 +45,5 @@
     loop_var: __current_external_usergroup
     label: "User Group '{{ __current_external_usergroup[0].name }}' -> External User Group '{{ __current_external_usergroup[1].name }}'"
   when: satellite_usergroups is defined
-  delegate_to: "localhost"
+  delegate_to: localhost
 ...

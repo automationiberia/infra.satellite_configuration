@@ -20,6 +20,14 @@
   loop_control:
     loop_var: __current_operatingsystem
 
+- name: Operating Systems | Record hidden parameters for vault template
+  ansible.builtin.include_tasks: record_hidden_parameters_for_vault.yaml
+  vars:
+    __record_hidden_results: "{{ __rs_info_list | default([]) }}"
+    __record_hidden_vault_fact: satellite_configuration_vault_template_operatingsystem_parameters
+    __record_hidden_entity_label: operating system
+    __record_hidden_entity_key_format: operatingsystem_flat
+
 - name: Operating Systems | Template Out Results
   when:
     - __rs_info_list is defined

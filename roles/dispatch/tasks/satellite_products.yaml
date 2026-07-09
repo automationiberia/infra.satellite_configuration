@@ -1,22 +1,88 @@
 ---
-- name: Create/Update Products
+- name: Dispatch | Resolve products for current phase
+  ansible.builtin.set_fact:
+    _satellite_products_dispatch: >-
+      {{
+        (
+          (satellite_products | default([]))
+          | selectattr('sync_plan', 'defined')
+          | rejectattr('sync_plan', 'equalto', none)
+          | rejectattr('sync_plan', 'equalto', '')
+          | list
+        )
+        if (__dispatch_products_phase | default('initial') == 'sync_plan')
+        else (
+          (
+            (satellite_products | default([]))
+            | rejectattr('redhat', 'defined')
+            | list
+          )
+          + (
+            (satellite_products | default([]))
+            | selectattr('redhat', 'defined')
+            | rejectattr('redhat', 'equalto', true)
+            | rejectattr('redhat', 'equalto', True)
+            | rejectattr('redhat', 'equalto', 1)
+            | list
+          )
+          if (
+            satellite_configuration_dispatch_products_skip_provider_managed | default(true) | bool
+          )
+          else (satellite_products | default([]))
+        )
+      }}
+  when: satellite_products is defined
+
+- name: Dispatch | Report skipped provider-managed products
+  ansible.builtin.debug:
+    msg: >-
+      Skipping {{ (satellite_products | length) - (_satellite_products_dispatch | length) }}
+      provider-managed products on initial pass (created by subscription manifest).
+      Dispatching {{ _satellite_products_dispatch | length }} custom product(s).
+  when:
+    - satellite_products is defined
+    - __dispatch_products_phase | default('initial') == 'initial'
+    - satellite_configuration_dispatch_products_skip_provider_managed | default(true) | bool
+    - (satellite_products | length) != (_satellite_products_dispatch | length)
+
+- name: Dispatch | Create/Update Products in batches
+  ansible.builtin.include_tasks: satellite_products_batch.yaml
+  loop: "{{ _satellite_products_dispatch | batch(batch_size | int) | list }}"
+  loop_control:
+    loop_var: __dispatch_products_batch
+    index_var: __dispatch_batch_index
+    label: "batch {{ __dispatch_batch_index + 1 }} ({{ __dispatch_products_batch | length }} products)"
+  vars:
+    batch_size: "{{ satellite_configuration_dispatch_products_batch_size | default(0) | int }}"
+    __dispatch_is_last_batch: "{{ (__dispatch_batch_index | int + 1) >= (_satellite_products_dispatch | batch(batch_size | int) | list | length) }}"
+  when:
+    - satellite_products is defined
+    - _satellite_products_dispatch | length > 0
+    - (batch_size | int) > 0
+
+- name: Dispatch | Create/Update Products (single pass)
   redhat.satellite.product:
-    # Mandatory prams
     name: "{{ __current_satellite_product.name }}"
     organization: "{{ __current_satellite_product.organization }}"
-    # Optional params
     label: "{{ __current_satellite_product.label | default(omit) }}"
     gpg_key: "{{ __current_satellite_product.gpg_key | default(omit) }}"
     ssl_ca_cert: "{{ __current_satellite_product.ssl_ca_cert | default(omit) }}"
     ssl_ca_key: "{{ __current_satellite_product.ssl_ca_key | default(omit) }}"
-    sync_plan: "{{ __current_satellite_product.sync_plan | default(omit) }}"
     description: "{{ __current_satellite_product.description | default(omit) }}"
+    sync_plan: >-
+      {{
+        omit
+        if (__dispatch_products_phase | default('initial') == 'initial')
+        else (__current_satellite_product.sync_plan | default(omit))
+      }}
     state: "{{ __current_satellite_product.state | default('present') }}"
-  loop: "{{ satellite_products }}"
+  loop: "{{ _satellite_products_dispatch }}"
   loop_control:
     loop_var: __current_satellite_product
     label: "{{ __current_satellite_product.name }}"
-  no_log: "{{ satellite_configuration_dispatch_secure_logging }}"
-  when: satellite_products is defined
-  delegate_to: "localhost"
+  when:
+    - satellite_products is defined
+    - _satellite_products_dispatch | length > 0
+    - satellite_configuration_dispatch_products_batch_size | default(0) | int == 0
+  delegate_to: localhost
 ...

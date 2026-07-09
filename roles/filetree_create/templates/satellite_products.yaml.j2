@@ -1,7 +1,34 @@
 ---
 {% from 'clean_fields.j2' import discard_unwanted_fields %}
-{% set __excluded_fields = ['created_at', 'updated_at', 'id', 'organization_id', 'cp_id', 'cp_id' ] %}
+{% set __excluded_fields = ['created_at', 'updated_at', 'id', 'organization_id', 'cp_id', 'provider_id', 'sync_plan_id'] %}
 {% set __empty_values = [None, 'None', '', {}, [], [{}]] %}
 {% set __reduce_to_name = ['organization', 'sync_plan'] %}
-satellite_products: {{ discard_unwanted_fields(info_list, __excluded_fields, __empty_values, __reduce_to_name) }}
+{% set __translate = [] %}
+{% set __raw_fields = ['name', 'description'] %}
+satellite_products: {{ [] if info_list | length == 0 }}
+{% for __product in info_list %}
+{% set __provider_name = __product.provider.name | default(__product.provider_name | default('Anonymous')) %}
+{% set __is_provider_managed = (
+  (__product.redhat | default(false) | bool)
+  or (__provider_name != 'Anonymous')
+) %}
+{%   if not (satellite_configuration_filetree_export_skip_provider_products | default(true) and __is_provider_managed) %}
+{%     for __map_item in (__product | dict2items) if __map_item.key not in __excluded_fields and __map_item.value not in __empty_values %}
+{%       if __map_item.key in __raw_fields %}
+{%         if __map_item.value is string and (__map_item.value | infra.satellite_configuration.satellite_configuration_contains_template_markers) %}
+  {{ '-' if loop.index == 1 else ' ' }} {{ __map_item.key }}: |-
+      {{ '{%- raw -%}' }}
+      {{ discard_unwanted_fields(__map_item.value, __excluded_fields, __empty_values, __reduce_to_name, __translate) | trim("'") | indent(6) }}
+      {{ '{%- endraw -%}' }}
+{%         else %}
+  {{ '-' if loop.index == 1 else ' ' }} {{ __map_item.key }}: {{ discard_unwanted_fields(__map_item.value, __excluded_fields, __empty_values, __reduce_to_name, __translate) }}
+{%         endif %}
+{%       elif __map_item.key in __reduce_to_name %}
+  {{ '-' if loop.index == 1 else ' ' }} {{ __map_item.key }}: {{ discard_unwanted_fields((__map_item.value.name if (__map_item.value is mapping and __map_item.value.name is defined) else __map_item.value), __excluded_fields, __empty_values, __reduce_to_name, __translate) }}
+{%       else %}
+  {{ '-' if loop.index == 1 else ' ' }} {{ __map_item.key }}: {{ discard_unwanted_fields(__map_item.value, __excluded_fields, __empty_values, __reduce_to_name, __translate) }}
+{%       endif %}
+{%     endfor %}
+{%   endif %}
+{% endfor %}
 ...

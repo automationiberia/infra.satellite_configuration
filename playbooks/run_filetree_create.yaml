@@ -6,6 +6,11 @@
   collections:
     - infra.satellite_configuration
   tasks:
+    - name: Resolve source Satellite connection for export
+      ansible.builtin.set_fact:
+        satellite: "{{ satellite_source }}"
+      when: satellite_source is defined
+
     - name: Ensure that the output_path exists
       ansible.builtin.file:
         path: "{{ output_path }}"

@@ -3,7 +3,7 @@
   redhat.satellite.partition_table:
     # Mandatory params
     name: "{{ __current_partition_table.name }}"
-    layout: "{{ __current_partition_table.layout }}"
+    layout: "{{ __current_partition_table.layout | infra.satellite_configuration.satellite_configuration_sanitize_partition_table_layout }}"
     # Optional params
     locked: "{{ __current_partition_table.locked | default(omit) }}"
     os_family: "{{ __current_partition_table.os_family | default(omit) }}"

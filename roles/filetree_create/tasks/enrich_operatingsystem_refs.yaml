@@ -1,0 +1,40 @@
+---
+- name: Reset enriched operatingsystem refs
+  ansible.builtin.set_fact:
+    __enrich_os_refs_result: []
+
+- name: Fetch operatingsystem details for refs
+  when: __enrich_os_refs_source | default([]) | length > 0
+  ansible.builtin.uri:
+    url: "{{ satellite.server_url }}/api/operatingsystems/{{ __enrich_os_ref_item.id }}"
+    user: "{{ satellite.admin.username }}"
+    password: "{{ satellite.admin.password }}"
+    validate_certs: "{{ satellite.validate_certs }}"
+    force_basic_auth: true
+    return_content: true
+  loop: "{{ __enrich_os_refs_source }}"
+  loop_control:
+    loop_var: __enrich_os_ref_item
+    label: "{{ __enrich_os_ref_item.name | default(__enrich_os_ref_item.id) }}"
+  register: __enrich_os_refs_fetch
+
+- name: Build operatingsystem refs with name, major, and minor
+  when:
+    - __enrich_os_refs_fetch is defined
+    - __enrich_os_refs_fetch.results | default([]) | length > 0
+  ansible.builtin.set_fact:
+    __enrich_os_refs_result: >-
+      {{
+        (__enrich_os_refs_result | default([]))
+        + [{
+            'name': __enrich_os_ref_detail_item.json.name,
+            'major': __enrich_os_ref_detail_item.json.major,
+            'minor': __enrich_os_ref_detail_item.json.minor
+          }]
+      }}
+  loop: "{{ __enrich_os_refs_fetch.results | default([]) }}"
+  loop_control:
+    loop_var: __enrich_os_ref_detail_item
+    label: "{{ __enrich_os_ref_detail_item.json.name | default('') }}"
+
+...

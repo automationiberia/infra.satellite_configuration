@@ -8,7 +8,12 @@
     os_family: "{{ __current_installation_medium.os_family | default(omit) }}"
     organizations: "{{ __current_installation_medium.organizations | default(omit) }}"
     locations: "{{ __current_installation_medium.locations | default(omit) }}"
-    operatingsystems: "{{ __current_installation_medium.operatingsystems | default(omit) }}"
+    operatingsystems: >-
+      {{
+        omit
+        if (__dispatch_installation_mediums_phase | default('create') == 'create')
+        else (__current_installation_medium.operatingsystems | default(omit))
+      }}
     updated_name: "{{ __current_installation_medium.updated_name | default(omit) }}"
     state: "{{ __current_installation_medium.state | default('present') }}"
   loop: "{{ satellite_installation_mediums }}"

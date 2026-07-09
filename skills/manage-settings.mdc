@@ -1,0 +1,21 @@
+---
+description: Manage Satellite global settings through the dispatch role and redhat.satellite.settings import role workflow.
+alwaysApply: false
+globs: \"roles/dispatch/**/*.{yml,yaml}\"
+---
+
+# Manage Settings
+
+Use this for `satellite_settings` updates.
+
+## Steps
+1. Define setting entries in `satellite_settings`.
+2. Route execution through `roles/dispatch/tasks/satellite_settings.yaml`.
+3. Reuse `ansible.builtin.import_role` with `redhat.satellite.settings`.
+4. Keep settings declarative and organization-safe.
+
+## Checklist
+- Task/playbook YAML files end with `...` on its own final line (ansible-lint `yaml[document-end]`).
+- Uses `ansible.builtin.import_role`.
+- Keeps FQCN usage explicit.
+- Avoids hardcoded credentials inside tasks.

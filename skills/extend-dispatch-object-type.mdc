@@ -1,0 +1,53 @@
+---
+description: Extend role dispatch for a new Satellite object type using satellite_* variables, include_tasks wiring, and redhat.satellite modules or import_role.
+alwaysApply: false
+globs: "roles/dispatch/**/*.{yml,yaml}"
+---
+
+# Extend `dispatch` For New Object Type
+
+Use this when apply/reconcile support is needed for a new object type.
+
+Apply **`skills/fqcn-standards.mdc`** for `ansible.builtin.import_role`, `redhat.satellite.*`, and task includes.
+
+## Steps
+1. Create `roles/dispatch/tasks/satellite_<domain>.yaml`.
+2. Prefer `ansible.builtin.import_role` with `redhat.satellite.<role>` when available for the object type.
+3. If no role exists, use the proper `redhat.satellite.<module>` directly.
+4. Loop over `satellite_<resource_plural>` and use `| default(omit)` on optional parameters.
+5. Set `delegate_to: localhost` when performing Satellite API actions.
+6. Register include entry in `roles/dispatch/tasks/main.yaml` with matching tag.
+
+## Constraints
+- Keep the task idempotent and data-driven.
+- Do not use `theforeman.foreman.*` for new work.
+- Internal loop variables should use the `__` prefix.
+- End **every** YAML file under `roles/dispatch/tasks/` with `...` on its own final line (ansible-lint `yaml[document-end]`): `satellite_<domain>.yaml`, batch helpers (`*_batch.yaml`), wait/poll includes (`wait_for_*.yaml`), and any other `include_tasks` target.
+- Do not add `set_fact` tasks that only duplicate existing data; pass expressions inline or via `include_tasks` `vars`.
+- Prefer `ansible.builtin.import_role` with `redhat.satellite.<role>` when a matching role exists; use modules only when no role is available.
+- Apply `no_log: "{{ satellite_configuration_dispatch_secure_logging }}"` on dedicated dispatch task files for sensitive CaC types; never on non-sensitive types.
+- For `satellite_roles`, skip built-in/locked roles using `satellite_builtin_role_name_skips` from role `global_vars`, plus `builtin` / `locked` when present in CaC.
+
+## Multi-line Jinja in tasks
+- Apply **`skills/fqcn-standards.mdc`** and the Jinja nesting rules from **`.cursor/rules/satellite-general.mdc`** (section **Jinja indentation**).
+- Canonical reference for `>-` / `vars` blocks: `roles/filetree_create/tasks/get_repository_sets_do_work.yaml` (`__resolved_repository_releasevers`).
+- Nest with **two extra spaces after the opener (`{%` or `{%-`) per depth** before the keyword; `endif` / `endfor` / `else` / `elif` align with their opener (same rules for `{%` and `{%-`).
+- Example (depth 0 `for`, depth 1 `if`, depth 2 `set`; `{%-` and `{%` are equivalent for nesting):
+
+```yaml
+    __result: >-
+      {%- set __items = [] -%}
+      {%- for __entry in source_list | default([]) -%}
+      {%-   if __entry.enabled | default(false) | bool -%}
+      {%-     set _ = __items.append(__entry) -%}
+      {%-   endif -%}
+      {%- endfor -%}
+      {{ __items }}
+```
+
+- Do not flatten nested `{% if` / `{%- if` / `{% set` / `{%- set` to depth 0 inside a `{% for` / `{%- for` loop.
+- Run **`ansible-lint`** on touched dispatch YAML; fix **`jinja[spacing]`** at profile **production**.
+
+## Done Criteria
+- Running `infra.satellite_configuration.dispatch` applies the new object type from vars.
+- Re-running the same data is idempotent.

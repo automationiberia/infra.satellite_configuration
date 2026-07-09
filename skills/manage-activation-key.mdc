@@ -1,0 +1,21 @@
+---
+description: Define and apply Satellite activation keys with the dispatch role pattern and redhat.satellite module conventions.
+alwaysApply: false
+globs: \"roles/dispatch/**/*.{yml,yaml}\"
+---
+
+# Manage Activation Key
+
+Use for `satellite_activation_keys` updates.
+
+## Steps
+1. Add or modify activation key objects in `satellite_activation_keys`.
+2. Apply through `roles/dispatch/tasks/satellite_activation_keys.yaml`.
+3. Keep subscriptions and lifecycle/content view links explicit.
+4. Use `| default(omit)` for optional values.
+
+## Checklist
+- Task/playbook YAML files end with `...` on its own final line (ansible-lint `yaml[document-end]`).
+- FQCN usage is explicit.
+- Task loop uses a `__current_*` variable.
+- State handling is idempotent.

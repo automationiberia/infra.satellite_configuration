@@ -1,0 +1,21 @@
+---
+description: Manage Satellite partition tables with redhat.satellite.partition_table and collection naming conventions.
+alwaysApply: false
+globs: \"roles/dispatch/**/*.{yml,yaml}\"
+---
+
+# Manage Partition Tables
+
+Use this for `satellite_partition_tables`.
+
+## Steps
+1. Define partition table records in `satellite_partition_tables`.
+2. Apply with `redhat.satellite.partition_table`.
+3. Keep templates in version-controlled vars files.
+4. Associate to organizations/locations when required.
+
+## Checklist
+- Task/playbook YAML files end with `...` on its own final line (ansible-lint `yaml[document-end]`).
+- Uses FQCN `redhat.satellite.partition_table`.
+- Uses loop variables with `__` prefix.
+- Uses `default(omit)` for optional keys.

@@ -1,0 +1,19 @@
+---
+- name: Associate Operating Systems with Installation Media
+  redhat.satellite.operatingsystem:
+    name: "{{ __current_operatingsystem.name }}"
+    major: "{{ __current_operatingsystem.major }}"
+    minor: "{{ __current_operatingsystem.minor | default(omit) }}"
+    os_family: "{{ __current_operatingsystem.os_family }}"
+    media: "{{ __current_operatingsystem.media | default(omit) }}"
+    state: present
+  loop: "{{ satellite_operatingsystems | default([]) }}"
+  loop_control:
+    loop_var: __current_operatingsystem
+    label: "{{ __current_operatingsystem.title | default(__current_operatingsystem.name) }}"
+  when:
+    - satellite_operatingsystems is defined
+    - __current_operatingsystem.media is defined
+    - __current_operatingsystem.media | length > 0
+  delegate_to: localhost
+...

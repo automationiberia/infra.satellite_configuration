@@ -9,15 +9,38 @@
     call_type: Auth Source LDAPs
     api_link: /api/auth_source_ldaps?per_page=all
 
-- name: Auth Source LDAPs | Set Info List
+- name: Auth Source LDAPs | Get Detailed Info
+  when: result_api_response.json.results | default([]) | length > 0
+  ansible.builtin.include_tasks: detailed_api_call.yaml
+  vars:
+    call_type: Auth Source LDAPs
+    api_link: /api/auth_source_ldaps/
+    loop_var: "{{ result_api_response.json.results | sort(attribute='id') }}"
+
+- name: Auth Source LDAPs | No LDAP sources to detail
+  when: result_api_response.json.results | default([]) | length == 0
   ansible.builtin.set_fact:
-    info_list: "{{ result_api_response.json.results | sort(attribute='id') }}"
+    detailed_info:
+      results: []
+
+- name: Auth Source LDAPs | Set export list
+  when: detailed_info.results is defined and detailed_info.results | length > 0
+  ansible.builtin.set_fact:
+    info_list: "{{ detailed_info.results | map(attribute='json') | list }}"
+
+- name: Auth Source LDAPs | Record LDAP names for vault template
+  when: info_list is defined and info_list | length > 0
+  ansible.builtin.set_fact:
+    satellite_configuration_vault_template_ldap_sources: >-
+      {{
+        (satellite_configuration_vault_template_ldap_sources | default([]))
+        + (info_list | map(attribute='name') | list)
+      }}
 
 - name: Auth Source LDAPs | Template Out Results
-  when:
-    - info_list is defined
-    - info_list | length > 0
+  when: info_list is defined and info_list | length > 0
   ansible.builtin.include_tasks: template_out.yaml
   vars:
     template_type: satellite_auth_sources_ldap
+  no_log: "{{ satellite_configuration_filetree_create_secure_logging }}"
 ...

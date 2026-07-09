@@ -1,0 +1,9 @@
+---
+- name: Dispatch | Validate subscription manifest per organization
+  ansible.builtin.include_tasks: satellite_manifest_validate_one.yaml
+  loop: "{{ __dispatch_manifest_validate_organizations | default([]) }}"
+  loop_control:
+    loop_var: __current_manifest_organization
+    label: "{{ __current_manifest_organization }}"
+  when: __dispatch_manifest_validate_organizations | default([]) | length > 0
+...

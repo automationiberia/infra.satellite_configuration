@@ -1,0 +1,24 @@
+---
+description: Enable and configure Satellite repository sets using redhat.satellite.repository_set and collection naming conventions.
+alwaysApply: false
+globs: \"roles/dispatch/**/*.{yml,yaml}\"
+---
+
+# Manage Repository Sets
+
+Use this for `satellite_repository_sets`.
+
+## Steps
+1. Add repository set records to `satellite_repository_sets`.
+2. Apply with `redhat.satellite.repository_set`.
+3. Keep product and release/version identifiers explicit.
+4. Enable Red Hat content here; do not use `redhat.satellite.repository` for CDN repositories.
+
+## Checklist
+- Task/playbook YAML files end with `...` on its own final line (ansible-lint `yaml[document-end]`).
+- Uses FQCN `redhat.satellite.repository_set`.
+- Export includes only `enabled` repository sets.
+- Export enriches kickstart `releasever` from organization repositories (`distribution_version` / `major.minor`).
+- Dispatch omits repository set entries with empty `releasever` values.
+- Variables follow `satellite_*` naming.
+- Optional inputs use `default(omit)`.

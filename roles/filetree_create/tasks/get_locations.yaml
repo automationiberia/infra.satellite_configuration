@@ -13,6 +13,23 @@
   ansible.builtin.set_fact:
     info_list: "{{ result_api_response.json.results | sort(attribute='id') | rejectattr('name', '==', 'Default Location') }}"
 
+- name: Locations | Enrich with host parameters
+  ansible.builtin.include_tasks: enrich_info_list_parameters.yaml
+  vars:
+    __parameter_entity_api_path: locations
+    __parameter_info_list_var: info_list
+    __parameter_entity_label: locations
+
+- name: Locations | Enrich with associated organizations
+  ansible.builtin.include_tasks: enrich_info_list_location_organizations.yaml
+
+- name: Locations | Record hidden parameters for vault template
+  ansible.builtin.include_tasks: record_hidden_parameters_for_vault.yaml
+  vars:
+    __record_hidden_results: "{{ info_list | default([]) }}"
+    __record_hidden_vault_fact: satellite_configuration_vault_template_location_parameters
+    __record_hidden_entity_label: location
+
 - name: Locations | Template Out Results
   when:
     - info_list is defined

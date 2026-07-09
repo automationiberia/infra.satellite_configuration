@@ -1,0 +1,26 @@
+---
+description: Canonicalize generated YAML artifacts with infra.satellite_configuration.format_yaml after filetree exports.
+alwaysApply: false
+globs: \"plugins/**/*.{py,yml,yaml}\"
+---
+
+# Format Generated YAML
+
+Use this after `filetree_create` writes YAML outputs.
+
+## Steps
+1. Discover generated YAML files under the target output directory.
+2. Run `infra.satellite_configuration.format_yaml` on each file (tag `yaml_format` in `filetree_create`).
+3. Export templates wrap problematic scalars with `{% raw %}` / `{% endraw %}` inside literal blocks; `format_yaml` unwraps them during round-trip.
+4. Preserve multiline blocks for certificates, keys, templates, and descriptions.
+5. Keep output stable for review and version control.
+
+## Ansible task YAML (not CaC output)
+
+When editing **role/playbook task files** (not exported CaC under `configs/`), end each file with `...` (ansible-lint `yaml[document-end]`). See `skills/fqcn-standards.mdc`.
+
+## Checklist
+- Uses module FQCN `infra.satellite_configuration.format_yaml`.
+- Runs as a post-export normalization step (`yaml_format` tag).
+- Does not use `yq`; PyYAML round-trip is the supported formatter.
+- Produces deterministic YAML style.

@@ -1,4 +1,9 @@
 ---
+- name: Resolve export Satellite API connection
+  ansible.builtin.include_role:
+    name: infra.satellite_configuration.global_vars
+    tasks_from: resolve_satellite_source.yaml
+
 - name: Organizations Block
   tags:
     - "organizations"
@@ -48,6 +53,13 @@
     - name: Get Host Groups
       ansible.builtin.include_tasks: get_hostgroups.yaml
 
+- name: Settings Block
+  tags:
+    - "settings"
+  block:
+    - name: Get Settings
+      ansible.builtin.include_tasks: get_settings.yaml
+
 - name: Operating Systems Block
   tags:
     - "operatingsystems"
@@ -82,13 +94,6 @@
   block:
     - name: Get Custom Products
       ansible.builtin.include_tasks: get_products.yaml
-
-- name: Settings Block
-  tags:
-    - "settings"
-  block:
-    - name: Get Settings
-      ansible.builtin.include_tasks: get_settings.yaml
 
 - name: Content Credentials Block
   tags:
@@ -160,7 +165,22 @@
     - name: Get Provisioning Templates
       ansible.builtin.include_tasks: get_provisioning_templates.yaml
 
+- name: Job Templates Block
+  tags:
+    - "job_templates"
+  block:
+    - name: Get Job Templates
+      ansible.builtin.include_tasks: get_job_templates.yaml
+
 # In a separate file so Ansible does not resolve format_yaml at parse time when this block is skipped (e.g. --tags roles,users).
+- name: Vault Template Block
+  tags:
+    - vault_template
+    - always
+  block:
+    - name: Generate vault_template.yaml
+      ansible.builtin.include_tasks: vault_template_out.yaml
+
 - name: "Block to fix the output files' format"
   tags:
     - yaml_format

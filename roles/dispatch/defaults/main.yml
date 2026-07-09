@@ -7,8 +7,34 @@ satellite_server_url: '{{ lookup("env", "SATELLITE_SERVER_URL") }}'
 ## ContentViews:
 ###################
 content_views_purge_count: 6
+satellite_content_view_versions: []
+satellite_configuration_dispatch_content_view_publish_promote: true
+satellite_configuration_dispatch_host_collection_membership: false
 
 satellite_configuration_dispatch_secure_logging: true
+
+# Subscription manifest (Issue #10 / #18): upload optional; validate before content tasks by default.
+satellite_configuration_dispatch_manifest_upload: false
+satellite_configuration_dispatch_manifest_validate: true
+satellite_configuration_dispatch_manifest_organization: "{{ satellite_organizations[0].name | default('Default Organization') }}"
+satellite_manifests: []
+satellite_manifest_path: ""
+satellite_manifest_download: false
+
+# Products: skip Red Hat / provider-managed entries on initial pass (created by manifest).
+# Use batching + pause to reduce Satellite RAM spikes when many custom products exist.
+satellite_configuration_dispatch_products_skip_provider_managed: true
+satellite_configuration_dispatch_products_batch_size: 25
+satellite_configuration_dispatch_products_batch_pause: 30
+
+# Content view publish/promote: one CV at a time; poll foreman_tasks between batches.
+# When needs_publish is false, dispatch promotes latest_version only (no new publish) for same-host re-imports.
+satellite_configuration_dispatch_content_views_batch_size: 1
+satellite_configuration_dispatch_content_views_task_poll_interval: 15
+satellite_configuration_dispatch_content_views_task_wait_timeout: 3600
+
+# Appended to satellite_builtin_role_name_skips (from role global_vars) when applying roles.
+dispatch_roles_name_skips_extra: []
 
 # Optional: used only when a `satellite_users` entry has no `user_password` (Foreman requires a password to create Internal-auth users). Prefer per-user `user_password` from Vault.
 # satellite_users_default_password: "{{ my_vault_new_user_password }}"

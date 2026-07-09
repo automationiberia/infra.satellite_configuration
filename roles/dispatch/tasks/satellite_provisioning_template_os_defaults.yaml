@@ -1,0 +1,52 @@
+---
+- name: Build unlocked provisioning templates for OS default assignment
+  ansible.builtin.set_fact:
+    __dispatch_provisioning_templates: >-
+      {%- set __unlocked_provisioning_templates = [] -%}
+      {%- for __pt in satellite_provisioning_templates | default([]) -%}
+      {%-   if not (__pt.locked | default(false) | bool) -%}
+      {%-     set _ = __unlocked_provisioning_templates.append(__pt) -%}
+      {%-   endif -%}
+      {%- endfor -%}
+      {{ __unlocked_provisioning_templates }}
+  when: satellite_provisioning_templates is defined
+
+- name: Resolve operating system titles on target Satellite
+  ansible.builtin.include_tasks: satellite_operatingsystem_title_lookup.yaml
+  when: satellite_provisioning_templates is defined
+
+- name: Assign default Provisioning Templates to Operating Systems
+  redhat.satellite.os_default_template:
+    operatingsystem: >-
+      {{
+        __dispatch_operatingsystem_titles[
+          __current_provisioning_template[1].name ~ '|'
+          ~ __current_provisioning_template[1].major ~ '|'
+          ~ __current_provisioning_template[1].minor
+        ]
+        if (
+          __current_provisioning_template[1] is mapping
+          and __current_provisioning_template[1].name is defined
+          and __current_provisioning_template[1].major is defined
+          and __current_provisioning_template[1].minor is defined
+          and (
+            (__current_provisioning_template[1].name ~ '|'
+             ~ __current_provisioning_template[1].major ~ '|'
+             ~ __current_provisioning_template[1].minor)
+            in (__dispatch_operatingsystem_titles | default({}))
+          )
+        )
+        else __current_provisioning_template[1]
+      }}
+    template_kind: "{{ __current_provisioning_template[0].kind }}"
+    provisioning_template: "{{ __current_provisioning_template[0].name | default(omit) }}"
+    state: "{{ __current_provisioning_template[0].state | default('present') }}"
+  loop: "{{ __dispatch_provisioning_templates | default([]) | subelements('operatingsystems', skip_missing=true) }}"
+  loop_control:
+    loop_var: __current_provisioning_template
+    label: "{{ __current_provisioning_template[0].name }}"
+  when:
+    - satellite_provisioning_templates is defined
+    - not (__current_provisioning_template[0].snippet | default(false) | bool)
+  delegate_to: localhost
+...
