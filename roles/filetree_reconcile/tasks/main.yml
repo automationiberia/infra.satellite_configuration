@@ -1,0 +1,97 @@
+---
+- name: Resolve reconcile tag context from CLI tags
+  ansible.builtin.set_fact:
+    __reconcile_object_tags: >-
+      {{
+        ansible_run_tags | default([])
+        | difference(satellite_configuration_filetree_reconcile_meta_tags)
+        | list
+      }}
+    __reconcile_compare_requested: >-
+      {{
+        'compare' in (ansible_run_tags | default([]))
+        or (
+          ansible_run_tags | default([])
+          | difference(satellite_configuration_filetree_reconcile_meta_tags)
+          | length > 0
+        )
+        or (
+          (ansible_run_tags | default([]) | length == 0)
+          or ('all' in (ansible_run_tags | default([])))
+        )
+      }}
+    __reconcile_apply_requested: >-
+      {{
+        'apply' in (ansible_run_tags | default([]))
+        or (ansible_run_tags | default([]) | length == 0)
+        or ('all' in (ansible_run_tags | default([])))
+      }}
+    __reconcile_export_requested: >-
+      {{
+        'export' in (ansible_run_tags | default([]))
+        or (ansible_run_tags | default([]) | length == 0)
+        or ('all' in (ansible_run_tags | default([])))
+      }}
+  tags:
+    - always
+
+- name: Export live Satellite configuration
+  when:
+    - satellite_configuration_filetree_reconcile_export | bool
+    - __reconcile_export_requested | bool
+  ansible.builtin.include_tasks: export_live.yaml
+  tags:
+    - export
+
+- name: Reset reconcile diff output directory
+  when:
+    - satellite_configuration_filetree_reconcile_compare | bool
+    - __reconcile_compare_requested | bool
+    - __reconcile_object_tags | length == 0
+  ansible.builtin.file:
+    path: "{{ satellite_configuration_filetree_reconcile_diff_path }}"
+    state: absent
+  tags:
+    - compare
+
+- name: Ensure reconcile diff output directory exists
+  when:
+    - satellite_configuration_filetree_reconcile_compare | bool
+    - __reconcile_compare_requested | bool
+  ansible.builtin.file:
+    path: "{{ satellite_configuration_filetree_reconcile_diff_path }}"
+    state: directory
+    mode: "0777"
+  tags:
+    - always
+
+- name: Compare live export with CaC and generate diff files
+  when:
+    - satellite_configuration_filetree_reconcile_compare | bool
+    - __reconcile_compare_requested | bool
+  ansible.builtin.include_tasks: compare_generate.yaml
+  loop: >-
+    {{
+      (
+        satellite_configuration_filetree_reconcile_tasks
+        | selectattr('tags', 'in', __reconcile_object_tags)
+        | list
+      )
+      if (__reconcile_object_tags | length > 0)
+      else satellite_configuration_filetree_reconcile_tasks
+    }}
+  loop_control:
+    loop_var: __reconcile_task
+    label: "{{ __reconcile_task.name }}"
+  tags:
+    - always
+
+- name: Apply reconcile diff configuration
+  when:
+    - satellite_configuration_filetree_reconcile_apply | bool
+    - __reconcile_apply_requested | bool
+  ansible.builtin.include_tasks: apply_diff.yaml
+  tags:
+    - apply
+
+...

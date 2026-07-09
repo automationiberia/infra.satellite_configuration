@@ -1,0 +1,37 @@
+---
+# defaults file for filetree_reconcile
+
+satellite_configuration_filetree_reconcile_secure_logging: true
+
+# CaC source of truth (desired state). When unset, compare uses satellite_configuration_filetree_path.
+# satellite_configuration_filetree_reconcile_cac_path: /path/to/cac
+
+# Live export from Satellite API (written by filetree_create during reconcile).
+satellite_configuration_filetree_reconcile_live_path: "{{ satellite_configuration_filetree_path }}/.reconcile_live"
+
+# Generated diff fragments consumed by filetree_read + dispatch.
+satellite_configuration_filetree_reconcile_diff_path: "{{ satellite_configuration_filetree_path }}/.reconcile_diff"
+
+# Workflow toggles (all enabled by default).
+satellite_configuration_filetree_reconcile_export: true
+satellite_configuration_filetree_reconcile_compare: true
+satellite_configuration_filetree_reconcile_apply: true
+
+# Object types to compare; defaults to the same list used by filetree_read.
+satellite_configuration_filetree_reconcile_tasks: "{{ satellite_configuration_filetree_read_tasks }}"
+
+# Keys stripped before comparing live and CaC object definitions (and from absent copies).
+satellite_configuration_filetree_reconcile_ignore_keys:
+  - created_at
+  - updated_at
+  - id
+  - state
+
+# Playbook tags for reconcile phases; excluded when filtering apply by --tags.
+satellite_configuration_filetree_reconcile_meta_tags:
+  - apply
+  - export
+  - compare
+  - always
+
+...

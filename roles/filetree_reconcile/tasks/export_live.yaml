@@ -1,0 +1,14 @@
+---
+- name: Ensure live export directory exists
+  ansible.builtin.file:
+    path: "{{ satellite_configuration_filetree_reconcile_live_path }}"
+    state: directory
+    mode: "0777"
+
+- name: Export current Satellite configuration to live path
+  ansible.builtin.import_role:
+    name: infra.satellite_configuration.filetree_create
+  vars:
+    output_path: "{{ satellite_configuration_filetree_reconcile_live_path }}"
+
+...
