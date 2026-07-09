@@ -35,6 +35,7 @@ jobs:
     timeout-minutes: 360
     outputs:
       approved: ${{ steps.check.outputs.approved }}
+      needs_manual: ${{ steps.check.outputs.needs_manual }}
     steps:
       - name: Wait for pre-commit approval workflow
         id: check
@@ -45,10 +46,13 @@ jobs:
             const pollIntervalMs = 30_000;
             const timeoutMs = 360 * 60 * 1000;
             const deadline = Date.now() + timeoutMs;
+            const trustedAssociations = ['OWNER', 'MEMBER', 'COLLABORATOR'];
 
             const { owner, repo } = context.repo;
             const pullRequest = context.payload.pull_request;
             const headSha = pullRequest.head.sha;
+
+            core.setOutput('needs_manual', 'false');
 
             if (pullRequest.base.ref !== 'devel') {
               core.setFailed(
@@ -58,16 +62,70 @@ jobs:
               return;
             }
 
-            async function getLatestApprovalRun() {
-              const { data } = await github.rest.actions.listWorkflowRuns({
+            async function getApprovalWorkflowId() {
+              const { data } = await github.rest.actions.listRepoWorkflows({
                 owner,
                 repo,
-                workflow_id: 'pre-commit-approve.yml',
-                head_sha: headSha,
-                event: 'pull_request_target',
-                per_page: 5,
+                per_page: 100,
               });
-              return data.workflow_runs[0];
+              const workflow = data.workflows.find(
+                (entry) => entry.path === '.github/workflows/pre-commit-approve.yml',
+              );
+              return workflow?.id;
+            }
+
+            async function pullRequestModifiesGithub() {
+              const files = await github.paginate(github.rest.pulls.listFiles, {
+                owner,
+                repo,
+                pull_number: pullRequest.number,
+                per_page: 100,
+              });
+              return files.some((file) => file.filename.startsWith('.github/'));
+            }
+
+            async function resolveBootstrapApproval() {
+              const trusted = trustedAssociations.includes(pullRequest.author_association);
+              const githubModified = await pullRequestModifiesGithub();
+
+              core.notice(
+                'pre-commit-approve.yml is not registered on the default branch yet; using inline approval rules.',
+                { title: 'CI approval bootstrap' },
+              );
+
+              if (trusted && !githubModified) {
+                core.notice('Trusted collaborator PR approved automatically (bootstrap).', {
+                  title: 'CI approval gate',
+                });
+                core.setOutput('approved', 'true');
+                return;
+              }
+
+              core.notice(
+                'Manual approval required until pre-commit-approve.yml is on devel.',
+                { title: 'CI approval gate' },
+              );
+              core.setOutput('approved', 'false');
+              core.setOutput('needs_manual', 'true');
+            }
+
+            async function getLatestApprovalRun(workflowId) {
+              try {
+                const { data } = await github.rest.actions.listWorkflowRuns({
+                  owner,
+                  repo,
+                  workflow_id: workflowId,
+                  head_sha: headSha,
+                  event: 'pull_request_target',
+                  per_page: 5,
+                });
+                return data.workflow_runs[0];
+              } catch (error) {
+                if (error.status === 404) {
+                  return undefined;
+                }
+                throw error;
+              }
             }
 
             async function hasSuccessfulApprovalJob(runId) {
@@ -83,8 +141,14 @@ jobs:
               );
             }
 
+            const approvalWorkflowId = await getApprovalWorkflowId();
+            if (!approvalWorkflowId) {
+              await resolveBootstrapApproval();
+              return;
+            }
+
             while (Date.now() < deadline) {
-              const approvalRun = await getLatestApprovalRun();
+              const approvalRun = await getLatestApprovalRun(approvalWorkflowId);
 
               if (!approvalRun) {
                 core.info('Waiting for pre-commit approval workflow to start...');
@@ -128,13 +192,25 @@ jobs:
             core.setFailed('Timed out waiting for pre-commit approval workflow to complete');
             core.setOutput('approved', 'false');
 
-  changelog:
+  manual-approval:
     needs: approval-gate
+    if: >-
+      github.event_name == 'pull_request' &&
+      needs.approval-gate.outputs.needs_manual == 'true'
+    environment: requires-approval
+    runs-on: ubuntu-latest
+    steps:
+      - name: Manual approval granted
+        run: echo "Manual approval granted."
+
+  changelog:
+    needs: [approval-gate, manual-approval]
     if: >-
       always() &&
       !cancelled() &&
       github.event_name == 'pull_request' &&
-      needs.approval-gate.outputs.approved == 'true'
+      (needs.approval-gate.outputs.approved == 'true' ||
+       needs.manual-approval.result == 'success')
     runs-on: ubuntu-latest
     name: Requires changelog
     steps:
@@ -148,14 +224,15 @@ jobs:
         uses: ansible/ansible-content-actions/.github/actions/ansible_validate_changelog@main
 
   pre-commit_and_sanity:
-    needs: approval-gate
+    needs: [approval-gate, manual-approval]
     if: >-
       always() &&
       !cancelled() &&
       (github.event_name == 'push' ||
        github.event_name == 'schedule' ||
        (github.event_name == 'pull_request' &&
-        needs.approval-gate.outputs.approved == 'true'))
+        (needs.approval-gate.outputs.approved == 'true' ||
+         needs.manual-approval.result == 'success')))
     uses: redhat-cop/ansible_collections_tooling/.github/workflows/pre_commit_workflow_crc.yml@main
     with:
       collection_namespace: infra
