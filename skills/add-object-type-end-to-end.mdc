@@ -45,6 +45,7 @@ When implementing or reviewing `satellite_users` / `redhat.satellite.user`:
    - `roles/filetree_read/README.md` (tags/examples when applicable)
    - `roles/dispatch/README.md` links/examples if they reference supported objects
    - `tests/README.md` role input variable tables (include new `satellite_<resource_plural>`)
+9. Add a changelog fragment in `changelogs/fragments/` (see **`skills/changelog-fragments.mdc`**).
 
 ## Task Style Requirements
 - End **every** Ansible YAML file under `roles/*/tasks/` with `...` on its own final line (ansible-lint `yaml[document-end]`): primary task files, batch helpers, wait/poll includes, and shared snippets (`api_call.yaml`, `read_contents.yml`, etc.).

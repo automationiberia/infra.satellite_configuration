@@ -1,0 +1,86 @@
+---
+- name: Resolve import Satellite API connection
+  ansible.builtin.include_role:
+    name: infra.satellite_configuration.global_vars
+    tasks_from: resolve_satellite_target.yaml
+
+- name: Discover object types with reconcile diff fragments
+  ansible.builtin.find:
+    paths: "{{ satellite_configuration_filetree_reconcile_diff_path }}"
+    file_type: directory
+    recurse: false
+  register: __reconcile_diff_type_dirs
+
+- name: Build reconcile diff object type names
+  ansible.builtin.set_fact:
+    __reconcile_diff_type_names: >-
+      {{
+        __reconcile_diff_type_dirs.files
+        | map(attribute='path')
+        | map('basename')
+        | map('regex_replace', '\.d$', '')
+        | list
+      }}
+    __reconcile_apply_object_tags: "{{ __reconcile_object_tags | default([]) }}"
+
+- name: Initialize reconcile filetree_read task list
+  ansible.builtin.set_fact:
+    __reconcile_filetree_read_tasks: []
+
+- name: Build filetree_read task list for reconcile diff fragments
+  ansible.builtin.set_fact:
+    __reconcile_filetree_read_tasks: >-
+      {{
+        __reconcile_filetree_read_tasks
+        + [
+            __reconcile_read_task_item | combine({
+              'path': satellite_configuration_filetree_reconcile_diff_path ~ '/' ~ __reconcile_read_task_item.name ~ '.d/'
+            })
+          ]
+      }}
+  loop: >-
+    {{
+      (
+        satellite_configuration_filetree_read_tasks
+        | selectattr('name', 'in', __reconcile_diff_type_names)
+        | selectattr('tags', 'in', __reconcile_apply_object_tags)
+        | list
+      )
+      if (__reconcile_apply_object_tags | length > 0)
+      else (
+        satellite_configuration_filetree_read_tasks
+        | selectattr('name', 'in', __reconcile_diff_type_names)
+        | list
+      )
+    }}
+  loop_control:
+    loop_var: __reconcile_read_task_item
+    label: "{{ __reconcile_read_task_item.name }}"
+
+- name: Skip apply when no reconcile diff fragments were generated
+  ansible.builtin.debug:
+    msg: >-
+      No reconcile diff fragments matched under {{ satellite_configuration_filetree_reconcile_diff_path }}
+      for object tags {{ __reconcile_apply_object_tags | default([]) | join(', ') | default('(all)', true) }}.
+      Skipping filetree_read and dispatch.
+  when: __reconcile_filetree_read_tasks | length == 0
+
+- name: Load reconcile diff fragments
+  when: __reconcile_filetree_read_tasks | length > 0
+  ansible.builtin.include_role:
+    name: infra.satellite_configuration.filetree_read
+  vars:
+    satellite_configuration_filetree_path: "{{ satellite_configuration_filetree_reconcile_diff_path }}"
+    satellite_configuration_filetree_read_tasks: "{{ __reconcile_filetree_read_tasks }}"
+
+- name: Apply reconcile diff to Satellite
+  when: __reconcile_filetree_read_tasks | length > 0
+  ansible.builtin.include_role:
+    name: infra.satellite_configuration.dispatch
+    tasks_from: "{{ __reconcile_dispatch_item.name }}.yaml"
+  loop: "{{ __reconcile_filetree_read_tasks }}"
+  loop_control:
+    loop_var: __reconcile_dispatch_item
+    label: "{{ __reconcile_dispatch_item.name }}"
+
+...

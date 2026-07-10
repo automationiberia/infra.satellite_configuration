@@ -1,0 +1,81 @@
+---
+description: Add antsibull-changelog fragments for user-visible collection changes before opening or updating a pull request.
+alwaysApply: false
+globs: changelogs/**/*
+---
+
+# Changelog Fragments
+
+Every pull request that changes user-visible behavior **must** include a fragment under `changelogs/fragments/`. Release automation reads these files to build `CHANGELOG.rst` via `antsibull-changelog`.
+
+Reference: [Ansible changelog guidelines](https://docs.ansible.com/ansible/latest/community/development_process.html#changelogs) and `.github/CONTRIBUTING.md`.
+
+## When to Add a Fragment
+
+Add or update a fragment when the change affects consumers of the collection, including:
+
+- New or changed roles, playbooks, modules, filters, or plugins
+- New supported object types or dispatch/export behavior
+- Bug fixes, breaking changes, deprecations, or security fixes
+- Notable default or variable behavior changes
+
+Skip fragments only for purely internal refactors with no user-facing impact (rare).
+
+## File Location and Naming
+
+- Directory: `changelogs/fragments/`
+- One fragment per logical change set (or per PR when changes are cohesive)
+- Filename: short, descriptive, lowercase with underscores (for example `filetree_reconcile.yaml`, `issue_34_round_trip.yaml`)
+- Extension: `.yaml` or `.yml` (repo CI scans both)
+
+## Format
+
+Use YAML with one or more [antsibull-changelog section keys](https://github.com/ansible-community/antsibull-changelog/blob/main/docs/changelog-format.rst):
+
+```yaml
+---
+minor_changes:
+  - Short imperative sentence describing what was added or improved.
+  - Another bullet if needed.
+
+bugfixes:
+  - Describe the fixed behavior and the symptom users saw.
+
+breaking_changes:
+  - Describe what broke and what users must change.
+```
+
+### Section choice
+
+| Section | Use for |
+| --- | --- |
+| `major_changes` | Large features or important new capabilities |
+| `minor_changes` | New roles/modules, new object types, additive behavior |
+| `breaking_changes` | Incompatible changes; porting notes required |
+| `deprecated_features` | Features marked for future removal |
+| `removed_features` | Removed previously deprecated items |
+| `security_fixes` | Security-related fixes |
+| `bugfixes` | Correctness fixes |
+| `known_issues` | Documented limitations |
+
+Use **collection-relative names** (role, module, playbook) in bullets. Prefer present tense or imperative mood: "Add …", "Fix …".
+
+End the fragment file with `...` on its own line (repo YAML convention).
+
+## Examples in This Repository
+
+- `changelogs/fragments/issue_34_round_trip.yaml` — large multi-bullet minor_changes and bugfixes release
+
+## Pull Request Checklist
+
+Before opening or marking a PR ready for review:
+
+1. [ ] Fragment added under `changelogs/fragments/`
+2. [ ] Bullets describe **user-visible** impact, not implementation details
+3. [ ] Correct section (`minor_changes` vs `bugfixes` vs `breaking_changes`)
+4. [ ] Fragment included in the same commit/PR as the code change
+
+## Related Skills
+
+- **`add-object-type-end-to-end`** — also update fragment when adding a new object type
+- **`fqcn-standards`** — code style; changelog is separate but required for the same PR

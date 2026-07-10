@@ -1,0 +1,35 @@
+---
+- name: Compare live export with CaC for {{ __reconcile_task.name }}
+  infra.satellite_configuration.filetree_reconcile_diff:
+    live_dir: "{{ satellite_configuration_filetree_reconcile_live_path }}/{{ __reconcile_task.name }}.d/"
+    cac_dir: "{{ satellite_configuration_filetree_reconcile_cac_path | default(satellite_configuration_filetree_path) }}/{{ __reconcile_task.name }}.d/"
+    output_dir: "{{ satellite_configuration_filetree_reconcile_diff_path }}/{{ __reconcile_task.name }}.d/"
+    var_name: "{{ __reconcile_task.var }}"
+    merge_key: >-
+      {{
+        __reconcile_task.merge_key
+        | default(satellite_configuration_filetree_read_merge_key | default('name'))
+      }}
+    ignore_keys: "{{ satellite_configuration_filetree_reconcile_ignore_keys }}"
+  register: __reconcile_diff_result
+  no_log: >-
+    {{
+      satellite_configuration_filetree_reconcile_secure_logging
+      and (__reconcile_task.var in satellite_configuration_sensitive_vars)
+    }}
+
+- name: Report reconcile diff for {{ __reconcile_task.name }}
+  ansible.builtin.debug:
+    msg: >-
+      {{ __reconcile_task.name }}: {{
+        __reconcile_diff_result.diff_count | default(0)
+      }} entries ({{
+        __reconcile_diff_result.present_new | default(0)
+      }} new, {{
+        __reconcile_diff_result.present_changed | default(0)
+      }} changed, {{
+        __reconcile_diff_result.absent | default(0)
+      }} absent).
+  when: __reconcile_diff_result.diff_count | default(0) | int > 0
+
+...

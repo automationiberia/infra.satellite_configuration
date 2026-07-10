@@ -1,0 +1,10 @@
+---
+bugfixes:
+  - split pre-commit CI into a trusted pull_request_target approval workflow and a
+    pull_request test workflow that waits for approval before checking out fork PR code
+  - run changelog validation in the pull_request workflow so actions/checkout no longer
+    refuses fork PR code from a pull_request_target context
+  - handle bootstrap PRs where pre-commit-approve.yml is not yet on devel by applying
+    inline approval rules and a manual-approval environment gate for .github changes
+
+...

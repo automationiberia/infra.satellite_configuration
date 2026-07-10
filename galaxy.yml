@@ -49,7 +49,7 @@ tags:
 # L(specifiers,https://python-semanticversion.readthedocs.io/en/latest/#requirement-specification). Multiple version
 # range specifiers can be set and are separated by ','
 dependencies:
-  redhat.satellite: ">=5.8.0"
+  redhat.satellite: "5.8.0"
 
 # The URL of the originating SCM repository
 repository: https://github.com/redhat-cop/infra.satellite_configuration.git
