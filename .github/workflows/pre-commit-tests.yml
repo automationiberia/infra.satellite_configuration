@@ -228,6 +228,8 @@ jobs:
     if: >-
       always() &&
       !cancelled() &&
+      !contains(fromJSON('["failure", "cancelled"]'), needs.approval-gate.result) &&
+      !contains(fromJSON('["failure", "cancelled"]'), needs.manual-approval.result) &&
       (github.event_name == 'push' ||
        github.event_name == 'schedule' ||
        (github.event_name == 'pull_request' &&
