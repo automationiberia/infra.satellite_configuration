@@ -1,0 +1,33 @@
+---
+# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
+
+DOCUMENTATION:
+  name: satellite_configuration_unwrap_raw_markers
+  short_description: Strip CaC export {% raw %} / {% endraw %} wrappers
+  version_added: 1.2.0
+  description:
+    - Removes leading and trailing Jinja C({% raw %}) / C({% endraw %}) wrappers added during filetree export.
+    - Use before passing template body fields to Satellite modules such as
+      M(redhat.satellite.provisioning_template) or M(redhat.satellite.job_template).
+  positional: _input
+  options:
+    _input:
+      description: Template or layout string that may be wrapped in raw markers.
+      type: raw
+      required: true
+  author:
+    - infra.satellite_configuration contributors
+
+EXAMPLES: |
+  - name: Unwrap export raw markers before dispatch
+    ansible.builtin.set_fact:
+      template: "{{ cac_template | infra.satellite_configuration.satellite_configuration_unwrap_raw_markers }}"
+    vars:
+      # cac_template may be wrapped with Jinja raw/endraw markers from filetree export
+      cac_template: "wrapped layout body"
+
+RETURN:
+  _value:
+    description: Input with outer raw/endraw wrappers removed when present; otherwise unchanged.
+    type: raw
+...
