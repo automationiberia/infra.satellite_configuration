@@ -1,8 +1,0 @@
----
-minor_changes:
-  - Add filetree_reconcile role to detect and remediate drift between live Satellite state and Configuration as Code (export, compare, generate diff, apply).
-  - Add filetree_reconcile_diff module and reconcile_utils for file-pair YAML comparison with state present and state absent entries.
-  - Add run_filetree_reconcile playbook with export, compare, and apply workflow tags plus per-object-type filtering.
-  - Move satellite_configuration_filetree_read_tasks to global_vars so filetree_read and filetree_reconcile share the same object-type list and paths.
-
-...
