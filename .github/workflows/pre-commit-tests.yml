@@ -1,6 +1,8 @@
 ---
 # Untrusted code execution: pull_request (fork PRs have no secrets).
 # Pull request runs wait in approval-gate until pre-commit approval completes.
+# If pull_request_target never starts (common for GITHUB_TOKEN-created PRs),
+# approval-gate falls back to the in-workflow requires-approval environment gate.
 # Push/schedule runs populate the Ansible collections cache for external PRs.
 name: pre-commit tests
 
@@ -44,8 +46,12 @@ jobs:
           script: |
             const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
             const pollIntervalMs = 30_000;
+            // PRs opened by GITHUB_TOKEN (e.g. update-pre-commit) often never fire
+            // pull_request_target; fall back to the in-workflow environment gate.
+            const approvalStartGraceMs = 5 * 60 * 1000;
             const timeoutMs = 360 * 60 * 1000;
             const deadline = Date.now() + timeoutMs;
+            const waitStartedAt = Date.now();
             const trustedAssociations = ['OWNER', 'MEMBER', 'COLLABORATOR'];
 
             const { owner, repo } = context.repo;
@@ -84,17 +90,14 @@ jobs:
               return files.some((file) => file.filename.startsWith('.github/'));
             }
 
-            async function resolveBootstrapApproval() {
+            async function resolveInlineApproval(reason) {
               const trusted = trustedAssociations.includes(pullRequest.author_association);
               const githubModified = await pullRequestModifiesGithub();
 
-              core.notice(
-                'pre-commit-approve.yml is not registered on the default branch yet; using inline approval rules.',
-                { title: 'CI approval bootstrap' },
-              );
+              core.notice(reason, { title: 'CI approval gate' });
 
               if (trusted && !githubModified) {
-                core.notice('Trusted collaborator PR approved automatically (bootstrap).', {
+                core.notice('Trusted collaborator PR approved automatically (inline).', {
                   title: 'CI approval gate',
                 });
                 core.setOutput('approved', 'true');
@@ -102,7 +105,7 @@ jobs:
               }
 
               core.notice(
-                'Manual approval required until pre-commit-approve.yml is on devel.',
+                'Manual approval required via the pre-commit tests environment gate.',
                 { title: 'CI approval gate' },
               );
               core.setOutput('approved', 'false');
@@ -143,7 +146,9 @@ jobs:
 
             const approvalWorkflowId = await getApprovalWorkflowId();
             if (!approvalWorkflowId) {
-              await resolveBootstrapApproval();
+              await resolveInlineApproval(
+                'pre-commit-approve.yml is not registered on the default branch yet; using inline approval rules.',
+              );
               return;
             }
 
@@ -151,6 +156,12 @@ jobs:
               const approvalRun = await getLatestApprovalRun(approvalWorkflowId);
 
               if (!approvalRun) {
+                if (Date.now() - waitStartedAt >= approvalStartGraceMs) {
+                  await resolveInlineApproval(
+                    'pre-commit approval workflow did not start for this head SHA; falling back to inline approval rules.',
+                  );
+                  return;
+                }
                 core.info('Waiting for pre-commit approval workflow to start...');
                 await sleep(pollIntervalMs);
                 continue;

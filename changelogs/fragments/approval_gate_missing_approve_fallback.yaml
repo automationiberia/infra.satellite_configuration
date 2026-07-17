@@ -1,0 +1,7 @@
+---
+bugfixes:
+  - >-
+    Fix pre-commit approval-gate hanging when the pull_request_target approval
+    workflow never starts (for example GITHUB_TOKEN-created update-pre-commit
+    PRs) by falling back to the in-workflow requires-approval environment gate.
+...
