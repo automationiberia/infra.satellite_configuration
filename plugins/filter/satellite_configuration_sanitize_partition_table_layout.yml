@@ -1,0 +1,35 @@
+---
+# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
+
+DOCUMENTATION:
+  name: satellite_configuration_sanitize_partition_table_layout
+  short_description: Prepare partition table layout for Satellite import
+  version_added: 1.2.0
+  description:
+    - Unwraps CaC C({% raw %}) markers and strips Foreman C(<%# ... %>) metadata comment blocks
+      that break C(parse_template) during partition table import.
+    - Name and OS metadata are passed separately to M(redhat.satellite.partition_table).
+  positional: _input
+  options:
+    _input:
+      description: Partition table layout string from CaC.
+      type: raw
+      required: true
+  author:
+    - infra.satellite_configuration contributors
+
+EXAMPLES: |
+  - name: Sanitize partition table layout before import
+    ansible.builtin.set_fact:
+      layout: "{{ cac_layout | infra.satellite_configuration.satellite_configuration_sanitize_partition_table_layout }}"
+    vars:
+      cac_layout: |
+        <%# name: demo %>
+        zerombr
+        clearpart --all --initlabel
+
+RETURN:
+  _value:
+    description: Layout string ready for M(redhat.satellite.partition_table).
+    type: raw
+...
