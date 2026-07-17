@@ -1,6 +1,9 @@
 ---
 # Trusted workflow: approval gate for external PRs and .github changes.
 # Does not checkout or execute PR code (no pwn-request risk).
+# After approval, installs Automation Hub collections from the base branch and
+# uploads them as an artifact for pre-commit-tests.yml (fork PRs have no secrets;
+# pull_request_target cannot write Actions caches to the default branch scope).
 name: pre-commit approval
 
 on:
@@ -50,5 +53,52 @@ jobs:
     steps:
       - name: Approval granted
         run: echo "Approval granted."
+
+  prepare-collections:
+    needs: [auto-approve, manual-approval]
+    if: >-
+      always() &&
+      !cancelled() &&
+      (needs.auto-approve.result == 'success' ||
+       needs.manual-approval.result == 'success')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: write
+    steps:
+      - name: Checkout base branch requirements only
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          # Base branch ref only; never check out or execute PR head.
+          sparse-checkout: |
+            .github/collections
+
+      - name: Set up Python
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: "3.14"
+
+      - name: Install Ansible
+        run: pip install --upgrade "ansible-core>=2.20" pyyaml==6.0.1
+
+      - name: Install required collections from Automation Hub
+        run: ansible-galaxy collection install -r .github/collections/requirements.yml -vvvv
+        env:
+          ANSIBLE_GALAXY_SERVER_VALIDATED_URL: https://console.redhat.com/api/automation-hub/content/validated/
+          ANSIBLE_GALAXY_SERVER_VALIDATED_TOKEN: ${{ secrets.CRC_PUBLISH_KEY }}
+          ANSIBLE_GALAXY_SERVER_VALIDATED_AUTH_URL: https://sso.redhat.com/auth/realms/redhat-external/protocol/openid-connect/token
+          ANSIBLE_GALAXY_SERVER_PUBLISHED_URL: https://console.redhat.com/api/automation-hub/content/published/
+          ANSIBLE_GALAXY_SERVER_PUBLISHED_TOKEN: ${{ secrets.CRC_PUBLISH_KEY }}
+          ANSIBLE_GALAXY_SERVER_PUBLISHED_AUTH_URL: https://sso.redhat.com/auth/realms/redhat-external/protocol/openid-connect/token
+          ANSIBLE_GALAXY_SERVER_COMMUNITY_URL: https://galaxy.ansible.com/
+          ANSIBLE_GALAXY_SERVER_LIST: published, validated, community
+
+      - name: Upload collections artifact for pre-commit tests
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: ansible-collections
+          path: ~/.ansible/collections
+          retention-days: 1
+          if-no-files-found: error
 
 ...

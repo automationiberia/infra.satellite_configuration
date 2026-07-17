@@ -1,0 +1,6 @@
+---
+bugfixes:
+  - CI - prepare Automation Hub collections in the trusted approval workflow and
+    restore them in pre-commit tests so fork pull requests no longer fail when
+    ``CRC_PUBLISH_KEY`` is unavailable.
+...

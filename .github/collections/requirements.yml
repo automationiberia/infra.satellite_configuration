@@ -1,4 +1,5 @@
 ---
 collections:
   - name: redhat.satellite
+    version: "5.8.0"
 ...
