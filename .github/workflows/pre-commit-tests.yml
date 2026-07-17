@@ -38,10 +38,11 @@ jobs:
     outputs:
       approved: ${{ steps.check.outputs.approved }}
       needs_manual: ${{ steps.check.outputs.needs_manual }}
+      approval_run_id: ${{ steps.check.outputs.approval_run_id }}
     steps:
       - name: Wait for pre-commit approval workflow
         id: check
-        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
         with:
           script: |
             const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -59,6 +60,7 @@ jobs:
             const headSha = pullRequest.head.sha;
 
             core.setOutput('needs_manual', 'false');
+            core.setOutput('approval_run_id', '');
 
             if (pullRequest.base.ref !== 'devel') {
               core.setFailed(
@@ -197,6 +199,7 @@ jobs:
                 { title: 'CI approval gate' },
               );
               core.setOutput('approved', 'true');
+              core.setOutput('approval_run_id', String(approvalRun.id));
               return;
             }
 
@@ -234,24 +237,152 @@ jobs:
       - name: Validate changelog
         uses: ansible/ansible-content-actions/.github/actions/ansible_validate_changelog@main
 
-  pre-commit_and_sanity:
+  pre-commit:
     needs: [approval-gate, manual-approval]
     if: >-
       always() &&
       !cancelled() &&
+      !contains(fromJSON('["failure", "cancelled"]'), needs.approval-gate.result) &&
+      !contains(fromJSON('["failure", "cancelled"]'), needs.manual-approval.result) &&
       (github.event_name == 'push' ||
        github.event_name == 'schedule' ||
        (github.event_name == 'pull_request' &&
         (needs.approval-gate.outputs.approved == 'true' ||
          needs.manual-approval.result == 'success')))
-    uses: redhat-cop/ansible_collections_tooling/.github/workflows/pre_commit_workflow_crc.yml@main
-    with:
-      collection_namespace: infra
-      collection_name: satellite_configuration
-      collection_version: 1.1.3
-      collection_repo: https://github.com/redhat-cop/infra.satellite_configuration.git
-      base_branch: devel
-    secrets:
-      ansible_ah_token: ${{ secrets.CRC_PUBLISH_KEY }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          repository: ${{ github.event.pull_request.head.repo.full_name || github.repository }}
+
+      - name: Set up Python
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: "3.14"
+
+      - name: Install Ansible
+        run: pip install --upgrade "ansible-core>=2.20" pyyaml==6.0.1
+
+      - name: Restore collections from approval artifact
+        id: restore_collections
+        if: >-
+          github.event_name == 'pull_request' &&
+          needs.approval-gate.outputs.approval_run_id != ''
+        continue-on-error: true
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: ansible-collections
+          path: ${{ runner.temp }}/ansible-collections
+          repository: ${{ github.repository }}
+          run-id: ${{ needs.approval-gate.outputs.approval_run_id }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Install restored collections into Ansible path
+        id: install_restored
+        if: steps.restore_collections.outcome == 'success'
+        run: |
+          mkdir -p "${HOME}/.ansible/collections"
+          cp -a "${{ runner.temp }}/ansible-collections/." "${HOME}/.ansible/collections/"
+          ansible-galaxy collection list
+
+      - name: Install collection dependencies from Automation Hub
+        id: install_deps
+        if: steps.install_restored.outcome != 'success'
+        run: |
+          if [ -z "${ANSIBLE_GALAXY_SERVER_PUBLISHED_TOKEN}" ]; then
+            echo "::error::No approval collections artifact and CRC_PUBLISH_KEY is unavailable."
+            echo "::error::Fork PRs need prepare-collections in pre-commit-approve.yml on the base branch."
+            exit 1
+          fi
+          ansible-galaxy collection install -r .github/collections/requirements.yml -vvvv
+        env:
+          ANSIBLE_GALAXY_SERVER_VALIDATED_URL: https://console.redhat.com/api/automation-hub/content/validated/
+          ANSIBLE_GALAXY_SERVER_VALIDATED_TOKEN: ${{ secrets.CRC_PUBLISH_KEY }}
+          ANSIBLE_GALAXY_SERVER_VALIDATED_AUTH_URL: https://sso.redhat.com/auth/realms/redhat-external/protocol/openid-connect/token
+          ANSIBLE_GALAXY_SERVER_PUBLISHED_URL: https://console.redhat.com/api/automation-hub/content/published/
+          ANSIBLE_GALAXY_SERVER_PUBLISHED_TOKEN: ${{ secrets.CRC_PUBLISH_KEY }}
+          ANSIBLE_GALAXY_SERVER_PUBLISHED_AUTH_URL: https://sso.redhat.com/auth/realms/redhat-external/protocol/openid-connect/token
+          ANSIBLE_GALAXY_SERVER_COMMUNITY_URL: https://galaxy.ansible.com/
+          ANSIBLE_GALAXY_SERVER_LIST: published, validated, community
+
+      - name: Install this collection
+        run: |
+          if [ "${{ steps.install_restored.outcome }}" = "success" ]; then
+            ansible-galaxy collection install . --no-deps -vvvv
+          else
+            ansible-galaxy collection install . -vvvv
+          fi
+        env:
+          ANSIBLE_GALAXY_SERVER_VALIDATED_URL: https://console.redhat.com/api/automation-hub/content/validated/
+          ANSIBLE_GALAXY_SERVER_VALIDATED_TOKEN: ${{ secrets.CRC_PUBLISH_KEY }}
+          ANSIBLE_GALAXY_SERVER_VALIDATED_AUTH_URL: https://sso.redhat.com/auth/realms/redhat-external/protocol/openid-connect/token
+          ANSIBLE_GALAXY_SERVER_PUBLISHED_URL: https://console.redhat.com/api/automation-hub/content/published/
+          ANSIBLE_GALAXY_SERVER_PUBLISHED_TOKEN: ${{ secrets.CRC_PUBLISH_KEY }}
+          ANSIBLE_GALAXY_SERVER_PUBLISHED_AUTH_URL: https://sso.redhat.com/auth/realms/redhat-external/protocol/openid-connect/token
+          ANSIBLE_GALAXY_SERVER_COMMUNITY_URL: https://galaxy.ansible.com/
+          ANSIBLE_GALAXY_SERVER_LIST: published, validated, community
+      - name: Run pre-commit
+        uses: pre-commit/action@2c7b3805fd2a0fd8c1884dcaebf91fc102a13ecd # v3.0.1
+
+  build-import:
+    needs: [approval-gate, manual-approval]
+    if: >-
+      always() &&
+      !cancelled() &&
+      !contains(fromJSON('["failure", "cancelled"]'), needs.approval-gate.result) &&
+      !contains(fromJSON('["failure", "cancelled"]'), needs.manual-approval.result) &&
+      (github.event_name == 'push' ||
+       github.event_name == 'schedule' ||
+       (github.event_name == 'pull_request' &&
+        (needs.approval-gate.outputs.approved == 'true' ||
+         needs.manual-approval.result == 'success')))
+    uses: ansible/ansible-content-actions/.github/workflows/build_import.yaml@main
+
+  markdown-link-check:
+    needs: [approval-gate, manual-approval]
+    if: >-
+      always() &&
+      !cancelled() &&
+      !contains(fromJSON('["failure", "cancelled"]'), needs.approval-gate.result) &&
+      !contains(fromJSON('["failure", "cancelled"]'), needs.manual-approval.result) &&
+      (github.event_name == 'push' ||
+       github.event_name == 'schedule' ||
+       (github.event_name == 'pull_request' &&
+        (needs.approval-gate.outputs.approved == 'true' ||
+         needs.manual-approval.result == 'success')))
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          repository: ${{ github.event.pull_request.head.repo.full_name || github.repository }}
+
+      - uses: tcort/github-action-markdown-link-check@e7c7a18363c842693fadde5d41a3bd3573a7a225 # v1
+        with:
+          use-quiet-mode: "yes"
+          use-verbose-mode: "yes"
+          check-modified-files-only: "yes"
+          config-file: .mlc_config.json
+          base-branch: devel
+
+  all_green:
+    if: >-
+      always() &&
+      !cancelled() &&
+      needs.pre-commit.result != 'skipped'
+    needs:
+      - pre-commit
+      - build-import
+      - markdown-link-check
+    runs-on: ubuntu-latest
+    steps:
+      - run: >-
+          python -c "assert set([
+          '${{ needs.pre-commit.result }}',
+          '${{ needs.build-import.result }}',
+          '${{ needs.markdown-link-check.result }}',
+          ]) == {'success'}"
 
 ...

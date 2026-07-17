@@ -1,0 +1,32 @@
+---
+# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
+
+DOCUMENTATION:
+  name: satellite_configuration_contains_template_markers
+  short_description: Detect ERB or Jinja template markers in a string
+  version_added: 1.2.0
+  description:
+    - Returns V(true) when the input string contains ERB (C(<%), C(%>)) or Jinja2 (C({{), C({%), C({#)) markers.
+    - Used by export templates to decide when to wrap scalars with C({% raw %}) / C({% endraw %}).
+  positional: _input
+  options:
+    _input:
+      description: Value to inspect for template marker syntax.
+      type: raw
+      required: true
+  author:
+    - infra.satellite_configuration contributors
+
+EXAMPLES: |
+  - name: Guard raw wrapping when a value contains ERB or Jinja markers
+    ansible.builtin.debug:
+      msg: "{{ value | infra.satellite_configuration.satellite_configuration_contains_template_markers }}"
+    vars:
+      value: "<%# kickstart %>\n<%= @host.name %>"
+  # => true
+
+RETURN:
+  _value:
+    description: Whether the input contains template marker syntax.
+    type: boolean
+...

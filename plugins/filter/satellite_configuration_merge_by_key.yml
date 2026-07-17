@@ -1,0 +1,53 @@
+---
+# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
+
+DOCUMENTATION:
+  name: satellite_configuration_merge_by_key
+  short_description: Merge CaC override list into a base list by key
+  version_added: 1.2.0
+  description:
+    - Merges an overrides list into a base list using a shared key (default C(name)).
+    - Override entries replace matching base entries; unmatched overrides are appended.
+    - Used by C(filetree_read) when applying environment-specific fragments from
+      C(satellite_configuration_overrides_path).
+  positional: _input
+  options:
+    _input:
+      description: Base list of dict objects.
+      type: list
+      elements: raw
+      required: true
+    overrides:
+      description: Override list of dict objects merged by I(merge_key).
+      type: list
+      elements: raw
+      required: true
+    merge_key:
+      description: Dict key used to match base and override entries.
+      type: str
+      default: name
+  author:
+    - infra.satellite_configuration contributors
+
+EXAMPLES: |
+  - name: Merge environment overrides by name
+    ansible.builtin.set_fact:
+      satellite_products: >-
+        {{
+          base_products
+          | infra.satellite_configuration.satellite_configuration_merge_by_key(override_products)
+        }}
+    vars:
+      base_products:
+        - name: App
+          description: base
+      override_products:
+        - name: App
+          description: override
+
+RETURN:
+  _value:
+    description: Merged list with overrides winning on key collision.
+    type: list
+    elements: raw
+...

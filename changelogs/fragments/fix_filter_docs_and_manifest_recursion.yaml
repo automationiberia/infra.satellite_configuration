@@ -1,0 +1,11 @@
+---
+bugfixes:
+  - filters - add ansible-doc sidecar documentation for
+    satellite_configuration_contains_template_markers,
+    satellite_configuration_unwrap_raw_markers,
+    satellite_configuration_sanitize_partition_table_layout, and
+    satellite_configuration_merge_by_key (Galaxy Importer ansible-doc).
+  - dispatch - avoid recursive Jinja self-reference when passing
+    satellite_manifest_download and RHSM credentials into redhat.satellite.manifest
+    (ansible-lint jinja[invalid]).
+...
