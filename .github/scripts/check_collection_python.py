@@ -40,8 +40,7 @@ def _iter_python_files():
         root = REPO_ROOT / base
         if not root.is_dir():
             continue
-        for path in sorted(root.rglob("*.py")):
-            yield path
+        yield from sorted(root.rglob("*.py"))
 
 
 def _check_future_import_and_metaclass(path: Path, source: str) -> list[str]:
