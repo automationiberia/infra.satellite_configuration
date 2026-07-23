@@ -1,5 +1,4 @@
 ---
 bugfixes:
-  - release automation - skip EE build with a clear warning when secrets.quay_token
-    is unset, instead of failing podman login with an empty password.
+  - Completely skip the EE build when releaseing.
 ...
