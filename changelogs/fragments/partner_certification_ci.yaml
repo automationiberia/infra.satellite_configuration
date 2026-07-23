@@ -6,4 +6,7 @@ minor_changes:
 bugfixes:
   - filetree_reconcile_diff - align DOCUMENTATION defaults with argument_spec
     for ignore_keys and output_filename (ansible-test validate-modules).
+  - release automation - treat Verify Releases as successful when either
+    Galaxy or Automation Hub publish succeeds so a single publish failure
+    does not abort merge and EE build.
 ...

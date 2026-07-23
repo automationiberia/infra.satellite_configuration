@@ -271,10 +271,31 @@ jobs:
     needs:
       - release_galaxy
       - release_ah
-    if: ${{ !cancelled() && needs.release_galaxy.result == 'success' && needs.release_ah.result == 'success' }}
+    # Continue the release flow when at least one publish target succeeds
+    # (Galaxy token issues must not block Automation Hub / merge).
+    if: >-
+      always() &&
+      !cancelled() &&
+      (needs.release_galaxy.result == 'success' ||
+       needs.release_ah.result == 'success')
     runs-on: ubuntu-latest
     steps:
-      - run: echo "All releases completed successfully"
+      - name: Report publish results
+        env:
+          GALAXY_RESULT: ${{ needs.release_galaxy.result }}
+          AH_RESULT: ${{ needs.release_ah.result }}
+        run: |
+          echo "Publish to Galaxy: ${GALAXY_RESULT}"
+          echo "Publish to Automation Hub: ${AH_RESULT}"
+          if [ "${GALAXY_RESULT}" = "success" ] && [ "${AH_RESULT}" = "success" ]; then
+            echo "::notice::Both Galaxy and Automation Hub publishes succeeded."
+            exit 0
+          fi
+          if [ "${GALAXY_RESULT}" = "success" ]; then
+            echo "::warning::Automation Hub publish did not succeed (${AH_RESULT}); continuing with Galaxy only."
+            exit 0
+          fi
+          echo "::warning::Galaxy publish did not succeed (${GALAXY_RESULT}); continuing with Automation Hub only."
 
   upload_tarball:
     name: Upload Tarball to Release
