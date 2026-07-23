@@ -367,6 +367,27 @@ jobs:
           config-file: .mlc_config.json
           base-branch: devel
 
+  # Partner certification checks (galaxy-importer, ansible-lint, sanity).
+  # Required for all_green. Pin kept in sync via Dependabot github-actions.
+  # https://github.com/ansible-collections/partner-certification-checker
+  certification:
+    needs: [approval-gate, manual-approval]
+    if: >-
+      always() &&
+      !cancelled() &&
+      !contains(fromJSON('["failure", "cancelled"]'), needs.approval-gate.result) &&
+      !contains(fromJSON('["failure", "cancelled"]'), needs.manual-approval.result) &&
+      (github.event_name == 'push' ||
+       github.event_name == 'schedule' ||
+       (github.event_name == 'pull_request' &&
+        (needs.approval-gate.outputs.approved == 'true' ||
+         needs.manual-approval.result == 'success')))
+    uses: ansible-collections/partner-certification-checker/.github/workflows/certification-reusable.yml@v3.0.0 # zizmor: ignore[unpinned-uses]
+    with:
+      automation-hub: true
+    secrets:
+      AH_TOKEN: ${{ secrets.CRC_PUBLISH_KEY }}
+
   all_green:
     if: >-
       always() &&
@@ -376,6 +397,7 @@ jobs:
       - pre-commit
       - build-import
       - markdown-link-check
+      - certification
     runs-on: ubuntu-latest
     steps:
       - run: >-
@@ -383,6 +405,7 @@ jobs:
           '${{ needs.pre-commit.result }}',
           '${{ needs.build-import.result }}',
           '${{ needs.markdown-link-check.result }}',
+          '${{ needs.certification.result }}',
           ]) == {'success'}"
 
 ...

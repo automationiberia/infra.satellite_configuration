@@ -8,6 +8,10 @@ updates:
     cooldown:
       default-days: 7
 
+  # Keeps GitHub Actions and reusable workflow pins current, including
+  # ansible-collections/partner-certification-checker in certification.yml
+  # and pre-commit-tests.yml.
+  # https://github.com/ansible-collections/partner-certification-checker#keep-the-workflow-updated
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
