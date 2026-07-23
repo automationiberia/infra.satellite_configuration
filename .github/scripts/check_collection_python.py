@@ -1,9 +1,14 @@
 #!/usr/bin/env python3
-"""Local checks mirroring galaxy-importer / ansible-test Python sanity rules."""
+"""Local checks mirroring galaxy-importer / ansible-test Python sanity rules.
+
+Includes ansible-doc coverage for modules and filters (the Galaxy Importer path
+that previously missed undocumented filter plugins).
+"""
 
 from __future__ import annotations
 
 import ast
+import json
 import os
 import subprocess
 import sys
@@ -100,11 +105,56 @@ def _check_python_files() -> list[str]:
     return errors
 
 
+def _list_and_doc_plugins(
+    namespace: str,
+    name: str,
+    plugin_type: str,
+    env: dict[str, str],
+    cwd: str,
+) -> list[str]:
+    """List plugins with ansible-doc and require docs for each (Galaxy Importer path)."""
+    collection = f"{namespace}.{name}"
+    list_result = subprocess.run(
+        ["ansible-doc", "--list", "--type", plugin_type, "--json", collection],
+        env=env,
+        cwd=cwd,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    if list_result.returncode != 0:
+        detail = (list_result.stderr or list_result.stdout or "ansible-doc --list failed").strip()
+        return [f"ansible-doc --list --type {plugin_type} {collection}: {detail}"]
+
+    try:
+        listed = json.loads(list_result.stdout or "{}")
+    except json.JSONDecodeError as exc:
+        return [f"ansible-doc --list --type {plugin_type}: invalid JSON: {exc}"]
+
+    plugins = sorted(listed.keys())
+    if not plugins:
+        return []
+
+    doc_result = subprocess.run(
+        ["ansible-doc", "--type", plugin_type, "--json", *plugins],
+        env=env,
+        cwd=cwd,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    if doc_result.returncode != 0:
+        detail = (doc_result.stderr or doc_result.stdout or "ansible-doc failed").strip()
+        return [f"ansible-doc --type {plugin_type}: {detail}"]
+
+    return []
+
+
 def _check_ansible_doc(namespace: str, name: str) -> list[str]:
     if not shutil_which("ansible-doc"):
         return []
 
-    fqcn = f"{namespace}.{name}.format_yaml"
+    errors: list[str] = []
     with tempfile.TemporaryDirectory(prefix="ansible-collections-") as tmp_dir:
         collection_root = Path(tmp_dir) / "ansible_collections" / namespace / name
         collection_root.parent.mkdir(parents=True, exist_ok=True)
@@ -116,18 +166,10 @@ def _check_ansible_doc(namespace: str, name: str) -> list[str]:
         env["ANSIBLE_LOCAL_TEMP"] = os.path.join(tmp_dir, "ansible-local")
         os.makedirs(env["ANSIBLE_LOCAL_TEMP"], exist_ok=True)
 
-        result = subprocess.run(
-            ["ansible-doc", "--type", "module", "--json", fqcn],
-            env=env,
-            capture_output=True,
-            text=True,
-            check=False,
-        )
-        if result.returncode == 0:
-            return []
+        for plugin_type in ("module", "filter"):
+            errors.extend(_list_and_doc_plugins(namespace, name, plugin_type, env, tmp_dir))
 
-        detail = (result.stderr or result.stdout or "ansible-doc failed").strip()
-        return [f"ansible-doc {fqcn}: {detail}"]
+    return errors
 
 
 def shutil_which(command: str) -> str | None:

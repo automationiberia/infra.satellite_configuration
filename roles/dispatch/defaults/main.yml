@@ -1,12 +1,29 @@
 ---
 # defaults file for dispatch
+#
+# Public CaC / redhat.satellite interface vars use satellite_* and
+# satellite_configuration_* names (collection convention), not dispatch_*.
+# var-naming[no-role-prefix] is skipped in .ansible-lint (strict mode).
+#
+# Role-private defaults (must use dispatch_ prefix) are listed first.
+
+# Appended to satellite_builtin_role_name_skips (from role global_vars) when applying roles.
+dispatch_roles_name_skips_extra: []
+
+# Optional: used only when a `satellite_users` entry has no `user_password` (Foreman requires a password to create Internal-auth users). Prefer per-user `user_password` from Vault.
+# satellite_users_default_password: "{{ my_vault_new_user_password }}"
+
+###################
+## Public interface (CaC / redhat.satellite)
+###################
 satellite_username: '{{ lookup("env", "SATELLITE_USERNAME") }}'
 satellite_password: '{{ lookup("env", "SATELLITE_PASSWORD") }}'
 satellite_server_url: '{{ lookup("env", "SATELLITE_SERVER_URL") }}'
-###################
-## ContentViews:
-###################
-content_views_purge_count: 6
+
+## ContentViews
+satellite_configuration_dispatch_content_views_purge_count: 6
+# Backward-compatible alias for older playbooks / docs.
+content_views_purge_count: "{{ satellite_configuration_dispatch_content_views_purge_count }}"
 satellite_content_view_versions: []
 satellite_configuration_dispatch_content_view_publish_promote: true
 satellite_configuration_dispatch_host_collection_membership: false
@@ -32,10 +49,4 @@ satellite_configuration_dispatch_products_batch_pause: 30
 satellite_configuration_dispatch_content_views_batch_size: 1
 satellite_configuration_dispatch_content_views_task_poll_interval: 15
 satellite_configuration_dispatch_content_views_task_wait_timeout: 3600
-
-# Appended to satellite_builtin_role_name_skips (from role global_vars) when applying roles.
-dispatch_roles_name_skips_extra: []
-
-# Optional: used only when a `satellite_users` entry has no `user_password` (Foreman requires a password to create Internal-auth users). Prefer per-user `user_password` from Vault.
-# satellite_users_default_password: "{{ my_vault_new_user_password }}"
 ...

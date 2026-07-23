@@ -23,8 +23,15 @@ skip_list:
   - fqcn[keyword]
   - meta-runtime # requires_ansible in meta/runtime.yml vs galaxy.yml dependencies
   - sanity[cannot-ignore] # We're only ignoring sanity rules when we have to
+  # Playbooks use group/redhat.satellite.satellite module_defaults; Galaxy Importer
+  # lint runs without that collection installed, so syntax-check cannot resolve the group.
+  - internal-error
+  # Public CaC / collection API uses satellite_* and satellite_configuration_* (not
+  # <role>_*), and many task register/set_fact names use __* temps. With strict:true,
+  # .ansible-lint-ignore still counts those as warnings and fails the run — skip here.
+  # Galaxy Importer also excludes var-naming via -x. Role-private defaults should still
+  # use <role>_ prefixes by convention (e.g. dispatch_roles_name_skips_extra).
   - var-naming[no-role-prefix]
-  - jinja[invalid]
 kinds:
   - playbooks: "playbooks/*.{yml,yaml}"
   - playbooks: "**/examples/templates/*.{yml,yaml}"

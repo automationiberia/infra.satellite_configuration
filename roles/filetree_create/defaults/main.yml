@@ -1,15 +1,24 @@
 # SPDX-License-Identifier: MIT-0
 ---
 # defaults file for filetree_create
-output_path: "{{ satellite_configuration_filetree_path }}"
-# Optional (set under satellite.template in your vars): set_ownership: true applies owner/group on
-# generated files. Default is false so exports work as a normal local user without chown to another UID.
-set_ownership: false
+#
+# Role-private defaults use filetree_create_ prefix by convention.
+# Public play/CaC interface vars below use satellite_configuration_* / play names;
+# var-naming[no-role-prefix] is skipped in .ansible-lint (strict mode).
 
 # Foreman/Satellite built-in role names (see role global_vars).
 # Override the whole list if needed, or append via filetree_create_roles_name_excludes_extra.
 filetree_create_roles_name_excludes: "{{ satellite_builtin_role_name_skips }}"
 filetree_create_roles_name_excludes_extra: "{{ satellite_builtin_role_name_skips_extra }}"
+
+###################
+## Public interface
+###################
+# Play-facing export path alias (documented); prefer satellite_configuration_filetree_path.
+output_path: "{{ satellite_configuration_filetree_path }}"
+# Optional (set under satellite.template in your vars): set_ownership: true applies owner/group on
+# generated files. Default is false so exports work as a normal local user without chown to another UID.
+set_ownership: false
 
 satellite_configuration_filetree_create_secure_logging: true
 
