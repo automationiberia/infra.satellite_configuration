@@ -4,6 +4,24 @@ infra.satellite\_configuration Release Notes
 
 .. contents:: Topics
 
+v1.3.0
+======
+
+Minor Changes
+-------------
+
+- Add partner certification checks (galaxy-importer, ansible-lint production profile, and ansible-test sanity) to CI so CRC Automation Hub import failures are caught before release.
+- Rename content_views_purge_count default to satellite_configuration_dispatch_content_views_purge_count (compat alias kept).
+- Run galaxy-importer in pre-commit (and extend local ansible-doc checks to filters) so CRC/Galaxy import findings fail before a release is published.
+- Ship .ansible-lint in the collection artifact so Galaxy Importer respects collection skip_list (for example internal-error without redhat.satellite).
+
+Bugfixes
+--------
+
+- dispatch - avoid recursive Jinja self-reference when passing satellite_operatingsystems into redhat.satellite.operatingsystems (Galaxy Importer ansible-lint jinja[invalid]).
+- filetree_reconcile_diff - align DOCUMENTATION defaults with argument_spec for ignore_keys and output_filename (ansible-test validate-modules).
+- release automation - treat Verify Releases as successful when either Galaxy or Automation Hub publish succeeds so a single publish failure does not abort merge and EE build.
+
 v1.2.1
 ======
 
