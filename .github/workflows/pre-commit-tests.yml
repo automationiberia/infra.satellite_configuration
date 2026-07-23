@@ -368,7 +368,9 @@ jobs:
           base-branch: devel
 
   # Partner certification checks (galaxy-importer, ansible-lint, sanity).
-  # Required for all_green. Pin kept in sync via Dependabot github-actions.
+  # Required for all_green. Uses the ansible-collections artifact from
+  # pre-commit-approve (fork PRs have no AH secrets). Schedule/manual runs
+  # keep the upstream reusable workflow in certification.yml (has secrets).
   # https://github.com/ansible-collections/partner-certification-checker
   certification:
     needs: [approval-gate, manual-approval]
@@ -382,9 +384,9 @@ jobs:
        (github.event_name == 'pull_request' &&
         (needs.approval-gate.outputs.approved == 'true' ||
          needs.manual-approval.result == 'success')))
-    uses: ansible-collections/partner-certification-checker/.github/workflows/certification-reusable.yml@v3.0.0 # zizmor: ignore[unpinned-uses]
+    uses: ./.github/workflows/certification-cached.yml
     with:
-      automation-hub: true
+      approval-run-id: ${{ needs.approval-gate.outputs.approval_run_id }}
     secrets:
       AH_TOKEN: ${{ secrets.CRC_PUBLISH_KEY }}
 

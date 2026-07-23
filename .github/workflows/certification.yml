@@ -10,9 +10,10 @@
 #
 # Source: https://github.com/ansible-collections/partner-certification-checker
 #
-# Pull requests are gated by the certification job in
-# pre-commit-tests.yml (required for all_green). This
-# workflow covers schedule and manual runs.
+# Pull requests are gated by certification-cached.yml via
+# pre-commit-tests.yml (required for all_green), which restores
+# the ansible-collections artifact instead of needing AH secrets.
+# This workflow covers schedule and manual runs (repo secrets OK).
 name: Run collection certification checks
 
 permissions:
