@@ -6,7 +6,23 @@ plugins:
   callback: {}
   cliconf: {}
   connection: {}
-  filter: {}
+  filter:
+    satellite_configuration_contains_template_markers:
+      description: Detect ERB or Jinja template markers in a string
+      name: satellite_configuration_contains_template_markers
+      version_added: 1.2.0
+    satellite_configuration_merge_by_key:
+      description: Merge CaC override list into a base list by key
+      name: satellite_configuration_merge_by_key
+      version_added: 1.2.0
+    satellite_configuration_sanitize_partition_table_layout:
+      description: Prepare partition table layout for Satellite import
+      name: satellite_configuration_sanitize_partition_table_layout
+      version_added: 1.2.0
+    satellite_configuration_unwrap_raw_markers:
+      description: Strip CaC export {% raw %} / {% endraw %} wrappers
+      name: satellite_configuration_unwrap_raw_markers
+      version_added: 1.2.0
   httpapi: {}
   inventory: {}
   lookup: {}
@@ -26,4 +42,4 @@ plugins:
   strategy: {}
   test: {}
   vars: {}
-version: 1.2.0
+version: 1.2.1
