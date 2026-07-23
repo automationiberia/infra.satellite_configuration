@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """Local checks mirroring galaxy-importer / ansible-test Python sanity rules.
 
 Includes ansible-doc coverage for modules and filters (the Galaxy Importer path

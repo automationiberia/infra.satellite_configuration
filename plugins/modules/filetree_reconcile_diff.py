@@ -37,8 +37,9 @@ options:
     default: name
     type: str
   output_filename:
-    description: Filename for the generated diff fragment inside I(output_dir).
-    default: derived from I(var_name)
+    description:
+      - Filename for the generated diff fragment inside I(output_dir).
+      - When omitted, C(var_name).yaml is used.
     type: str
   ignore_keys:
     description: Object keys removed before comparing live and CaC entries and from C(state=absent) copies of live objects.
@@ -94,7 +95,6 @@ from ansible.module_utils.basic import AnsibleModule
 
 try:
     from ansible_collections.infra.satellite_configuration.plugins.module_utils.reconcile_utils import (
-        DEFAULT_IGNORE_KEYS,
         ReconcileCompareError,
         dump_diff_document,
         reconcile_directories,
@@ -107,7 +107,6 @@ except ModuleNotFoundError:
     _UTILS_SPEC = importlib.util.spec_from_file_location("reconcile_utils", _UTILS_PATH)
     _UTILS_MODULE = importlib.util.module_from_spec(_UTILS_SPEC)
     _UTILS_SPEC.loader.exec_module(_UTILS_MODULE)
-    DEFAULT_IGNORE_KEYS = _UTILS_MODULE.DEFAULT_IGNORE_KEYS
     ReconcileCompareError = _UTILS_MODULE.ReconcileCompareError
     dump_diff_document = _UTILS_MODULE.dump_diff_document
     reconcile_directories = _UTILS_MODULE.reconcile_directories
@@ -140,9 +139,16 @@ def run_module():
             "cac_dir": {"type": "path", "required": True},
             "output_dir": {"type": "path", "required": True},
             "var_name": {"type": "str", "required": True},
-            "merge_key": {"type": "str", "default": "name"},
-            "output_filename": {"type": "str", "default": None},
-            "ignore_keys": {"type": "list", "elements": "str", "default": list(DEFAULT_IGNORE_KEYS)},
+            # no_log=False: names contain "key" but values are not secrets.
+            "merge_key": {"type": "str", "default": "name", "no_log": False},
+            "output_filename": {"type": "str", "required": False},
+            "ignore_keys": {
+                "type": "list",
+                "elements": "str",
+                # Explicit order must match DOCUMENTATION (not list(frozenset)).
+                "default": ["created_at", "updated_at", "id", "state"],
+                "no_log": False,
+            },
         },
         supports_check_mode=True,
     )

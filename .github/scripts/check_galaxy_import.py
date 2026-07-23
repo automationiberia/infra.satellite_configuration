@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """Run galaxy-importer the same way CI build-import does, and fail on actionable errors.
 
 Galaxy Importer often logs ansible-doc / lint problems as ERROR/WARNING while still
