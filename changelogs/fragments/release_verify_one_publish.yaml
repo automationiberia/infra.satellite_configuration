@@ -1,0 +1,6 @@
+---
+bugfixes:
+  - release automation - treat Verify Releases as successful when either
+    Galaxy or Automation Hub publish succeeds so a single publish failure
+    does not abort merge and EE build.
+...
