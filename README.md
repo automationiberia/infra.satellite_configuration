@@ -5,7 +5,7 @@
 # Automation Iberia - Satellite Configuration Collection (infra.satellite_configuration)
 
 ![pre-commit tests](https://github.com/redhat-cop/infra.satellite_configuration/actions/workflows/pre-commit.yml/badge.svg)
-![Release](https://github.com/redhat-cop/infra.satellite_configuration/actions/workflows/release.yml/badge.svg)
+![Release](https://github.com/redhat-cop/infra.satellite_configuration/actions/workflows/release_auto.yml/badge.svg)
 <!-- Further CI badges go here as above -->
 
 This Ansible Collection provides **Configuration as Code** for **Red Hat Satellite** using Ansible.
