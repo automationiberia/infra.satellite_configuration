@@ -381,10 +381,37 @@ jobs:
             gh pr merge "${HEAD}" --rebase
           fi
 
-  deploy_ee:
-    name: Build Execution Environment
+  deploy_ee_gate:
+    name: Check Quay credentials
     needs: merge_release
     if: ${{ !cancelled() && needs.merge_release.result == 'success' }}
+    runs-on: ubuntu-latest
+    outputs:
+      deploy: ${{ steps.check.outputs.deploy }}
+    steps:
+      - name: Require quay_token for EE build
+        id: check
+        env:
+          QUAY_TOKEN: ${{ secrets.quay_token }}
+        run: |
+          if [ -z "${QUAY_TOKEN}" ]; then
+            echo "deploy=false" >> "${GITHUB_OUTPUT}"
+            echo "::warning::secrets.quay_token is empty or unset; skipping EE build."
+            echo "::notice::Add a Quay.io robot token as repository secret 'quay_token' (login user: redhat_cop+github_action)."
+          else
+            echo "deploy=true" >> "${GITHUB_OUTPUT}"
+          fi
+
+  deploy_ee:
+    name: Build Execution Environment
+    needs:
+      - merge_release
+      - deploy_ee_gate
+    if: >-
+      always() &&
+      !cancelled() &&
+      needs.merge_release.result == 'success' &&
+      needs.deploy_ee_gate.outputs.deploy == 'true'
     uses: redhat-cop/ansible_collections_tooling/.github/workflows/build_ee.yml@634342818b5d5fa2fa92b2c68c78a2bbe8aa4f10 # main
     with:
       quay_username: redhat_cop
