@@ -266,3 +266,22 @@ releases:
     - filetree_reconcile.yaml
     - issue_34_round_trip.yaml
     release_date: '2026-07-15'
+  1.2.1:
+    changes:
+      bugfixes:
+      - CI - prepare Automation Hub collections in the trusted approval workflow and
+        restore them in pre-commit tests so fork pull requests no longer fail when
+        ``CRC_PUBLISH_KEY`` is unavailable.
+      - Fix pre-commit approval-gate hanging when the pull_request_target approval
+        workflow never starts (for example GITHUB_TOKEN-created update-pre-commit
+        PRs) by falling back to the in-workflow requires-approval environment gate.
+      - dispatch - avoid recursive Jinja self-reference when passing satellite_manifest_download
+        and RHSM credentials into redhat.satellite.manifest (ansible-lint jinja[invalid]).
+      - filters - add ansible-doc sidecar documentation for satellite_configuration_contains_template_markers,
+        satellite_configuration_unwrap_raw_markers, satellite_configuration_sanitize_partition_table_layout,
+        and satellite_configuration_merge_by_key (Galaxy Importer ansible-doc).
+    fragments:
+    - approval_gate_missing_approve_fallback.yaml
+    - ci_fork_pr_collections_artifact.yaml
+    - fix_filter_docs_and_manifest_recursion.yaml
+    release_date: '2026-07-23'
