@@ -1,0 +1,75 @@
+---
+# Restore AH collections from the pre-commit-approve artifact, or install them
+# with an Automation Hub token when the artifact is unavailable (push/schedule).
+# Fork pull_request jobs have no repository secrets; they must use the artifact.
+name: Ensure Ansible collections
+description: >-
+  Make redhat.satellite (and other AH deps) available under
+  ~/.ansible/collections without requiring secrets on fork PRs.
+
+inputs:
+  approval-run-id:
+    description: Workflow run id that uploaded the ansible-collections artifact
+    required: false
+    default: ""
+  ah-token:
+    description: Automation Hub / CRC token (empty on fork pull_request)
+    required: false
+    default: ""
+  requirements-file:
+    description: ansible-galaxy requirements path used for AH install fallback
+    required: false
+    default: .github/collections/requirements.yml
+  repository:
+    description: Repository that owns the approval artifact
+    required: true
+  github-token:
+    description: Token used to download the cross-workflow artifact
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: Restore collections from approval artifact
+      id: restore_collections
+      if: inputs.approval-run-id != ''
+      continue-on-error: true
+      uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+      with:
+        name: ansible-collections
+        path: ${{ runner.temp }}/ansible-collections
+        repository: ${{ inputs.repository }}
+        run-id: ${{ inputs.approval-run-id }}
+        github-token: ${{ inputs.github-token }}
+
+    - name: Install restored collections into Ansible path
+      id: install_restored
+      if: steps.restore_collections.outcome == 'success'
+      shell: bash
+      run: |
+        mkdir -p "${HOME}/.ansible/collections"
+        cp -a "${{ runner.temp }}/ansible-collections/." "${HOME}/.ansible/collections/"
+        ansible-galaxy collection list
+
+    - name: Install collection dependencies from Automation Hub
+      if: steps.install_restored.outcome != 'success'
+      shell: bash
+      env:
+        AH_TOKEN: ${{ inputs.ah-token }}
+        REQUIREMENTS_FILE: ${{ inputs.requirements-file }}
+        ANSIBLE_GALAXY_SERVER_VALIDATED_URL: https://console.redhat.com/api/automation-hub/content/validated/
+        ANSIBLE_GALAXY_SERVER_VALIDATED_TOKEN: ${{ inputs.ah-token }}
+        ANSIBLE_GALAXY_SERVER_VALIDATED_AUTH_URL: https://sso.redhat.com/auth/realms/redhat-external/protocol/openid-connect/token
+        ANSIBLE_GALAXY_SERVER_PUBLISHED_URL: https://console.redhat.com/api/automation-hub/content/published/
+        ANSIBLE_GALAXY_SERVER_PUBLISHED_TOKEN: ${{ inputs.ah-token }}
+        ANSIBLE_GALAXY_SERVER_PUBLISHED_AUTH_URL: https://sso.redhat.com/auth/realms/redhat-external/protocol/openid-connect/token
+        ANSIBLE_GALAXY_SERVER_COMMUNITY_URL: https://galaxy.ansible.com/
+        ANSIBLE_GALAXY_SERVER_LIST: published, validated, community
+      run: |
+        if [ -z "${AH_TOKEN}" ]; then
+          echo "::error::No approval collections artifact and AH token is unavailable."
+          echo "::error::Fork PRs need prepare-collections in pre-commit-approve.yml on the base branch."
+          exit 1
+        fi
+        ansible-galaxy collection install -r "${REQUIREMENTS_FILE}" -vvvv
+...

@@ -367,6 +367,29 @@ jobs:
           config-file: .mlc_config.json
           base-branch: devel
 
+  # Partner certification checks (galaxy-importer, ansible-lint, sanity).
+  # Required for all_green. Uses the ansible-collections artifact from
+  # pre-commit-approve (fork PRs have no AH secrets). Schedule/manual runs
+  # keep the upstream reusable workflow in certification.yml (has secrets).
+  # https://github.com/ansible-collections/partner-certification-checker
+  certification:
+    needs: [approval-gate, manual-approval]
+    if: >-
+      always() &&
+      !cancelled() &&
+      !contains(fromJSON('["failure", "cancelled"]'), needs.approval-gate.result) &&
+      !contains(fromJSON('["failure", "cancelled"]'), needs.manual-approval.result) &&
+      (github.event_name == 'push' ||
+       github.event_name == 'schedule' ||
+       (github.event_name == 'pull_request' &&
+        (needs.approval-gate.outputs.approved == 'true' ||
+         needs.manual-approval.result == 'success')))
+    uses: ./.github/workflows/certification-cached.yml
+    with:
+      approval-run-id: ${{ needs.approval-gate.outputs.approval_run_id }}
+    secrets:
+      AH_TOKEN: ${{ secrets.CRC_PUBLISH_KEY }}
+
   all_green:
     if: >-
       always() &&
@@ -376,6 +399,7 @@ jobs:
       - pre-commit
       - build-import
       - markdown-link-check
+      - certification
     runs-on: ubuntu-latest
     steps:
       - run: >-
@@ -383,6 +407,7 @@ jobs:
           '${{ needs.pre-commit.result }}',
           '${{ needs.build-import.result }}',
           '${{ needs.markdown-link-check.result }}',
+          '${{ needs.certification.result }}',
           ]) == {'success'}"
 
 ...

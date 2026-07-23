@@ -1,0 +1,9 @@
+---
+minor_changes:
+  - Add partner certification checks (galaxy-importer, ansible-lint production
+    profile, and ansible-test sanity) to CI so CRC Automation Hub import
+    failures are caught before release.
+bugfixes:
+  - filetree_reconcile_diff - align DOCUMENTATION defaults with argument_spec
+    for ignore_keys and output_filename (ansible-test validate-modules).
+...

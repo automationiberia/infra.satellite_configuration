@@ -1,0 +1,179 @@
+---
+# Partner certification checks for pull_request/push that cannot rely on AH
+# secrets (fork PRs). Versions aligned with partner-certification-checker@v3.0.0.
+# Prefer the ansible-collections artifact from pre-commit-approve; fall back to
+# AH_TOKEN only when the artifact is missing (trusted push/schedule).
+#
+# https://github.com/ansible-collections/partner-certification-checker
+name: Certification checks (collections cache)
+
+on:
+  workflow_call:
+    inputs:
+      approval-run-id:
+        description: pre-commit-approve run id that uploaded ansible-collections
+        type: string
+        required: false
+        default: ""
+      ansible-core-version:
+        description: ansible-core for build-import and lint (sanity uses its matrix)
+        type: string
+        required: false
+        default: "2.16.0"
+      origin-python-version:
+        type: string
+        required: false
+        default: "3.12"
+    secrets:
+      AH_TOKEN:
+        description: Optional CRC/AH token for push/schedule fallback
+        required: false
+
+permissions:
+  contents: read
+  actions: read
+
+env:
+  GALAXY_IMPORTER_VER: "0.4.31"
+  ANSIBLE_LINT_VER: "24.12.2"
+  ANSIBLE_LINT_CORE_2_19_VER: "25.2.0"
+
+jobs:
+  build-import:
+    name: "Build & import collection"
+    runs-on: ubuntu-latest
+    env:
+      CHECK_REQUIRED_TAGS: "True"
+      RUN_ANSIBLE_LINT: "False"
+      CORE_VER: ${{ inputs.ansible-core-version }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          repository: ${{ github.event.pull_request.head.repo.full_name || github.repository }}
+          persist-credentials: false
+
+      - name: Set up Python
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: ${{ inputs.origin-python-version }}
+
+      - name: Install ansible-core
+        run: pip install ansible-core=="${CORE_VER}"
+
+      - name: Ensure Automation Hub collections
+        uses: ./.github/actions/ensure-ansible-collections
+        with:
+          approval-run-id: ${{ inputs.approval-run-id }}
+          ah-token: ${{ secrets.AH_TOKEN }}
+          repository: ${{ github.repository }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Install galaxy-importer
+        run: pip install galaxy-importer=="${GALAXY_IMPORTER_VER}"
+
+      - name: Update galaxy-importer.cfg
+        run: |
+          {
+            echo '[galaxy-importer]'
+            echo "CHECK_REQUIRED_TAGS=${CHECK_REQUIRED_TAGS}"
+            echo "RUN_ANSIBLE_LINT=${RUN_ANSIBLE_LINT}"
+          } > /tmp/galaxy-importer.cfg
+          echo "GALAXY_IMPORTER_CONFIG=/tmp/galaxy-importer.cfg" >> "${GITHUB_ENV}"
+
+      - name: Build the collection tarball and run galaxy importer on it
+        run: python -m galaxy_importer.main --git-clone-path . --output-path /tmp
+
+  lint:
+    name: "Lint production"
+    runs-on: ubuntu-latest
+    env:
+      CORE_VER: ${{ inputs.ansible-core-version }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          repository: ${{ github.event.pull_request.head.repo.full_name || github.repository }}
+          persist-credentials: false
+
+      - name: Set up Python
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: ${{ inputs.origin-python-version }}
+
+      - name: Install ansible-core
+        run: pip install ansible-core=="${CORE_VER}"
+
+      - name: Ensure Automation Hub collections
+        uses: ./.github/actions/ensure-ansible-collections
+        with:
+          approval-run-id: ${{ inputs.approval-run-id }}
+          ah-token: ${{ secrets.AH_TOKEN }}
+          repository: ${{ github.repository }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Determine compatible ansible-lint version
+        run: |
+          major_minor=$(echo "${CORE_VER}" | cut -d. -f1,2)
+          minor=$(echo "${major_minor}" | cut -d. -f2)
+          if [ "${minor}" -ge 19 ]; then
+            echo "ANSIBLE_LINT_VER=${ANSIBLE_LINT_CORE_2_19_VER}" >> "${GITHUB_ENV}"
+          fi
+
+      - name: Install ansible-lint
+        run: pip install ansible-lint=="${ANSIBLE_LINT_VER}"
+
+      - name: Run ansible-lint
+        run: ansible-lint --profile=production
+
+  sanity:
+    name: Sanity (Ⓐ${{ matrix.ansible }})
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        ansible:
+          - stable-2.16
+          - stable-2.18
+          - stable-2.20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          repository: ${{ github.event.pull_request.head.repo.full_name || github.repository }}
+          persist-credentials: false
+
+      - name: Set up Python
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: ${{ inputs.origin-python-version }}
+
+      - name: Install ansible-core
+        run: pip install ansible-core==2.16.0
+
+      - name: Ensure Automation Hub collections
+        uses: ./.github/actions/ensure-ansible-collections
+        with:
+          approval-run-id: ${{ inputs.approval-run-id }}
+          ah-token: ${{ secrets.AH_TOKEN }}
+          repository: ${{ github.repository }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Perform sanity testing
+        uses: ansible-community/ansible-test-gh-action@d3a8ec7a59694e25e210fcd44738910149537f0e # v1.17.0
+        with:
+          ansible-core-version: ${{ matrix.ansible }}
+          origin-python-version: ${{ inputs.origin-python-version }}
+          testing-type: sanity
+          # Do not set collection-src-directory to github.workspace: the action
+          # would cp the checkout into ansible_collections/... inside itself.
+          # Default checkout uses GITHUB_SHA (PR merge commit / push SHA).
+          pull-request-change-detection: false
+          # Place AH deps as siblings so ansible-test docker does not need AH_TOKEN.
+          pre-test-cmd: >-
+            mkdir -p ../../redhat
+            && cp -a "${HOME}/.ansible/collections/ansible_collections/redhat/satellite"
+            ../../redhat/satellite
+...

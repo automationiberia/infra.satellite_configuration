@@ -2,8 +2,9 @@
 # Trusted workflow: approval gate for external PRs and .github changes.
 # Does not checkout or execute PR code (no pwn-request risk).
 # After approval, installs Automation Hub collections from the base branch and
-# uploads them as an artifact for pre-commit-tests.yml (fork PRs have no secrets;
-# pull_request_target cannot write Actions caches to the default branch scope).
+# uploads them as an artifact for pre-commit-tests.yml (pre-commit + certification;
+# fork PRs have no secrets; pull_request_target cannot write Actions caches to
+# the default branch scope).
 name: pre-commit approval
 
 on:
@@ -93,7 +94,7 @@ jobs:
           ANSIBLE_GALAXY_SERVER_COMMUNITY_URL: https://galaxy.ansible.com/
           ANSIBLE_GALAXY_SERVER_LIST: published, validated, community
 
-      - name: Upload collections artifact for pre-commit tests
+      - name: Upload collections artifact for pre-commit and certification
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: ansible-collections
