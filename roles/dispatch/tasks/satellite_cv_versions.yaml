@@ -100,13 +100,13 @@
     satellite_server_url: "{{ server_url }}"
     satellite_validate_certs: "{{ validate_certs }}"
     satellite_organization: "{{ __current_organization }}"
-    satellite_content_view_version_cleanup_keep: "{{ content_views_purge_count }}"
+    satellite_content_view_version_cleanup_keep: "{{ satellite_configuration_dispatch_content_views_purge_count | default(content_views_purge_count) }}"
   loop: "{{ satellite_content_views | default([]) | map(attribute='organization') | unique | list }}"
   loop_control:
     loop_var: __current_organization
     label: "{{ __current_organization }}"
   when:
-    - content_views_purge_count is defined
+    - satellite_configuration_dispatch_content_views_purge_count is defined or content_views_purge_count is defined
     - satellite_content_views is defined
     - satellite_content_views | length > 0
 ...

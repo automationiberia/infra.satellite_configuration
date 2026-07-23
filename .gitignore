@@ -5,6 +5,7 @@ satellite.yaml
 .ansible
 .github/workflow-config
 *artifact*.json
+importer_result.json
 *.log
 export
 import

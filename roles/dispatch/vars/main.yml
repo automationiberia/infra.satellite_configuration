@@ -1,6 +1,7 @@
 ---
 # vars file for dispatch
 # Playbooks pass satellite.*; legacy import_role tasks still reference these aliases.
+# var-naming[no-role-prefix] for this file is ignored in .ansible-lint-ignore.
 username: "{{ satellite.admin.username }}"
 password: "{{ satellite.admin.password }}"
 server_url: "{{ satellite.server_url }}"

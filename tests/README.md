@@ -44,7 +44,7 @@ Define `satellite` or `satellite_source` in your vars file. For round-trip workf
 | `satellite_username` | `{{ lookup("env", "SATELLITE_USERNAME") }}` | The username to connect to the Satellite instance |
 | `satellite_password` | `{{ lookup("env", "SATELLITE_PASSWORD") }}` | The password to connect to the Satellite instance |
 | `satellite_server_url` | `{{ lookup("env", "SATELLITE_SERVER_URL") }}` | The Satellite instance's URL/IP |
-| `content_views_purge_count` | `6` | Keep this many newest content view versions after publish (tag `cv_publish_promote`). |
+| `satellite_configuration_dispatch_content_views_purge_count` | `6` | Keep this many newest content view versions after publish (tag `cv_publish_promote`). Alias: `content_views_purge_count`. |
 | `satellite_configuration_dispatch_content_view_publish_promote` | `true` | When `true`, publishes and promotes content views after creation. Set `false` to skip or on re-runs. |
 | `satellite_configuration_dispatch_secure_logging` | `true` | When `true`, sets `no_log` on dispatch tasks for sensitive object types (users, settings, content credentials, LDAP). Set `false` when debugging to surface API errors in the log. |
 

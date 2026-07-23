@@ -49,6 +49,17 @@ repos:
           - PyYAML
         pass_filenames: false
         always_run: true
+      - id: galaxy-import
+        name: galaxy-import
+        entry: python .github/scripts/check_galaxy_import.py
+        language: python
+        additional_dependencies:
+          - ansible-core==2.21.2
+          - galaxy-importer==0.4.40
+          - ansible-lint==26.6.0
+          - PyYAML
+        pass_filenames: false
+        always_run: true
   - repo: https://github.com/ambv/black
     rev: 26.5.1
     hooks:
