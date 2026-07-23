@@ -352,15 +352,34 @@ jobs:
           ref: release/${{ needs.calculate_version.outputs.collection_version }}
 
       - name: Create and merge release PR
-        run: |
-          gh pr create \
-            --base devel \
-            --head "release/${{ needs.calculate_version.outputs.collection_version }}" \
-            --title "[RELEASE] Update changelog ${{ needs.calculate_version.outputs.collection_version }}" \
-            --body "Updated with changelog for release ${{ needs.calculate_version.outputs.collection_version }}"
-          gh pr merge "release/${{ needs.calculate_version.outputs.collection_version }}" --rebase --admin
         env:
-          GH_TOKEN: ${{ secrets.GH_WORKFLOW_KEY }}
+          # Use the job GITHUB_TOKEN (pull-requests: write). GH_WORKFLOW_KEY is often a
+          # fine-grained PAT without createPullRequest and fails with:
+          # "Resource not accessible by personal access token (createPullRequest)".
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: ${{ needs.calculate_version.outputs.collection_version }}
+        run: |
+          HEAD="release/${TAG}"
+          STATE="$(gh pr view "${HEAD}" --json state --jq .state 2>/dev/null || true)"
+          if [ "${STATE}" = "MERGED" ]; then
+            echo "::notice::Release PR for ${HEAD} is already merged."
+            exit 0
+          fi
+          if [ -z "${STATE}" ]; then
+            gh pr create \
+              --base devel \
+              --head "${HEAD}" \
+              --title "[RELEASE] Update changelog ${TAG}" \
+              --body "Updated with changelog for release ${TAG}"
+          else
+            echo "::notice::Release PR for ${HEAD} already exists (state=${STATE})."
+          fi
+          # --admin bypasses branch protection when the token is allowed to; fall back
+          # to a normal merge if admin bypass is not available for GITHUB_TOKEN.
+          if ! gh pr merge "${HEAD}" --rebase --admin; then
+            echo "::warning::Admin merge failed; retrying without --admin."
+            gh pr merge "${HEAD}" --rebase
+          fi
 
   deploy_ee:
     name: Build Execution Environment
