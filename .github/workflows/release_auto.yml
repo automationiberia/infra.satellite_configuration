@@ -402,21 +402,21 @@ jobs:
             echo "deploy=true" >> "${GITHUB_OUTPUT}"
           fi
 
-  deploy_ee:
-    name: Build Execution Environment
-    needs:
-      - merge_release
-      - deploy_ee_gate
-    if: >-
-      always() &&
-      !cancelled() &&
-      needs.merge_release.result == 'success' &&
-      needs.deploy_ee_gate.outputs.deploy == 'true'
-    uses: redhat-cop/ansible_collections_tooling/.github/workflows/build_ee.yml@634342818b5d5fa2fa92b2c68c78a2bbe8aa4f10 # main
-    with:
-      quay_username: redhat_cop
-    secrets:
-      quay_token: ${{ secrets.quay_token }}
+  # deploy_ee:
+  #   name: Build Execution Environment
+  #   needs:
+  #     - merge_release
+  #     - deploy_ee_gate
+  #   if: >-
+  #     always() &&
+  #     !cancelled() &&
+  #     needs.merge_release.result == 'success' &&
+  #     needs.deploy_ee_gate.outputs.deploy == 'true'
+  #   uses: redhat-cop/ansible_collections_tooling/.github/workflows/build_ee.yml@634342818b5d5fa2fa92b2c68c78a2bbe8aa4f10 # main
+  #   with:
+  #     quay_username: redhat_cop
+  #   secrets:
+  #     quay_token: ${{ secrets.quay_token }}
 
   # send_message:
   #   name: Send Matrix Notification
