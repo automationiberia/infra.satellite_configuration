@@ -167,7 +167,9 @@ jobs:
           ansible-core-version: ${{ matrix.ansible }}
           origin-python-version: ${{ inputs.origin-python-version }}
           testing-type: sanity
-          collection-src-directory: ${{ github.workspace }}
+          # Do not set collection-src-directory to github.workspace: the action
+          # would cp the checkout into ansible_collections/... inside itself.
+          # Default checkout uses GITHUB_SHA (PR merge commit / push SHA).
           pull-request-change-detection: false
           # Place AH deps as siblings so ansible-test docker does not need AH_TOKEN.
           pre-test-cmd: >-
