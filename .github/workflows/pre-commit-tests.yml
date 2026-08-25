@@ -235,7 +235,7 @@ jobs:
           fetch-depth: 0
 
       - name: Validate changelog
-        uses: ansible/ansible-content-actions/.github/actions/ansible_validate_changelog@main
+        uses: ansible/ansible-content-actions/.github/actions/ansible_validate_changelog@c81d405f1de6452c2ba7ddaca919afc65f8fe7ca # main
 
   pre-commit:
     needs: [approval-gate, manual-approval]
@@ -338,7 +338,7 @@ jobs:
        (github.event_name == 'pull_request' &&
         (needs.approval-gate.outputs.approved == 'true' ||
          needs.manual-approval.result == 'success')))
-    uses: ansible/ansible-content-actions/.github/workflows/build_import.yaml@main
+    uses: ansible/ansible-content-actions/.github/workflows/build_import.yaml@c81d405f1de6452c2ba7ddaca919afc65f8fe7ca # main
 
   markdown-link-check:
     needs: [approval-gate, manual-approval]
