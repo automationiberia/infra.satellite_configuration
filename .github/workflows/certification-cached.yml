@@ -103,17 +103,9 @@ jobs:
         with:
           python-version: ${{ inputs.origin-python-version }}
 
-      - name: Install ansible-core
-        run: pip install ansible-core=="${CORE_VER}"
-
-      - name: Ensure Automation Hub collections
-        uses: ./.github/actions/ensure-ansible-collections
-        with:
-          approval-run-id: ${{ inputs.approval-run-id }}
-          ah-token: ${{ secrets.AH_TOKEN }}
-          repository: ${{ github.repository }}
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-
+      # The default ansible-lint version is incompatible with ansible-core >= 2.19
+      # because ansible.parsing.yaml.constructor was removed.
+      # Use the ansible-core 2.19+ ansible-lint version for those runs.
       - name: Determine compatible ansible-lint version
         run: |
           major_minor=$(echo "${CORE_VER}" | cut -d. -f1,2)
@@ -122,8 +114,18 @@ jobs:
             echo "ANSIBLE_LINT_VER=${ANSIBLE_LINT_CORE_2_19_VER}" >> "${GITHUB_ENV}"
           fi
 
-      - name: Install ansible-lint
-        run: pip install ansible-lint=="${ANSIBLE_LINT_VER}"
+      # Install together so pip does not upgrade ansible-core past the pinned CORE_VER
+      # when resolving ansible-lint dependencies (breaks ansible-lint 24.x on core 2.19+).
+      - name: Install ansible-lint and ansible-core
+        run: pip install ansible-lint=="${ANSIBLE_LINT_VER}" ansible-core=="${CORE_VER}"
+
+      - name: Ensure Automation Hub collections
+        uses: ./.github/actions/ensure-ansible-collections
+        with:
+          approval-run-id: ${{ inputs.approval-run-id }}
+          ah-token: ${{ secrets.AH_TOKEN }}
+          repository: ${{ github.repository }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Run ansible-lint
         run: ansible-lint --profile=production
