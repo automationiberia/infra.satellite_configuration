@@ -5,7 +5,11 @@ from __future__ import absolute_import, division, print_function
 
 import fnmatch
 import re
-from urllib.parse import quote
+
+try:
+    from urllib.parse import quote
+except ImportError:  # Python 2 (ansible-test import sanity)
+    from urllib import quote  # pylint: disable=no-name-in-module,import-error
 
 __metaclass__ = type
 
