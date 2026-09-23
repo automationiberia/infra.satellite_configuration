@@ -353,6 +353,117 @@ class TestExportFilters(unittest.TestCase):
         )
         self.assertEqual([item["name"] for item in filtered], ["enabled-set"])
 
+    def test_filter_reconcile_scope_objects_roles_skips_builtin_and_locked(self):
+        items = [
+            {"name": "Viewer", "builtin": True, "locked": False},
+            {"name": "Locked Custom", "builtin": False, "locked": True},
+            {"name": "Site Admin", "builtin": False, "locked": False},
+            {"name": "Default role", "builtin": False, "locked": False},
+        ]
+        filtered = EXPORT_FILTERS.filter_reconcile_scope_objects(
+            items,
+            {},
+            "satellite_roles",
+            roles_name_excludes=["Default role"],
+        )
+        self.assertEqual([item["name"] for item in filtered], ["Site Admin"])
+
+    def test_filter_reconcile_scope_objects_roles_can_include_builtin_and_locked(self):
+        items = [
+            {"name": "Viewer", "builtin": 1, "locked": False},
+            {"name": "Locked Custom", "builtin": False, "locked": "true"},
+        ]
+        filtered = EXPORT_FILTERS.filter_reconcile_scope_objects(
+            items,
+            {"roles_include_builtin": True, "roles_include_locked": True},
+            "satellite_roles",
+        )
+        self.assertEqual([item["name"] for item in filtered], ["Viewer", "Locked Custom"])
+
+    def test_filter_reconcile_scope_objects_rejects_locked_templates(self):
+        items = [
+            {"name": "Kickstart default", "locked": True},
+            {"name": "custom-kickstart", "locked": False},
+        ]
+        filtered = EXPORT_FILTERS.filter_reconcile_scope_objects(
+            items,
+            {},
+            "satellite_provisioning_templates",
+        )
+        self.assertEqual([item["name"] for item in filtered], ["custom-kickstart"])
+
+    def test_filter_export_items_content_view_and_label_scope(self):
+        items = [
+            {
+                "name": "repo-a",
+                "content_view": {"name": "CV-A"},
+                "label": "label-a",
+            },
+            {
+                "name": "repo-b",
+                "content_view": {"name": "CV-B"},
+                "label": "label-b",
+            },
+        ]
+        filtered = EXPORT_FILTERS.filter_export_items(
+            items,
+            {"content_views": ["CV-A"], "labels": ["label-a"]},
+        )
+        self.assertEqual([item["name"] for item in filtered], ["repo-a"])
+
+    def test_filter_export_items_name_regex(self):
+        items = [
+            {"name": "ACME-prod"},
+            {"name": "Other"},
+        ]
+        filtered = EXPORT_FILTERS.filter_export_items(
+            items,
+            {"name_use_regex": True, "name_include": ["^ACME"]},
+        )
+        self.assertEqual([item["name"] for item in filtered], ["ACME-prod"])
+
+    def test_build_export_search_query_label_content_view_settings_auth(self):
+        query = EXPORT_FILTERS.build_export_search_query(
+            {
+                "labels": ["label-a"],
+                "content_views": ["CV-A"],
+                "settings_include": ["foreman_url"],
+                "auth_sources": ["LDAP"],
+            },
+            supports_organization=False,
+            supports_label=True,
+            supports_content_view=True,
+            supports_settings=True,
+            supports_auth_source=True,
+        )
+        self.assertEqual(
+            query,
+            'content_view = "CV-A" AND label = "label-a" AND name = "foreman_url" AND auth_source = "LDAP"',
+        )
+
+    def test_append_export_search_to_api_link_without_existing_query(self):
+        link = EXPORT_FILTERS.append_export_search_to_api_link(
+            "/katello/api/repositories",
+            {"organizations": ["ACME"]},
+        )
+        self.assertEqual(
+            link,
+            "/katello/api/repositories?search=organization%20%3D%20%22ACME%22",
+        )
+
+    def test_filters_for_post_api_export_repositories_strips_supported_dims(self):
+        filters = {
+            "organizations": ["ACME"],
+            "products": ["Prod"],
+            "labels": ["lbl"],
+            "name_include": ["repo-*"],
+        }
+        stripped = EXPORT_FILTERS.filters_for_post_api_export(filters, "repositories")
+        self.assertNotIn("organizations", stripped)
+        self.assertNotIn("products", stripped)
+        self.assertNotIn("labels", stripped)
+        self.assertEqual(stripped.get("name_include"), ["repo-*"])
+
 
 if __name__ == "__main__":
     unittest.main()
