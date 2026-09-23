@@ -45,13 +45,14 @@ class TestWriteReconcileDiffFile(unittest.TestCase):
             )
             self.assertTrue(first_changed)
 
-            _, second_changed = FILETREE_RECONCILE_DIFF.write_reconcile_diff_file(
+            second_path, second_changed = FILETREE_RECONCILE_DIFF.write_reconcile_diff_file(
                 temp_dir,
                 "satellite_domains.yaml",
                 "satellite_domains",
                 diff_items,
             )
             self.assertFalse(second_changed)
+            self.assertEqual(second_path, output_file)
             self.assertTrue(pathlib.Path(output_file).is_file())
 
 
